@@ -108,7 +108,7 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
         </View>
 
         {/* Form */}
-        <View className="flex-1 px-6">
+        <View className="px-6 pb-8">
           {/* First Name Input */}
           <View className="mb-4">
             <Text className="text-sm font-medium mb-2" style={styles.label}>
