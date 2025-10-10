@@ -124,6 +124,7 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
               placeholderTextColor="#94a3b8"
               autoCapitalize="words"
               autoCorrect={false}
+              returnKeyType="next"
               className="rounded-xl px-4 py-4 text-base"
               style={styles.input}
             />
@@ -144,6 +145,7 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
               placeholderTextColor="#94a3b8"
               autoCapitalize="words"
               autoCorrect={false}
+              returnKeyType="next"
               className="rounded-xl px-4 py-4 text-base"
               style={styles.input}
             />
@@ -165,6 +167,7 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
+              returnKeyType="next"
               className="rounded-xl px-4 py-4 text-base"
               style={styles.input}
             />
@@ -187,6 +190,8 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
                 secureTextEntry={!showPassword}
                 autoCapitalize="none"
                 autoCorrect={false}
+                returnKeyType="go"
+                onSubmitEditing={handleSignUp}
                 className="rounded-xl px-4 py-4 text-base pr-12"
                 style={styles.input}
               />

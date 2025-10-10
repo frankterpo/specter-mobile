@@ -113,6 +113,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
+              returnKeyType="next"
               className="rounded-xl px-4 py-4 text-base"
               style={styles.input}
             />
@@ -135,6 +136,8 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
                 secureTextEntry={!showPassword}
                 autoCapitalize="none"
                 autoCorrect={false}
+                returnKeyType="go"
+                onSubmitEditing={handleSignIn}
                 className="rounded-xl px-4 py-4 text-base pr-12"
                 style={styles.input}
               />
