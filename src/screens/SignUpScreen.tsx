@@ -221,7 +221,6 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
           <Pressable
             onPress={handleSignUp}
             disabled={isLoading}
-            className="rounded-xl py-4 mb-4"
             style={({ pressed }) => [
               styles.signUpButton,
               (pressed || isLoading) && styles.buttonPressed,
@@ -230,7 +229,7 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
             {isLoading ? (
               <ActivityIndicator color="white" />
             ) : (
-              <Text className="text-white text-center text-base font-semibold">
+              <Text style={styles.signUpButtonText}>
                 Create Account
               </Text>
             )}
@@ -282,6 +281,15 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     backgroundColor: "#1a365d",
+    borderRadius: 12,
+    paddingVertical: 16,
+    marginBottom: 16,
+  },
+  signUpButtonText: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "600",
   },
   buttonPressed: {
     opacity: 0.7,

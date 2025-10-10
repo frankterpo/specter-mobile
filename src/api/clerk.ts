@@ -33,32 +33,67 @@ interface AuthResponse {
  */
 export async function signIn({ email, password }: SignInParams): Promise<AuthResponse> {
   try {
-    const response = await fetch(`https://${CLERK_DOMAIN}/v1/client/sign_ins`, {
+    // Step 1: Create a sign in attempt
+    const createResponse = await fetch(`https://${CLERK_DOMAIN}/v1/client/sign_ins?_clerk_js_version=4.70.0`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${CLERK_PUBLISHABLE_KEY}`,
       },
       body: JSON.stringify({
         identifier: email,
-        password,
-        strategy: "password",
       }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
+    if (!createResponse.ok) {
+      const errorData = await createResponse.json();
       return {
         success: false,
-        error: errorData.errors?.[0]?.message || "Invalid email or password",
+        error: errorData.errors?.[0]?.long_message || errorData.errors?.[0]?.message || "Failed to initiate sign in",
       };
     }
 
-    const data = await response.json();
+    const createData = await createResponse.json();
+    const signInId = createData.response?.id;
+
+    if (!signInId) {
+      return {
+        success: false,
+        error: "Failed to create sign in session",
+      };
+    }
+
+    // Step 2: Attempt to sign in with password
+    const attemptResponse = await fetch(
+      `https://${CLERK_DOMAIN}/v1/client/sign_ins/${signInId}/attempt_first_factor?_clerk_js_version=4.70.0`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          strategy: "password",
+          password: password,
+        }),
+      }
+    );
+
+    if (!attemptResponse.ok) {
+      const errorData = await attemptResponse.json();
+      return {
+        success: false,
+        error: errorData.errors?.[0]?.long_message || errorData.errors?.[0]?.message || "Invalid email or password",
+      };
+    }
+
+    const attemptData = await attemptResponse.json();
     
     // Extract session token and user data
-    const sessionToken = data.client?.sessions?.[0]?.last_active_token?.jwt || data.response?.session_token;
-    const userData = data.client?.sessions?.[0]?.user || data.response?.user;
+    const session = attemptData.response?.created_session_id 
+      ? attemptData.client?.sessions?.find((s: any) => s.id === attemptData.response.created_session_id)
+      : attemptData.client?.sessions?.[0];
+
+    const sessionToken = session?.last_active_token?.jwt;
+    const userData = session?.user;
 
     if (!sessionToken) {
       return {
@@ -77,11 +112,11 @@ export async function signIn({ email, password }: SignInParams): Promise<AuthRes
         lastName: userData?.last_name,
       },
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Sign in error:", error);
     return {
       success: false,
-      error: "Network error. Please check your connection and try again.",
+      error: error.message || "Network error. Please check your connection and try again.",
     };
   }
 }
@@ -96,11 +131,11 @@ export async function signUp({
   lastName,
 }: SignUpParams): Promise<AuthResponse> {
   try {
-    const response = await fetch(`https://${CLERK_DOMAIN}/v1/client/sign_ups`, {
+    // Step 1: Create a sign up
+    const createResponse = await fetch(`https://${CLERK_DOMAIN}/v1/client/sign_ups?_clerk_js_version=4.70.0`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${CLERK_PUBLISHABLE_KEY}`,
       },
       body: JSON.stringify({
         email_address: email,
@@ -110,25 +145,43 @@ export async function signUp({
       }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
+    if (!createResponse.ok) {
+      const errorData = await createResponse.json();
       return {
         success: false,
-        error: errorData.errors?.[0]?.message || "Failed to create account",
+        error: errorData.errors?.[0]?.long_message || errorData.errors?.[0]?.message || "Failed to create account",
       };
     }
 
-    const data = await response.json();
-    
-    // For sign up, we may need to complete the sign up flow
-    const sessionToken = data.client?.sessions?.[0]?.last_active_token?.jwt || data.response?.session_token;
-    const userData = data.response?.user || data.client?.sessions?.[0]?.user;
+    const createData = await createResponse.json();
+    const signUpId = createData.response?.id;
 
-    if (!sessionToken) {
+    if (!signUpId) {
       return {
         success: false,
-        error: "Account created but failed to sign in automatically",
+        error: "Failed to create sign up session",
       };
+    }
+
+    // Step 2: Check if we need email verification
+    const signUpResponse = createData.response;
+    
+    // If email verification is required, we need to handle that
+    if (signUpResponse.status === "missing_requirements") {
+      return {
+        success: false,
+        error: "Email verification required. Please check your email.",
+      };
+    }
+
+    // Step 3: Try to complete the sign up and get session
+    const session = createData.client?.sessions?.[0];
+    const sessionToken = session?.last_active_token?.jwt;
+    const userData = session?.user || signUpResponse;
+
+    if (!sessionToken) {
+      // Try to sign in instead
+      return await signIn({ email, password });
     }
 
     return {
@@ -141,11 +194,11 @@ export async function signUp({
         lastName: userData?.last_name || lastName,
       },
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Sign up error:", error);
     return {
       success: false,
-      error: "Network error. Please check your connection and try again.",
+      error: error.message || "Network error. Please check your connection and try again.",
     };
   }
 }
@@ -155,11 +208,10 @@ export async function signUp({
  */
 export async function verifyToken(token: string): Promise<boolean> {
   try {
-    const response = await fetch(`https://${CLERK_DOMAIN}/v1/client/sessions/verify`, {
+    const response = await fetch(`https://${CLERK_DOMAIN}/v1/client/sessions/${token}/touch?_clerk_js_version=4.70.0`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     });
 

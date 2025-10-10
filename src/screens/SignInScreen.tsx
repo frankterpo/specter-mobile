@@ -56,10 +56,15 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
         setIsAuthenticated(true);
         // Navigation handled by App.tsx auth state
       } else {
-        setErrorMessage(result.error || "Failed to sign in. Please try again.");
+        // Display detailed error for debugging
+        const errorMsg = result.error || "Failed to sign in. Please try again.";
+        setErrorMessage(errorMsg);
+        console.log("Sign in failed:", errorMsg);
       }
-    } catch (error) {
-      setErrorMessage("An unexpected error occurred. Please try again.");
+    } catch (error: any) {
+      const errorMsg = error.message || "An unexpected error occurred. Please try again.";
+      setErrorMessage(errorMsg);
+      console.error("Sign in exception:", error);
     } finally {
       setIsLoading(false);
     }
@@ -167,7 +172,6 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
           <Pressable
             onPress={handleSignIn}
             disabled={isLoading}
-            className="rounded-xl py-4 mb-4"
             style={({ pressed }) => [
               styles.signInButton,
               (pressed || isLoading) && styles.buttonPressed,
@@ -176,7 +180,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
             {isLoading ? (
               <ActivityIndicator color="white" />
             ) : (
-              <Text className="text-white text-center text-base font-semibold">
+              <Text style={styles.signInButtonText}>
                 Sign In
               </Text>
             )}
@@ -228,6 +232,15 @@ const styles = StyleSheet.create({
   },
   signInButton: {
     backgroundColor: "#1a365d",
+    borderRadius: 12,
+    paddingVertical: 16,
+    marginBottom: 16,
+  },
+  signInButtonText: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "600",
   },
   buttonPressed: {
     opacity: 0.7,
