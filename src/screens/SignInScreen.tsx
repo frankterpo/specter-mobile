@@ -71,184 +71,227 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 bg-white"
-      style={{ paddingTop: insets.top }}
-    >
-      <ScrollView
-        className="flex-1"
-        contentContainerStyle={{ flexGrow: 1 }}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardView}
       >
-        {/* Header */}
-        <View className="px-6 pt-4 pb-8">
-          <Pressable
-            onPress={() => navigation.goBack()}
-            className="w-10 h-10 items-center justify-center rounded-full"
-            style={styles.backButton}
-          >
-            <Ionicons name="arrow-back" size={24} color="#1a365d" />
-          </Pressable>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Header */}
+          <View style={styles.header}>
+            <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
+              <Ionicons name="arrow-back" size={24} color="#1a365d" />
+            </Pressable>
 
-          <Text className="text-3xl font-bold mt-6 mb-2" style={styles.title}>
-            Welcome back
-          </Text>
-          <Text className="text-base" style={styles.subtitle}>
-            Sign in to your account
-          </Text>
-        </View>
-
-        {/* Form */}
-        <View className="px-6 pb-8">
-          {/* Email Input */}
-          <View className="mb-4">
-            <Text className="text-sm font-medium mb-2" style={styles.label}>
-              Email
-            </Text>
-            <TextInput
-              value={email}
-              onChangeText={(text) => {
-                setEmail(text);
-                setErrorMessage("");
-              }}
-              placeholder="you@example.com"
-              placeholderTextColor="#94a3b8"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-              returnKeyType="next"
-              className="rounded-xl px-4 py-4 text-base"
-              style={styles.input}
-            />
+            <Text style={styles.title}>Welcome back</Text>
+            <Text style={styles.subtitle}>Sign in to your account</Text>
           </View>
 
-          {/* Password Input */}
-          <View className="mb-4">
-            <Text className="text-sm font-medium mb-2" style={styles.label}>
-              Password
-            </Text>
-            <View className="relative">
+          {/* Form */}
+          <View style={styles.form}>
+            {/* Email Input */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Email</Text>
               <TextInput
-                value={password}
+                value={email}
                 onChangeText={(text) => {
-                  setPassword(text);
+                  setEmail(text);
                   setErrorMessage("");
                 }}
-                placeholder="Enter your password"
+                placeholder="you@example.com"
                 placeholderTextColor="#94a3b8"
-                secureTextEntry={!showPassword}
+                keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
-                returnKeyType="go"
-                onSubmitEditing={handleSignIn}
-                className="rounded-xl px-4 py-4 text-base pr-12"
+                returnKeyType="next"
                 style={styles.input}
               />
-              <Pressable
-                onPress={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-4"
-              >
-                <Ionicons
-                  name={showPassword ? "eye-off" : "eye"}
-                  size={22}
-                  color="#64748b"
+            </View>
+
+            {/* Password Input */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Password</Text>
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  value={password}
+                  onChangeText={(text) => {
+                    setPassword(text);
+                    setErrorMessage("");
+                  }}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#94a3b8"
+                  secureTextEntry={!showPassword}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  returnKeyType="go"
+                  onSubmitEditing={handleSignIn}
+                  style={styles.passwordInput}
                 />
+                <Pressable onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
+                  <Ionicons name={showPassword ? "eye-off" : "eye"} size={22} color="#64748b" />
+                </Pressable>
+              </View>
+            </View>
+
+            {/* Error Message */}
+            {errorMessage ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>{errorMessage}</Text>
+              </View>
+            ) : null}
+
+            {/* Sign In Button */}
+            <Pressable
+              onPress={handleSignIn}
+              disabled={isLoading}
+              style={({ pressed }) => [
+                styles.signInButton,
+                (pressed || isLoading) && styles.buttonPressed,
+              ]}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text style={styles.signInButtonText}>Sign In</Text>
+              )}
+            </Pressable>
+
+            {/* Sign Up Link */}
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>{"Don't have an account? "}</Text>
+              <Pressable onPress={() => navigation.navigate("SignUp")}>
+                <Text style={styles.linkText}>Sign Up</Text>
               </Pressable>
             </View>
           </View>
-
-          {/* Error Message */}
-          {errorMessage ? (
-            <View className="mb-4 p-3 rounded-lg" style={styles.errorContainer}>
-              <Text className="text-sm" style={styles.errorText}>
-                {errorMessage}
-              </Text>
-            </View>
-          ) : null}
-
-          {/* Sign In Button */}
-          <Pressable
-            onPress={handleSignIn}
-            disabled={isLoading}
-            style={({ pressed }) => [
-              styles.signInButton,
-              (pressed || isLoading) && styles.buttonPressed,
-            ]}
-          >
-            {isLoading ? (
-              <ActivityIndicator color="white" />
-            ) : (
-              <Text style={styles.signInButtonText}>
-                Sign In
-              </Text>
-            )}
-          </Pressable>
-
-          {/* Sign Up Link */}
-          <View className="flex-row items-center justify-center">
-            <Text className="text-base" style={styles.footerText}>
-              {"Don't have an account? "}
-            </Text>
-            <Pressable onPress={() => navigation.navigate("SignUp")}>
-              <Text className="text-base font-semibold" style={styles.linkText}>
-                Sign Up
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  keyboardView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 40,
+  },
+  header: {
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    paddingBottom: 32,
+  },
   backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: "#f7fafc",
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
+    fontSize: 30,
+    fontWeight: "bold",
     color: "#1a365d",
+    marginTop: 24,
+    marginBottom: 8,
   },
   subtitle: {
+    fontSize: 16,
     color: "#64748b",
   },
+  form: {
+    paddingHorizontal: 24,
+  },
+  inputContainer: {
+    marginBottom: 16,
+  },
   label: {
+    fontSize: 14,
+    fontWeight: "500",
     color: "#334155",
+    marginBottom: 8,
   },
   input: {
     backgroundColor: "#f7fafc",
     borderWidth: 1,
     borderColor: "#e2e8f0",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    fontSize: 16,
     color: "#1e293b",
+  },
+  passwordContainer: {
+    position: "relative",
+  },
+  passwordInput: {
+    backgroundColor: "#f7fafc",
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    paddingRight: 48,
+    fontSize: 16,
+    color: "#1e293b",
+  },
+  eyeButton: {
+    position: "absolute",
+    right: 16,
+    top: 16,
   },
   errorContainer: {
     backgroundColor: "#fef2f2",
     borderWidth: 1,
     borderColor: "#fecaca",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
   },
   errorText: {
     color: "#dc2626",
+    fontSize: 14,
   },
   signInButton: {
     backgroundColor: "#1a365d",
     borderRadius: 12,
     paddingVertical: 16,
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 16,
+    minHeight: 56,
   },
   signInButtonText: {
     color: "white",
-    textAlign: "center",
     fontSize: 16,
     fontWeight: "600",
   },
   buttonPressed: {
     opacity: 0.7,
   },
+  footer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 8,
+  },
   footerText: {
+    fontSize: 16,
     color: "#64748b",
   },
   linkText: {
+    fontSize: 16,
+    fontWeight: "600",
     color: "#1a365d",
   },
 });
