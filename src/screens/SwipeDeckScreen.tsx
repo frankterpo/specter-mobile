@@ -6,6 +6,7 @@ import {
   Dimensions,
   Pressable,
   ActivityIndicator,
+  Linking,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -23,6 +24,7 @@ import Animated, {
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
 import FilterModal, { FilterOptions } from "../components/FilterModal";
+import ListModal from "../components/ListModal";
 import {
   fetchPeople,
   likePerson,
@@ -63,11 +65,13 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
   const [offset, setOffset] = useState(0);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>({});
+  const [listModalVisible, setListModalVisible] = useState(false);
+  const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
 
   const LIMIT = 10;
 
   useEffect(() => {
-    loadPeople(0);
+    loadPeople(0, true); // Replace on initial load
   }, []);
 
   useEffect(() => {
@@ -77,7 +81,7 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
     }
   }, [currentIndex, cards.length]);
 
-  const loadPeople = async (newOffset: number) => {
+  const loadPeople = async (newOffset: number, replace: boolean = false) => {
     setIsLoading(true);
     setError(null);
 
@@ -87,14 +91,39 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
         throw new Error("Authentication required");
       }
 
+      // Convert FilterOptions to API filter format
+      const apiFilters: any = {};
+      if (filters.seniority && filters.seniority.length > 0) {
+        apiFilters.seniority = filters.seniority;
+      }
+      if (filters.highlights && filters.highlights.length > 0) {
+        apiFilters.people_highlights = filters.highlights;
+      }
+      if (filters.hasLinkedIn) {
+        apiFilters.has_linkedin = true;
+      }
+      if (filters.hasTwitter) {
+        apiFilters.has_twitter = true;
+      }
+      if (filters.hasGitHub) {
+        apiFilters.has_github = true;
+      }
+
       const response = await fetchPeople(token, {
         limit: LIMIT,
         offset: newOffset,
+        filters: Object.keys(apiFilters).length > 0 ? apiFilters : undefined,
       });
 
-      setCards(response.items);
+      if (replace) {
+        // Only replace when explicitly told (initial load or filter change)
+        setCards(response.items);
+        setCurrentIndex(0);
+      } else {
+        // Append for pagination
+        setCards((prev) => [...prev, ...response.items]);
+      }
       setOffset(newOffset);
-      setCurrentIndex(0);
     } catch (err: any) {
       setError(err.message || "Failed to load people");
       console.error("Load people error:", err);
@@ -112,9 +141,28 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
       const token = await getToken();
       if (!token) return;
 
+      // Convert FilterOptions to API filter format
+      const apiFilters: any = {};
+      if (filters.seniority && filters.seniority.length > 0) {
+        apiFilters.seniority = filters.seniority;
+      }
+      if (filters.highlights && filters.highlights.length > 0) {
+        apiFilters.people_highlights = filters.highlights;
+      }
+      if (filters.hasLinkedIn) {
+        apiFilters.has_linkedin = true;
+      }
+      if (filters.hasTwitter) {
+        apiFilters.has_twitter = true;
+      }
+      if (filters.hasGitHub) {
+        apiFilters.has_github = true;
+      }
+
       const response = await fetchPeople(token, {
         limit: LIMIT,
         offset: offset + LIMIT,
+        filters: Object.keys(apiFilters).length > 0 ? apiFilters : undefined,
       });
 
       setCards((prev) => [...prev, ...response.items]);
@@ -169,10 +217,15 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
     navigation.navigate("PersonDetail", { personId: person.id });
   };
 
+  const handleAddToList = (person: Person) => {
+    setSelectedPerson(person);
+    setListModalVisible(true);
+  };
+
   const handleApplyFilters = (newFilters: FilterOptions) => {
     setFilters(newFilters);
-    // Reload with new filters
-    loadPeople(0);
+    // Reload with new filters, replace array
+    loadPeople(0, true);
   };
 
   const hasActiveFilters = () => {
@@ -223,7 +276,7 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
           <Text style={styles.emptySubtitle}>
             {error || "Check back later for new people to review"}
           </Text>
-          <Pressable onPress={() => loadPeople(0)} style={styles.retryButton}>
+          <Pressable onPress={() => loadPeople(0, true)} style={styles.retryButton}>
             <Text style={styles.retryButtonText}>Refresh</Text>
           </Pressable>
         </View>
@@ -277,6 +330,7 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
                 onLike={() => handleLike(person)}
                 onDislike={() => handleDislike(person)}
                 onViewProfile={() => handleViewProfile(person)}
+                onAddToList={() => handleAddToList(person)}
               />
             );
           })}
@@ -335,6 +389,15 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
         onApply={handleApplyFilters}
         currentFilters={filters}
       />
+
+      {selectedPerson && (
+        <ListModal
+          visible={listModalVisible}
+          onClose={() => setListModalVisible(false)}
+          personId={selectedPerson.id}
+          personName={selectedPerson.full_name || getFullName(selectedPerson)}
+        />
+      )}
     </View>
   );
 }
@@ -346,9 +409,10 @@ type SwipeCardProps = {
   onLike: () => void;
   onDislike: () => void;
   onViewProfile: () => void;
+  onAddToList: () => void;
 };
 
-function SwipeCard({ person, index, isTop, onLike, onDislike, onViewProfile }: SwipeCardProps) {
+function SwipeCard({ person, index, isTop, onLike, onDislike, onViewProfile, onAddToList }: SwipeCardProps) {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
 
@@ -534,29 +598,45 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onViewProfile }: S
               )}
             </View>
 
-            {/* Socials section */}
-            {(person.linkedin_url || person.twitter_url || person.github_url) && (
-              <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Socials</Text>
-                <View style={styles.socialsRow}>
-                  {person.linkedin_url && (
-                    <View style={styles.socialIcon}>
-                      <Ionicons name="logo-linkedin" size={24} color="#0077b5" />
-                    </View>
-                  )}
-                  {person.twitter_url && (
-                    <View style={styles.socialIcon}>
-                      <Ionicons name="logo-twitter" size={24} color="#1da1f2" />
-                    </View>
-                  )}
-                  {person.github_url && (
-                    <View style={styles.socialIcon}>
-                      <Ionicons name="logo-github" size={24} color="#333333" />
-                    </View>
-                  )}
-                </View>
+            {/* Socials and Actions section */}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Actions</Text>
+              <View style={styles.socialsRow}>
+                {person.linkedin_url && (
+                  <Pressable
+                    style={styles.socialIconButton}
+                    onPress={() => Linking.openURL(person.linkedin_url!)}
+                  >
+                    <Ionicons name="logo-linkedin" size={20} color="#0077b5" />
+                  </Pressable>
+                )}
+                {person.twitter_url && (
+                  <Pressable
+                    style={styles.socialIconButton}
+                    onPress={() => Linking.openURL(person.twitter_url!)}
+                  >
+                    <Ionicons name="logo-twitter" size={20} color="#1da1f2" />
+                  </Pressable>
+                )}
+                {person.github_url && (
+                  <Pressable
+                    style={styles.socialIconButton}
+                    onPress={() => Linking.openURL(person.github_url!)}
+                  >
+                    <Ionicons name="logo-github" size={20} color="#333333" />
+                  </Pressable>
+                )}
+                <Pressable
+                  style={styles.addToListButton}
+                  onPress={() => {
+                    onAddToList();
+                  }}
+                >
+                  <Ionicons name="add" size={20} color="#1a365d" />
+                  <Text style={styles.addToListText}>Add to List</Text>
+                </Pressable>
               </View>
-            )}
+            </View>
 
             {/* Highlights */}
             {person.people_highlights && person.people_highlights.length > 0 && (
@@ -747,16 +827,35 @@ const styles = StyleSheet.create({
   },
   socialsRow: {
     flexDirection: "row",
-    gap: 12,
+    gap: 8,
     marginTop: 4,
+    flexWrap: "wrap",
   },
-  socialIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#f5f5f5",
+  socialIconButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    backgroundColor: "#f9fafb",
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
     alignItems: "center",
     justifyContent: "center",
+  },
+  addToListButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    backgroundColor: "#f9fafb",
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+  },
+  addToListText: {
+    fontSize: 13,
+    fontWeight: "500",
+    color: "#1a365d",
   },
   highlightsRow: {
     flexDirection: "row",

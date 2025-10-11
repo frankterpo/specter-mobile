@@ -3,6 +3,7 @@
 
 const API_BASE_URL = "https://specter-api-staging.up.railway.app";
 const ENTITY_STATUS_BASE_URL = "https://app.staging.tryspecter.com/api/entity-status";
+const LISTS_BASE_URL = "https://app.staging.tryspecter.com/api/lists";
 
 export interface Experience {
   company_name: string;
@@ -43,6 +44,13 @@ export interface Person {
 export interface FetchPeopleParams {
   limit: number;
   offset: number;
+  filters?: {
+    seniority?: string[];
+    people_highlights?: string[];
+    has_linkedin?: boolean;
+    has_twitter?: boolean;
+    has_github?: boolean;
+  };
 }
 
 export interface FetchPeopleResponse {
@@ -59,13 +67,38 @@ export async function fetchPeople(
   params: FetchPeopleParams
 ): Promise<FetchPeopleResponse> {
   try {
+    // Build request body with filters
+    const body: any = {
+      limit: params.limit,
+      offset: params.offset,
+    };
+
+    // Add filters if provided
+    if (params.filters) {
+      if (params.filters.seniority && params.filters.seniority.length > 0) {
+        body.seniority = params.filters.seniority;
+      }
+      if (params.filters.people_highlights && params.filters.people_highlights.length > 0) {
+        body.people_highlights = params.filters.people_highlights;
+      }
+      if (params.filters.has_linkedin) {
+        body.has_linkedin = true;
+      }
+      if (params.filters.has_twitter) {
+        body.has_twitter = true;
+      }
+      if (params.filters.has_github) {
+        body.has_github = true;
+      }
+    }
+
     const response = await fetch(`${API_BASE_URL}/private/people`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(params),
+      body: JSON.stringify(body),
     });
 
     if (!response.ok) {
@@ -279,4 +312,133 @@ export function formatRelativeTime(timestamp?: string): string | null {
   if (diffDays < 7) return `${diffDays} days ago`;
   if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
   return `${Math.floor(diffDays / 30)} months ago`;
+}
+
+/**
+ * List Management Types
+ */
+export interface List {
+  id: string;
+  name: string;
+  description?: string;
+  item_count?: number;
+  created_at?: string;
+}
+
+export interface ListsResponse {
+  lists: List[];
+}
+
+/**
+ * Fetch user's lists
+ */
+export async function fetchLists(token: string): Promise<List[]> {
+  try {
+    const response = await fetch(`${LISTS_BASE_URL}?product=people`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    return data.lists || [];
+  } catch (error: any) {
+    console.error("fetchLists error:", error);
+    throw new Error(error.message || "Failed to fetch lists.");
+  }
+}
+
+/**
+ * Add person to list
+ */
+export async function addToList(
+  token: string,
+  listId: string,
+  personId: string
+): Promise<void> {
+  try {
+    const response = await fetch(`${LISTS_BASE_URL}/people/${listId}/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ entity_id: personId }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+  } catch (error: any) {
+    console.error("addToList error:", error);
+    throw new Error(error.message || "Failed to add to list.");
+  }
+}
+
+/**
+ * Remove person from list
+ */
+export async function removeFromList(
+  token: string,
+  listId: string,
+  personId: string
+): Promise<void> {
+  try {
+    const response = await fetch(`${LISTS_BASE_URL}/people/${listId}/remove`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ entity_id: personId }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+  } catch (error: any) {
+    console.error("removeFromList error:", error);
+    throw new Error(error.message || "Failed to remove from list.");
+  }
+}
+
+/**
+ * Check which lists person belongs to
+ */
+export async function getPersonLists(
+  token: string,
+  personId: string
+): Promise<string[]> {
+  try {
+    const response = await fetch(
+      `${LISTS_BASE_URL}/people/added-to-list/${personId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    return data.list_ids || [];
+  } catch (error: any) {
+    console.error("getPersonLists error:", error);
+    return []; // Return empty array on error
+  }
 }
