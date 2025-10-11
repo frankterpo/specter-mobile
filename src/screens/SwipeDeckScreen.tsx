@@ -11,7 +11,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import { LinearGradient } from "expo-linear-gradient";
 import { useAuth } from "@clerk/clerk-expo";
 import Animated, {
   useAnimatedStyle,
@@ -23,6 +22,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
+import FilterModal, { FilterOptions } from "../components/FilterModal";
 import {
   fetchPeople,
   likePerson,
@@ -34,7 +34,7 @@ import {
   getInitials,
   formatHighlight,
   getHighlightColor,
-  calculateAge,
+  formatRelativeTime,
 } from "../api/specter";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -61,6 +61,8 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [offset, setOffset] = useState(0);
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [filters, setFilters] = useState<FilterOptions>({});
 
   const LIMIT = 10;
 
@@ -69,10 +71,11 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
   }, []);
 
   useEffect(() => {
-    if (currentIndex >= cards.length - 5 && !isLoadingMore) {
+    // Load more when we're 3 cards away from the end
+    if (cards.length > 0 && currentIndex >= cards.length - 3 && !isLoadingMore) {
       loadMorePeople();
     }
-  }, [currentIndex]);
+  }, [currentIndex, cards.length]);
 
   const loadPeople = async (newOffset: number) => {
     setIsLoading(true);
@@ -166,6 +169,22 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
     navigation.navigate("PersonDetail", { personId: person.id });
   };
 
+  const handleApplyFilters = (newFilters: FilterOptions) => {
+    setFilters(newFilters);
+    // Reload with new filters
+    loadPeople(0);
+  };
+
+  const hasActiveFilters = () => {
+    return (
+      (filters.seniority && filters.seniority.length > 0) ||
+      (filters.highlights && filters.highlights.length > 0) ||
+      filters.hasLinkedIn ||
+      filters.hasTwitter ||
+      filters.hasGitHub
+    );
+  };
+
   if (isLoading) {
     return (
       <View style={[styles.container, styles.centerContent, { paddingTop: insets.top }]}>
@@ -175,12 +194,23 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
     );
   }
 
-  if (error || cards.length === 0 || currentIndex >= cards.length) {
+  if (error || (cards.length === 0 && !isLoading) || (currentIndex >= cards.length && !isLoadingMore)) {
     return (
       <View style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.header}>
           <Text style={styles.logo}>Specter</Text>
           <View style={styles.headerRight}>
+            <Pressable 
+              onPress={() => setFilterModalVisible(true)} 
+              style={[styles.iconButton, hasActiveFilters() && styles.iconButtonActive]}
+            >
+              <Ionicons 
+                name="options-outline" 
+                size={24} 
+                color={hasActiveFilters() ? "white" : "#1a365d"} 
+              />
+              {hasActiveFilters() && <View style={styles.filterBadge} />}
+            </Pressable>
             <Pressable onPress={() => navigation.navigate("Settings")} style={styles.iconButton}>
               <Ionicons name="settings-outline" size={24} color="#1a365d" />
             </Pressable>
@@ -197,6 +227,13 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
             <Text style={styles.retryButtonText}>Refresh</Text>
           </Pressable>
         </View>
+
+        <FilterModal
+          visible={filterModalVisible}
+          onClose={() => setFilterModalVisible(false)}
+          onApply={handleApplyFilters}
+          currentFilters={filters}
+        />
       </View>
     );
   }
@@ -206,6 +243,17 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
       <View style={styles.header}>
         <Text style={styles.logo}>Specter</Text>
         <View style={styles.headerRight}>
+          <Pressable 
+            onPress={() => setFilterModalVisible(true)} 
+            style={[styles.iconButton, hasActiveFilters() && styles.iconButtonActive]}
+          >
+            <Ionicons 
+              name="options-outline" 
+              size={24} 
+              color={hasActiveFilters() ? "white" : "#1a365d"} 
+            />
+            {hasActiveFilters() && <View style={styles.filterBadge} />}
+          </Pressable>
           <Pressable onPress={() => navigation.navigate("Settings")} style={styles.iconButton}>
             <Ionicons name="settings-outline" size={24} color="#1a365d" />
           </Pressable>
@@ -280,6 +328,13 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
           <Text style={styles.loadingMoreText}>Loading more...</Text>
         </View>
       )}
+
+      <FilterModal
+        visible={filterModalVisible}
+        onClose={() => setFilterModalVisible(false)}
+        onApply={handleApplyFilters}
+        currentFilters={filters}
+      />
     </View>
   );
 }
@@ -298,9 +353,8 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onViewProfile }: S
   const translateY = useSharedValue(0);
 
   const currentJob = getCurrentJob(person.experience);
-  const fullName = getFullName(person);
+  const fullName = person.full_name || getFullName(person);
   const initials = getInitials(person);
-  const age = calculateAge(person.years_of_experience);
 
   const panGesture = Gesture.Pan()
     .onUpdate((event) => {
@@ -355,98 +409,173 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onViewProfile }: S
     opacity: interpolate(translateX.value, [-SCREEN_WIDTH / 4, 0], [1, 0]),
   }));
 
+  // Status badge rendering
+  const renderStatusBadge = () => {
+    if (!person.entity_status) return null;
+
+    const { status, updated_at } = person.entity_status;
+    const relativeTime = formatRelativeTime(updated_at);
+    
+    let emoji = "";
+    let bgColor = "";
+    let statusText = "";
+
+    if (status === "liked") {
+      emoji = "✓";
+      bgColor = "#22c55e";
+      statusText = `You liked this${relativeTime ? ` ${relativeTime}` : ""}`;
+    } else if (status === "disliked") {
+      emoji = "✖";
+      bgColor = "#ef4444";
+      statusText = `You disliked this${relativeTime ? ` ${relativeTime}` : ""}`;
+    } else if (status === "viewed") {
+      emoji = "👁";
+      bgColor = "#3b82f6";
+      statusText = `You viewed this${relativeTime ? ` ${relativeTime}` : ""}`;
+    }
+
+    if (!statusText) return null;
+
+    return (
+      <View style={[styles.statusBadge, { backgroundColor: bgColor }]}>
+        <Text style={styles.statusBadgeText}>
+          {emoji} {statusText}
+        </Text>
+      </View>
+    );
+  };
+
   return (
     <GestureDetector gesture={panGesture}>
       <Animated.View style={[styles.card, cardStyle]}>
         <Pressable onPress={onViewProfile} style={styles.cardPressable}>
-          <View style={styles.imageContainer}>
-            {person.profile_image_url ? (
-              <Image
-                source={{ uri: person.profile_image_url }}
-                style={styles.profileImage}
-                contentFit="cover"
-                transition={200}
-              />
-            ) : (
-              <View style={[styles.profileImage, styles.profileImagePlaceholder]}>
-                <Text style={styles.placeholderText}>{initials}</Text>
+          {/* Swipe overlays */}
+          <Animated.View style={[styles.swipeOverlay, styles.likeOverlay, likeOpacity]}>
+            <Text style={styles.overlayText}>LIKED ❤️</Text>
+          </Animated.View>
+
+          <Animated.View style={[styles.swipeOverlay, styles.nopeOverlay, nopeOpacity]}>
+            <Text style={styles.overlayText}>NOPE ✖️</Text>
+          </Animated.View>
+
+          {/* Card content */}
+          <View style={styles.newCardContent}>
+            {/* Circular profile photo */}
+            <View style={styles.circularPhotoContainer}>
+              {person.profile_image_url ? (
+                <Image
+                  source={{ uri: person.profile_image_url }}
+                  style={styles.circularPhoto}
+                  contentFit="cover"
+                  transition={200}
+                />
+              ) : (
+                <View style={[styles.circularPhoto, styles.circularPhotoPlaceholder]}>
+                  <Text style={styles.circularPhotoInitials}>{initials}</Text>
+                </View>
+              )}
+            </View>
+
+            {/* Name */}
+            <Text style={styles.cardName}>{fullName}</Text>
+
+            {/* Status badge */}
+            {renderStatusBadge()}
+
+            {/* Tagline section */}
+            {person.tagline && (
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Tagline</Text>
+                <Text style={styles.sectionContent} numberOfLines={2}>
+                  {person.tagline}
+                </Text>
               </View>
             )}
 
-            <LinearGradient
-              colors={["transparent", "rgba(0,0,0,0.6)"]}
-              style={styles.gradient}
-            />
-
-            <Animated.View style={[styles.swipeOverlay, styles.likeOverlay, likeOpacity]}>
-              <Text style={styles.overlayText}>LIKED ❤️</Text>
-            </Animated.View>
-
-            <Animated.View style={[styles.swipeOverlay, styles.nopeOverlay, nopeOpacity]}>
-              <Text style={styles.overlayText}>NOPE ✖️</Text>
-            </Animated.View>
-
-            <View style={styles.photoInfo}>
-              <Text style={styles.nameAge}>
-                {fullName}
-                {age && <Text style={styles.age}>, {age}</Text>}
-              </Text>
-              {currentJob && (
-                <Text style={styles.jobTitle}>
+            {/* Current experience section */}
+            {currentJob && (
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Current Experience</Text>
+                <Text style={styles.sectionContent}>
                   {currentJob.title} @ {currentJob.company_name}
                 </Text>
-              )}
-              {person.location && (
-                <View style={styles.locationRow}>
-                  <Text style={styles.locationIcon}>📍</Text>
-                  <Text style={styles.locationText}>{person.location}</Text>
-                </View>
-              )}
-            </View>
-          </View>
-
-          <View style={styles.cardDetails}>
-            <View style={styles.statsRow}>
-              {person.seniority && (
-                <View style={styles.statItem}>
-                  <Text style={styles.statIcon}>⭐</Text>
-                  <Text style={styles.statText}>{person.seniority}</Text>
-                </View>
-              )}
-              {person.years_of_experience !== undefined && (
-                <View style={styles.statItem}>
-                  <Text style={styles.statIcon}>💼</Text>
-                  <Text style={styles.statText}>{person.years_of_experience} years</Text>
-                </View>
-              )}
-              {person.education_level && (
-                <View style={styles.statItem}>
-                  <Text style={styles.statIcon}>🎓</Text>
-                  <Text style={styles.statText}>{person.education_level}</Text>
-                </View>
-              )}
-            </View>
-
-            {person.people_highlights && person.people_highlights.length > 0 && (
-              <View style={styles.highlightsRow}>
-                {person.people_highlights.slice(0, 3).map((highlight, idx) => (
-                  <View
-                    key={idx}
-                    style={[
-                      styles.highlightBadge,
-                      { backgroundColor: getHighlightColor(highlight) },
-                    ]}
-                  >
-                    <Text style={styles.highlightText}>{formatHighlight(highlight)}</Text>
-                  </View>
-                ))}
               </View>
             )}
 
-            {person.tagline && (
-              <Text style={styles.tagline} numberOfLines={2}>
-                {person.tagline}
-              </Text>
+            {/* Region & Seniority section */}
+            <View style={styles.twoColumnSection}>
+              {person.region && (
+                <View style={styles.columnItem}>
+                  <Text style={styles.sectionTitle}>Region</Text>
+                  <Text style={styles.sectionContent}>{person.region}</Text>
+                </View>
+              )}
+              {person.seniority && (
+                <View style={styles.columnItem}>
+                  <Text style={styles.sectionTitle}>Seniority</Text>
+                  <Text style={styles.sectionContent}>{person.seniority}</Text>
+                </View>
+              )}
+            </View>
+
+            {/* Followers & Connections section */}
+            <View style={styles.twoColumnSection}>
+              {person.followers_count !== undefined && (
+                <View style={styles.columnItem}>
+                  <Text style={styles.sectionTitle}>Followers</Text>
+                  <Text style={styles.sectionContent}>{person.followers_count.toLocaleString()}</Text>
+                </View>
+              )}
+              {person.connections_count !== undefined && (
+                <View style={styles.columnItem}>
+                  <Text style={styles.sectionTitle}>Connections</Text>
+                  <Text style={styles.sectionContent}>{person.connections_count.toLocaleString()}</Text>
+                </View>
+              )}
+            </View>
+
+            {/* Socials section */}
+            {(person.linkedin_url || person.twitter_url || person.github_url) && (
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Socials</Text>
+                <View style={styles.socialsRow}>
+                  {person.linkedin_url && (
+                    <View style={styles.socialIcon}>
+                      <Ionicons name="logo-linkedin" size={24} color="#0077b5" />
+                    </View>
+                  )}
+                  {person.twitter_url && (
+                    <View style={styles.socialIcon}>
+                      <Ionicons name="logo-twitter" size={24} color="#1da1f2" />
+                    </View>
+                  )}
+                  {person.github_url && (
+                    <View style={styles.socialIcon}>
+                      <Ionicons name="logo-github" size={24} color="#333333" />
+                    </View>
+                  )}
+                </View>
+              </View>
+            )}
+
+            {/* Highlights */}
+            {person.people_highlights && person.people_highlights.length > 0 && (
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Highlights</Text>
+                <View style={styles.highlightsRow}>
+                  {person.people_highlights.slice(0, 3).map((highlight, idx) => (
+                    <View
+                      key={idx}
+                      style={[
+                        styles.highlightBadge,
+                        { backgroundColor: getHighlightColor(highlight) },
+                      ]}
+                    >
+                      <Text style={styles.highlightText}>{formatHighlight(highlight)}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
             )}
           </View>
         </Pressable>
@@ -492,6 +621,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
     alignItems: "center",
     justifyContent: "center",
+    position: "relative",
+  },
+  iconButtonActive: {
+    backgroundColor: "#1a365d",
+  },
+  filterBadge: {
+    position: "absolute",
+    top: 6,
+    right: 6,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#22c55e",
   },
   cardContainer: {
     flex: 1,
@@ -513,34 +655,6 @@ const styles = StyleSheet.create({
   cardPressable: {
     flex: 1,
   },
-  imageContainer: {
-    height: "60%",
-    width: "100%",
-    position: "relative",
-  },
-  profileImage: {
-    width: "100%",
-    height: "100%",
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-  },
-  profileImagePlaceholder: {
-    backgroundColor: "#1a365d",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  placeholderText: {
-    fontSize: 60,
-    fontWeight: "bold",
-    color: "white",
-  },
-  gradient: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: "50%",
-  },
   swipeOverlay: {
     position: "absolute",
     top: 0,
@@ -549,8 +663,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: "center",
     justifyContent: "center",
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    borderRadius: 16,
+    zIndex: 10,
   },
   likeOverlay: {
     backgroundColor: "rgba(34, 197, 94, 0.9)",
@@ -564,73 +678,91 @@ const styles = StyleSheet.create({
     color: "white",
     textTransform: "uppercase",
   },
-  photoInfo: {
-    position: "absolute",
-    bottom: 20,
-    left: 20,
-    right: 20,
-  },
-  nameAge: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-    marginBottom: 4,
-    textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 3,
-  },
-  age: {
-    fontWeight: "normal",
-  },
-  jobTitle: {
-    fontSize: 16,
-    color: "white",
-    marginBottom: 4,
-    textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 3,
-  },
-  locationRow: {
-    flexDirection: "row",
+  newCardContent: {
+    flex: 1,
+    padding: 20,
     alignItems: "center",
-    gap: 4,
   },
-  locationIcon: {
-    fontSize: 14,
-  },
-  locationText: {
-    fontSize: 14,
-    color: "white",
-    textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 3,
-  },
-  cardDetails: {
-    padding: 16,
-  },
-  statsRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
+  circularPhotoContainer: {
+    marginTop: 10,
     marginBottom: 12,
   },
-  statItem: {
-    flexDirection: "row",
+  circularPhoto: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  circularPhotoPlaceholder: {
+    backgroundColor: "#1a365d",
     alignItems: "center",
-    gap: 4,
+    justifyContent: "center",
   },
-  statIcon: {
-    fontSize: 14,
+  circularPhotoInitials: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "white",
   },
-  statText: {
-    fontSize: 13,
+  cardName: {
+    fontSize: 24,
+    fontWeight: "600",
+    color: "#1a365d",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  statusBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  statusBadgeText: {
+    color: "white",
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  section: {
+    width: "100%",
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 12,
+    fontWeight: "600",
     color: "#64748b",
+    marginBottom: 4,
+    textTransform: "uppercase",
+  },
+  sectionContent: {
+    fontSize: 15,
+    color: "#1a365d",
+    lineHeight: 20,
+  },
+  twoColumnSection: {
+    width: "100%",
+    flexDirection: "row",
+    gap: 16,
+    marginBottom: 16,
+  },
+  columnItem: {
+    flex: 1,
+  },
+  socialsRow: {
+    flexDirection: "row",
+    gap: 12,
+    marginTop: 4,
+  },
+  socialIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#f5f5f5",
+    alignItems: "center",
+    justifyContent: "center",
   },
   highlightsRow: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 6,
-    marginBottom: 12,
+    marginTop: 4,
   },
   highlightBadge: {
     paddingHorizontal: 10,
@@ -641,11 +773,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 11,
     fontWeight: "600",
-  },
-  tagline: {
-    fontSize: 13,
-    color: "#9ca3af",
-    lineHeight: 18,
   },
   actionButtons: {
     paddingHorizontal: 20,

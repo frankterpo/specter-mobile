@@ -19,9 +19,11 @@ export interface Person {
   id: string;
   first_name: string;
   last_name: string;
+  full_name?: string;
   profile_image_url?: string;
   tagline?: string;
   location?: string;
+  region?: string;
   seniority?: string;
   years_of_experience?: number;
   education_level?: string;
@@ -30,8 +32,11 @@ export interface Person {
   linkedin_url?: string;
   twitter_url?: string;
   github_url?: string;
+  followers_count?: number;
+  connections_count?: number;
   entity_status?: {
     status: "viewed" | "liked" | "disliked";
+    updated_at?: string;
   };
 }
 
@@ -249,4 +254,29 @@ export function getHighlightColor(highlight: string): string {
 export function calculateAge(yearsOfExperience?: number): number | null {
   if (yearsOfExperience === undefined || yearsOfExperience === null) return null;
   return 22 + yearsOfExperience;
+}
+
+/**
+ * Helper: Format relative timestamp (e.g., "2 minutes ago")
+ */
+export function formatRelativeTime(timestamp?: string): string | null {
+  if (!timestamp) return null;
+  
+  const now = new Date();
+  const past = new Date(timestamp);
+  const diffMs = now.getTime() - past.getTime();
+  const diffSeconds = Math.floor(diffMs / 1000);
+  const diffMinutes = Math.floor(diffSeconds / 60);
+  const diffHours = Math.floor(diffMinutes / 60);
+  const diffDays = Math.floor(diffHours / 24);
+  
+  if (diffSeconds < 60) return "just now";
+  if (diffMinutes === 1) return "1 minute ago";
+  if (diffMinutes < 60) return `${diffMinutes} minutes ago`;
+  if (diffHours === 1) return "1 hour ago";
+  if (diffHours < 24) return `${diffHours} hours ago`;
+  if (diffDays === 1) return "1 day ago";
+  if (diffDays < 7) return `${diffDays} days ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+  return `${Math.floor(diffDays / 30)} months ago`;
 }
