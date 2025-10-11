@@ -2,6 +2,7 @@
 // Real API integration for VC people database
 
 const API_BASE_URL = "https://specter-api-staging.up.railway.app";
+const ENTITY_STATUS_BASE_URL = "https://app.staging.tryspecter.com/api/entity-status";
 
 export interface Experience {
   company_name: string;
@@ -11,6 +12,7 @@ export interface Experience {
   total_funding_amount?: number;
   start_date?: string;
   end_date?: string;
+  industry?: string;
 }
 
 export interface Person {
@@ -22,8 +24,12 @@ export interface Person {
   location?: string;
   seniority?: string;
   years_of_experience?: number;
+  education_level?: string;
   experience: Experience[];
   people_highlights?: string[];
+  linkedin_url?: string;
+  twitter_url?: string;
+  github_url?: string;
   entity_status?: {
     status: "viewed" | "liked" | "disliked";
   };
@@ -117,12 +123,13 @@ export async function likePerson(
   personId: string
 ): Promise<void> {
   try {
-    const response = await fetch(`${API_BASE_URL}/private/people/${personId}/like`, {
+    const response = await fetch(`${ENTITY_STATUS_BASE_URL}/people/${personId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+      body: JSON.stringify({ status: "liked" }),
     });
 
     if (!response.ok) {
@@ -143,16 +150,14 @@ export async function dislikePerson(
   personId: string
 ): Promise<void> {
   try {
-    const response = await fetch(
-      `${API_BASE_URL}/private/people/${personId}/dislike`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await fetch(`${ENTITY_STATUS_BASE_URL}/people/${personId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ status: "disliked" }),
+    });
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -161,6 +166,33 @@ export async function dislikePerson(
   } catch (error: any) {
     console.error("dislikePerson error:", error);
     throw new Error(error.message || "Failed to dislike person. Please try again.");
+  }
+}
+
+/**
+ * Mark person as viewed
+ */
+export async function markAsViewed(
+  token: string,
+  personId: string
+): Promise<void> {
+  try {
+    const response = await fetch(`${ENTITY_STATUS_BASE_URL}/people/${personId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ status: "viewed" }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+  } catch (error: any) {
+    console.error("markAsViewed error:", error);
+    throw new Error(error.message || "Failed to mark as viewed. Please try again.");
   }
 }
 
@@ -195,4 +227,26 @@ export function formatHighlight(highlight: string): string {
     .split("_")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+}
+
+/**
+ * Helper: Get highlight color
+ */
+export function getHighlightColor(highlight: string): string {
+  const lowerHighlight = highlight.toLowerCase();
+  if (lowerHighlight.includes("fortune") || lowerHighlight.includes("500")) return "#3b82f6"; // blue
+  if (lowerHighlight.includes("vc") || lowerHighlight.includes("backed")) return "#a855f7"; // purple
+  if (lowerHighlight.includes("serial") || lowerHighlight.includes("founder")) return "#22c55e"; // green
+  if (lowerHighlight.includes("exit")) return "#f97316"; // orange
+  if (lowerHighlight.includes("ipo")) return "#eab308"; // gold
+  return "#6366f1"; // default indigo
+}
+
+/**
+ * Helper: Calculate age from years of experience (rough estimate)
+ * Assumes: started working at 22, current year 2025
+ */
+export function calculateAge(yearsOfExperience?: number): number | null {
+  if (yearsOfExperience === undefined || yearsOfExperience === null) return null;
+  return 22 + yearsOfExperience;
 }

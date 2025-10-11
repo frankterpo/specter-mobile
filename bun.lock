@@ -93,6 +93,7 @@
         "react-native-ios-context-menu": "3.1.0",
         "react-native-ios-utilities": "5.1.2",
         "react-native-keyboard-controller": "^1.17.0",
+        "react-native-linear-gradient": "^2.8.3",
         "react-native-maps": "^1.24.3",
         "react-native-markdown-display": "^7.0.2",
         "react-native-mmkv": "^3.2.0",
@@ -1936,6 +1937,8 @@
     "react-native-is-edge-to-edge": ["react-native-is-edge-to-edge@1.1.7", "", { "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-EH6i7E8epJGIcu7KpfXYXiV2JFIYITtq+rVS8uEb+92naMRBdxhTuS8Wn2Q7j9sqyO0B+Xbaaf9VdipIAmGW4w=="],
 
     "react-native-keyboard-controller": ["react-native-keyboard-controller@1.17.4", "", { "dependencies": { "react-native-is-edge-to-edge": "^1.1.6" }, "peerDependencies": { "react": "*", "react-native": "*", "react-native-reanimated": ">=3.0.0" } }, "sha512-aoXPy1LA4xPqBBv4gGZvGfMCIYbcWVWqDza0xEIC9TYla2Jj2H25ADnfcOk/5exrwUKsWiLFRywykSAR5RurFQ=="],
+
+    "react-native-linear-gradient": ["react-native-linear-gradient@2.8.3", "", { "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA=="],
 
     "react-native-maps": ["react-native-maps@1.24.3", "", { "dependencies": { "@types/geojson": "^7946.0.13" }, "peerDependencies": { "react": ">= 18.3.1", "react-native": ">= 0.76.0", "react-native-web": ">= 0.11" }, "optionalPeers": ["react-native-web"] }, "sha512-cF5oTA8z24QqGIRFfDcsXLEs/gCd0RhaJ9KPv/2HiogKD5gpjh1naimZUJQ6IsEcUngSSk8iov6p2jd7dB+/bQ=="],
 

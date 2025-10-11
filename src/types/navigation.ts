@@ -7,7 +7,7 @@ export type AuthStackParamList = {
 };
 
 export type MainStackParamList = {
-  PeopleList: undefined;
+  SwipeDeck: undefined;
   PersonDetail: { personId: string };
   Settings: undefined;
 };
