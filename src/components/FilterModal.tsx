@@ -31,23 +31,24 @@ interface FilterModalProps {
 }
 
 const SENIORITY_OPTIONS = [
-  "Entry Level",
-  "Mid Level",
-  "Senior",
-  "Lead",
-  "Principal",
-  "Director",
-  "VP",
-  "C-Level",
+  { label: "Entry Level", value: "Entry Level" },
+  { label: "Mid Level", value: "Mid Level" },
+  { label: "Senior", value: "Senior" },
+  { label: "Lead", value: "Lead" },
+  { label: "Principal", value: "Principal" },
+  { label: "Director", value: "Director" },
+  { label: "VP", value: "VP" },
+  { label: "C-Level", value: "C-Level" },
+  { label: "Executive Level", value: "Executive Level" },
 ];
 
 const HIGHLIGHT_OPTIONS = [
-  "Fortune 500",
-  "VC Backed",
-  "Serial Founder",
-  "Successful Exit",
-  "IPO Experience",
-  "YC Alumni",
+  { label: "Fortune 500", value: "fortune_500_experience" },
+  { label: "VC Backed", value: "vc_backed_founder" },
+  { label: "Serial Founder", value: "serial_founder" },
+  { label: "Successful Exit", value: "successful_exit" },
+  { label: "IPO Experience", value: "ipo_experience" },
+  { label: "YC Alumni", value: "yc_alumni" },
 ];
 
 export default function FilterModal({
@@ -59,6 +60,9 @@ export default function FilterModal({
   const [filters, setFilters] = useState<FilterOptions>(currentFilters);
 
   const handleApply = () => {
+    if (__DEV__) {
+      console.log("🔍 Applying filters:", filters);
+    }
     onApply(filters);
     onClose();
   };
@@ -69,19 +73,19 @@ export default function FilterModal({
     onApply(emptyFilters);
   };
 
-  const toggleSeniority = (seniority: string) => {
+  const toggleSeniority = (value: string) => {
     const current = filters.seniority || [];
-    const updated = current.includes(seniority)
-      ? current.filter((s) => s !== seniority)
-      : [...current, seniority];
+    const updated = current.includes(value)
+      ? current.filter((s) => s !== value)
+      : [...current, value];
     setFilters({ ...filters, seniority: updated.length > 0 ? updated : undefined });
   };
 
-  const toggleHighlight = (highlight: string) => {
+  const toggleHighlight = (value: string) => {
     const current = filters.highlights || [];
-    const updated = current.includes(highlight)
-      ? current.filter((h) => h !== highlight)
-      : [...current, highlight];
+    const updated = current.includes(value)
+      ? current.filter((h) => h !== value)
+      : [...current, value];
     setFilters({ ...filters, highlights: updated.length > 0 ? updated : undefined });
   };
 
@@ -110,20 +114,20 @@ export default function FilterModal({
               <View style={styles.optionsGrid}>
                 {SENIORITY_OPTIONS.map((option) => (
                   <Pressable
-                    key={option}
-                    onPress={() => toggleSeniority(option)}
+                    key={option.value}
+                    onPress={() => toggleSeniority(option.value)}
                     style={[
                       styles.optionChip,
-                      filters.seniority?.includes(option) && styles.optionChipActive,
+                      filters.seniority?.includes(option.value) && styles.optionChipActive,
                     ]}
                   >
                     <Text
                       style={[
                         styles.optionChipText,
-                        filters.seniority?.includes(option) && styles.optionChipTextActive,
+                        filters.seniority?.includes(option.value) && styles.optionChipTextActive,
                       ]}
                     >
-                      {option}
+                      {option.label}
                     </Text>
                   </Pressable>
                 ))}
@@ -136,20 +140,20 @@ export default function FilterModal({
               <View style={styles.optionsGrid}>
                 {HIGHLIGHT_OPTIONS.map((option) => (
                   <Pressable
-                    key={option}
-                    onPress={() => toggleHighlight(option)}
+                    key={option.value}
+                    onPress={() => toggleHighlight(option.value)}
                     style={[
                       styles.optionChip,
-                      filters.highlights?.includes(option) && styles.optionChipActive,
+                      filters.highlights?.includes(option.value) && styles.optionChipActive,
                     ]}
                   >
                     <Text
                       style={[
                         styles.optionChipText,
-                        filters.highlights?.includes(option) && styles.optionChipTextActive,
+                        filters.highlights?.includes(option.value) && styles.optionChipTextActive,
                       ]}
                     >
-                      {option}
+                      {option.label}
                     </Text>
                   </Pressable>
                 ))}

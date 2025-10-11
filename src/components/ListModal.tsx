@@ -36,6 +36,7 @@ export default function ListModal({
   const [selectedLists, setSelectedLists] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (visible) {
@@ -45,9 +46,13 @@ export default function ListModal({
 
   const loadData = async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const token = await getToken();
-      if (!token) return;
+      if (!token) {
+        setError("Authentication required");
+        return;
+      }
 
       const [userLists, personListIds] = await Promise.all([
         fetchLists(token),
@@ -56,8 +61,9 @@ export default function ListModal({
 
       setLists(userLists);
       setSelectedLists(personListIds);
-    } catch (error) {
-      console.error("Load lists error:", error);
+    } catch (error: any) {
+      console.error("❌ Load lists error:", error);
+      setError(error.message || "Failed to load lists");
     } finally {
       setIsLoading(false);
     }
@@ -65,9 +71,13 @@ export default function ListModal({
 
   const toggleList = async (listId: string) => {
     setIsUpdating(true);
+    setError(null);
     try {
       const token = await getToken();
-      if (!token) return;
+      if (!token) {
+        setError("Authentication required");
+        return;
+      }
 
       const isSelected = selectedLists.includes(listId);
 
@@ -78,8 +88,11 @@ export default function ListModal({
         await addToList(token, listId, personId);
         setSelectedLists((prev) => [...prev, listId]);
       }
-    } catch (error) {
-      console.error("Toggle list error:", error);
+    } catch (error: any) {
+      console.error("❌ Toggle list error:", error);
+      setError(error.message || "Failed to update list");
+      // Revert optimistic update on error
+      await loadData();
     } finally {
       setIsUpdating(false);
     }
@@ -106,7 +119,16 @@ export default function ListModal({
           </View>
 
           {/* Content */}
-          {isLoading ? (
+          {error ? (
+            <View style={styles.emptyContainer}>
+              <Ionicons name="alert-circle-outline" size={60} color="#ef4444" />
+              <Text style={styles.emptyTitle}>Error Loading Lists</Text>
+              <Text style={styles.emptySubtitle}>{error}</Text>
+              <Pressable onPress={loadData} style={styles.retryButton}>
+                <Text style={styles.retryButtonText}>Retry</Text>
+              </Pressable>
+            </View>
+          ) : isLoading ? (
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color="#1a365d" />
               <Text style={styles.loadingText}>Loading lists...</Text>
@@ -303,6 +325,18 @@ const styles = StyleSheet.create({
   },
   doneButtonText: {
     fontSize: 16,
+    fontWeight: "600",
+    color: "white",
+  },
+  retryButton: {
+    marginTop: 16,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+    backgroundColor: "#1a365d",
+  },
+  retryButtonText: {
+    fontSize: 14,
     fontWeight: "600",
     color: "white",
   },

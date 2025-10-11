@@ -334,6 +334,10 @@ export interface ListsResponse {
  */
 export async function fetchLists(token: string): Promise<List[]> {
   try {
+    if (__DEV__) {
+      console.log("📋 Fetching lists...");
+    }
+
     const response = await fetch(`${LISTS_BASE_URL}?product=people`, {
       method: "GET",
       headers: {
@@ -342,15 +346,27 @@ export async function fetchLists(token: string): Promise<List[]> {
       },
     });
 
+    if (__DEV__) {
+      console.log(`📋 Lists response status: ${response.status}`);
+    }
+
     if (!response.ok) {
       const errorText = await response.text();
+      if (__DEV__) {
+        console.error(`❌ Lists API Error ${response.status}:`, errorText);
+      }
       throw new Error(`API Error ${response.status}: ${errorText}`);
     }
 
     const data = await response.json();
+    
+    if (__DEV__) {
+      console.log(`✅ Fetched ${data.lists?.length || 0} lists:`, data);
+    }
+
     return data.lists || [];
   } catch (error: any) {
-    console.error("fetchLists error:", error);
+    console.error("❌ fetchLists error:", error);
     throw new Error(error.message || "Failed to fetch lists.");
   }
 }
@@ -364,6 +380,10 @@ export async function addToList(
   personId: string
 ): Promise<void> {
   try {
+    if (__DEV__) {
+      console.log(`➕ Adding person ${personId} to list ${listId}`);
+    }
+
     const response = await fetch(`${LISTS_BASE_URL}/people/${listId}/add`, {
       method: "POST",
       headers: {
@@ -373,12 +393,23 @@ export async function addToList(
       body: JSON.stringify({ entity_id: personId }),
     });
 
+    if (__DEV__) {
+      console.log(`➕ Add to list response status: ${response.status}`);
+    }
+
     if (!response.ok) {
       const errorText = await response.text();
+      if (__DEV__) {
+        console.error(`❌ Add to list API Error ${response.status}:`, errorText);
+      }
       throw new Error(`API Error ${response.status}: ${errorText}`);
     }
+
+    if (__DEV__) {
+      console.log("✅ Successfully added to list");
+    }
   } catch (error: any) {
-    console.error("addToList error:", error);
+    console.error("❌ addToList error:", error);
     throw new Error(error.message || "Failed to add to list.");
   }
 }
@@ -392,6 +423,10 @@ export async function removeFromList(
   personId: string
 ): Promise<void> {
   try {
+    if (__DEV__) {
+      console.log(`➖ Removing person ${personId} from list ${listId}`);
+    }
+
     const response = await fetch(`${LISTS_BASE_URL}/people/${listId}/remove`, {
       method: "POST",
       headers: {
@@ -401,12 +436,23 @@ export async function removeFromList(
       body: JSON.stringify({ entity_id: personId }),
     });
 
+    if (__DEV__) {
+      console.log(`➖ Remove from list response status: ${response.status}`);
+    }
+
     if (!response.ok) {
       const errorText = await response.text();
+      if (__DEV__) {
+        console.error(`❌ Remove from list API Error ${response.status}:`, errorText);
+      }
       throw new Error(`API Error ${response.status}: ${errorText}`);
     }
+
+    if (__DEV__) {
+      console.log("✅ Successfully removed from list");
+    }
   } catch (error: any) {
-    console.error("removeFromList error:", error);
+    console.error("❌ removeFromList error:", error);
     throw new Error(error.message || "Failed to remove from list.");
   }
 }
@@ -419,6 +465,10 @@ export async function getPersonLists(
   personId: string
 ): Promise<string[]> {
   try {
+    if (__DEV__) {
+      console.log(`🔍 Checking lists for person ${personId}`);
+    }
+
     const response = await fetch(
       `${LISTS_BASE_URL}/people/added-to-list/${personId}`,
       {
@@ -430,15 +480,28 @@ export async function getPersonLists(
       }
     );
 
+    if (__DEV__) {
+      console.log(`🔍 Get person lists response status: ${response.status}`);
+    }
+
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`API Error ${response.status}: ${errorText}`);
+      if (__DEV__) {
+        console.error(`❌ Get person lists API Error ${response.status}:`, errorText);
+      }
+      // Return empty array instead of throwing for this endpoint
+      return [];
     }
 
     const data = await response.json();
+    
+    if (__DEV__) {
+      console.log(`✅ Person is in ${data.list_ids?.length || 0} lists:`, data);
+    }
+
     return data.list_ids || [];
   } catch (error: any) {
-    console.error("getPersonLists error:", error);
+    console.error("❌ getPersonLists error:", error);
     return []; // Return empty array on error
   }
 }

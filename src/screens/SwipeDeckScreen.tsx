@@ -67,19 +67,25 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
   const [filters, setFilters] = useState<FilterOptions>({});
   const [listModalVisible, setListModalVisible] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
+  const [seenPersonIds, setSeenPersonIds] = useState<Set<string>>(new Set());
+  const [hasMore, setHasMore] = useState(true);
 
-  const LIMIT = 10;
+  const LIMIT = 50; // Changed from 10 to 50 for proper batch loading
 
   useEffect(() => {
     loadPeople(0, true); // Replace on initial load
   }, []);
 
   useEffect(() => {
-    // Load more when we're 3 cards away from the end
-    if (cards.length > 0 && currentIndex >= cards.length - 3 && !isLoadingMore) {
+    // Load more when we reach halfway through the current batch
+    const halfwayPoint = Math.floor(cards.length / 2);
+    if (cards.length > 0 && currentIndex >= halfwayPoint && !isLoadingMore && hasMore) {
+      if (__DEV__) {
+        console.log(`📊 Pagination trigger: currentIndex=${currentIndex}, halfwayPoint=${halfwayPoint}, cards.length=${cards.length}`);
+      }
       loadMorePeople();
     }
-  }, [currentIndex, cards.length]);
+  }, [currentIndex]);
 
   const loadPeople = async (newOffset: number, replace: boolean = false) => {
     setIsLoading(true);
@@ -109,37 +115,58 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
         apiFilters.has_github = true;
       }
 
+      if (__DEV__) {
+        console.log("🔍 Fetching people:", { offset: newOffset, limit: LIMIT, filters: apiFilters });
+      }
+
       const response = await fetchPeople(token, {
         limit: LIMIT,
         offset: newOffset,
         filters: Object.keys(apiFilters).length > 0 ? apiFilters : undefined,
       });
 
+      if (__DEV__) {
+        console.log(`✅ Fetched ${response.items.length} people`);
+      }
+
+      // Filter out duplicates
+      const newCards = response.items.filter(p => !seenPersonIds.has(p.id));
+      const newIds = new Set([...seenPersonIds, ...newCards.map(p => p.id)]);
+
+      if (__DEV__) {
+        console.log(`🔄 After deduplication: ${newCards.length} new people (filtered ${response.items.length - newCards.length} duplicates)`);
+      }
+
       if (replace) {
         // Only replace when explicitly told (initial load or filter change)
-        setCards(response.items);
+        setCards(newCards);
         setCurrentIndex(0);
+        setSeenPersonIds(new Set(newCards.map(p => p.id)));
       } else {
         // Append for pagination
-        setCards((prev) => [...prev, ...response.items]);
+        setCards((prev) => [...prev, ...newCards]);
+        setSeenPersonIds(newIds);
       }
       setOffset(newOffset);
+      setHasMore(response.items.length >= LIMIT);
     } catch (err: any) {
       setError(err.message || "Failed to load people");
-      console.error("Load people error:", err);
+      console.error("❌ Load people error:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
   const loadMorePeople = async () => {
-    if (isLoadingMore) return;
+    if (isLoadingMore || !hasMore) return;
     
     setIsLoadingMore(true);
 
     try {
       const token = await getToken();
       if (!token) return;
+
+      const nextOffset = offset + LIMIT;
 
       // Convert FilterOptions to API filter format
       const apiFilters: any = {};
@@ -159,16 +186,30 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
         apiFilters.has_github = true;
       }
 
+      if (__DEV__) {
+        console.log("📥 Loading more people:", { offset: nextOffset, limit: LIMIT });
+      }
+
       const response = await fetchPeople(token, {
         limit: LIMIT,
-        offset: offset + LIMIT,
+        offset: nextOffset,
         filters: Object.keys(apiFilters).length > 0 ? apiFilters : undefined,
       });
 
-      setCards((prev) => [...prev, ...response.items]);
-      setOffset(offset + LIMIT);
+      // Filter out duplicates
+      const newCards = response.items.filter(p => !seenPersonIds.has(p.id));
+      const newIds = new Set([...seenPersonIds, ...newCards.map(p => p.id)]);
+
+      if (__DEV__) {
+        console.log(`✅ Loaded ${newCards.length} more people (filtered ${response.items.length - newCards.length} duplicates)`);
+      }
+
+      setCards((prev) => [...prev, ...newCards]);
+      setSeenPersonIds(newIds);
+      setOffset(nextOffset);
+      setHasMore(response.items.length >= LIMIT);
     } catch (err: any) {
-      console.error("Load more error:", err);
+      console.error("❌ Load more error:", err);
     } finally {
       setIsLoadingMore(false);
     }
@@ -224,6 +265,10 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
 
   const handleApplyFilters = (newFilters: FilterOptions) => {
     setFilters(newFilters);
+    // Reset pagination state when filters change
+    setSeenPersonIds(new Set());
+    setHasMore(true);
+    setOffset(0);
     // Reload with new filters, replace array
     loadPeople(0, true);
   };
@@ -561,7 +606,7 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onViewProfile, onA
               <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Current Experience</Text>
                 <Text style={styles.sectionContent}>
-                  {currentJob.title} @ {currentJob.company_name}
+                  {currentJob.company_name}
                 </Text>
               </View>
             )}
@@ -598,45 +643,38 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onViewProfile, onA
               )}
             </View>
 
-            {/* Socials and Actions section */}
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Actions</Text>
-              <View style={styles.socialsRow}>
-                {person.linkedin_url && (
-                  <Pressable
-                    style={styles.socialIconButton}
-                    onPress={() => Linking.openURL(person.linkedin_url!)}
-                  >
-                    <Ionicons name="logo-linkedin" size={20} color="#0077b5" />
-                  </Pressable>
-                )}
-                {person.twitter_url && (
-                  <Pressable
-                    style={styles.socialIconButton}
-                    onPress={() => Linking.openURL(person.twitter_url!)}
-                  >
-                    <Ionicons name="logo-twitter" size={20} color="#1da1f2" />
-                  </Pressable>
-                )}
-                {person.github_url && (
-                  <Pressable
-                    style={styles.socialIconButton}
-                    onPress={() => Linking.openURL(person.github_url!)}
-                  >
-                    <Ionicons name="logo-github" size={20} color="#333333" />
-                  </Pressable>
-                )}
-                <Pressable
-                  style={styles.addToListButton}
-                  onPress={() => {
-                    onAddToList();
-                  }}
-                >
-                  <Ionicons name="add" size={20} color="#1a365d" />
-                  <Text style={styles.addToListText}>Add to List</Text>
-                </Pressable>
+            {/* Socials section */}
+            {(person.linkedin_url || person.twitter_url || person.github_url) && (
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Socials</Text>
+                <View style={styles.socialsRow}>
+                  {person.linkedin_url && (
+                    <Pressable
+                      style={styles.socialIconButton}
+                      onPress={() => Linking.openURL(person.linkedin_url!)}
+                    >
+                      <Ionicons name="logo-linkedin" size={20} color="#0077b5" />
+                    </Pressable>
+                  )}
+                  {person.twitter_url && (
+                    <Pressable
+                      style={styles.socialIconButton}
+                      onPress={() => Linking.openURL(person.twitter_url!)}
+                    >
+                      <Ionicons name="logo-twitter" size={20} color="#1da1f2" />
+                    </Pressable>
+                  )}
+                  {person.github_url && (
+                    <Pressable
+                      style={styles.socialIconButton}
+                      onPress={() => Linking.openURL(person.github_url!)}
+                    >
+                      <Ionicons name="logo-github" size={20} color="#333333" />
+                    </Pressable>
+                  )}
+                </View>
               </View>
-            </View>
+            )}
 
             {/* Highlights */}
             {person.people_highlights && person.people_highlights.length > 0 && (
@@ -771,6 +809,8 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
+    borderWidth: 3,
+    borderColor: "#f3f4f6",
   },
   circularPhotoPlaceholder: {
     backgroundColor: "#1a365d",
@@ -783,15 +823,15 @@ const styles = StyleSheet.create({
     color: "white",
   },
   cardName: {
-    fontSize: 24,
-    fontWeight: "600",
+    fontSize: 22,
+    fontWeight: "700",
     color: "#1a365d",
-    marginBottom: 8,
+    marginBottom: 6,
     textAlign: "center",
   },
   statusBadge: {
     paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingVertical: 8,
     borderRadius: 12,
     marginBottom: 16,
   },
@@ -807,13 +847,13 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 12,
     fontWeight: "600",
-    color: "#64748b",
+    color: "#6B7280",
     marginBottom: 4,
     textTransform: "uppercase",
   },
   sectionContent: {
     fontSize: 15,
-    color: "#1a365d",
+    color: "#1F2937",
     lineHeight: 20,
   },
   twoColumnSection: {
