@@ -14,8 +14,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
-import { signUp } from "../api/clerk";
-import useAuthStore from "../state/authStore";
+import { useSignUp } from "@clerk/clerk-expo";
 
 type AuthStackParamList = {
   Welcome: undefined;
@@ -29,6 +28,8 @@ type SignUpScreenProps = {
 
 export default function SignUpScreen({ navigation }: SignUpScreenProps) {
   const insets = useSafeAreaInsets();
+  const { signUp, setActive, isLoaded } = useSignUp();
+  
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -36,10 +37,12 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
-  const { setUser, setToken, setIsAuthenticated } = useAuthStore();
+  const [pendingVerification, setPendingVerification] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
 
   const handleSignUp = async () => {
+    if (!isLoaded) return;
+
     if (!email.trim() || !password.trim()) {
       setErrorMessage("Please enter both email and password");
       return;
@@ -55,27 +58,142 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
     setErrorMessage("");
 
     try {
-      const result = await signUp({
-        email: email.trim(),
+      await signUp.create({
+        emailAddress: email.trim(),
         password,
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
+        firstName: firstName.trim() || undefined,
+        lastName: lastName.trim() || undefined,
       });
 
-      if (result.success && result.token && result.user) {
-        await setToken(result.token);
-        setUser(result.user);
-        setIsAuthenticated(true);
-        // Navigation handled by App.tsx auth state
-      } else {
-        setErrorMessage(result.error || "Failed to create account. Please try again.");
-      }
+      // Send email verification code
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+
+      setPendingVerification(true);
     } catch (error: any) {
-      setErrorMessage(error.message || "An unexpected error occurred. Please try again.");
+      const errorMsg =
+        error.errors?.[0]?.longMessage ||
+        error.errors?.[0]?.message ||
+        error.message ||
+        "Failed to create account. Please try again.";
+      setErrorMessage(errorMsg);
+      console.error("Sign up error:", error);
     } finally {
       setIsLoading(false);
     }
   };
+
+  const handleVerifyCode = async () => {
+    if (!isLoaded) return;
+
+    if (!verificationCode.trim()) {
+      setErrorMessage("Please enter the verification code");
+      return;
+    }
+
+    Keyboard.dismiss();
+    setIsLoading(true);
+    setErrorMessage("");
+
+    try {
+      const signUpAttempt = await signUp.attemptEmailAddressVerification({
+        code: verificationCode.trim(),
+      });
+
+      if (signUpAttempt.status === "complete") {
+        await setActive({ session: signUpAttempt.createdSessionId });
+        // Navigation handled by App.tsx auth state
+      } else {
+        setErrorMessage("Verification incomplete. Please check the code and try again.");
+        console.error("Verification incomplete:", JSON.stringify(signUpAttempt, null, 2));
+      }
+    } catch (error: any) {
+      const errorMsg =
+        error.errors?.[0]?.longMessage ||
+        error.errors?.[0]?.message ||
+        error.message ||
+        "Invalid verification code. Please try again.";
+      setErrorMessage(errorMsg);
+      console.error("Verification error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (pendingVerification) {
+    return (
+      <View style={[styles.container, { paddingTop: insets.top }]}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.keyboardView}
+        >
+          <ScrollView
+            contentContainerStyle={styles.scrollContent}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            {/* Header */}
+            <View style={styles.header}>
+              <Pressable
+                onPress={() => setPendingVerification(false)}
+                style={styles.backButton}
+              >
+                <Ionicons name="arrow-back" size={24} color="#1a365d" />
+              </Pressable>
+
+              <Text style={styles.title}>Verify your email</Text>
+              <Text style={styles.subtitle}>
+                We sent a verification code to {email}
+              </Text>
+            </View>
+
+            {/* Verification Form */}
+            <View style={styles.form}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Verification Code</Text>
+                <TextInput
+                  value={verificationCode}
+                  onChangeText={(text) => {
+                    setVerificationCode(text);
+                    setErrorMessage("");
+                  }}
+                  placeholder="Enter 6-digit code"
+                  placeholderTextColor="#94a3b8"
+                  keyboardType="number-pad"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  maxLength={6}
+                  returnKeyType="go"
+                  onSubmitEditing={handleVerifyCode}
+                  style={styles.input}
+                />
+              </View>
+
+              {errorMessage ? (
+                <View style={styles.errorContainer}>
+                  <Text style={styles.errorText}>{errorMessage}</Text>
+                </View>
+              ) : null}
+
+              <Pressable
+                onPress={handleVerifyCode}
+                disabled={isLoading || !isLoaded}
+                style={({ pressed }) => [
+                  styles.signUpButton,
+                  (pressed || isLoading || !isLoaded) && styles.buttonPressed,
+                ]}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color="white" />
+                ) : (
+                  <Text style={styles.signUpButtonText}>Verify Email</Text>
+                )}
+              </Pressable>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -190,10 +308,10 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
             {/* Sign Up Button */}
             <Pressable
               onPress={handleSignUp}
-              disabled={isLoading}
+              disabled={isLoading || !isLoaded}
               style={({ pressed }) => [
                 styles.signUpButton,
-                (pressed || isLoading) && styles.buttonPressed,
+                (pressed || isLoading || !isLoaded) && styles.buttonPressed,
               ]}
             >
               {isLoading ? (

@@ -3,10 +3,11 @@ import { View, Text, ScrollView, Pressable, StyleSheet, Alert } from "react-nati
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
-import useAuthStore from "../state/authStore";
+import { useUser, useClerk } from "@clerk/clerk-expo";
 
 type MainStackParamList = {
   PeopleList: undefined;
+  PersonDetail: { personId: string };
   Settings: undefined;
 };
 
@@ -17,7 +18,8 @@ type SettingsScreenProps = {
 export default function SettingsScreen({ navigation }: SettingsScreenProps) {
   const insets = useSafeAreaInsets();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const { user, logout } = useAuthStore();
+  const { user } = useUser();
+  const { signOut } = useClerk();
 
   const handleLogout = () => {
     Alert.alert(
@@ -34,7 +36,7 @@ export default function SettingsScreen({ navigation }: SettingsScreenProps) {
           onPress: async () => {
             setIsLoggingOut(true);
             try {
-              await logout();
+              await signOut();
               // Navigation handled by App.tsx auth state
             } catch (error) {
               console.error("Logout error:", error);
@@ -80,7 +82,7 @@ export default function SettingsScreen({ navigation }: SettingsScreenProps) {
                 style={styles.avatar}
               >
                 <Text className="text-xl font-semibold text-white">
-                  {user?.firstName?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "U"}
+                  {user?.firstName?.[0]?.toUpperCase() || user?.emailAddresses?.[0]?.emailAddress?.[0]?.toUpperCase() || "U"}
                 </Text>
               </View>
               <View className="flex-1">
@@ -90,7 +92,7 @@ export default function SettingsScreen({ navigation }: SettingsScreenProps) {
                     : user?.firstName || "User"}
                 </Text>
                 <Text className="text-sm" style={styles.userEmail}>
-                  {user?.email || "user@example.com"}
+                  {user?.emailAddresses?.[0]?.emailAddress || "user@example.com"}
                 </Text>
               </View>
             </View>

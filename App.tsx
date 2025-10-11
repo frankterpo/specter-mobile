@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import useAuthStore from "./src/state/authStore";
+import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
+import * as SecureStore from "expo-secure-store";
 import AuthNavigator from "./src/navigation/AuthNavigator";
 import MainNavigator from "./src/navigation/MainNavigator";
 
@@ -29,35 +30,64 @@ const openai_api_key = Constants.expoConfig.extra.apikey;
 
 */
 
-export default function App() {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const isLoading = useAuthStore((state) => state.isLoading);
-  const initialize = useAuthStore((state) => state.initialize);
+const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
-  useEffect(() => {
-    initialize();
-  }, []);
+// Token cache implementation using expo-secure-store
+const tokenCache = {
+  async getToken(key: string) {
+    try {
+      return await SecureStore.getItemAsync(key);
+    } catch (error) {
+      console.error("SecureStore getToken error:", error);
+      return null;
+    }
+  },
+  async saveToken(key: string, value: string) {
+    try {
+      return await SecureStore.setItemAsync(key, value);
+    } catch (error) {
+      console.error("SecureStore saveToken error:", error);
+    }
+  },
+  async clearToken(key: string) {
+    try {
+      return await SecureStore.deleteItemAsync(key);
+    } catch (error) {
+      console.error("SecureStore clearToken error:", error);
+    }
+  },
+};
 
-  if (isLoading) {
+function RootNavigator() {
+  const { isSignedIn, isLoaded } = useAuth();
+
+  if (!isLoaded) {
     return (
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <SafeAreaProvider>
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#1a365d" />
-          </View>
-          <StatusBar style="dark" />
-        </SafeAreaProvider>
-      </GestureHandlerRootView>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#1a365d" />
+      </View>
     );
+  }
+
+  return (
+    <NavigationContainer>
+      {isSignedIn ? <MainNavigator /> : <AuthNavigator />}
+      <StatusBar style="dark" />
+    </NavigationContainer>
+  );
+}
+
+export default function App() {
+  if (!CLERK_PUBLISHABLE_KEY) {
+    throw new Error("Missing Clerk Publishable Key. Please add EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY to your .env file");
   }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <NavigationContainer>
-          {isAuthenticated ? <MainNavigator /> : <AuthNavigator />}
-          <StatusBar style="dark" />
-        </NavigationContainer>
+        <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
+          <RootNavigator />
+        </ClerkProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

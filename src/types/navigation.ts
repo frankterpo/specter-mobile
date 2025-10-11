@@ -8,5 +8,6 @@ export type AuthStackParamList = {
 
 export type MainStackParamList = {
   PeopleList: undefined;
+  PersonDetail: { personId: string };
   Settings: undefined;
 };

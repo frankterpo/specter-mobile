@@ -14,8 +14,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
-import { signIn } from "../api/clerk";
-import useAuthStore from "../state/authStore";
+import { useSignIn } from "@clerk/clerk-expo";
 
 type AuthStackParamList = {
   Welcome: undefined;
@@ -29,15 +28,17 @@ type SignInScreenProps = {
 
 export default function SignInScreen({ navigation }: SignInScreenProps) {
   const insets = useSafeAreaInsets();
+  const { signIn, setActive, isLoaded } = useSignIn();
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { setUser, setToken, setIsAuthenticated } = useAuthStore();
-
   const handleSignIn = async () => {
+    if (!isLoaded) return;
+
     if (!email.trim() || !password.trim()) {
       setErrorMessage("Please enter both email and password");
       return;
@@ -48,23 +49,26 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
     setErrorMessage("");
 
     try {
-      const result = await signIn({ email: email.trim(), password });
+      const signInAttempt = await signIn.create({
+        identifier: email.trim(),
+        password,
+      });
 
-      if (result.success && result.token && result.user) {
-        await setToken(result.token);
-        setUser(result.user);
-        setIsAuthenticated(true);
+      if (signInAttempt.status === "complete") {
+        await setActive({ session: signInAttempt.createdSessionId });
         // Navigation handled by App.tsx auth state
       } else {
-        // Display detailed error for debugging
-        const errorMsg = result.error || "Failed to sign in. Please try again.";
-        setErrorMessage(errorMsg);
-        console.log("Sign in failed:", errorMsg);
+        setErrorMessage("Sign in incomplete. Please check your credentials.");
+        console.error("Sign in incomplete:", JSON.stringify(signInAttempt, null, 2));
       }
     } catch (error: any) {
-      const errorMsg = error.message || "An unexpected error occurred. Please try again.";
+      const errorMsg =
+        error.errors?.[0]?.longMessage ||
+        error.errors?.[0]?.message ||
+        error.message ||
+        "Failed to sign in. Please check your credentials.";
       setErrorMessage(errorMsg);
-      console.error("Sign in exception:", error);
+      console.error("Sign in error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -147,10 +151,10 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
             {/* Sign In Button */}
             <Pressable
               onPress={handleSignIn}
-              disabled={isLoading}
+              disabled={isLoading || !isLoaded}
               style={({ pressed }) => [
                 styles.signInButton,
-                (pressed || isLoading) && styles.buttonPressed,
+                (pressed || isLoading || !isLoaded) && styles.buttonPressed,
               ]}
             >
               {isLoading ? (
