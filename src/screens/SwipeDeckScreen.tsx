@@ -164,6 +164,12 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
         console.log(`✅ Fetched ${response.items.length} people`);
       }
 
+      // Safety: ensure response.items is an array
+      if (!Array.isArray(response.items)) {
+        console.error("Invalid response: items is not an array", response);
+        throw new Error("Invalid server response");
+      }
+
       // Save queryId if returned for pagination
       if (response.query_id && replace) {
         setCurrentQueryId(response.query_id);
@@ -172,8 +178,8 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
         }
       }
 
-      // Filter out duplicates
-      const newCards = response.items.filter(p => !seenPersonIds.has(p.id));
+      // Filter out duplicates and invalid entries
+      const newCards = response.items.filter(p => p && p.id && !seenPersonIds.has(p.id));
       const newIds = new Set([...seenPersonIds, ...newCards.map(p => p.id)]);
 
       if (__DEV__) {
@@ -203,7 +209,11 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
       }
       console.error("❌ Load people error:", err);
       if (__DEV__) {
-        console.error("Full error details:", JSON.stringify(err, null, 2));
+        console.error("Full error details:", {
+          message: err?.message || "Unknown error",
+          status: err?.status,
+          stack: err?.stack,
+        });
       }
     } finally {
       setIsLoading(false);
@@ -672,24 +682,30 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
       <View style={styles.cardContainer}>
         {cards
           .slice(currentIndex, currentIndex + 3)
+          .filter(person => person && person.id) // Safety: filter out invalid entries
           .reverse()
           .map((person, index) => {
             const reverseIndex = 2 - index;
             const isTop = reverseIndex === 0;
             
-            return (
-              <SwipeCard
-                key={person.id}
-                person={person}
-                index={reverseIndex}
-                isTop={isTop}
-                onLike={() => handleLike(person)}
-                onDislike={() => handleDislike(person)}
-                onPass={() => handlePass(person)}
-                onViewProfile={() => handleViewProfile(person)}
-                onAddToList={() => handleAddToList(person)}
-              />
-            );
+            try {
+              return (
+                <SwipeCard
+                  key={person.id}
+                  person={person}
+                  index={reverseIndex}
+                  isTop={isTop}
+                  onLike={() => handleLike(person)}
+                  onDislike={() => handleDislike(person)}
+                  onPass={() => handlePass(person)}
+                  onViewProfile={() => handleViewProfile(person)}
+                  onAddToList={() => handleAddToList(person)}
+                />
+              );
+            } catch (err) {
+              console.error("Card render error for person:", person.id, err);
+              return null;
+            }
           })}
       </View>
 
@@ -734,7 +750,13 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onPass, onViewProf
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
 
-  const currentJob = getCurrentJob(person.experience);
+  // Safety: ensure person has required data
+  if (!person || !person.id) {
+    console.warn("Invalid person data in SwipeCard");
+    return null;
+  }
+
+  const currentJob = getCurrentJob(person.experience || []);
   const fullName = person.full_name || getFullName(person);
   const initials = getInitials(person);
 
@@ -965,16 +987,16 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onPass, onViewProf
 
             {/* Followers & Connections section */}
             <View style={styles.twoColumnSection}>
-              {person.followers_count !== undefined && (
+              {(person.followers_count !== undefined && person.followers_count !== null) && (
                 <View style={styles.columnItem}>
                   <Text style={styles.sectionTitle}>Followers</Text>
-                  <Text style={styles.sectionContent}>{person.followers_count.toLocaleString()}</Text>
+                  <Text style={styles.sectionContent}>{Number(person.followers_count).toLocaleString()}</Text>
                 </View>
               )}
-              {person.connections_count !== undefined && (
+              {(person.connections_count !== undefined && person.connections_count !== null) && (
                 <View style={styles.columnItem}>
                   <Text style={styles.sectionTitle}>Connections</Text>
-                  <Text style={styles.sectionContent}>{person.connections_count.toLocaleString()}</Text>
+                  <Text style={styles.sectionContent}>{Number(person.connections_count).toLocaleString()}</Text>
                 </View>
               )}
             </View>
