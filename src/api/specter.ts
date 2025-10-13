@@ -396,13 +396,16 @@ export async function fetchPeople(
     }
 
     // Make API call with timeout
+    // Note: Railway API requires Clerk token in Authorization header
     const fetchPromise = fetch(`${API_BASE_URL}/private/people`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify(body),
+      mode: "cors", // Explicitly request CORS
+      credentials: "omit", // Don't send cookies
     });
 
     const response = await withTimeout(
@@ -411,6 +414,9 @@ export async function fetchPeople(
       "API request timed out"
     );
 
+    console.log("🚨 API RESPONSE STATUS:", response.status);
+    console.log("🚨 API RESPONSE OK?:", response.ok);
+
     // Handle auth errors immediately
     if (response.status === 401 || response.status === 403) {
       throw new AuthError("Authentication expired. Please sign in again.");
@@ -418,10 +424,18 @@ export async function fetchPeople(
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.log("🚨 API ERROR TEXT:", errorText);
       throw new Error(`API Error ${response.status}: ${errorText}`);
     }
 
     const data = await response.json();
+    console.log("🚨 API DATA RECEIVED:", {
+      hasItems: !!data.items,
+      itemsCount: data.items?.length,
+      hasTotal: !!data.total,
+      hasMore: !!data.has_more,
+      dataKeys: Object.keys(data || {}),
+    });
 
     if (__DEV__) {
       console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");

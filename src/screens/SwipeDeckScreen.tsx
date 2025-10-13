@@ -80,7 +80,15 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
 
   const LIMIT = 50; // Changed from 10 to 50 for proper batch loading
 
+  // Emergency logging for troubleshooting
   useEffect(() => {
+    console.log("🚨 SwipeDeckScreen MOUNTED");
+    logger.info('MOUNT', 'SwipeDeckScreen mounted, starting initial load');
+  }, []);
+
+  useEffect(() => {
+    console.log("🚨 INITIAL LOAD TRIGGERED");
+    logger.info('INIT', 'Calling loadPeople with offset=0, replace=true');
     loadPeople(0, true); // Replace on initial load
   }, []);
 
@@ -122,6 +130,7 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
   }, [currentIndex]);
 
   const loadPeople = async (newOffset: number, replace: boolean = false) => {
+    console.log("🚨 loadPeople CALLED", { newOffset, replace });
     setIsLoading(true);
     setError(null);
 
@@ -132,6 +141,7 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
     });
 
     try {
+      console.log("🚨 Inside try block, about to get token");
       if (__DEV__) {
         console.log("🔄 loadPeople START:", { 
           offset: newOffset, 
@@ -152,10 +162,12 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
       ]);
 
       if (!token) {
+        console.log("🚨 NO TOKEN - throwing auth error");
         logger.error('AUTH', 'No token received');
         throw new AuthError("Authentication required. Please sign in.");
       }
 
+      console.log("🚨 TOKEN OBTAINED:", token.substring(0, 20) + "...");
       logger.info('AUTH', 'Token obtained');
 
       if (__DEV__) {
@@ -164,6 +176,7 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
 
       // Use direct POST endpoint (without queryId)
       // The backend should accept filters directly in the request body
+      console.log("🚨 CALLING fetchPeople API...", { limit: LIMIT, offset: newOffset });
       logger.debug('API', `Calling fetchPeople`, {
         limit: LIMIT,
         offset: newOffset,
@@ -177,6 +190,11 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
         statusFilters,
       });
 
+      console.log("🚨 API RESPONSE RECEIVED:", { 
+        itemsCount: response.items?.length, 
+        hasMore: response.has_more,
+        firstPerson: response.items?.[0]?.full_name 
+      });
       logger.info('API', `Received ${response.items?.length || 0} people`, {
         hasMore: response.has_more,
         queryId: response.query_id,
@@ -211,16 +229,19 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
 
       if (replace) {
         // Only replace when explicitly told (initial load or filter change)
+        console.log("🚨 REPLACING cards:", newCards.length);
         setCards(newCards);
         setCurrentIndex(0);
         setSeenPersonIds(new Set(newCards.map(p => p.id)));
       } else {
         // Append for pagination
+        console.log("🚨 APPENDING cards:", newCards.length);
         setCards((prev) => [...prev, ...newCards]);
         setSeenPersonIds(newIds);
       }
       setOffset(newOffset);
       setHasMore(response.items.length >= LIMIT);
+      console.log("🚨 STATE UPDATED - cards.length will be:", newCards.length);
     } catch (err: any) {
       logger.error('LOAD_PEOPLE', 'Failed to load people', {
         message: err?.message,
