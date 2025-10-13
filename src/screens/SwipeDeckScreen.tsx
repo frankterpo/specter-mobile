@@ -7,6 +7,7 @@ import {
   Pressable,
   ActivityIndicator,
   Linking,
+  ScrollView,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -27,16 +28,20 @@ import FilterModal, { FilterOptions } from "../components/FilterModal";
 import ListModal from "../components/ListModal";
 import {
   fetchPeople,
+  createQuery,
   likePerson,
   dislikePerson,
   markAsViewed,
+  fetchTeamStatus,
   Person,
+  StatusFilters,
   getCurrentJob,
   getFullName,
   getInitials,
   formatHighlight,
   getHighlightColor,
   formatRelativeTime,
+  AuthError,
 } from "../api/specter";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -44,7 +49,7 @@ const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.4;
 const ROTATION_ANGLE = 15;
 
 type MainStackParamList = {
-  SwipeDeck: undefined;
+  SwipeDeck: { updatedPerson?: Person } | undefined;
   PersonDetail: { personId: string };
   Settings: undefined;
 };
@@ -53,7 +58,7 @@ type SwipeDeckScreenProps = {
   navigation: NativeStackNavigationProp<MainStackParamList, "SwipeDeck">;
 };
 
-export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
+export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenProps & { route: any }) {
   const insets = useSafeAreaInsets();
   const { getToken } = useAuth();
 
@@ -69,12 +74,40 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [seenPersonIds, setSeenPersonIds] = useState<Set<string>>(new Set());
   const [hasMore, setHasMore] = useState(true);
+  const [currentQueryId, setCurrentQueryId] = useState<string | null>(null);
+  const [statusFilters, setStatusFilters] = useState<StatusFilters>({});
 
   const LIMIT = 50; // Changed from 10 to 50 for proper batch loading
 
   useEffect(() => {
     loadPeople(0, true); // Replace on initial load
   }, []);
+
+  // Handle updated person coming back from PersonDetailScreen
+  useEffect(() => {
+    if (route.params?.updatedPerson) {
+      const updatedPerson = route.params.updatedPerson;
+      if (__DEV__) {
+        console.log("🔄 Received updated person from PersonDetail:", updatedPerson.id);
+        console.log("   Status:", updatedPerson.entity_status);
+      }
+      
+      // Update the person in our cards array
+      setCards(prevCards =>
+        prevCards.map(card =>
+          card.id === updatedPerson.id
+            ? {
+                ...card,
+                entity_status: updatedPerson.entity_status,
+              }
+            : card
+        )
+      );
+      
+      // Clear the param so it doesn't trigger again
+      navigation.setParams({ updatedPerson: undefined } as any);
+    }
+  }, [route.params?.updatedPerson]);
 
   useEffect(() => {
     // Load more when we reach halfway through the current batch
@@ -92,41 +125,51 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
     setError(null);
 
     try {
-      const token = await getToken();
-      if (!token) {
-        throw new Error("Authentication required");
+      if (__DEV__) {
+        console.log("🔄 loadPeople START:", { 
+          offset: newOffset, 
+          replace, 
+          hasFilters: Object.keys(filters).length > 0,
+          filters: filters 
+        });
       }
 
-      // Convert FilterOptions to API filter format
-      const apiFilters: any = {};
-      if (filters.seniority && filters.seniority.length > 0) {
-        apiFilters.seniority = filters.seniority;
-      }
-      if (filters.highlights && filters.highlights.length > 0) {
-        apiFilters.people_highlights = filters.highlights;
-      }
-      if (filters.hasLinkedIn) {
-        apiFilters.has_linkedin = true;
-      }
-      if (filters.hasTwitter) {
-        apiFilters.has_twitter = true;
-      }
-      if (filters.hasGitHub) {
-        apiFilters.has_github = true;
+      // Get token with timeout
+      const tokenPromise = getToken();
+      const token = await Promise.race([
+        tokenPromise,
+        new Promise<string | null>((_, reject) =>
+          setTimeout(() => reject(new Error("Auth timeout")), 3000)
+        ),
+      ]);
+
+      if (!token) {
+        throw new AuthError("Authentication required. Please sign in.");
       }
 
       if (__DEV__) {
-        console.log("🔍 Fetching people:", { offset: newOffset, limit: LIMIT, filters: apiFilters });
+        console.log("🔑 Token obtained, fetching people directly...");
       }
 
+      // Use direct POST endpoint (without queryId)
+      // The backend should accept filters directly in the request body
       const response = await fetchPeople(token, {
         limit: LIMIT,
         offset: newOffset,
-        filters: Object.keys(apiFilters).length > 0 ? apiFilters : undefined,
+        filters,
+        statusFilters,
       });
 
       if (__DEV__) {
         console.log(`✅ Fetched ${response.items.length} people`);
+      }
+
+      // Save queryId if returned for pagination
+      if (response.query_id && replace) {
+        setCurrentQueryId(response.query_id);
+        if (__DEV__) {
+          console.log(`📝 Saved queryId for pagination: ${response.query_id}`);
+        }
       }
 
       // Filter out duplicates
@@ -150,8 +193,18 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
       setOffset(newOffset);
       setHasMore(response.items.length >= LIMIT);
     } catch (err: any) {
-      setError(err.message || "Failed to load people");
+      if (err instanceof AuthError || err.message?.includes("Auth")) {
+        setError("Authentication expired. Please sign in again.");
+        if (__DEV__) {
+          console.error("🔐 Auth error - user needs to sign in");
+        }
+      } else {
+        setError(err.message || "Failed to load people");
+      }
       console.error("❌ Load people error:", err);
+      if (__DEV__) {
+        console.error("Full error details:", JSON.stringify(err, null, 2));
+      }
     } finally {
       setIsLoading(false);
     }
@@ -168,32 +221,15 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
 
       const nextOffset = offset + LIMIT;
 
-      // Convert FilterOptions to API filter format
-      const apiFilters: any = {};
-      if (filters.seniority && filters.seniority.length > 0) {
-        apiFilters.seniority = filters.seniority;
-      }
-      if (filters.highlights && filters.highlights.length > 0) {
-        apiFilters.people_highlights = filters.highlights;
-      }
-      if (filters.hasLinkedIn) {
-        apiFilters.has_linkedin = true;
-      }
-      if (filters.hasTwitter) {
-        apiFilters.has_twitter = true;
-      }
-      if (filters.hasGitHub) {
-        apiFilters.has_github = true;
-      }
-
       if (__DEV__) {
-        console.log("📥 Loading more people:", { offset: nextOffset, limit: LIMIT });
+        console.log("📥 Loading more people:", { offset: nextOffset, limit: LIMIT, hasQueryId: !!currentQueryId });
       }
 
+      // Try to use queryId if available, otherwise use filters
       const response = await fetchPeople(token, {
         limit: LIMIT,
         offset: nextOffset,
-        filters: Object.keys(apiFilters).length > 0 ? apiFilters : undefined,
+        ...(currentQueryId ? { queryId: currentQueryId } : { filters, statusFilters }),
       });
 
       // Filter out duplicates
@@ -210,6 +246,9 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
       setHasMore(response.items.length >= LIMIT);
     } catch (err: any) {
       console.error("❌ Load more error:", err);
+      if (err instanceof AuthError) {
+        setError("Authentication expired. Please sign in again.");
+      }
     } finally {
       setIsLoadingMore(false);
     }
@@ -218,43 +257,156 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
   const handleLike = async (person: Person) => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     
+    if (__DEV__) {
+      console.log("👍 Liking profile:", person.id);
+      console.log("   Previous status:", person.entity_status?.status || "none");
+    }
+
+    // Update local state FIRST - REPLACE status completely
+    const personId = person.id;
+    const currentIdx = currentIndex;
+    
+    setCards(prevCards => 
+      prevCards.map((card, idx) => {
+        if (idx === currentIdx && card.id === personId) {
+          if (__DEV__) {
+            console.log(`✅ Setting status to "liked" (REPLACES previous status)`);
+          }
+          return {
+            ...card,
+            entity_status: {
+              status: "liked",
+              updated_at: new Date().toISOString(),
+            },
+          };
+        }
+        return card;
+      })
+    );
+
+    // API call in background
     try {
       const token = await getToken();
       if (token) {
-        await likePerson(token, person.id);
+        await likePerson(token, personId);
+        if (__DEV__) {
+          console.log(`✅ API: Successfully liked ${personId} in database`);
+          console.log(`   Local state for this card now has: liked=true, viewed=${cards[currentIdx]?.entity_status?.viewed}`);
+        }
       }
     } catch (err) {
-      console.error("Like error:", err);
+      console.error("❌ Like API error:", err);
+      // Even if API fails, local state is updated so user sees the badge
     }
 
-    setCurrentIndex((prev) => prev + 1);
+    // Small delay to show the "liked" badge before moving to next card
+    setTimeout(() => {
+      setCurrentIndex((prev) => prev + 1);
+    }, 300);
   };
 
   const handleDislike = async (person: Person) => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     
+    if (__DEV__) {
+      console.log("👎 Disliking profile:", person.id);
+      console.log("   Previous status:", person.entity_status?.status || "none");
+    }
+
+    // Update local state FIRST - REPLACE status completely
+    const personId = person.id;
+    const currentIdx = currentIndex;
+    
+    setCards(prevCards => 
+      prevCards.map((card, idx) => {
+        if (idx === currentIdx && card.id === personId) {
+          if (__DEV__) {
+            console.log(`✅ Setting status to "disliked" (REPLACES previous status)`);
+          }
+          return {
+            ...card,
+            entity_status: {
+              status: "disliked",
+              updated_at: new Date().toISOString(),
+            },
+          };
+        }
+        return card;
+      })
+    );
+
+    // API call in background
     try {
       const token = await getToken();
       if (token) {
-        await dislikePerson(token, person.id);
+        await dislikePerson(token, personId);
+        if (__DEV__) {
+          console.log(`✅ API: Successfully disliked ${personId} in database`);
+          console.log(`   Local state for this card now has: disliked=true, viewed=${cards[currentIdx]?.entity_status?.viewed}`);
+        }
       }
     } catch (err) {
-      console.error("Dislike error:", err);
+      console.error("❌ Dislike API error:", err);
+      // Even if API fails, local state is updated so user sees the badge
     }
 
-    setCurrentIndex((prev) => prev + 1);
+    // Small delay to show the "disliked" badge before moving to next card
+    setTimeout(() => {
+      setCurrentIndex((prev) => prev + 1);
+    }, 300);
+  };
+
+  const handlePass = async (person: Person) => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    
+    if (__DEV__) {
+      console.log("⏭️  Passing/Skipping profile:", person.id);
+      console.log("   Previous status:", person.entity_status?.status || "none");
+    }
+
+    // Update local state FIRST - REPLACE status completely
+    const personId = person.id;
+    const currentIdx = currentIndex;
+    
+    setCards(prevCards => 
+      prevCards.map((card, idx) => {
+        if (idx === currentIdx && card.id === personId) {
+          if (__DEV__) {
+            console.log(`✅ Setting status to "viewed" (REPLACES previous status)`);
+          }
+          return {
+            ...card,
+            entity_status: {
+              status: "viewed",
+              updated_at: new Date().toISOString(),
+            },
+          };
+        }
+        return card;
+      })
+    );
+
+    // API call in background
+    try {
+      const token = await getToken();
+      if (token) {
+        await markAsViewed(token, personId);
+        if (__DEV__) {
+          console.log(`✅ API: Successfully marked ${personId} as viewed/passed in database`);
+        }
+      }
+    } catch (err) {
+      console.error("❌ Pass API error:", err);
+    }
+
+    // Small delay to show the "passed" badge before moving to next card
+    setTimeout(() => {
+      setCurrentIndex((prev) => prev + 1);
+    }, 300);
   };
 
   const handleViewProfile = async (person: Person) => {
-    try {
-      const token = await getToken();
-      if (token) {
-        await markAsViewed(token, person.id);
-      }
-    } catch (err) {
-      console.error("Mark viewed error:", err);
-    }
-
+    // Navigate to detail view (does NOT change status)
     navigation.navigate("PersonDetail", { personId: person.id });
   };
 
@@ -264,6 +416,13 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
   };
 
   const handleApplyFilters = (newFilters: FilterOptions) => {
+    if (__DEV__) {
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+      console.log("🎯 USER APPLIED FILTERS:");
+      console.log(JSON.stringify(newFilters, null, 2));
+      console.log("Active filter count:", Object.keys(newFilters).length);
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    }
     setFilters(newFilters);
     // Reset pagination state when filters change
     setSeenPersonIds(new Set());
@@ -336,6 +495,25 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
     );
   }
 
+  const toggleStatusFilter = (filterType: keyof StatusFilters, value: any) => {
+    setStatusFilters(prev => {
+      const newFilters = { ...prev };
+      if (newFilters[filterType] === value) {
+        // Toggle off if same value clicked
+        delete newFilters[filterType];
+      } else {
+        newFilters[filterType] = value;
+      }
+      return newFilters;
+    });
+    // Reload with new status filters
+    loadPeople(0, true);
+  };
+
+  const hasActiveStatusFilters = () => {
+    return Object.keys(statusFilters).length > 0;
+  };
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
@@ -358,6 +536,139 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
         </View>
       </View>
 
+      {/* Status Filter Bar */}
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false}
+        style={styles.statusFilterBar}
+        contentContainerStyle={styles.statusFilterContent}
+      >
+        {/* Personal Status Filters */}
+        <Pressable
+          onPress={() => toggleStatusFilter('myStatus', 'not_viewed')}
+          style={[
+            styles.statusChip,
+            statusFilters.myStatus === 'not_viewed' && styles.statusChipActive
+          ]}
+        >
+          <Ionicons 
+            name="eye-off-outline" 
+            size={16} 
+            color={statusFilters.myStatus === 'not_viewed' ? 'white' : '#6B7280'} 
+          />
+          <Text style={[
+            styles.statusChipText,
+            statusFilters.myStatus === 'not_viewed' && styles.statusChipTextActive
+          ]}>
+            Not Viewed
+          </Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => toggleStatusFilter('myStatus', 'viewed')}
+          style={[
+            styles.statusChip,
+            statusFilters.myStatus === 'viewed' && styles.statusChipActive
+          ]}
+        >
+          <Ionicons 
+            name="eye-outline" 
+            size={16} 
+            color={statusFilters.myStatus === 'viewed' ? 'white' : '#6B7280'} 
+          />
+          <Text style={[
+            styles.statusChipText,
+            statusFilters.myStatus === 'viewed' && styles.statusChipTextActive
+          ]}>
+            Viewed
+          </Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => toggleStatusFilter('myStatus', 'liked')}
+          style={[
+            styles.statusChip,
+            statusFilters.myStatus === 'liked' && styles.statusChipActive
+          ]}
+        >
+          <Ionicons 
+            name="heart-outline" 
+            size={16} 
+            color={statusFilters.myStatus === 'liked' ? 'white' : '#6B7280'} 
+          />
+          <Text style={[
+            styles.statusChipText,
+            statusFilters.myStatus === 'liked' && styles.statusChipTextActive
+          ]}>
+            Liked
+          </Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => toggleStatusFilter('myStatus', 'disliked')}
+          style={[
+            styles.statusChip,
+            statusFilters.myStatus === 'disliked' && styles.statusChipActive
+          ]}
+        >
+          <Ionicons 
+            name="close-circle-outline" 
+            size={16} 
+            color={statusFilters.myStatus === 'disliked' ? 'white' : '#6B7280'} 
+          />
+          <Text style={[
+            styles.statusChipText,
+            statusFilters.myStatus === 'disliked' && styles.statusChipTextActive
+          ]}>
+            Disliked
+          </Text>
+        </Pressable>
+
+        {/* Divider */}
+        <View style={styles.statusDivider} />
+
+        {/* Team Status Filters */}
+        <Pressable
+          onPress={() => toggleStatusFilter('teamViewed', !statusFilters.teamViewed)}
+          style={[
+            styles.statusChip,
+            statusFilters.teamViewed && styles.statusChipActive
+          ]}
+        >
+          <Ionicons 
+            name="people-outline" 
+            size={16} 
+            color={statusFilters.teamViewed ? 'white' : '#6B7280'} 
+          />
+          <Text style={[
+            styles.statusChipText,
+            statusFilters.teamViewed && styles.statusChipTextActive
+          ]}>
+            Team Viewed
+          </Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => toggleStatusFilter('teamLiked', !statusFilters.teamLiked)}
+          style={[
+            styles.statusChip,
+            statusFilters.teamLiked && styles.statusChipActive
+          ]}
+        >
+          <Ionicons 
+            name="people" 
+            size={16} 
+            color={statusFilters.teamLiked ? 'white' : '#6B7280'} 
+          />
+          <Text style={[
+            styles.statusChipText,
+            statusFilters.teamLiked && styles.statusChipTextActive
+          ]}>
+            Team Liked
+          </Text>
+        </Pressable>
+      </ScrollView>
+
       <View style={styles.cardContainer}>
         {cards
           .slice(currentIndex, currentIndex + 3)
@@ -374,51 +685,12 @@ export default function SwipeDeckScreen({ navigation }: SwipeDeckScreenProps) {
                 isTop={isTop}
                 onLike={() => handleLike(person)}
                 onDislike={() => handleDislike(person)}
+                onPass={() => handlePass(person)}
                 onViewProfile={() => handleViewProfile(person)}
                 onAddToList={() => handleAddToList(person)}
               />
             );
           })}
-      </View>
-
-      <View style={[styles.actionButtons, { paddingBottom: insets.bottom + 20 }]}>
-        <View style={styles.mainActions}>
-          <Pressable
-            onPress={() => {
-              if (cards[currentIndex]) handleDislike(cards[currentIndex]);
-            }}
-            style={styles.actionCircle}
-          >
-            <View style={[styles.circle, styles.dislikeCircle]}>
-              <Ionicons name="close" size={32} color="white" />
-            </View>
-            <Text style={styles.actionLabel}>NOPE</Text>
-          </Pressable>
-
-          <Pressable
-            onPress={() => {
-              if (cards[currentIndex]) handleViewProfile(cards[currentIndex]);
-            }}
-            style={styles.actionCircle}
-          >
-            <View style={[styles.circle, styles.infoCircle]}>
-              <Ionicons name="information" size={32} color="white" />
-            </View>
-            <Text style={styles.actionLabel}>INFO</Text>
-          </Pressable>
-
-          <Pressable
-            onPress={() => {
-              if (cards[currentIndex]) handleLike(cards[currentIndex]);
-            }}
-            style={styles.actionCircle}
-          >
-            <View style={[styles.circle, styles.likeCircle]}>
-              <Ionicons name="heart" size={32} color="white" />
-            </View>
-            <Text style={styles.actionLabel}>LIKE</Text>
-          </Pressable>
-        </View>
       </View>
 
       {isLoadingMore && (
@@ -453,11 +725,12 @@ type SwipeCardProps = {
   isTop: boolean;
   onLike: () => void;
   onDislike: () => void;
+  onPass: () => void;
   onViewProfile: () => void;
   onAddToList: () => void;
 };
 
-function SwipeCard({ person, index, isTop, onLike, onDislike, onViewProfile, onAddToList }: SwipeCardProps) {
+function SwipeCard({ person, index, isTop, onLike, onDislike, onPass, onViewProfile, onAddToList }: SwipeCardProps) {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
 
@@ -474,6 +747,14 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onViewProfile, onA
     .onEnd((event) => {
       if (!isTop) return;
 
+      // Check for swipe down first (Pass action)
+      if (event.translationY > SWIPE_THRESHOLD) {
+        translateY.value = withTiming(SCREEN_HEIGHT, { duration: 300 });
+        runOnJS(onPass)();
+        return;
+      }
+
+      // Check for horizontal swipe (Like/Dislike)
       if (Math.abs(event.translationX) > SWIPE_THRESHOLD) {
         const direction = event.translationX > 0 ? 1 : -1;
         translateX.value = withTiming(direction * SCREEN_WIDTH * 1.5, { duration: 300 });
@@ -518,37 +799,41 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onViewProfile, onA
     opacity: interpolate(translateX.value, [-SCREEN_WIDTH / 4, 0], [1, 0]),
   }));
 
-  // Status badge rendering
-  const renderStatusBadge = () => {
-    if (!person.entity_status) return null;
+  const passOpacity = useAnimatedStyle(() => ({
+    opacity: interpolate(translateY.value, [0, SCREEN_HEIGHT / 4], [0, 0.7]),
+  }));
 
-    const { status, updated_at } = person.entity_status;
-    const relativeTime = formatRelativeTime(updated_at);
+  // Status badge rendering - shows ONE status (mutually exclusive)
+  const renderStatusBadge = () => {
+    if (!person.entity_status || !person.entity_status.status) return null;
+
+    const status = person.entity_status.status;
+    const relativeTime = formatRelativeTime(person.entity_status.updated_at);
     
     let emoji = "";
     let bgColor = "";
-    let statusText = "";
+    let text = "";
 
     if (status === "liked") {
       emoji = "✓";
       bgColor = "#22c55e";
-      statusText = `You liked this${relativeTime ? ` ${relativeTime}` : ""}`;
+      text = `You liked this${relativeTime ? ` ${relativeTime}` : ""}`;
     } else if (status === "disliked") {
       emoji = "✖";
       bgColor = "#ef4444";
-      statusText = `You disliked this${relativeTime ? ` ${relativeTime}` : ""}`;
+      text = `You disliked this${relativeTime ? ` ${relativeTime}` : ""}`;
     } else if (status === "viewed") {
-      emoji = "👁";
+      emoji = "⏭️";
       bgColor = "#3b82f6";
-      statusText = `You viewed this${relativeTime ? ` ${relativeTime}` : ""}`;
+      text = `You passed on this${relativeTime ? ` ${relativeTime}` : ""}`;
     }
 
-    if (!statusText) return null;
+    if (!text) return null;
 
     return (
       <View style={[styles.statusBadge, { backgroundColor: bgColor }]}>
         <Text style={styles.statusBadgeText}>
-          {emoji} {statusText}
+          {emoji} {text}
         </Text>
       </View>
     );
@@ -557,6 +842,39 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onViewProfile, onA
   return (
     <GestureDetector gesture={panGesture}>
       <Animated.View style={[styles.card, cardStyle]}>
+        {/* Action buttons positioned ON the card */}
+        {isTop && (
+          <>
+            {/* NOPE button - top left */}
+            <Pressable 
+              onPress={(e) => {
+                e.stopPropagation();
+                onDislike();
+              }}
+              style={styles.cardActionButton}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <View style={[styles.cardActionCircle, styles.cardDislikeCircle]}>
+                <Ionicons name="close" size={28} color="white" />
+              </View>
+            </Pressable>
+
+            {/* LIKE button - top right */}
+            <Pressable 
+              onPress={(e) => {
+                e.stopPropagation();
+                onLike();
+              }}
+              style={[styles.cardActionButton, styles.cardActionButtonRight]}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <View style={[styles.cardActionCircle, styles.cardLikeCircle]}>
+                <Ionicons name="heart" size={28} color="white" />
+              </View>
+            </Pressable>
+          </>
+        )}
+
         <Pressable onPress={onViewProfile} style={styles.cardPressable}>
           {/* Swipe overlays */}
           <Animated.View style={[styles.swipeOverlay, styles.likeOverlay, likeOpacity]}>
@@ -565,6 +883,10 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onViewProfile, onA
 
           <Animated.View style={[styles.swipeOverlay, styles.nopeOverlay, nopeOpacity]}>
             <Text style={styles.overlayText}>NOPE ✖️</Text>
+          </Animated.View>
+
+          <Animated.View style={[styles.swipeOverlay, styles.passOverlay, passOpacity]}>
+            <Text style={styles.overlayText}>PASS ⏭️</Text>
           </Animated.View>
 
           {/* Card content */}
@@ -582,6 +904,20 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onViewProfile, onA
                 <View style={[styles.circularPhoto, styles.circularPhotoPlaceholder]}>
                   <Text style={styles.circularPhotoInitials}>{initials}</Text>
                 </View>
+              )}
+              
+              {/* INFO button - small, positioned on top right of avatar */}
+              {isTop && (
+                <Pressable
+                  onPress={(e) => {
+                    e.stopPropagation();
+                    onViewProfile();
+                  }}
+                  style={styles.infoButtonOnAvatar}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  <Ionicons name="information-circle" size={32} color="#4299E1" />
+                </Pressable>
               )}
             </View>
 
@@ -753,10 +1089,52 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: "#22c55e",
   },
+  statusFilterBar: {
+    backgroundColor: "white",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E5E7EB",
+    maxHeight: 60,
+  },
+  statusFilterContent: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    gap: 8,
+    alignItems: "center",
+  },
+  statusChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: "#F3F4F6",
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+  },
+  statusChipActive: {
+    backgroundColor: "#4299E1",
+    borderColor: "#4299E1",
+  },
+  statusChipText: {
+    fontSize: 13,
+    fontWeight: "500",
+    color: "#6B7280",
+  },
+  statusChipTextActive: {
+    color: "white",
+  },
+  statusDivider: {
+    width: 1,
+    height: 32,
+    backgroundColor: "#E5E7EB",
+    marginHorizontal: 8,
+  },
   cardContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",  // Changed from center to show status bar
+    paddingTop: 20,  // Add padding to lower cards and show status bar
   },
   card: {
     position: "absolute",
@@ -769,6 +1147,34 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 5,
+  },
+  cardActionButton: {
+    position: "absolute",
+    top: 16,
+    left: 16,
+    zIndex: 10,
+  },
+  cardActionButtonRight: {
+    left: undefined,
+    right: 16,
+  },
+  cardActionCircle: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 6,
+  },
+  cardDislikeCircle: {
+    backgroundColor: "#EF4444",
+  },
+  cardLikeCircle: {
+    backgroundColor: "#22C55E",
   },
   cardPressable: {
     flex: 1,
@@ -790,6 +1196,9 @@ const styles = StyleSheet.create({
   nopeOverlay: {
     backgroundColor: "rgba(239, 68, 68, 0.9)",
   },
+  passOverlay: {
+    backgroundColor: "rgba(107, 114, 128, 0.85)", // Greyish tint
+  },
   overlayText: {
     fontSize: 48,
     fontWeight: "bold",
@@ -804,6 +1213,7 @@ const styles = StyleSheet.create({
   circularPhotoContainer: {
     marginTop: 10,
     marginBottom: 12,
+    position: "relative",  // For positioning INFO button
   },
   circularPhoto: {
     width: 100,
@@ -811,6 +1221,18 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 3,
     borderColor: "#f3f4f6",
+  },
+  infoButtonOnAvatar: {
+    position: "absolute",
+    bottom: -5,
+    right: -5,
+    backgroundColor: "white",
+    borderRadius: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   circularPhotoPlaceholder: {
     backgroundColor: "#1a365d",

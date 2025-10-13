@@ -175,8 +175,8 @@ export default function ListModal({
                         )}
                       </View>
                     </View>
-                    {list.item_count !== undefined && (
-                      <Text style={styles.listCount}>{list.item_count}</Text>
+                    {list.person_count !== undefined && (
+                      <Text style={styles.listCount}>{list.person_count}</Text>
                     )}
                   </Pressable>
                 );

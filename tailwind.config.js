@@ -9,27 +9,75 @@ module.exports = {
     space: false,
   },
   theme: {
-    // NOTE to AI: You can extend the theme with custom colors or styles here.
     extend: {
-      // For example, you can add a primary or secondary color here.
-      // colors: {
-      //   primary: "#INSERT_VALID_HEX_CODE",
-      //   secondary: "#INSERT_VALID_HEX_CODE",
-      // },
+      // Specter Brand Colors (extracted from staging platform)
+      colors: {
+        // Primary brand colors
+        brand: {
+          blue: "#4299E1",
+          "blue-dark": "#3182CE",
+          "blue-light": "#63B3ED",
+        },
+        // Grayscale
+        gray: {
+          50: "#F9FAFB",
+          100: "#F3F4F6",
+          200: "#E5E7EB",
+          300: "#D1D5DB",
+          400: "#9CA3AF",
+          500: "#6B7280",
+          600: "#4B5563",
+          700: "#374151",
+          800: "#1F2937",
+          900: "#111827",
+        },
+        // Semantic colors
+        success: "#22C55E",
+        warning: "#F59E0B",
+        error: "#EF4444",
+        info: "#3B82F6",
+        // Highlight colors
+        highlight: {
+          fortune: "#3B82F6",
+          vc: "#A855F7",
+          founder: "#22C55E",
+          exit: "#F97316",
+          ipo: "#EAB308",
+          unicorn: "#8B5CF6",
+        },
+      },
+      // Typography
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+      },
       fontSize: {
         xs: "10px",
         sm: "12px",
         base: "14px",
-        lg: "18px",
-        xl: "20px",
+        lg: "16px",
+        xl: "18px",
+        "2xl": "20px",
+        "3xl": "24px",
+        "4xl": "32px",
+        "5xl": "40px",
+      },
+      // Border radius
+      borderRadius: {
+        DEFAULT: "8px",
+        sm: "4px",
+        md: "8px",
+        lg: "12px",
+        xl: "16px",
         "2xl": "24px",
-        "3xl": "32px",
-        "4xl": "40px",
-        "5xl": "48px",
-        "6xl": "56px",
-        "7xl": "64px",
-        "8xl": "72px",
-        "9xl": "80px",
+        full: "9999px",
+      },
+      // Box shadows
+      boxShadow: {
+        sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+        DEFAULT: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+        md: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+        lg: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+        xl: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
       },
     },
   },

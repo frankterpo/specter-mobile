@@ -28,6 +28,7 @@ import {
 
 type MainStackParamList = {
   PeopleList: undefined;
+  SwipeDeck: { updatedPerson?: Person } | undefined;
   PersonDetail: { personId: string };
   Settings: undefined;
 };
@@ -88,17 +89,26 @@ export default function PersonDetailScreen({
 
       await likePerson(token, person.id);
       
-      // Update local state
-      setPerson({
+      // Update local state - REPLACE status
+      const updatedPerson = {
         ...person,
-        entity_status: { status: "liked" },
-      });
+        entity_status: {
+          status: "liked" as const,
+          updated_at: new Date().toISOString(),
+        },
+      };
+      
+      setPerson(updatedPerson);
 
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       
-      // Navigate back after short delay
+      // Navigate back with updated person after short delay
       setTimeout(() => {
-        navigation.goBack();
+        if (__DEV__) {
+          console.log("📤 Passing LIKED person back to SwipeDeck:", updatedPerson.id);
+          console.log("   Status:", updatedPerson.entity_status);
+        }
+        navigation.navigate("SwipeDeck", { updatedPerson });
       }, 500);
     } catch (err: any) {
       Alert.alert("Error", err.message || "Failed to like person");
@@ -122,10 +132,13 @@ export default function PersonDetailScreen({
 
       await dislikePerson(token, person.id);
       
-      // Update local state
+      // Update local state - REPLACE status
       setPerson({
         ...person,
-        entity_status: { status: "disliked" },
+        entity_status: {
+          status: "disliked" as const,
+          updated_at: new Date().toISOString(),
+        },
       });
 
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);

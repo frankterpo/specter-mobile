@@ -5,6 +5,10 @@ const API_BASE_URL = "https://specter-api-staging.up.railway.app";
 const ENTITY_STATUS_BASE_URL = "https://app.staging.tryspecter.com/api/entity-status";
 const LISTS_BASE_URL = "https://app.staging.tryspecter.com/api/lists";
 
+// Timeout constants
+const API_TIMEOUT_MS = 15000; // 15 seconds
+const AUTH_TIMEOUT_MS = 3000; // 3 seconds
+
 export interface Experience {
   company_name: string;
   title: string;
@@ -14,6 +18,7 @@ export interface Experience {
   start_date?: string;
   end_date?: string;
   industry?: string;
+  department?: string;
 }
 
 export interface Person {
@@ -28,6 +33,7 @@ export interface Person {
   seniority?: string;
   years_of_experience?: number;
   education_level?: string;
+  field_of_study?: string;
   experience: Experience[];
   people_highlights?: string[];
   linkedin_url?: string;
@@ -36,63 +42,226 @@ export interface Person {
   followers_count?: number;
   connections_count?: number;
   entity_status?: {
-    status: "viewed" | "liked" | "disliked";
+    // Single status - mutually exclusive!
+    status: "viewed" | "liked" | "disliked" | null;
     updated_at?: string;
+    
+    // Team actions
+    viewed_by_team?: boolean;
+    liked_by_team?: boolean;
+    disliked_by_team?: boolean;
   };
+}
+
+export interface FilterOptions {
+  // General
+  seniority?: string[];
+  yearsOfExperience?: {
+    min?: number;
+    max?: number;
+  };
+  location?: string[];
+  
+  // Experience
+  department?: string[];
+  hasCurrentPosition?: boolean;
+  
+  // Companies
+  companyIndustries?: string[];
+  companySize?: string[];
+  companyGrowthStage?: string[];
+  
+  // Education
+  educationLevel?: string[];
+  fieldOfStudy?: string[];
+  
+  // People Highlights
+  highlights?: string[];
+  
+  // Social
+  hasLinkedIn?: boolean;
+  hasTwitter?: boolean;
+  hasGitHub?: boolean;
+}
+
+export interface StatusFilters {
+  // Personal status
+  myStatus?: "viewed" | "not_viewed" | "liked" | "disliked" | null;
+  
+  // Team status
+  teamViewed?: boolean;
+  teamLiked?: boolean;
 }
 
 export interface FetchPeopleParams {
   limit: number;
   offset: number;
-  filters?: {
-    seniority?: string[];
-    people_highlights?: string[];
-    has_linkedin?: boolean;
-    has_twitter?: boolean;
-    has_github?: boolean;
-  };
+  filters?: FilterOptions;
+  statusFilters?: StatusFilters;
+  queryId?: string; // Optional queryId for pre-created queries
 }
 
 export interface FetchPeopleResponse {
   items: Person[];
   total?: number;
   has_more?: boolean;
+  query_id?: string; // Return queryId for subsequent pagination
+}
+
+export interface CreateQueryResponse {
+  query_id: string;
+  total?: number;
+}
+
+// Custom error class for auth failures
+export class AuthError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "AuthError";
+  }
 }
 
 /**
- * Fetch people from Specter API
+ * Timeout wrapper for promises
  */
-export async function fetchPeople(
+function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  errorMessage: string
+): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(errorMessage)), timeoutMs)
+    ),
+  ]);
+}
+
+/**
+ * Map filter options from UI to backend API format
+ * Backend expects specific field names and structures
+ */
+function mapFiltersToBackendFormat(filters?: FilterOptions, statusFilters?: StatusFilters): any {
+  const apiFilters: any = {};
+
+  // Status filters (personal and team)
+  if (statusFilters) {
+    if (statusFilters.myStatus) {
+      apiFilters.MyEntityStatus = statusFilters.myStatus;
+    }
+    if (statusFilters.teamViewed) {
+      apiFilters.TeamViewed = true;
+    }
+    if (statusFilters.teamLiked) {
+      apiFilters.TeamLiked = true;
+    }
+  }
+
+  if (!filters) return apiFilters;
+
+  // Seniority - direct mapping
+  if (filters.seniority && filters.seniority.length > 0) {
+    apiFilters.SeniorityLevel = ["OR", filters.seniority];
+  }
+
+  // Department - wrapped in timeframe + logic
+  if (filters.department && filters.department.length > 0) {
+    apiFilters.Department = ["Current", ["OR", filters.department]];
+  }
+
+  // Company Industries
+  if (filters.companyIndustries && filters.companyIndustries.length > 0) {
+    apiFilters.CompanyIndustries = ["Current", ["OR", filters.companyIndustries]];
+  }
+
+  // Company Size
+  if (filters.companySize && filters.companySize.length > 0) {
+    apiFilters.CompanySize = ["Current", ["OR", filters.companySize]];
+  }
+
+  // Company Growth Stage
+  if (filters.companyGrowthStage && filters.companyGrowthStage.length > 0) {
+    apiFilters.CompanyGrowthStage = ["Current", ["OR", filters.companyGrowthStage]];
+  }
+
+  // Education Level
+  if (filters.educationLevel && filters.educationLevel.length > 0) {
+    apiFilters.EducationLevel = ["OR", filters.educationLevel];
+  }
+
+  // Field of Study
+  if (filters.fieldOfStudy && filters.fieldOfStudy.length > 0) {
+    apiFilters.FieldOfStudy = ["OR", filters.fieldOfStudy];
+  }
+
+  // People Highlights
+  if (filters.highlights && filters.highlights.length > 0) {
+    apiFilters.Highlights = ["OR", filters.highlights];
+  }
+
+  // Social media flags
+  if (filters.hasLinkedIn) {
+    apiFilters.HasLinkedIn = true;
+  }
+  if (filters.hasTwitter) {
+    apiFilters.HasTwitter = true;
+  }
+  if (filters.hasGitHub) {
+    apiFilters.HasGitHub = true;
+  }
+
+  // Has current position
+  if (filters.hasCurrentPosition) {
+    apiFilters.HasCurrentPosition = true;
+  }
+
+  // Years of experience
+  if (filters.yearsOfExperience) {
+    if (filters.yearsOfExperience.min !== undefined) {
+      apiFilters.MinYearsOfExperience = filters.yearsOfExperience.min;
+    }
+    if (filters.yearsOfExperience.max !== undefined) {
+      apiFilters.MaxYearsOfExperience = filters.yearsOfExperience.max;
+    }
+  }
+
+  // Location
+  if (filters.location && filters.location.length > 0) {
+    apiFilters.Location = ["OR", filters.location];
+  }
+
+  return apiFilters;
+}
+
+/**
+ * Create a query with filters and return queryId
+ * This is step 1 in the Specter API flow
+ */
+export async function createQuery(
   token: string,
-  params: FetchPeopleParams
-): Promise<FetchPeopleResponse> {
+  filters?: FilterOptions,
+  statusFilters?: StatusFilters
+): Promise<CreateQueryResponse> {
   try {
     // Build request body with filters
     const body: any = {
-      limit: params.limit,
-      offset: params.offset,
+      type: "people",
     };
 
-    // Add filters if provided
-    if (params.filters) {
-      if (params.filters.seniority && params.filters.seniority.length > 0) {
-        body.seniority = params.filters.seniority;
-      }
-      if (params.filters.people_highlights && params.filters.people_highlights.length > 0) {
-        body.people_highlights = params.filters.people_highlights;
-      }
-      if (params.filters.has_linkedin) {
-        body.has_linkedin = true;
-      }
-      if (params.filters.has_twitter) {
-        body.has_twitter = true;
-      }
-      if (params.filters.has_github) {
-        body.has_github = true;
-      }
+    // Map and add filters (including status filters)
+    const apiFilters = mapFiltersToBackendFormat(filters, statusFilters);
+    if (Object.keys(apiFilters).length > 0) {
+      body.filters = apiFilters;
     }
 
-    const response = await fetch(`${API_BASE_URL}/private/people`, {
+    if (__DEV__) {
+      console.log("📤 Creating Query:", {
+        url: `${API_BASE_URL}/private/queries`,
+        body: JSON.stringify(body, null, 2),
+      });
+    }
+
+    const fetchPromise = fetch(`${API_BASE_URL}/private/queries`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -101,21 +270,187 @@ export async function fetchPeople(
       body: JSON.stringify(body),
     });
 
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired. Please sign in again.");
+    }
+
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`API Error ${response.status}: ${errorText}`);
     }
 
     const data = await response.json();
-    
+
+    if (__DEV__) {
+      console.log(`✅ Query created: ${data.query_id || data.id}`);
+    }
+
+    return {
+      query_id: data.query_id || data.id,
+      total: data.total,
+    };
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ createQuery error:", error);
+    throw new Error(
+      error.message || "Failed to create query. Please check your connection."
+    );
+  }
+}
+
+/**
+ * Fetch people from Specter API
+ * Supports two modes:
+ * 1. Direct fetch with filters (legacy)
+ * 2. Fetch from existing queryId (recommended)
+ */
+export async function fetchPeople(
+  token: string,
+  params: FetchPeopleParams
+): Promise<FetchPeopleResponse> {
+  try {
+    // If queryId is provided, use query-based endpoint
+    if (params.queryId) {
+      if (__DEV__) {
+        console.log("📤 Fetching from Query:", {
+          url: `${API_BASE_URL}/private/queries/${params.queryId}/people`,
+          limit: params.limit,
+          offset: params.offset,
+        });
+      }
+
+      const fetchPromise = fetch(
+        `${API_BASE_URL}/private/queries/${params.queryId}/people?limit=${params.limit}&offset=${params.offset}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const response = await withTimeout(
+        fetchPromise,
+        API_TIMEOUT_MS,
+        "API request timed out"
+      );
+
+      if (response.status === 401 || response.status === 403) {
+        throw new AuthError("Authentication expired. Please sign in again.");
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`API Error ${response.status}: ${errorText}`);
+      }
+
+      const data = await response.json();
+
+      if (__DEV__) {
+        console.log(`📥 API Response: ${data.items?.length || 0} items from query`);
+      }
+
+      return {
+        items: data.items || data || [],
+        total: data.total,
+        has_more: data.has_more,
+        query_id: params.queryId,
+      };
+    }
+
+    // Otherwise, use direct POST endpoint (legacy mode)
+    const body: any = {
+      limit: params.limit,
+      offset: params.offset,
+    };
+
+    // Map and add filters (including status filters)
+    const apiFilters = mapFiltersToBackendFormat(params.filters, params.statusFilters);
+    if (Object.keys(apiFilters).length > 0) {
+      body.filters = apiFilters;
+    }
+
+    if (__DEV__) {
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+      console.log("📤 API REQUEST TO BACKEND:");
+      console.log("URL:", `${API_BASE_URL}/private/people`);
+      console.log("Method: POST");
+      console.log("Body:");
+      console.log(JSON.stringify(body, null, 2));
+      if (body.filters) {
+        console.log("🔍 Filters being sent:");
+        Object.keys(body.filters).forEach(key => {
+          console.log(`  ${key}:`, JSON.stringify(body.filters[key]));
+        });
+      }
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    }
+
+    // Make API call with timeout
+    const fetchPromise = fetch(`${API_BASE_URL}/private/people`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    // Handle auth errors immediately
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired. Please sign in again.");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+
+    if (__DEV__) {
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+      console.log("📥 API RESPONSE FROM BACKEND:");
+      console.log(`Items received: ${data.items?.length || 0}`);
+      console.log(`Total: ${data.total || 'not provided'}`);
+      console.log(`Has more: ${data.has_more || 'not provided'}`);
+      if (data.items?.length > 0) {
+        console.log("Sample items with entity_status:");
+        data.items.slice(0, 3).forEach((item: any, idx: number) => {
+          console.log(`  [${idx}] ${item.full_name || item.id}`);
+          console.log(`      entity_status:`, JSON.stringify(item.entity_status || null));
+        });
+      }
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    }
+
     // API returns { items: [...] }
     return {
       items: data.items || data || [],
       total: data.total,
       has_more: data.has_more,
+      query_id: data.query_id, // May return queryId for subsequent pagination
     };
   } catch (error: any) {
-    console.error("fetchPeople error:", error);
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ fetchPeople error:", error);
     throw new Error(
       error.message || "Failed to fetch people. Please check your connection."
     );
@@ -130,13 +465,23 @@ export async function fetchPersonDetail(
   personId: string
 ): Promise<Person> {
   try {
-    const response = await fetch(`${API_BASE_URL}/private/people/${personId}`, {
+    const fetchPromise = fetch(`${API_BASE_URL}/private/people/${personId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired. Please sign in again.");
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -146,7 +491,10 @@ export async function fetchPersonDetail(
     const data = await response.json();
     return data;
   } catch (error: any) {
-    console.error("fetchPersonDetail error:", error);
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ fetchPersonDetail error:", error);
     throw new Error(
       error.message || "Failed to fetch person details. Please check your connection."
     );
@@ -161,21 +509,60 @@ export async function likePerson(
   personId: string
 ): Promise<void> {
   try {
-    const response = await fetch(`${ENTITY_STATUS_BASE_URL}/people/${personId}`, {
+    const requestBody = { 
+      status: "liked" // REPLACES any previous status
+    };
+    
+    if (__DEV__) {
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+      console.log(`📤 LIKE API CALL (REPLACES previous status)`);
+      console.log(`   URL: ${ENTITY_STATUS_BASE_URL}/people/${personId}`);
+      console.log(`   Method: POST`);
+      console.log(`   Body:`, JSON.stringify(requestBody));
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    }
+    
+    const fetchPromise = fetch(`${ENTITY_STATUS_BASE_URL}/people/${personId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ status: "liked" }),
+      body: JSON.stringify(requestBody),
     });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error(`❌ LIKE API FAILED: ${response.status} - ${errorText}`);
       throw new Error(`API Error ${response.status}: ${errorText}`);
     }
+
+    // Get the response body to see what the API returned
+    const responseData = await response.json().catch(() => ({}));
+
+    if (__DEV__) {
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+      console.log(`✅ LIKE API SUCCESS`);
+      console.log(`   Person ${personId} is NOW LIKED in database`);
+      console.log(`   Response status: ${response.status}`);
+      console.log(`   Response body:`, JSON.stringify(responseData));
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    }
   } catch (error: any) {
-    console.error("likePerson error:", error);
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ likePerson error:", error);
     throw new Error(error.message || "Failed to like person. Please try again.");
   }
 }
@@ -188,21 +575,60 @@ export async function dislikePerson(
   personId: string
 ): Promise<void> {
   try {
-    const response = await fetch(`${ENTITY_STATUS_BASE_URL}/people/${personId}`, {
+    const requestBody = { 
+      status: "disliked" // REPLACES any previous status
+    };
+    
+    if (__DEV__) {
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+      console.log(`📤 DISLIKE API CALL (REPLACES previous status)`);
+      console.log(`   URL: ${ENTITY_STATUS_BASE_URL}/people/${personId}`);
+      console.log(`   Method: POST`);
+      console.log(`   Body:`, JSON.stringify(requestBody));
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    }
+    
+    const fetchPromise = fetch(`${ENTITY_STATUS_BASE_URL}/people/${personId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ status: "disliked" }),
+      body: JSON.stringify(requestBody),
     });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error(`❌ DISLIKE API FAILED: ${response.status} - ${errorText}`);
       throw new Error(`API Error ${response.status}: ${errorText}`);
     }
+
+    // Get the response body to see what the API returned
+    const responseData = await response.json().catch(() => ({}));
+
+    if (__DEV__) {
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+      console.log(`✅ DISLIKE API SUCCESS`);
+      console.log(`   Person ${personId} is NOW DISLIKED in database`);
+      console.log(`   Response status: ${response.status}`);
+      console.log(`   Response body:`, JSON.stringify(responseData));
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    }
   } catch (error: any) {
-    console.error("dislikePerson error:", error);
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ dislikePerson error:", error);
     throw new Error(error.message || "Failed to dislike person. Please try again.");
   }
 }
@@ -215,22 +641,114 @@ export async function markAsViewed(
   personId: string
 ): Promise<void> {
   try {
-    const response = await fetch(`${ENTITY_STATUS_BASE_URL}/people/${personId}`, {
+    const requestBody = { 
+      status: "viewed" // REPLACES any previous status (Pass/Skip action)
+    };
+    
+    if (__DEV__) {
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+      console.log(`📤 PASS/VIEWED API CALL (REPLACES previous status)`);
+      console.log(`   URL: ${ENTITY_STATUS_BASE_URL}/people/${personId}`);
+      console.log(`   Method: POST`);
+      console.log(`   Body:`, JSON.stringify(requestBody));
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    }
+    
+    const fetchPromise = fetch(`${ENTITY_STATUS_BASE_URL}/people/${personId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ status: "viewed" }),
+      body: JSON.stringify(requestBody),
     });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`❌ VIEWED API FAILED: ${response.status} - ${errorText}`);
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    // Get the response body to see what the API returned
+    const responseData = await response.json().catch(() => ({}));
+
+    if (__DEV__) {
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+      console.log(`✅ VIEWED API SUCCESS`);
+      console.log(`   Person ${personId} is NOW VIEWED in database`);
+      console.log(`   Response status: ${response.status}`);
+      console.log(`   Response body:`, JSON.stringify(responseData));
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    }
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ markAsViewed error:", error);
+    // Don't throw for view tracking failures - it's not critical
+  }
+}
+
+/**
+ * Fetch team status for a person (who on the team has viewed/liked this person)
+ */
+export async function fetchTeamStatus(
+  token: string,
+  personId: string
+): Promise<{
+  viewed_by: string[];
+  liked_by: string[];
+  disliked_by: string[];
+}> {
+  try {
+    const fetchPromise = fetch(
+      `${ENTITY_STATUS_BASE_URL}/people/${personId}/team`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`API Error ${response.status}: ${errorText}`);
     }
+
+    const data = await response.json();
+    return {
+      viewed_by: data.viewed_by || [],
+      liked_by: data.liked_by || [],
+      disliked_by: data.disliked_by || [],
+    };
   } catch (error: any) {
-    console.error("markAsViewed error:", error);
-    throw new Error(error.message || "Failed to mark as viewed. Please try again.");
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ fetchTeamStatus error:", error);
+    return { viewed_by: [], liked_by: [], disliked_by: [] };
   }
 }
 
@@ -245,7 +763,7 @@ export function getCurrentJob(experience: Experience[]): Experience | null {
  * Helper: Format person name
  */
 export function getFullName(person: Person): string {
-  return `${person.first_name} ${person.last_name}`.trim();
+  return person.full_name || `${person.first_name} ${person.last_name}`.trim();
 }
 
 /**
@@ -272,11 +790,17 @@ export function formatHighlight(highlight: string): string {
  */
 export function getHighlightColor(highlight: string): string {
   const lowerHighlight = highlight.toLowerCase();
-  if (lowerHighlight.includes("fortune") || lowerHighlight.includes("500")) return "#3b82f6"; // blue
-  if (lowerHighlight.includes("vc") || lowerHighlight.includes("backed")) return "#a855f7"; // purple
-  if (lowerHighlight.includes("serial") || lowerHighlight.includes("founder")) return "#22c55e"; // green
+  if (lowerHighlight.includes("fortune") || lowerHighlight.includes("500"))
+    return "#3b82f6"; // blue
+  if (lowerHighlight.includes("unicorn")) return "#8B5CF6"; // purple
+  if (lowerHighlight.includes("vc") || lowerHighlight.includes("backed"))
+    return "#a855f7"; // purple
+  if (lowerHighlight.includes("serial") || lowerHighlight.includes("founder"))
+    return "#22c55e"; // green
   if (lowerHighlight.includes("exit")) return "#f97316"; // orange
   if (lowerHighlight.includes("ipo")) return "#eab308"; // gold
+  if (lowerHighlight.includes("yc") || lowerHighlight.includes("alumni"))
+    return "#FF6600"; // YC orange
   return "#6366f1"; // default indigo
 }
 
@@ -294,51 +818,59 @@ export function calculateAge(yearsOfExperience?: number): number | null {
  */
 export function formatRelativeTime(timestamp?: string): string | null {
   if (!timestamp) return null;
-  
+
   const now = new Date();
   const past = new Date(timestamp);
   const diffMs = now.getTime() - past.getTime();
-  const diffSeconds = Math.floor(diffMs / 1000);
-  const diffMinutes = Math.floor(diffSeconds / 60);
-  const diffHours = Math.floor(diffMinutes / 60);
-  const diffDays = Math.floor(diffHours / 24);
-  
-  if (diffSeconds < 60) return "just now";
-  if (diffMinutes === 1) return "1 minute ago";
-  if (diffMinutes < 60) return `${diffMinutes} minutes ago`;
-  if (diffHours === 1) return "1 hour ago";
-  if (diffHours < 24) return `${diffHours} hours ago`;
-  if (diffDays === 1) return "1 day ago";
-  if (diffDays < 7) return `${diffDays} days ago`;
-  if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-  return `${Math.floor(diffDays / 30)} months ago`;
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60) return `${diffMins} minute${diffMins === 1 ? "" : "s"} ago`;
+  if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
+  if (diffDays < 7) return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
+  return past.toLocaleDateString();
 }
 
 /**
- * List Management Types
+ * Helper: Format company size range
  */
+export function formatCompanySize(size?: string): string {
+  if (!size) return "Unknown";
+  return `${size} employees`;
+}
+
+/**
+ * Helper: Format funding amount
+ */
+export function formatFunding(amount?: number): string {
+  if (!amount) return "Unknown";
+  if (amount >= 1000000000) return `$${(amount / 1000000000).toFixed(1)}B`;
+  if (amount >= 1000000) return `$${(amount / 1000000).toFixed(1)}M`;
+  if (amount >= 1000) return `$${(amount / 1000).toFixed(0)}K`;
+  return `$${amount}`;
+}
+
+// ============================================
+// LIST MANAGEMENT
+// ============================================
+
 export interface List {
   id: string;
   name: string;
   description?: string;
-  item_count?: number;
+  person_count?: number;
   created_at?: string;
-}
-
-export interface ListsResponse {
-  lists: List[];
+  updated_at?: string;
 }
 
 /**
- * Fetch user's lists
+ * Fetch all lists for current user
  */
 export async function fetchLists(token: string): Promise<List[]> {
   try {
-    if (__DEV__) {
-      console.log("📋 Fetching lists...");
-    }
-
-    const response = await fetch(`${LISTS_BASE_URL}?product=people`, {
+    const fetchPromise = fetch(`${LISTS_BASE_URL}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -346,33 +878,76 @@ export async function fetchLists(token: string): Promise<List[]> {
       },
     });
 
-    if (__DEV__) {
-      console.log(`📋 Lists response status: ${response.status}`);
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
     }
 
     if (!response.ok) {
       const errorText = await response.text();
-      if (__DEV__) {
-        console.error(`❌ Lists API Error ${response.status}:`, errorText);
-      }
       throw new Error(`API Error ${response.status}: ${errorText}`);
     }
 
     const data = await response.json();
-    
-    if (__DEV__) {
-      console.log(`✅ Fetched ${data.lists?.length || 0} lists:`, data);
-    }
-
-    return data.lists || [];
+    return data.lists || data || [];
   } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
     console.error("❌ fetchLists error:", error);
-    throw new Error(error.message || "Failed to fetch lists.");
+    return [];
   }
 }
 
 /**
- * Add person to list
+ * Get lists that a person belongs to
+ */
+export async function getPersonLists(
+  token: string,
+  personId: string
+): Promise<string[]> {
+  try {
+    const fetchPromise = fetch(`${LISTS_BASE_URL}/people/${personId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    return data.list_ids || data || [];
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ getPersonLists error:", error);
+    return [];
+  }
+}
+
+/**
+ * Add person to a list
  */
 export async function addToList(
   token: string,
@@ -380,42 +955,44 @@ export async function addToList(
   personId: string
 ): Promise<void> {
   try {
-    if (__DEV__) {
-      console.log(`➕ Adding person ${personId} to list ${listId}`);
-    }
-
-    const response = await fetch(`${LISTS_BASE_URL}/people/${listId}/add`, {
+    const fetchPromise = fetch(`${LISTS_BASE_URL}/${listId}/people`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ entity_id: personId }),
+      body: JSON.stringify({ person_id: personId }),
     });
 
-    if (__DEV__) {
-      console.log(`➕ Add to list response status: ${response.status}`);
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
     }
 
     if (!response.ok) {
       const errorText = await response.text();
-      if (__DEV__) {
-        console.error(`❌ Add to list API Error ${response.status}:`, errorText);
-      }
       throw new Error(`API Error ${response.status}: ${errorText}`);
     }
 
     if (__DEV__) {
-      console.log("✅ Successfully added to list");
+      console.log(`✅ Added person ${personId} to list ${listId}`);
     }
   } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
     console.error("❌ addToList error:", error);
-    throw new Error(error.message || "Failed to add to list.");
+    throw new Error(error.message || "Failed to add to list");
   }
 }
 
 /**
- * Remove person from list
+ * Remove person from a list
  */
 export async function removeFromList(
   token: string,
@@ -423,85 +1000,37 @@ export async function removeFromList(
   personId: string
 ): Promise<void> {
   try {
-    if (__DEV__) {
-      console.log(`➖ Removing person ${personId} from list ${listId}`);
-    }
-
-    const response = await fetch(`${LISTS_BASE_URL}/people/${listId}/remove`, {
-      method: "POST",
+    const fetchPromise = fetch(`${LISTS_BASE_URL}/${listId}/people/${personId}`, {
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ entity_id: personId }),
     });
 
-    if (__DEV__) {
-      console.log(`➖ Remove from list response status: ${response.status}`);
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
     }
 
     if (!response.ok) {
       const errorText = await response.text();
-      if (__DEV__) {
-        console.error(`❌ Remove from list API Error ${response.status}:`, errorText);
-      }
       throw new Error(`API Error ${response.status}: ${errorText}`);
     }
 
     if (__DEV__) {
-      console.log("✅ Successfully removed from list");
+      console.log(`✅ Removed person ${personId} from list ${listId}`);
     }
   } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
     console.error("❌ removeFromList error:", error);
-    throw new Error(error.message || "Failed to remove from list.");
-  }
-}
-
-/**
- * Check which lists person belongs to
- */
-export async function getPersonLists(
-  token: string,
-  personId: string
-): Promise<string[]> {
-  try {
-    if (__DEV__) {
-      console.log(`🔍 Checking lists for person ${personId}`);
-    }
-
-    const response = await fetch(
-      `${LISTS_BASE_URL}/people/added-to-list/${personId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (__DEV__) {
-      console.log(`🔍 Get person lists response status: ${response.status}`);
-    }
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      if (__DEV__) {
-        console.error(`❌ Get person lists API Error ${response.status}:`, errorText);
-      }
-      // Return empty array instead of throwing for this endpoint
-      return [];
-    }
-
-    const data = await response.json();
-    
-    if (__DEV__) {
-      console.log(`✅ Person is in ${data.list_ids?.length || 0} lists:`, data);
-    }
-
-    return data.list_ids || [];
-  } catch (error: any) {
-    console.error("❌ getPersonLists error:", error);
-    return []; // Return empty array on error
+    throw new Error(error.message || "Failed to remove from list");
   }
 }
