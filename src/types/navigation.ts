@@ -10,4 +10,5 @@ export type MainStackParamList = {
   SwipeDeck: undefined;
   PersonDetail: { personId: string };
   Settings: undefined;
+  Diagnostics: undefined;
 };

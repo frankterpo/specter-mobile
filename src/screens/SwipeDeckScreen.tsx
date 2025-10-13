@@ -12,6 +12,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
+import { logger } from "../utils/logger";
 import { Image } from "expo-image";
 import { useAuth } from "@clerk/clerk-expo";
 import Animated, {
@@ -124,6 +125,12 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
     setIsLoading(true);
     setError(null);
 
+    logger.info('LOAD_PEOPLE', `Starting (offset=${newOffset}, replace=${replace})`, {
+      cardsCount: cards.length,
+      currentIndex,
+      seenCount: seenPersonIds.size,
+    });
+
     try {
       if (__DEV__) {
         console.log("🔄 loadPeople START:", { 
@@ -135,6 +142,7 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
       }
 
       // Get token with timeout
+      logger.debug('AUTH', 'Requesting Clerk token...');
       const tokenPromise = getToken();
       const token = await Promise.race([
         tokenPromise,
@@ -144,8 +152,11 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
       ]);
 
       if (!token) {
+        logger.error('AUTH', 'No token received');
         throw new AuthError("Authentication required. Please sign in.");
       }
+
+      logger.info('AUTH', 'Token obtained');
 
       if (__DEV__) {
         console.log("🔑 Token obtained, fetching people directly...");
@@ -153,11 +164,22 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
 
       // Use direct POST endpoint (without queryId)
       // The backend should accept filters directly in the request body
+      logger.debug('API', `Calling fetchPeople`, {
+        limit: LIMIT,
+        offset: newOffset,
+        filtersCount: Object.keys(filters).length,
+      });
+      
       const response = await fetchPeople(token, {
         limit: LIMIT,
         offset: newOffset,
         filters,
         statusFilters,
+      });
+
+      logger.info('API', `Received ${response.items?.length || 0} people`, {
+        hasMore: response.has_more,
+        queryId: response.query_id,
       });
 
       if (__DEV__) {
@@ -166,6 +188,7 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
 
       // Safety: ensure response.items is an array
       if (!Array.isArray(response.items)) {
+        logger.error('API', 'Invalid response: items is not an array', response);
         console.error("Invalid response: items is not an array", response);
         throw new Error("Invalid server response");
       }
@@ -199,6 +222,12 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
       setOffset(newOffset);
       setHasMore(response.items.length >= LIMIT);
     } catch (err: any) {
+      logger.error('LOAD_PEOPLE', 'Failed to load people', {
+        message: err?.message,
+        name: err?.name,
+        isAuthError: err instanceof AuthError || err.message?.includes("Auth"),
+      });
+
       if (err instanceof AuthError || err.message?.includes("Auth")) {
         setError("Authentication expired. Please sign in again.");
         if (__DEV__) {
@@ -217,6 +246,7 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
       }
     } finally {
       setIsLoading(false);
+      logger.debug('LOAD_PEOPLE', 'Completed');
     }
   };
 
@@ -266,6 +296,11 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
 
   const handleLike = async (person: Person) => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    
+    logger.info('ACTION', `Liking person ${person.full_name || person.id}`, {
+      personId: person.id,
+      previousStatus: person.entity_status?.status,
+    });
     
     if (__DEV__) {
       console.log("👍 Liking profile:", person.id);
@@ -543,6 +578,11 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
           <Pressable onPress={() => navigation.navigate("Settings")} style={styles.iconButton}>
             <Ionicons name="settings-outline" size={24} color="#1a365d" />
           </Pressable>
+          {__DEV__ && (
+            <Pressable onPress={() => navigation.navigate("Diagnostics")} style={styles.iconButton}>
+              <Ionicons name="bug-outline" size={24} color="#EF4444" />
+            </Pressable>
+          )}
         </View>
       </View>
 

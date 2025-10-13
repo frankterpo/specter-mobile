@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SwipeDeckScreen from "../screens/SwipeDeckScreen";
 import PersonDetailScreen from "../screens/PersonDetailScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+import DiagnosticsScreen from "../screens/DiagnosticsScreen";
 import { MainStackParamList } from "../types/navigation";
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
@@ -18,6 +19,7 @@ export default function MainNavigator() {
       <Stack.Screen name="SwipeDeck" component={SwipeDeckScreen} />
       <Stack.Screen name="PersonDetail" component={PersonDetailScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="Diagnostics" component={DiagnosticsScreen} />
     </Stack.Navigator>
   );
 }
