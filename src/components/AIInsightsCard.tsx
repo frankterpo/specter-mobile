@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import NetInfo from '@react-native-community/netinfo';
 import { getFounderAgent, type FounderAnalysisResult } from '../ai/founderAgent';
 import type { Person } from '../api/specter';
 import { logger } from '../utils/logger';
@@ -37,9 +38,31 @@ export default function AIInsightsCard({
   const [followUpQuestion, setFollowUpQuestion] = useState('');
   const [followUpResponse, setFollowUpResponse] = useState('');
   const [isAskingFollowUp, setIsAskingFollowUp] = useState(false);
+  const [isOffline, setIsOffline] = useState(false);
   
   // Pulsing animation for the badge
   const pulseAnim = React.useRef(new Animated.Value(1)).current;
+  const badgeAnim = React.useRef(new Animated.Value(0)).current;
+
+  // Check network status
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsOffline(!state.isConnected);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Animate badge on complete
+  useEffect(() => {
+    if (stage === 'complete') {
+      Animated.spring(badgeAnim, {
+        toValue: 1,
+        friction: 4,
+        tension: 100,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [stage]);
 
   useEffect(() => {
     if (stage === 'generating') {
@@ -145,10 +168,22 @@ export default function AIInsightsCard({
           <Ionicons name="sparkles" size={18} color="#8B5CF6" />
           <Text style={styles.title}>AI Insights</Text>
         </View>
-        <View style={styles.badge}>
-          <View style={styles.badgeDot} />
-          <Text style={styles.badgeText}>On-Device • Private</Text>
-        </View>
+        <Animated.View 
+          style={[
+            styles.badge,
+            stage === 'complete' && {
+              transform: [{ scale: badgeAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0.8, 1],
+              }) }],
+            },
+          ]}
+        >
+          <View style={[styles.badgeDot, isOffline && styles.badgeDotOffline]} />
+          <Text style={styles.badgeText}>
+            {isOffline ? '✈️ Offline Ready' : '🔒 On-Device • Private'}
+          </Text>
+        </Animated.View>
       </View>
 
       {/* Loading state */}
@@ -324,6 +359,9 @@ const styles = StyleSheet.create({
     height: 6,
     borderRadius: 3,
     backgroundColor: '#10B981',
+  },
+  badgeDotOffline: {
+    backgroundColor: '#F59E0B',
   },
   badgeText: {
     fontSize: 11,
