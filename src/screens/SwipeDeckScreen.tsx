@@ -357,7 +357,7 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
         await likePerson(token, personId);
         if (__DEV__) {
           console.log(`✅ API: Successfully liked ${personId} in database`);
-          console.log(`   Local state for this card now has: liked=true, viewed=${cards[currentIdx]?.entity_status?.viewed}`);
+          console.log(`   Local state for this card now has: liked=true, status=${cards[currentIdx]?.entity_status?.status}`);
         }
       }
     } catch (err) {
@@ -408,7 +408,7 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
         await dislikePerson(token, personId);
         if (__DEV__) {
           console.log(`✅ API: Successfully disliked ${personId} in database`);
-          console.log(`   Local state for this card now has: disliked=true, viewed=${cards[currentIdx]?.entity_status?.viewed}`);
+          console.log(`   Local state for this card now has: disliked=true, status=${cards[currentIdx]?.entity_status?.status}`);
         }
       }
     } catch (err) {
@@ -600,7 +600,7 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
             <Ionicons name="settings-outline" size={24} color="#1a365d" />
           </Pressable>
           {__DEV__ && (
-            <Pressable onPress={() => navigation.navigate("Diagnostics")} style={styles.iconButton}>
+            <Pressable onPress={() => (navigation as any).navigate("Diagnostics")} style={styles.iconButton}>
               <Ionicons name="bug-outline" size={24} color="#EF4444" />
             </Pressable>
           )}

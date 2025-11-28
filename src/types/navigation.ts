@@ -6,8 +6,10 @@ export type AuthStackParamList = {
   SignUp: undefined;
 };
 
+import type { Person } from '../api/specter';
+
 export type MainStackParamList = {
-  SwipeDeck: undefined;
+  SwipeDeck: { updatedPerson?: Person } | undefined;
   PersonDetail: { personId: string };
   Settings: undefined;
   Diagnostics: undefined;

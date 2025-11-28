@@ -254,10 +254,10 @@ export default function DiagnosticsScreen() {
 
           {cactusState.stats && (
             <View style={styles.statsRow}>
-              <Text style={styles.statItem}>
+              <Text style={styles.cactusStatText}>
                 ⚡ {cactusState.stats.tokensPerSecond?.toFixed(1)} tok/s
               </Text>
-              <Text style={styles.statItem}>
+              <Text style={styles.cactusStatText}>
                 ⏱️ {cactusState.stats.totalTimeMs?.toFixed(0)}ms
               </Text>
             </View>
@@ -566,7 +566,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 16,
   },
-  statItem: {
+  cactusStatText: {
     fontSize: 13,
     color: '#6B7280',
   },

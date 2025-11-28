@@ -1,8 +1,11 @@
 // Native-only Cactus implementation
 // This file is only used on iOS/Android
 
-import { CactusLM } from 'cactus-react-native';
+import { CactusLM, CactusConfig } from 'cactus-react-native';
 import { logger } from '../utils/logger';
+
+// Enable Cactus telemetry for analytics
+CactusConfig.telemetryToken = '12080ceb-cf15-4cc2-b783-5b10aa8d9721';
 
 export type Message = {
   role: 'user' | 'assistant' | 'system';
