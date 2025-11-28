@@ -8,17 +8,84 @@ import {
   Pressable,
   Share,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { logger, LogEntry } from '../utils/logger';
 import { useAuth } from '@clerk/clerk-expo';
+import { getCactusClient } from '../ai/cactusClient';
 
 export default function DiagnosticsScreen() {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [filter, setFilter] = useState<'all' | 'error' | 'warn' | 'info'>('all');
   const [autoRefresh, setAutoRefresh] = useState(true);
   const { isSignedIn, userId } = useAuth();
+
+  // Cactus AI State
+  const [cactusState, setCactusState] = useState<{
+    status: 'idle' | 'downloading' | 'initializing' | 'ready' | 'generating' | 'error';
+    progress: number;
+    response: string;
+    error: string | null;
+    stats: { tokensPerSecond?: number; totalTimeMs?: number } | null;
+  }>({
+    status: 'idle',
+    progress: 0,
+    response: '',
+    error: null,
+    stats: null,
+  });
+
+  const testCactusAI = async () => {
+    setCactusState({ status: 'downloading', progress: 0, response: '', error: null, stats: null });
+    
+    try {
+      const client = getCactusClient();
+      
+      // Download model
+      await client.download((progress) => {
+        setCactusState(prev => ({ ...prev, progress }));
+      });
+      
+      setCactusState(prev => ({ ...prev, status: 'initializing' }));
+      
+      // Initialize
+      await client.ensureReady();
+      
+      setCactusState(prev => ({ ...prev, status: 'generating', response: '' }));
+      
+      // Test completion with streaming
+      const result = await client.complete({
+        messages: [
+          { role: 'system', content: 'You are a helpful assistant. Keep responses brief.' },
+          { role: 'user', content: 'Say "Cactus AI is working!" in exactly those words.' },
+        ],
+        options: { maxTokens: 50, temperature: 0.3 },
+        onToken: (token) => {
+          setCactusState(prev => ({ ...prev, response: prev.response + token }));
+        },
+      });
+      
+      setCactusState(prev => ({
+        ...prev,
+        status: 'ready',
+        stats: {
+          tokensPerSecond: result.tokensPerSecond,
+          totalTimeMs: result.totalTimeMs,
+        },
+      }));
+      
+      logger.info('CactusTest', 'AI test completed successfully', result);
+    } catch (error: any) {
+      logger.error('CactusTest', 'AI test failed', error);
+      setCactusState(prev => ({
+        ...prev,
+        status: 'error',
+        error: error.message || 'Unknown error',
+      }));
+    }
+  };
 
   useEffect(() => {
     if (autoRefresh) {
@@ -136,6 +203,69 @@ export default function DiagnosticsScreen() {
             {isSignedIn ? '✓' : '✗'}
           </Text>
           <Text style={styles.statLabel}>Auth</Text>
+        </View>
+      </View>
+
+      {/* Cactus AI Test Section */}
+      <View style={styles.cactusSection}>
+        <View style={styles.cactusHeader}>
+          <Text style={styles.cactusTitle}>🌵 Cactus On-Device AI</Text>
+          <Pressable
+            onPress={testCactusAI}
+            disabled={cactusState.status === 'downloading' || cactusState.status === 'generating'}
+            style={[
+              styles.testButton,
+              (cactusState.status === 'downloading' || cactusState.status === 'generating') && styles.testButtonDisabled,
+            ]}
+          >
+            {cactusState.status === 'downloading' || cactusState.status === 'initializing' || cactusState.status === 'generating' ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Text style={styles.testButtonText}>Test AI</Text>
+            )}
+          </Pressable>
+        </View>
+
+        <View style={styles.cactusStatus}>
+          <View style={styles.statusRow}>
+            <Text style={styles.statusLabel}>Status:</Text>
+            <Text style={[
+              styles.statusValue,
+              cactusState.status === 'ready' && { color: '#22C55E' },
+              cactusState.status === 'error' && { color: '#EF4444' },
+            ]}>
+              {cactusState.status.toUpperCase()}
+            </Text>
+          </View>
+
+          {cactusState.status === 'downloading' && (
+            <View style={styles.progressContainer}>
+              <View style={[styles.progressBar, { width: `${cactusState.progress * 100}%` }]} />
+              <Text style={styles.progressText}>{Math.round(cactusState.progress * 100)}%</Text>
+            </View>
+          )}
+
+          {cactusState.response && (
+            <View style={styles.responseBox}>
+              <Text style={styles.responseLabel}>Response:</Text>
+              <Text style={styles.responseText}>{cactusState.response}</Text>
+            </View>
+          )}
+
+          {cactusState.stats && (
+            <View style={styles.statsRow}>
+              <Text style={styles.statItem}>
+                ⚡ {cactusState.stats.tokensPerSecond?.toFixed(1)} tok/s
+              </Text>
+              <Text style={styles.statItem}>
+                ⏱️ {cactusState.stats.totalTimeMs?.toFixed(0)}ms
+              </Text>
+            </View>
+          )}
+
+          {cactusState.error && (
+            <Text style={styles.errorText}>❌ {cactusState.error}</Text>
+          )}
         </View>
       </View>
 
@@ -338,6 +468,114 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 16,
     color: '#9CA3AF',
+  },
+  // Cactus AI Styles
+  cactusSection: {
+    backgroundColor: 'white',
+    marginHorizontal: 16,
+    marginTop: 12,
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+  cactusHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  cactusTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#111827',
+  },
+  testButton: {
+    backgroundColor: '#10B981',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    minWidth: 80,
+    alignItems: 'center',
+  },
+  testButtonDisabled: {
+    backgroundColor: '#9CA3AF',
+  },
+  testButtonText: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  cactusStatus: {
+    gap: 8,
+  },
+  statusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  statusLabel: {
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  statusValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#3B82F6',
+  },
+  progressContainer: {
+    height: 24,
+    backgroundColor: '#F3F4F6',
+    borderRadius: 12,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: '#10B981',
+    borderRadius: 12,
+  },
+  progressText: {
+    position: 'absolute',
+    width: '100%',
+    textAlign: 'center',
+    lineHeight: 24,
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#374151',
+  },
+  responseBox: {
+    backgroundColor: '#F0FDF4',
+    padding: 12,
+    borderRadius: 8,
+    borderLeftWidth: 3,
+    borderLeftColor: '#10B981',
+  },
+  responseLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#166534',
+    marginBottom: 4,
+  },
+  responseText: {
+    fontSize: 14,
+    color: '#15803D',
+    lineHeight: 20,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    gap: 16,
+  },
+  statItem: {
+    fontSize: 13,
+    color: '#6B7280',
+  },
+  errorText: {
+    fontSize: 14,
+    color: '#EF4444',
+    padding: 8,
+    backgroundColor: '#FEF2F2',
+    borderRadius: 8,
   },
 });
 
