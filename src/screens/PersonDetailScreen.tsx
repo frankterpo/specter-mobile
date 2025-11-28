@@ -25,6 +25,9 @@ import {
   getInitials,
   formatHighlight,
 } from "../api/specter";
+import AIInsightsCard from "../components/AIInsightsCard";
+import type { FounderAnalysisResult } from "../ai/founderAgent";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type MainStackParamList = {
   PeopleList: undefined;
@@ -50,9 +53,14 @@ export default function PersonDetailScreen({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState<"like" | "dislike" | null>(null);
+  const [cachedAnalysis, setCachedAnalysis] = useState<FounderAnalysisResult | null>(null);
+
+  // Cache key for AI analysis
+  const getCacheKey = (id: string) => `ai_analysis_${id}`;
 
   useEffect(() => {
     loadPersonDetail();
+    loadCachedAnalysis();
   }, [personId]);
 
   const loadPersonDetail = async () => {
@@ -72,6 +80,26 @@ export default function PersonDetailScreen({
       console.error("Load person detail error:", err);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const loadCachedAnalysis = async () => {
+    try {
+      const cached = await AsyncStorage.getItem(getCacheKey(personId));
+      if (cached) {
+        setCachedAnalysis(JSON.parse(cached));
+      }
+    } catch (err) {
+      console.error("Failed to load cached analysis:", err);
+    }
+  };
+
+  const handleAnalysisComplete = async (analysis: FounderAnalysisResult) => {
+    setCachedAnalysis(analysis);
+    try {
+      await AsyncStorage.setItem(getCacheKey(personId), JSON.stringify(analysis));
+    } catch (err) {
+      console.error("Failed to cache analysis:", err);
     }
   };
 
@@ -241,6 +269,13 @@ export default function PersonDetailScreen({
             )}
           </View>
         </View>
+
+        {/* AI Insights Section */}
+        <AIInsightsCard
+          person={person}
+          cachedAnalysis={cachedAnalysis}
+          onAnalysisComplete={handleAnalysisComplete}
+        />
 
         {/* Tagline Section */}
         {person.tagline && (
