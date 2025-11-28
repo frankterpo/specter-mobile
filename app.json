@@ -8,10 +8,18 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.vibecode"
     },
     "android": {
-      "edgeToEdgeEnabled": true
-    }
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.vibecode"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "adbe5265-2344-44cb-8161-4a21cf0b60f1"
+      }
+    },
+    "owner": "frankterpo"
   }
 }
