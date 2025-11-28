@@ -1,8 +1,40 @@
 // Cactus On-Device AI Client
 // Wrapper around cactus-react-native for local LLM inference
 
-import { CactusLM, type Message, type CompleteOptions, type Tool } from 'cactus-react-native';
+import { Platform } from 'react-native';
 import { logger } from '../utils/logger';
+
+// Conditionally import Cactus only on native platforms
+// Web will get a mock implementation
+let CactusLM: any;
+if (Platform.OS !== 'web') {
+  CactusLM = require('cactus-react-native').CactusLM;
+}
+
+// Re-export types
+export type Message = {
+  role: 'user' | 'assistant' | 'system';
+  content?: string;
+  images?: string[];
+};
+
+export type CompleteOptions = {
+  temperature?: number;
+  topP?: number;
+  topK?: number;
+  maxTokens?: number;
+  stopSequences?: string[];
+};
+
+export type Tool = {
+  name: string;
+  description: string;
+  parameters: {
+    type: 'object';
+    properties: Record<string, { type: string; description: string }>;
+    required: string[];
+  };
+};
 
 export interface CactusClientConfig {
   model?: string;
@@ -43,11 +75,17 @@ class CactusClient {
 
   private constructor(config: CactusClientConfig = {}) {
     this.model = config.model ?? 'qwen3-0.6';
-    this.lm = new CactusLM({
-      model: this.model,
-      contextSize: config.contextSize ?? 2048,
-    });
-    logger.info('CactusClient', `Initialized with model: ${this.model}`);
+    
+    // Only initialize CactusLM on native platforms
+    if (Platform.OS !== 'web' && CactusLM) {
+      this.lm = new CactusLM({
+        model: this.model,
+        contextSize: config.contextSize ?? 2048,
+      });
+      logger.info('CactusClient', `Initialized with model: ${this.model}`);
+    } else {
+      logger.warn('CactusClient', 'Running on web - Cactus AI not available');
+    }
   }
 
   /**
@@ -74,6 +112,13 @@ class CactusClient {
    * Download the model if not already downloaded
    */
   async download(onProgress?: (progress: number) => void): Promise<void> {
+    // Web mock - pretend download is instant
+    if (Platform.OS === 'web' || !this.lm) {
+      onProgress?.(1.0);
+      this.downloadState = 'downloaded';
+      return;
+    }
+
     if (this.downloadState === 'downloaded') {
       onProgress?.(1.0);
       return;
@@ -88,7 +133,7 @@ class CactusClient {
 
     try {
       await this.lm.download({
-        onProgress: (progress) => {
+        onProgress: (progress: number) => {
           this.downloadProgress = progress;
           onProgress?.(progress);
           if (progress < 1) {
@@ -109,6 +154,12 @@ class CactusClient {
    * Initialize the model for inference
    */
   async init(): Promise<void> {
+    // Web mock - instant init
+    if (Platform.OS === 'web' || !this.lm) {
+      this.initState = 'ready';
+      return;
+    }
+
     if (this.initState === 'ready') {
       return;
     }
@@ -155,6 +206,38 @@ class CactusClient {
   async complete(params: CactusCompleteParams): Promise<CactusCompleteResult> {
     await this.ensureReady();
 
+    // Web mock response
+    if (Platform.OS === 'web' || !this.lm) {
+      const mockResponse = `**SUMMARY**
+• This is a web preview - AI analysis requires iOS/Android
+• On-device inference only works on native platforms
+• Build and run on a real device to see AI in action
+
+**STRENGTHS**
+• Cactus SDK provides fast on-device inference
+• No data leaves the device - total privacy
+
+**RISKS**
+• Web preview cannot demonstrate AI features
+• Please test on iOS simulator or device`;
+
+      // Simulate streaming
+      const tokens = mockResponse.split('');
+      for (const token of tokens) {
+        params.onToken?.(token);
+        await new Promise(r => setTimeout(r, 5));
+      }
+
+      return {
+        success: true,
+        response: mockResponse,
+        functionCalls: undefined,
+        timeToFirstTokenMs: 100,
+        totalTimeMs: tokens.length * 5,
+        tokensPerSecond: 20,
+      };
+    }
+
     logger.info('CactusClient', 'Starting completion', {
       messageCount: params.messages.length,
       hasTools: !!params.tools?.length,
@@ -198,6 +281,11 @@ class CactusClient {
    * Generate text embedding
    */
   async embed(text: string): Promise<number[]> {
+    if (Platform.OS === 'web' || !this.lm) {
+      // Return mock embedding for web
+      return new Array(384).fill(0).map(() => Math.random());
+    }
+
     await this.ensureReady();
 
     logger.debug('CactusClient', 'Generating embedding', { textLength: text.length });
@@ -215,7 +303,9 @@ class CactusClient {
    * Stop current generation
    */
   async stop(): Promise<void> {
-    await this.lm.stop();
+    if (this.lm) {
+      await this.lm.stop();
+    }
     logger.info('CactusClient', 'Generation stopped');
   }
 
@@ -223,7 +313,9 @@ class CactusClient {
    * Reset conversation context
    */
   async reset(): Promise<void> {
-    await this.lm.reset();
+    if (this.lm) {
+      await this.lm.reset();
+    }
     logger.info('CactusClient', 'Context reset');
   }
 
@@ -231,7 +323,9 @@ class CactusClient {
    * Destroy client and free resources
    */
   async destroy(): Promise<void> {
-    await this.lm.destroy();
+    if (this.lm) {
+      await this.lm.destroy();
+    }
     this.initState = 'idle';
     logger.info('CactusClient', 'Client destroyed');
   }
@@ -240,6 +334,9 @@ class CactusClient {
    * Get available models
    */
   async getModels() {
+    if (!this.lm) {
+      return [{ slug: 'qwen3-0.6', name: 'Qwen3 0.6B (Web Preview)', isDownloaded: false }];
+    }
     return this.lm.getModels();
   }
 
