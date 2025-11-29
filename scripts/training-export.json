@@ -1,0 +1,130 @@
+{
+  "exportedAt": "2025-11-29T23:58:09.931Z",
+  "personas": {
+    "early": {
+      "liked": [
+        {
+          "id": "tushar_dadlani",
+          "name": "Tushar Dadlani",
+          "score": 100,
+          "verdict": "STRONG LIKE",
+          "reasons": [
+            "serial_founder",
+            "prior_exit",
+            "prior_vc_backed_founder",
+            "top_university",
+            "major_tech_experience",
+            "New Company",
+            "Founder"
+          ],
+          "userFeedback": "agree",
+          "userNote": "great",
+          "userAgreed": true,
+          "timestamp": "2025-11-29T23:36:48.428Z"
+        },
+        {
+          "id": "badri_rajasekar",
+          "name": "Badri Rajasekar",
+          "score": 100,
+          "verdict": "STRONG LIKE",
+          "reasons": [
+            "serial_founder",
+            "prior_exit",
+            "prior_vc_backed_founder",
+            "top_university",
+            "major_tech_experience",
+            "New Company",
+            "Founder",
+            "Microsoft"
+          ],
+          "userFeedback": "agree",
+          "userNote": "great",
+          "userAgreed": true,
+          "timestamp": "2025-11-29T23:36:48.428Z"
+        },
+        {
+          "id": "caspar_gerleve",
+          "name": "Caspar Gerleve",
+          "score": 100,
+          "verdict": "STRONG LIKE",
+          "reasons": [
+            "serial_founder",
+            "prior_exit",
+            "prior_vc_backed_founder",
+            "top_university",
+            "major_tech_experience",
+            "New Company",
+            "Founder"
+          ],
+          "userFeedback": "agree",
+          "userNote": "great",
+          "userAgreed": true,
+          "timestamp": "2025-11-29T23:36:48.428Z"
+        },
+        {
+          "id": "ian_crosby",
+          "name": "Ian Crosby",
+          "score": 100,
+          "verdict": "STRONG LIKE",
+          "reasons": [
+            "serial_founder",
+            "prior_exit",
+            "prior_vc_backed_founder",
+            "top_university",
+            "major_tech_experience",
+            "New Company",
+            "Founder",
+            "CEO"
+          ],
+          "userFeedback": "agree",
+          "userNote": "great",
+          "userAgreed": true,
+          "timestamp": "2025-11-29T23:36:48.428Z"
+        },
+        {
+          "id": "bethany_w",
+          "name": "Bethany W.",
+          "score": 100,
+          "verdict": "STRONG LIKE",
+          "reasons": [
+            "serial_founder",
+            "prior_exit",
+            "prior_vc_backed_founder",
+            "top_university",
+            "major_tech_experience",
+            "New Company"
+          ],
+          "concerns": [
+            "Chief Humanist - vague title"
+          ],
+          "userFeedback": "agree",
+          "userNote": "not so great",
+          "userAgreed": true,
+          "needsReview": true,
+          "timestamp": "2025-11-29T23:36:48.428Z"
+        }
+      ],
+      "disliked": [],
+      "corrections": []
+    },
+    "growth": {
+      "liked": [],
+      "disliked": [],
+      "corrections": []
+    },
+    "pe": {
+      "liked": [],
+      "disliked": [],
+      "corrections": []
+    },
+    "ib": {
+      "liked": [],
+      "disliked": [],
+      "corrections": []
+    }
+  },
+  "preferencePairs": [],
+  "totalLikes": 5,
+  "totalDislikes": 0,
+  "totalCorrections": 0
+}
