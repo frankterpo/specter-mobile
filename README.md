@@ -96,7 +96,7 @@ src/
 
 ## 🎬 Demo
 
-📺 **[Watch Video Demo](https://drive.google.com/file/d/1Wxn7vGI1gkpSAMZK81P2H8uv-PIxclub/view?usp=drive_link)**
+📺 **[Watch Video Demo](https://drive.google.com/file/d/1LDkMafuVStOeGk6OpgZ2I6xuDmgYYMsy/view?usp=drive_link)**
 
 ---
 
