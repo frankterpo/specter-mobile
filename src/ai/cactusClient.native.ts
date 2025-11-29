@@ -52,6 +52,42 @@ export interface CactusCompleteResult {
   tokensPerSecond: number;
 }
 
+// ============================================
+// COMPLETION LOGGING FOR DIAGNOSTICS
+// ============================================
+
+export interface CompletionLog {
+  timestamp: string;
+  systemPrompt: string;
+  userMessage: string;
+  response: string;
+  toolCalls?: { name: string; arguments: Record<string, any>; result?: any }[];
+  inferenceTimeMs: number;
+  tokensPerSecond: number;
+}
+
+const MAX_COMPLETION_LOGS = 20;
+const completionLogs: CompletionLog[] = [];
+
+export function getCompletionLogs(): CompletionLog[] {
+  return [...completionLogs];
+}
+
+export function clearCompletionLogs(): void {
+  completionLogs.length = 0;
+}
+
+function logCompletion(log: CompletionLog): void {
+  completionLogs.unshift(log);
+  if (completionLogs.length > MAX_COMPLETION_LOGS) {
+    completionLogs.pop();
+  }
+  logger.info('CactusClient', 'Completion logged', {
+    userMessage: log.userMessage.slice(0, 50),
+    inferenceTimeMs: log.inferenceTimeMs,
+  });
+}
+
 type DownloadState = 'idle' | 'downloading' | 'downloaded';
 type InitState = 'idle' | 'initializing' | 'ready';
 
@@ -163,6 +199,10 @@ class CactusClient {
       hasTools: !!params.tools?.length,
     });
 
+    // Extract system and user messages for logging
+    const systemMsg = params.messages.find(m => m.role === 'system')?.content || '';
+    const userMsg = params.messages.find(m => m.role === 'user')?.content || '';
+
     try {
       const result = await this.lm.complete({
         messages: params.messages,
@@ -178,6 +218,20 @@ class CactusClient {
       logger.info('CactusClient', 'Completion finished', {
         success: result.success,
         totalTimeMs: result.totalTimeMs,
+        tokensPerSecond: result.tokensPerSecond,
+      });
+
+      // Log completion for diagnostics
+      logCompletion({
+        timestamp: new Date().toISOString(),
+        systemPrompt: systemMsg,
+        userMessage: userMsg,
+        response: result.response,
+        toolCalls: result.functionCalls?.map(fc => ({
+          name: fc.name,
+          arguments: fc.arguments,
+        })),
+        inferenceTimeMs: result.totalTimeMs,
         tokensPerSecond: result.tokensPerSecond,
       });
 

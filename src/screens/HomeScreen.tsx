@@ -20,6 +20,9 @@ import {
   Modal,
   TextInput,
   Dimensions,
+  PanResponder,
+  GestureResponderEvent,
+  PanResponderGestureState,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -41,17 +44,29 @@ import {
   TalentSignal,
   InvestorInterestSignal,
   AuthError,
+  likePerson,
+  dislikePerson,
 } from "../api/specter";
 import { logger } from "../utils/logger";
 import { getFounderAgent } from "../ai/founderAgent";
+import { getAgentMemory } from "../ai/agentMemory";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const SWIPE_THRESHOLD = 80; // Minimum swipe distance to trigger action
 
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<MainStackParamList, "Dashboard">;
 };
 
 type FeedType = "people" | "companies" | "talent" | "investors" | "interest";
+
+// Track which cards are being swiped
+type SwipeState = {
+  [key: string]: {
+    translateX: Animated.Value;
+    isProcessing: boolean;
+  };
+};
 
 const FEED_OPTIONS: { type: FeedType; label: string; icon: keyof typeof Ionicons.glyphMap; color: string }[] = [
   { type: "people", label: "People", icon: "people", color: "#3B82F6" },
@@ -84,17 +99,25 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   const [globalExpanded, setGlobalExpanded] = useState(false);
   const [personalExpanded, setPersonalExpanded] = useState(false);
 
-  // Feed switcher state
-  const [feedSwitcherVisible, setFeedSwitcherVisible] = useState(false);
+  // Feed state
   const [currentFeed, setCurrentFeed] = useState<FeedType>("people");
-  const feedSwitcherAnim = useRef(new Animated.Value(0)).current;
+  
+  // Agent actions modal state
+  const [agentActionsVisible, setAgentActionsVisible] = useState(false);
+  const agentActionsAnim = useRef(new Animated.Value(0)).current;
   const masterButtonAnim = useRef(new Animated.Value(1)).current;
+  const [isAutoProcessing, setIsAutoProcessing] = useState(false);
+  const [autoProcessProgress, setAutoProcessProgress] = useState(0);
 
   // AI Search Creator state
   const [aiSearchModalVisible, setAiSearchModalVisible] = useState(false);
   const [aiSearchPrompt, setAiSearchPrompt] = useState("");
   const [aiSearchLoading, setAiSearchLoading] = useState(false);
   const [aiSearchSuggestion, setAiSearchSuggestion] = useState<string | null>(null);
+
+  // Swipe state for cards
+  const [swipeStates, setSwipeStates] = useState<SwipeState>({});
+  const [processingIds, setProcessingIds] = useState<Set<string>>(new Set());
 
   // Load saved searches on mount
   useEffect(() => {
@@ -157,6 +180,9 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   const handleSearchSelect = async (search: SavedSearch) => {
     setSelectedSearch(search);
     setIsLoadingResults(true);
+    // Collapse dropdowns to give room for results
+    setGlobalExpanded(false);
+    setPersonalExpanded(false);
     // Clear previous results
     setSearchResults([]);
     setCompanyResults([]);
@@ -250,14 +276,174 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     navigation.navigate("PersonDetail", { personId });
   };
 
-  // Feed Switcher Animation
-  const toggleFeedSwitcher = async () => {
+  // ============================================
+  // QUICK ACTIONS - Like/Dislike without navigation
+  // ============================================
+
+  const handleQuickLike = async (person: Person) => {
+    const personId = person.id || (person as any).person_id;
+    if (!personId || processingIds.has(personId)) return;
+
+    setProcessingIds(prev => new Set(prev).add(personId));
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+    try {
+      const token = await getToken();
+      if (!token) throw new Error("Not authenticated");
+
+      // Call API
+      await likePerson(token, personId);
+
+      // Record to memory with +1.0 reward
+      const memory = getAgentMemory();
+      const currentJob = person.experience?.find(e => e.is_current);
+      memory.recordLike(
+        { id: personId, name: person.full_name || 'Unknown' },
+        `Quick liked from feed`
+      );
+      memory.learnFromLike({
+        industry: currentJob?.industry,
+        seniority: person.seniority,
+        region: person.region,
+        highlights: person.people_highlights,
+      });
+
+      // Remove from list (show next)
+      setSearchResults(prev => prev.filter(p => (p.id || (p as any).person_id) !== personId));
+      
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      logger.info("HomeScreen", `Quick liked: ${person.full_name}`, { personId, reward: +1.0 });
+    } catch (err: any) {
+      logger.error("HomeScreen", "Quick like failed", err);
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    } finally {
+      setProcessingIds(prev => {
+        const next = new Set(prev);
+        next.delete(personId);
+        return next;
+      });
+    }
+  };
+
+  const handleQuickDislike = async (person: Person) => {
+    const personId = person.id || (person as any).person_id;
+    if (!personId || processingIds.has(personId)) return;
+
+    setProcessingIds(prev => new Set(prev).add(personId));
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
+    try {
+      const token = await getToken();
+      if (!token) throw new Error("Not authenticated");
+
+      // Call API
+      await dislikePerson(token, personId);
+
+      // Record to memory with -1.0 reward
+      const memory = getAgentMemory();
+      const currentJob = person.experience?.find(e => e.is_current);
+      memory.recordDislike(
+        { id: personId, name: person.full_name || 'Unknown' },
+        `Quick disliked from feed`
+      );
+      memory.learnFromDislike({
+        industry: currentJob?.industry,
+        seniority: person.seniority,
+        region: person.region,
+        highlights: person.people_highlights,
+      });
+
+      // Remove from list (show next)
+      setSearchResults(prev => prev.filter(p => (p.id || (p as any).person_id) !== personId));
+      
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+      logger.info("HomeScreen", `Quick disliked: ${person.full_name}`, { personId, reward: -1.0 });
+    } catch (err: any) {
+      logger.error("HomeScreen", "Quick dislike failed", err);
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    } finally {
+      setProcessingIds(prev => {
+        const next = new Set(prev);
+        next.delete(personId);
+        return next;
+      });
+    }
+  };
+
+  // Get or create swipe animation value for a card
+  const getSwipeAnim = (id: string): Animated.Value => {
+    if (!swipeStates[id]) {
+      const newAnim = new Animated.Value(0);
+      setSwipeStates(prev => ({
+        ...prev,
+        [id]: { translateX: newAnim, isProcessing: false }
+      }));
+      return newAnim;
+    }
+    return swipeStates[id].translateX;
+  };
+
+  // Create pan responder for swipe gestures
+  const createPanResponder = (person: Person) => {
+    const personId = person.id || (person as any).person_id;
+    if (!personId) return null;
+
+    const translateX = new Animated.Value(0);
+
+    return {
+      translateX,
+      panResponder: PanResponder.create({
+        onStartShouldSetPanResponder: () => false,
+        onMoveShouldSetPanResponder: (_, gestureState) => {
+          // Only capture horizontal swipes
+          return Math.abs(gestureState.dx) > 10 && Math.abs(gestureState.dy) < 20;
+        },
+        onPanResponderGrant: () => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        },
+        onPanResponderMove: (_, gestureState) => {
+          translateX.setValue(gestureState.dx);
+        },
+        onPanResponderRelease: (_, gestureState) => {
+          if (gestureState.dx > SWIPE_THRESHOLD) {
+            // Swipe right = Like
+            Animated.timing(translateX, {
+              toValue: SCREEN_WIDTH,
+              duration: 200,
+              useNativeDriver: true,
+            }).start(() => {
+              handleQuickLike(person);
+            });
+          } else if (gestureState.dx < -SWIPE_THRESHOLD) {
+            // Swipe left = Dislike
+            Animated.timing(translateX, {
+              toValue: -SCREEN_WIDTH,
+              duration: 200,
+              useNativeDriver: true,
+            }).start(() => {
+              handleQuickDislike(person);
+            });
+          } else {
+            // Snap back
+            Animated.spring(translateX, {
+              toValue: 0,
+              friction: 5,
+              useNativeDriver: true,
+            }).start();
+          }
+        },
+      }),
+    };
+  };
+
+  // Agent Actions Modal Animation
+  const toggleAgentActions = async () => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     
-    if (feedSwitcherVisible) {
+    if (agentActionsVisible) {
       // Close
       Animated.parallel([
-        Animated.timing(feedSwitcherAnim, {
+        Animated.timing(agentActionsAnim, {
           toValue: 0,
           duration: 200,
           useNativeDriver: true,
@@ -267,12 +453,12 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
           friction: 6,
           useNativeDriver: true,
         }),
-      ]).start(() => setFeedSwitcherVisible(false));
+      ]).start(() => setAgentActionsVisible(false));
     } else {
       // Open
-      setFeedSwitcherVisible(true);
+      setAgentActionsVisible(true);
       Animated.parallel([
-        Animated.timing(feedSwitcherAnim, {
+        Animated.timing(agentActionsAnim, {
           toValue: 1,
           duration: 200,
           useNativeDriver: true,
@@ -286,10 +472,96 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     }
   };
 
-  const selectFeed = async (feed: FeedType) => {
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setCurrentFeed(feed);
-    toggleFeedSwitcher();
+  // Auto-process signals based on learned preferences
+  const handleAutoProcess = async (action: 'like' | 'dislike') => {
+    if (!selectedSearch || searchResults.length === 0) {
+      Alert.alert("No Results", "Select a saved search first to auto-process signals.");
+      return;
+    }
+
+    setIsAutoProcessing(true);
+    setAutoProcessProgress(0);
+    toggleAgentActions();
+    
+    const memory = getAgentMemory();
+    const prefs = memory.buildPreferenceSummary();
+    
+    try {
+      const token = await getToken();
+      if (!token) throw new Error("Not authenticated");
+
+      let processed = 0;
+      const total = Math.min(searchResults.length, 10); // Process up to 10 at a time
+
+      for (const person of searchResults.slice(0, total)) {
+        const personId = person.id || (person as any).person_id;
+        if (!personId) continue;
+
+        // Skip if already processed
+        if (memory.isLiked(personId) || memory.isDisliked(personId)) {
+          processed++;
+          setAutoProcessProgress((processed / total) * 100);
+          continue;
+        }
+
+        try {
+          if (action === 'like') {
+            await likePerson(token, personId);
+            memory.recordLike(
+              { id: personId, name: person.full_name || 'Unknown', type: 'person' },
+              'Auto-liked by AI agent'
+            );
+          } else {
+            await dislikePerson(token, personId);
+            memory.recordDislike(
+              { id: personId, name: person.full_name || 'Unknown', type: 'person' },
+              'Auto-disliked by AI agent'
+            );
+          }
+        } catch (err) {
+          logger.warn("HomeScreen", `Failed to ${action} ${personId}`, err);
+        }
+
+        processed++;
+        setAutoProcessProgress((processed / total) * 100);
+        
+        // Small delay to avoid rate limiting
+        await new Promise(r => setTimeout(r, 200));
+      }
+
+      // Remove processed items from list
+      setSearchResults(prev => prev.slice(total));
+      
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      Alert.alert(
+        "Auto-Process Complete", 
+        `${action === 'like' ? 'Liked' : 'Disliked'} ${processed} signals based on your preferences.`
+      );
+      
+      logger.info("HomeScreen", `Auto-processed ${processed} signals`, { action });
+    } catch (err: any) {
+      logger.error("HomeScreen", "Auto-process failed", err);
+      Alert.alert("Error", err.message || "Failed to auto-process signals");
+    } finally {
+      setIsAutoProcessing(false);
+      setAutoProcessProgress(0);
+    }
+  };
+
+  // Open thesis refinement chat
+  const handleThesisRefinement = () => {
+    toggleAgentActions();
+    // Navigate to a chat/memory refinement screen or open a modal
+    // For now, show the AI search modal repurposed for thesis chat
+    setAiSearchPrompt("");
+    setAiSearchSuggestion(null);
+    setAiSearchModalVisible(true);
+  };
+
+  // View AI Learning / Memory stats
+  const handleViewAILearning = () => {
+    toggleAgentActions();
+    navigation.navigate("Diagnostics");
   };
 
   // AI Search Creation
@@ -363,44 +635,114 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     );
   };
 
-  // Render person result card
+  // Render person result card with inline actions and swipe
   const renderPersonCard = (person: Person) => {
     const currentJob = person.experience?.find(e => e.is_current);
+    const personId = person.id || (person as any).person_id;
+    const isProcessing = processingIds.has(personId);
+    
+    // Create swipe handler
+    const swipeHandler = createPanResponder(person);
     
     return (
-      <Pressable
-        key={person.id}
-        onPress={() => handlePersonTap(person)}
-        style={({ pressed }) => [
-          styles.personCard,
-          pressed && styles.personCardPressed,
+      <Animated.View
+        key={personId}
+        style={[
+          styles.swipeableCard,
+          swipeHandler && {
+            transform: [{ translateX: swipeHandler.translateX }],
+          },
         ]}
+        {...(swipeHandler?.panResponder.panHandlers)}
       >
-        {person.profile_image_url ? (
-          <Image
-            source={{ uri: person.profile_image_url }}
-            style={styles.personAvatar}
-            contentFit="cover"
-          />
-        ) : (
-          <View style={[styles.personAvatar, styles.personAvatarPlaceholder]}>
-            <Text style={styles.personAvatarText}>
-              {person.first_name?.[0]}{person.last_name?.[0]}
-            </Text>
+        {/* Swipe indicators (behind the card) */}
+        <View style={styles.swipeIndicators}>
+          <View style={[styles.swipeIndicator, styles.swipeIndicatorLeft]}>
+            <Ionicons name="thumbs-down" size={24} color="#FFF" />
+            <Text style={styles.swipeIndicatorText}>PASS</Text>
           </View>
-        )}
-        <View style={styles.personInfo}>
-          <Text style={styles.personName} numberOfLines={1}>
-            {person.full_name}
-          </Text>
-          {currentJob && (
-            <Text style={styles.personRole} numberOfLines={1}>
-              {currentJob.title} at {currentJob.company_name}
-            </Text>
-          )}
+          <View style={[styles.swipeIndicator, styles.swipeIndicatorRight]}>
+            <Ionicons name="thumbs-up" size={24} color="#FFF" />
+            <Text style={styles.swipeIndicatorText}>LIKE</Text>
+          </View>
         </View>
-        <Ionicons name="chevron-forward" size={20} color="#94A3B8" />
-      </Pressable>
+
+        {/* Main card */}
+        <Pressable
+          onPress={() => handlePersonTap(person)}
+          style={({ pressed }) => [
+            styles.personCard,
+            pressed && styles.personCardPressed,
+          ]}
+        >
+          {person.profile_image_url ? (
+            <Image
+              source={{ uri: person.profile_image_url }}
+              style={styles.personAvatar}
+              contentFit="cover"
+            />
+          ) : (
+            <View style={[styles.personAvatar, styles.personAvatarPlaceholder]}>
+              <Text style={styles.personAvatarText}>
+                {person.first_name?.[0]}{person.last_name?.[0]}
+              </Text>
+            </View>
+          )}
+          <View style={styles.personInfo}>
+            <Text style={styles.personName} numberOfLines={1}>
+              {person.full_name}
+            </Text>
+            {currentJob && (
+              <Text style={styles.personRole} numberOfLines={1}>
+                {currentJob.title} at {currentJob.company_name}
+              </Text>
+            )}
+            {/* Quick highlight */}
+            {person.people_highlights?.[0] && (
+              <View style={styles.quickHighlight}>
+                <Ionicons name="star" size={10} color="#F59E0B" />
+                <Text style={styles.quickHighlightText} numberOfLines={1}>
+                  {person.people_highlights[0].replace(/_/g, ' ')}
+                </Text>
+              </View>
+            )}
+          </View>
+
+          {/* Inline Quick Actions */}
+          <View style={styles.quickActions}>
+            <Pressable
+              onPress={() => handleQuickDislike(person)}
+              disabled={isProcessing}
+              style={({ pressed }) => [
+                styles.quickActionButton,
+                styles.quickActionDislike,
+                pressed && styles.quickActionPressed,
+              ]}
+            >
+              {isProcessing ? (
+                <ActivityIndicator size={14} color="#EF4444" />
+              ) : (
+                <Ionicons name="thumbs-down" size={16} color="#EF4444" />
+              )}
+            </Pressable>
+            <Pressable
+              onPress={() => handleQuickLike(person)}
+              disabled={isProcessing}
+              style={({ pressed }) => [
+                styles.quickActionButton,
+                styles.quickActionLike,
+                pressed && styles.quickActionPressed,
+              ]}
+            >
+              {isProcessing ? (
+                <ActivityIndicator size={14} color="#22C55E" />
+              ) : (
+                <Ionicons name="thumbs-up" size={16} color="#22C55E" />
+              )}
+            </Pressable>
+          </View>
+        </Pressable>
+      </Animated.View>
     );
   };
 
@@ -547,33 +889,109 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     );
   };
 
+  // Skeleton loading card component
+  const SkeletonCard = ({ index }: { index: number }) => {
+    const shimmerAnim = useRef(new Animated.Value(0)).current;
+    
+    useEffect(() => {
+      const animation = Animated.loop(
+        Animated.sequence([
+          Animated.timing(shimmerAnim, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(shimmerAnim, {
+            toValue: 0,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+        ])
+      );
+      animation.start();
+      return () => animation.stop();
+    }, []);
+
+    const opacity = shimmerAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0.3, 0.7],
+    });
+
+    return (
+      <Animated.View 
+        style={[
+          styles.skeletonCard, 
+          { opacity, transform: [{ translateY: index * 2 }] }
+        ]}
+      >
+        <View style={styles.skeletonHeader}>
+          <View style={styles.skeletonAvatar} />
+          <View style={styles.skeletonHeaderText}>
+            <View style={styles.skeletonName} />
+            <View style={styles.skeletonRole} />
+          </View>
+        </View>
+        <View style={styles.skeletonBody}>
+          <View style={styles.skeletonLine} />
+          <View style={[styles.skeletonLine, { width: '60%' }]} />
+        </View>
+        <View style={styles.skeletonActions}>
+          <View style={styles.skeletonButton} />
+          <View style={styles.skeletonButton} />
+        </View>
+      </Animated.View>
+    );
+  };
+
+  // Render skeleton loading state
+  const renderSkeletonLoading = () => (
+    <View style={styles.skeletonContainer}>
+      {[0, 1, 2, 3].map((i) => (
+        <SkeletonCard key={i} index={i} />
+      ))}
+    </View>
+  );
+
   // Render results based on type
   const renderResults = () => {
     if (isLoadingResults) {
-      return (
-        <View style={styles.resultsLoading}>
-          <ActivityIndicator size="small" color="#3B82F6" />
-          <Text style={styles.resultsLoadingText}>Loading results...</Text>
-        </View>
-      );
+      return renderSkeletonLoading();
     }
 
     switch (resultType) {
       case 'person':
         if (searchResults.length === 0) {
-          return <Text style={styles.noResultsText}>No people found</Text>;
+          return (
+            <View style={styles.emptyResults}>
+              <Ionicons name="people-outline" size={40} color="#CBD5E1" />
+              <Text style={styles.emptyResultsTitle}>No people found</Text>
+              <Text style={styles.emptyResultsSubtitle}>Try selecting a different search</Text>
+            </View>
+          );
         }
         return <View style={styles.resultsList}>{searchResults.map(renderPersonCard)}</View>;
         
       case 'company':
         if (companyResults.length === 0) {
-          return <Text style={styles.noResultsText}>No companies found</Text>;
+          return (
+            <View style={styles.emptyResults}>
+              <Ionicons name="business-outline" size={40} color="#CBD5E1" />
+              <Text style={styles.emptyResultsTitle}>No companies found</Text>
+              <Text style={styles.emptyResultsSubtitle}>Try selecting a different search</Text>
+            </View>
+          );
         }
         return <View style={styles.resultsList}>{companyResults.map(renderCompanyCard)}</View>;
         
       case 'interest':
         if (interestResults.length === 0) {
-          return <Text style={styles.noResultsText}>No interest signals found</Text>;
+          return (
+            <View style={styles.emptyResults}>
+              <Ionicons name="trending-up-outline" size={40} color="#CBD5E1" />
+              <Text style={styles.emptyResultsTitle}>No interest signals found</Text>
+              <Text style={styles.emptyResultsSubtitle}>Try selecting a different search</Text>
+            </View>
+          );
         }
         return <View style={styles.resultsList}>{interestResults.map(renderInterestCard)}</View>;
         
@@ -594,9 +1012,28 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
   if (isLoading && !isRefreshing) {
     return (
-      <View style={[styles.container, styles.centered, { paddingTop: insets.top }]}>
-        <ActivityIndicator size="large" color="#1a365d" />
-        <Text style={styles.loadingText}>Loading your searches...</Text>
+      <View style={[styles.container, { paddingTop: insets.top }]}>
+        {/* Header skeleton */}
+        <View style={styles.header}>
+          <View style={styles.logoContainer}>
+            <View style={styles.logoIcon}>
+              <Ionicons name="prism" size={18} color="#1E3A5F" />
+            </View>
+            <Text style={styles.headerTitle}>Specter</Text>
+          </View>
+        </View>
+        {/* Loading content */}
+        <View style={styles.initialLoadingContainer}>
+          <View style={styles.initialLoadingContent}>
+            <View style={styles.loadingPulse}>
+              <Ionicons name="search-outline" size={32} color="#3B82F6" />
+            </View>
+            <Text style={styles.initialLoadingTitle}>Loading your searches...</Text>
+            <Text style={styles.initialLoadingSubtitle}>
+              Fetching saved searches and preferences
+            </Text>
+          </View>
+        </View>
       </View>
     );
   }
@@ -634,15 +1071,48 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
         </View>
       </View>
 
-      {/* Current Feed Indicator */}
-      <View style={styles.feedIndicator}>
-        <View style={[styles.feedIndicatorDot, { backgroundColor: getCurrentFeedConfig().color }]} />
-        <Text style={styles.feedIndicatorText}>
-          {getCurrentFeedConfig().label}
-        </Text>
-        <Text style={styles.feedIndicatorCount}>
-          {globalSearches.length + personalSearches.length} searches
-        </Text>
+      {/* Feed Tabs */}
+      <View style={styles.feedTabsContainer}>
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.feedTabsContent}
+        >
+          {FEED_OPTIONS.map((option) => (
+            <Pressable
+              key={option.type}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                setCurrentFeed(option.type);
+              }}
+              style={[
+                styles.feedTab,
+                currentFeed === option.type && styles.feedTabActive,
+                currentFeed === option.type && { borderBottomColor: option.color },
+              ]}
+            >
+              <Ionicons 
+                name={option.icon} 
+                size={16} 
+                color={currentFeed === option.type ? option.color : "#64748B"} 
+              />
+              <Text style={[
+                styles.feedTabText,
+                currentFeed === option.type && styles.feedTabTextActive,
+                currentFeed === option.type && { color: option.color },
+              ]}>
+                {option.label}
+              </Text>
+              {currentFeed === option.type && (
+                <View style={[styles.feedTabCountBadge, { backgroundColor: option.color + '20' }]}>
+                  <Text style={[styles.feedTabCount, { color: option.color }]}>
+                    {globalSearches.length + personalSearches.length}
+                  </Text>
+                </View>
+              )}
+            </Pressable>
+          ))}
+        </ScrollView>
       </View>
 
       {/* Main Content */}
@@ -744,11 +1214,37 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
             {/* Selected Search Results */}
             {selectedSearch && (
               <View style={styles.resultsSection}>
-                <View style={styles.resultsSectionHeader}>
-                  <Text style={styles.sectionTitle}>{selectedSearch.name}</Text>
-                  <Text style={styles.resultsCount}>
-                    {getResultCount()} of {selectedSearch.full_count.toLocaleString()}
-                  </Text>
+                {/* Active Search Header */}
+                <View style={styles.activeSearchHeader}>
+                  <View style={styles.activeSearchInfo}>
+                    <View style={styles.activeSearchIcon}>
+                      <Ionicons 
+                        name={selectedSearch.is_global ? "globe-outline" : "bookmark"} 
+                        size={16} 
+                        color="#3B82F6" 
+                      />
+                    </View>
+                    <View style={styles.activeSearchText}>
+                      <Text style={styles.activeSearchName} numberOfLines={1}>
+                        {selectedSearch.name}
+                      </Text>
+                      <Text style={styles.activeSearchMeta}>
+                        {getResultCount()} of {selectedSearch.full_count.toLocaleString()} results
+                      </Text>
+                    </View>
+                  </View>
+                  <Pressable 
+                    onPress={() => {
+                      setSelectedSearch(null);
+                      setSearchResults([]);
+                      setCompanyResults([]);
+                      setInterestResults([]);
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    }}
+                    style={styles.clearSearchButton}
+                  >
+                    <Ionicons name="close" size={18} color="#64748B" />
+                  </Pressable>
                 </View>
                 {renderResults()}
               </View>
@@ -756,19 +1252,9 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
           </>
         )}
 
-        {/* AI Preferences Summary */}
-        <View style={styles.preferencesCard}>
-          <View style={styles.preferencesHeader}>
-            <Ionicons name="sparkles" size={18} color="#8B5CF6" />
-            <Text style={styles.preferencesTitle}>AI Learning</Text>
-          </View>
-          <Text style={styles.preferencesText}>
-            {getPreferenceSummary()}
-          </Text>
-        </View>
       </ScrollView>
 
-      {/* Master Feed Switcher Button */}
+      {/* Agent Actions Button */}
       <Animated.View
         style={[
           styles.masterButtonContainer,
@@ -778,24 +1264,24 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
           },
         ]}
       >
-        <Pressable onPress={toggleFeedSwitcher} style={styles.masterButton}>
-          <View style={[styles.masterButtonIcon, { backgroundColor: getCurrentFeedConfig().color }]}>
-            <Ionicons name={getCurrentFeedConfig().icon} size={24} color="#FFF" />
+        <Pressable onPress={toggleAgentActions} style={styles.masterButton}>
+          <View style={[styles.masterButtonIcon, { backgroundColor: "#8B5CF6" }]}>
+            <Ionicons name="flash" size={24} color="#FFF" />
           </View>
         </Pressable>
       </Animated.View>
 
-      {/* Feed Switcher Modal */}
-      {feedSwitcherVisible && (
-        <Pressable style={styles.feedSwitcherOverlay} onPress={toggleFeedSwitcher}>
+      {/* Agent Actions Modal */}
+      {agentActionsVisible && (
+        <Pressable style={styles.feedSwitcherOverlay} onPress={toggleAgentActions}>
           <Animated.View
             style={[
               styles.feedSwitcherModal,
               {
-                opacity: feedSwitcherAnim,
+                opacity: agentActionsAnim,
                 transform: [
                   {
-                    scale: feedSwitcherAnim.interpolate({
+                    scale: agentActionsAnim.interpolate({
                       inputRange: [0, 1],
                       outputRange: [0.8, 1],
                     }),
@@ -804,34 +1290,102 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
               },
             ]}
           >
-            <Text style={styles.feedSwitcherTitle}>Switch Feed</Text>
+            <Text style={styles.feedSwitcherTitle}>⚡ Agent Actions</Text>
+            <Text style={styles.agentActionsSubtitle}>
+              Bulk actions powered by your learned preferences
+            </Text>
+            
             <View style={styles.feedSwitcherOptions}>
-              {FEED_OPTIONS.map((option) => (
-                <Pressable
-                  key={option.type}
-                  onPress={() => selectFeed(option.type)}
-                  style={[
-                    styles.feedSwitcherOption,
-                    currentFeed === option.type && styles.feedSwitcherOptionActive,
-                  ]}
-                >
-                  <View style={[styles.feedSwitcherOptionIcon, { backgroundColor: option.color }]}>
-                    <Ionicons name={option.icon} size={24} color="#FFF" />
-                  </View>
-                  <Text
-                    style={[
-                      styles.feedSwitcherOptionLabel,
-                      currentFeed === option.type && styles.feedSwitcherOptionLabelActive,
-                    ]}
-                  >
-                    {option.label}
+              {/* Auto-Like */}
+              <Pressable
+                onPress={() => handleAutoProcess('like')}
+                disabled={isAutoProcessing || searchResults.length === 0}
+                style={[
+                  styles.agentActionOption,
+                  (isAutoProcessing || searchResults.length === 0) && styles.agentActionDisabled,
+                ]}
+              >
+                <View style={[styles.agentActionIcon, { backgroundColor: "#22C55E" }]}>
+                  <Ionicons name="thumbs-up" size={22} color="#FFF" />
+                </View>
+                <View style={styles.agentActionInfo}>
+                  <Text style={styles.agentActionLabel}>Auto-Like Top Matches</Text>
+                  <Text style={styles.agentActionDesc}>
+                    Like signals matching your preferences
                   </Text>
-                  {currentFeed === option.type && (
-                    <Ionicons name="checkmark-circle" size={20} color={option.color} />
-                  )}
-                </Pressable>
-              ))}
+                </View>
+                <Ionicons name="chevron-forward" size={20} color="#94A3B8" />
+              </Pressable>
+
+              {/* Auto-Dislike */}
+              <Pressable
+                onPress={() => handleAutoProcess('dislike')}
+                disabled={isAutoProcessing || searchResults.length === 0}
+                style={[
+                  styles.agentActionOption,
+                  (isAutoProcessing || searchResults.length === 0) && styles.agentActionDisabled,
+                ]}
+              >
+                <View style={[styles.agentActionIcon, { backgroundColor: "#EF4444" }]}>
+                  <Ionicons name="thumbs-down" size={22} color="#FFF" />
+                </View>
+                <View style={styles.agentActionInfo}>
+                  <Text style={styles.agentActionLabel}>Auto-Pass Low Matches</Text>
+                  <Text style={styles.agentActionDesc}>
+                    Skip signals that don't fit your thesis
+                  </Text>
+                </View>
+                <Ionicons name="chevron-forward" size={20} color="#94A3B8" />
+              </Pressable>
+
+              {/* Thesis Refinement */}
+              <Pressable
+                onPress={handleThesisRefinement}
+                style={styles.agentActionOption}
+              >
+                <View style={[styles.agentActionIcon, { backgroundColor: "#3B82F6" }]}>
+                  <Ionicons name="chatbubbles" size={22} color="#FFF" />
+                </View>
+                <View style={styles.agentActionInfo}>
+                  <Text style={styles.agentActionLabel}>Refine Thesis</Text>
+                  <Text style={styles.agentActionDesc}>
+                    Chat with AI to refine your investment thesis
+                  </Text>
+                </View>
+                <Ionicons name="chevron-forward" size={20} color="#94A3B8" />
+              </Pressable>
+
+              {/* AI Learning / Memory */}
+              <Pressable
+                onPress={handleViewAILearning}
+                style={styles.agentActionOption}
+              >
+                <View style={[styles.agentActionIcon, { backgroundColor: "#F59E0B" }]}>
+                  <Ionicons name="sparkles" size={22} color="#FFF" />
+                </View>
+                <View style={styles.agentActionInfo}>
+                  <Text style={styles.agentActionLabel}>AI Learning</Text>
+                  <Text style={styles.agentActionDesc}>
+                    View what the AI has learned about you
+                  </Text>
+                </View>
+                <View style={styles.aiLearningBadge}>
+                  <Text style={styles.aiLearningBadgeText}>{getPreferenceSummary().split('•')[0].trim() || 'New'}</Text>
+                </View>
+              </Pressable>
             </View>
+
+            {/* Progress indicator during auto-processing */}
+            {isAutoProcessing && (
+              <View style={styles.autoProcessProgress}>
+                <View style={styles.autoProcessBar}>
+                  <View style={[styles.autoProcessFill, { width: `${autoProcessProgress}%` }]} />
+                </View>
+                <Text style={styles.autoProcessText}>
+                  Processing... {Math.round(autoProcessProgress)}%
+                </Text>
+              </View>
+            )}
           </Animated.View>
         </Pressable>
       )}
@@ -987,28 +1541,46 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  feedIndicator: {
+  // Feed Tabs
+  feedTabsContainer: {
+    backgroundColor: "#FFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E2E8F0",
+    height: 48,
+  },
+  feedTabsContent: {
+    paddingHorizontal: 8,
+    alignItems: "center",
+    height: 48,
+  },
+  feedTab: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    backgroundColor: "#FFF",
-    gap: 8,
+    paddingHorizontal: 14,
+    height: 48,
+    gap: 6,
+    borderBottomWidth: 3,
+    borderBottomColor: "transparent",
   },
-  feedIndicatorDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+  feedTabActive: {
+    borderBottomWidth: 3,
   },
-  feedIndicatorText: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#1E293B",
-    flex: 1,
-  },
-  feedIndicatorCount: {
-    fontSize: 12,
+  feedTabText: {
+    fontSize: 13,
+    fontWeight: "500",
     color: "#64748B",
+  },
+  feedTabTextActive: {
+    fontWeight: "600",
+  },
+  feedTabCountBadge: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
+  },
+  feedTabCount: {
+    fontSize: 11,
+    fontWeight: "600",
   },
   content: {
     flex: 1,
@@ -1176,8 +1748,8 @@ const styles = StyleSheet.create({
     color: "#FFF",
   },
   resultsSection: {
-    padding: 20,
-    paddingTop: 0,
+    padding: 16,
+    paddingTop: 8,
   },
   resultsSectionHeader: {
     flexDirection: "row",
@@ -1188,6 +1760,54 @@ const styles = StyleSheet.create({
   resultsCount: {
     fontSize: 12,
     color: "#64748B",
+  },
+  // Active Search Header
+  activeSearchHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#EFF6FF",
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#BFDBFE",
+  },
+  activeSearchInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    gap: 10,
+  },
+  activeSearchIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    backgroundColor: "#DBEAFE",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  activeSearchText: {
+    flex: 1,
+  },
+  activeSearchName: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#1E40AF",
+  },
+  activeSearchMeta: {
+    fontSize: 12,
+    color: "#3B82F6",
+    marginTop: 1,
+  },
+  clearSearchButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "#FFF",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 8,
   },
   resultsLoading: {
     flexDirection: "row",
@@ -1203,6 +1823,111 @@ const styles = StyleSheet.create({
   resultsList: {
     gap: 8,
   },
+  // Skeleton loading styles
+  skeletonContainer: {
+    gap: 12,
+  },
+  skeletonCard: {
+    backgroundColor: "#FFF",
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "#F1F5F9",
+  },
+  skeletonHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    marginBottom: 12,
+  },
+  skeletonAvatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#F1F5F9",
+  },
+  skeletonHeaderText: {
+    flex: 1,
+    gap: 6,
+  },
+  skeletonName: {
+    height: 14,
+    width: "70%",
+    backgroundColor: "#F1F5F9",
+    borderRadius: 4,
+  },
+  skeletonRole: {
+    height: 10,
+    width: "50%",
+    backgroundColor: "#F1F5F9",
+    borderRadius: 4,
+  },
+  skeletonBody: {
+    gap: 8,
+    marginBottom: 12,
+  },
+  skeletonLine: {
+    height: 10,
+    width: "90%",
+    backgroundColor: "#F1F5F9",
+    borderRadius: 4,
+  },
+  skeletonActions: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  skeletonButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "#F1F5F9",
+  },
+  // Empty results state
+  emptyResults: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 40,
+    gap: 8,
+  },
+  emptyResultsTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#64748B",
+    marginTop: 8,
+  },
+  emptyResultsSubtitle: {
+    fontSize: 13,
+    color: "#94A3B8",
+  },
+  // Initial loading screen
+  initialLoadingContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: 100,
+  },
+  initialLoadingContent: {
+    alignItems: "center",
+    gap: 12,
+  },
+  loadingPulse: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: "#EFF6FF",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 8,
+  },
+  initialLoadingTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#1E293B",
+  },
+  initialLoadingSubtitle: {
+    fontSize: 14,
+    color: "#64748B",
+  },
   personCard: {
     flexDirection: "row",
     alignItems: "center",
@@ -1215,6 +1940,85 @@ const styles = StyleSheet.create({
   },
   personCardPressed: {
     opacity: 0.8,
+  },
+  // Swipeable card container
+  swipeableCard: {
+    position: 'relative',
+    marginBottom: 8,
+  },
+  swipeIndicators: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  swipeIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  swipeIndicatorLeft: {
+    backgroundColor: '#EF4444',
+  },
+  swipeIndicatorRight: {
+    backgroundColor: '#22C55E',
+  },
+  swipeIndicatorText: {
+    color: '#FFF',
+    fontWeight: '700',
+    fontSize: 12,
+  },
+  // Quick action buttons
+  quickActions: {
+    flexDirection: 'row',
+    gap: 8,
+    marginLeft: 8,
+  },
+  quickActionButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+  },
+  quickActionLike: {
+    backgroundColor: '#F0FDF4',
+    borderColor: '#22C55E',
+  },
+  quickActionDislike: {
+    backgroundColor: '#FEF2F2',
+    borderColor: '#EF4444',
+  },
+  quickActionPressed: {
+    opacity: 0.6,
+    transform: [{ scale: 0.95 }],
+  },
+  // Quick highlight badge
+  quickHighlight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 4,
+    backgroundColor: '#FFFBEB',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    alignSelf: 'flex-start',
+  },
+  quickHighlightText: {
+    fontSize: 10,
+    color: '#B45309',
+    fontWeight: '500',
+    textTransform: 'capitalize',
   },
   personAvatar: {
     width: 44,
@@ -1429,6 +2233,80 @@ const styles = StyleSheet.create({
   },
   feedSwitcherOptionLabelActive: {
     color: "#3B82F6",
+  },
+  // Agent Actions Modal
+  agentActionsSubtitle: {
+    fontSize: 13,
+    color: "#64748B",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  agentActionOption: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 14,
+    borderRadius: 12,
+    backgroundColor: "#F8FAFC",
+    marginBottom: 10,
+    gap: 12,
+  },
+  agentActionDisabled: {
+    opacity: 0.5,
+  },
+  agentActionIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  agentActionInfo: {
+    flex: 1,
+  },
+  agentActionLabel: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#1E293B",
+    marginBottom: 2,
+  },
+  agentActionDesc: {
+    fontSize: 12,
+    color: "#64748B",
+  },
+  aiLearningBadge: {
+    backgroundColor: "#FEF3C7",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  aiLearningBadgeText: {
+    fontSize: 11,
+    fontWeight: "600",
+    color: "#D97706",
+  },
+  autoProcessProgress: {
+    marginTop: 16,
+    padding: 12,
+    backgroundColor: "#F0FDF4",
+    borderRadius: 8,
+  },
+  autoProcessBar: {
+    height: 6,
+    backgroundColor: "#E2E8F0",
+    borderRadius: 3,
+    overflow: "hidden",
+    marginBottom: 8,
+  },
+  autoProcessFill: {
+    height: "100%",
+    backgroundColor: "#22C55E",
+    borderRadius: 3,
+  },
+  autoProcessText: {
+    fontSize: 12,
+    color: "#166534",
+    textAlign: "center",
+    fontWeight: "500",
   },
   aiModalOverlay: {
     flex: 1,

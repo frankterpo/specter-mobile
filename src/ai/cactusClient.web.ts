@@ -48,6 +48,30 @@ export interface CactusCompleteResult {
   tokensPerSecond: number;
 }
 
+// ============================================
+// COMPLETION LOGGING FOR DIAGNOSTICS (Web mock)
+// ============================================
+
+export interface CompletionLog {
+  timestamp: string;
+  systemPrompt: string;
+  userMessage: string;
+  response: string;
+  toolCalls?: { name: string; arguments: Record<string, any>; result?: any }[];
+  inferenceTimeMs: number;
+  tokensPerSecond: number;
+}
+
+const completionLogs: CompletionLog[] = [];
+
+export function getCompletionLogs(): CompletionLog[] {
+  return [...completionLogs];
+}
+
+export function clearCompletionLogs(): void {
+  completionLogs.length = 0;
+}
+
 type DownloadState = 'idle' | 'downloading' | 'downloaded';
 type InitState = 'idle' | 'initializing' | 'ready';
 

@@ -4,12 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 import { useUser, useClerk } from "@clerk/clerk-expo";
-
-type MainStackParamList = {
-  PeopleList: undefined;
-  PersonDetail: { personId: string };
-  Settings: undefined;
-};
+import { MainStackParamList } from "../types/navigation";
 
 type SettingsScreenProps = {
   navigation: NativeStackNavigationProp<MainStackParamList, "Settings">;
@@ -37,7 +32,6 @@ export default function SettingsScreen({ navigation }: SettingsScreenProps) {
             setIsLoggingOut(true);
             try {
               await signOut();
-              // Navigation handled by App.tsx auth state
             } catch (error) {
               console.error("Logout error:", error);
               Alert.alert("Error", "Failed to sign out. Please try again.");
@@ -51,189 +45,140 @@ export default function SettingsScreen({ navigation }: SettingsScreenProps) {
     );
   };
 
-  return (
-    <View className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
-      {/* Header */}
-      <View className="px-6 pt-4 pb-4" style={styles.header}>
-        <View className="flex-row items-center">
-          <Pressable
-            onPress={() => navigation.goBack()}
-            className="w-10 h-10 items-center justify-center rounded-full mr-3"
-            style={styles.backButton}
-          >
-            <Ionicons name="arrow-back" size={24} color="#1a365d" />
-          </Pressable>
-          <Text className="text-2xl font-bold" style={styles.title}>
-            Settings
-          </Text>
+  const MenuItem = ({ 
+    icon, 
+    label, 
+    onPress, 
+    iconColor = "#1a365d",
+    showChevron = true,
+    badge,
+  }: { 
+    icon: keyof typeof Ionicons.glyphMap; 
+    label: string; 
+    onPress?: () => void;
+    iconColor?: string;
+    showChevron?: boolean;
+    badge?: string;
+  }) => (
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [styles.menuItem, pressed && styles.menuItemPressed]}
+    >
+      <View style={[styles.iconContainer, { backgroundColor: iconColor + '15' }]}>
+        <Ionicons name={icon} size={20} color={iconColor} />
+      </View>
+      <Text style={styles.menuItemText}>{label}</Text>
+      {badge && (
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>{badge}</Text>
         </View>
+      )}
+      {showChevron && (
+        <Ionicons name="chevron-forward" size={18} color="#CBD5E1" />
+      )}
+    </Pressable>
+  );
+
+  return (
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Pressable
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
+          <Ionicons name="arrow-back" size={22} color="#1E293B" />
+        </Pressable>
+        <Text style={styles.title}>Settings</Text>
+        <View style={styles.headerSpacer} />
       </View>
 
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        {/* Profile Section */}
-        <View className="px-6 pt-6 pb-4">
-          <Text className="text-xs font-semibold mb-3" style={styles.sectionHeader}>
-            PROFILE
-          </Text>
-          <View className="rounded-xl p-4" style={styles.profileCard}>
-            <View className="flex-row items-center">
-              <View
-                className="w-14 h-14 rounded-full items-center justify-center mr-4"
-                style={styles.avatar}
-              >
-                <Text className="text-xl font-semibold text-white">
-                  {user?.firstName?.[0]?.toUpperCase() || user?.emailAddresses?.[0]?.emailAddress?.[0]?.toUpperCase() || "U"}
-                </Text>
-              </View>
-              <View className="flex-1">
-                <Text className="text-base font-semibold mb-1" style={styles.userName}>
-                  {user?.firstName && user?.lastName
-                    ? `${user.firstName} ${user.lastName}`
-                    : user?.firstName || "User"}
-                </Text>
-                <Text className="text-sm" style={styles.userEmail}>
-                  {user?.emailAddresses?.[0]?.emailAddress || "user@example.com"}
-                </Text>
-              </View>
-            </View>
+      <ScrollView 
+        style={styles.content}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Profile Card */}
+        <View style={styles.profileCard}>
+          <View style={styles.avatar}>
+            <Text style={styles.avatarText}>
+              {user?.firstName?.[0]?.toUpperCase() || user?.emailAddresses?.[0]?.emailAddress?.[0]?.toUpperCase() || "U"}
+            </Text>
+          </View>
+          <View style={styles.profileInfo}>
+            <Text style={styles.userName}>
+              {user?.firstName && user?.lastName
+                ? `${user.firstName} ${user.lastName}`
+                : user?.firstName || "User"}
+            </Text>
+            <Text style={styles.userEmail}>
+              {user?.emailAddresses?.[0]?.emailAddress || "user@example.com"}
+            </Text>
           </View>
         </View>
 
         {/* Account Section */}
-        <View className="px-6 py-4">
-          <Text className="text-xs font-semibold mb-3" style={styles.sectionHeader}>
-            ACCOUNT
-          </Text>
+        <View style={styles.section}>
+          <Text style={styles.sectionHeader}>ACCOUNT</Text>
+          <View style={styles.menuGroup}>
+            <MenuItem icon="person-outline" label="Edit Profile" />
+            <View style={styles.menuDivider} />
+            <MenuItem icon="lock-closed-outline" label="Change Password" />
+            <View style={styles.menuDivider} />
+            <MenuItem icon="notifications-outline" label="Notifications" />
+          </View>
+        </View>
 
-          <Pressable
-            className="rounded-xl p-4 mb-2"
-            style={({ pressed }) => [styles.menuItem, pressed && styles.menuItemPressed]}
-          >
-            <View className="flex-row items-center">
-              <View
-                className="w-10 h-10 rounded-full items-center justify-center mr-3"
-                style={styles.iconContainer}
-              >
-                <Ionicons name="person-outline" size={20} color="#1a365d" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-base" style={styles.menuItemText}>
-                  Edit Profile
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#cbd5e1" />
-            </View>
-          </Pressable>
-
-          <Pressable
-            className="rounded-xl p-4 mb-2"
-            style={({ pressed }) => [styles.menuItem, pressed && styles.menuItemPressed]}
-          >
-            <View className="flex-row items-center">
-              <View
-                className="w-10 h-10 rounded-full items-center justify-center mr-3"
-                style={styles.iconContainer}
-              >
-                <Ionicons name="lock-closed-outline" size={20} color="#1a365d" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-base" style={styles.menuItemText}>
-                  Change Password
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#cbd5e1" />
-            </View>
-          </Pressable>
-
-          <Pressable
-            className="rounded-xl p-4"
-            style={({ pressed }) => [styles.menuItem, pressed && styles.menuItemPressed]}
-          >
-            <View className="flex-row items-center">
-              <View
-                className="w-10 h-10 rounded-full items-center justify-center mr-3"
-                style={styles.iconContainer}
-              >
-                <Ionicons name="notifications-outline" size={20} color="#1a365d" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-base" style={styles.menuItemText}>
-                  Notifications
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#cbd5e1" />
-            </View>
-          </Pressable>
+        {/* AI & Data Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionHeader}>AI & DATA</Text>
+          <View style={styles.menuGroup}>
+            <MenuItem 
+              icon="flask-outline" 
+              label="AI Diagnostics" 
+              iconColor="#8B5CF6"
+              onPress={() => navigation.navigate("Diagnostics")}
+              badge="Dev"
+            />
+            <View style={styles.menuDivider} />
+            <MenuItem 
+              icon="cloud-download-outline" 
+              label="Export Data" 
+              iconColor="#3B82F6"
+            />
+          </View>
         </View>
 
         {/* About Section */}
-        <View className="px-6 py-4">
-          <Text className="text-xs font-semibold mb-3" style={styles.sectionHeader}>
-            ABOUT
+        <View style={styles.section}>
+          <Text style={styles.sectionHeader}>ABOUT</Text>
+          <View style={styles.menuGroup}>
+            <MenuItem icon="help-circle-outline" label="Help & Support" />
+            <View style={styles.menuDivider} />
+            <MenuItem icon="information-circle-outline" label="About Specter" />
+            <View style={styles.menuDivider} />
+            <MenuItem icon="document-text-outline" label="Privacy Policy" />
+          </View>
+        </View>
+
+        {/* Sign Out */}
+        <Pressable
+          onPress={handleLogout}
+          disabled={isLoggingOut}
+          style={({ pressed }) => [
+            styles.signOutButton,
+            (pressed || isLoggingOut) && styles.signOutButtonPressed,
+          ]}
+        >
+          <Ionicons name="log-out-outline" size={20} color="#EF4444" />
+          <Text style={styles.signOutText}>
+            {isLoggingOut ? "Signing Out..." : "Sign Out"}
           </Text>
+        </Pressable>
 
-          <Pressable
-            className="rounded-xl p-4 mb-2"
-            style={({ pressed }) => [styles.menuItem, pressed && styles.menuItemPressed]}
-          >
-            <View className="flex-row items-center">
-              <View
-                className="w-10 h-10 rounded-full items-center justify-center mr-3"
-                style={styles.iconContainer}
-              >
-                <Ionicons name="help-circle-outline" size={20} color="#1a365d" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-base" style={styles.menuItemText}>
-                  Help & Support
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#cbd5e1" />
-            </View>
-          </Pressable>
+        {/* Version */}
+        <Text style={styles.versionText}>Specter Mobile v1.0.0</Text>
 
-          <Pressable
-            className="rounded-xl p-4"
-            style={({ pressed }) => [styles.menuItem, pressed && styles.menuItemPressed]}
-          >
-            <View className="flex-row items-center">
-              <View
-                className="w-10 h-10 rounded-full items-center justify-center mr-3"
-                style={styles.iconContainer}
-              >
-                <Ionicons name="information-circle-outline" size={20} color="#1a365d" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-base" style={styles.menuItemText}>
-                  About Specter
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#cbd5e1" />
-            </View>
-          </Pressable>
-        </View>
-
-        {/* Logout Button */}
-        <View className="px-6 pt-4 pb-8">
-          <Pressable
-            onPress={handleLogout}
-            disabled={isLoggingOut}
-            className="rounded-xl py-4"
-            style={({ pressed }) => [
-              styles.logoutButton,
-              (pressed || isLoggingOut) && styles.logoutButtonPressed,
-            ]}
-          >
-            <View className="flex-row items-center justify-center">
-              <Ionicons name="log-out-outline" size={20} color="#dc2626" />
-              <Text className="text-base font-semibold ml-2" style={styles.logoutButtonText}>
-                {isLoggingOut ? "Signing Out..." : "Sign Out"}
-              </Text>
-            </View>
-          </Pressable>
-        </View>
-
-        {/* Bottom Padding */}
         <View style={{ height: insets.bottom + 20 }} />
       </ScrollView>
     </View>
@@ -241,57 +186,157 @@ export default function SettingsScreen({ navigation }: SettingsScreenProps) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+  },
   header: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#e2e8f0",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: "#FFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E2E8F0",
   },
   backButton: {
-    backgroundColor: "#f7fafc",
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#F1F5F9",
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
-    color: "#1a365d",
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#1E293B",
   },
-  sectionHeader: {
-    color: "#64748b",
-    letterSpacing: 0.5,
+  headerSpacer: {
+    width: 40,
+  },
+  content: {
+    flex: 1,
+  },
+  contentContainer: {
+    padding: 16,
+    gap: 20,
   },
   profileCard: {
-    backgroundColor: "#f7fafc",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: "#FFF",
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: "#E2E8F0",
+    gap: 14,
   },
   avatar: {
-    backgroundColor: "#1a365d",
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: "#1E3A5F",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  avatarText: {
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#FFF",
+  },
+  profileInfo: {
+    flex: 1,
   },
   userName: {
-    color: "#1e293b",
+    fontSize: 17,
+    fontWeight: "600",
+    color: "#1E293B",
+    marginBottom: 2,
   },
   userEmail: {
-    color: "#64748b",
+    fontSize: 14,
+    color: "#64748B",
+  },
+  section: {
+    gap: 8,
+  },
+  sectionHeader: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#64748B",
+    letterSpacing: 0.5,
+    paddingHorizontal: 4,
+  },
+  menuGroup: {
+    backgroundColor: "#FFF",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    overflow: "hidden",
   },
   menuItem: {
-    backgroundColor: "#f7fafc",
-    borderWidth: 1,
-    borderColor: "#e2e8f0",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 14,
+    gap: 12,
   },
   menuItemPressed: {
-    opacity: 0.7,
+    backgroundColor: "#F8FAFC",
+  },
+  menuDivider: {
+    height: 1,
+    backgroundColor: "#F1F5F9",
+    marginLeft: 52,
   },
   iconContainer: {
-    backgroundColor: "#e0e7ff",
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   menuItemText: {
-    color: "#1e293b",
+    flex: 1,
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#1E293B",
   },
-  logoutButton: {
-    backgroundColor: "#fef2f2",
+  badge: {
+    backgroundColor: "#8B5CF6",
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+  },
+  badgeText: {
+    fontSize: 11,
+    fontWeight: "600",
+    color: "#FFF",
+  },
+  signOutButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 16,
+    backgroundColor: "#FEF2F2",
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#fecaca",
+    borderColor: "#FECACA",
+    gap: 8,
   },
-  logoutButtonPressed: {
+  signOutButtonPressed: {
     opacity: 0.7,
   },
-  logoutButtonText: {
-    color: "#dc2626",
+  signOutText: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#EF4444",
+  },
+  versionText: {
+    textAlign: "center",
+    fontSize: 12,
+    color: "#94A3B8",
+    marginTop: 8,
   },
 });

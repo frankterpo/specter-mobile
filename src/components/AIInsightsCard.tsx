@@ -14,7 +14,8 @@ import NetInfo from '@react-native-community/netinfo';
 import { getFounderAgent, type FounderAnalysisResult } from '../ai/founderAgent';
 import type { Person } from '../api/specter';
 import { logger } from '../utils/logger';
-import { useModelStatus } from '../context/AgentContext';
+import { useModelStatus, useAgent } from '../context/AgentContext';
+import { getAgentMemory } from '../ai/agentMemory';
 
 interface AIInsightsCardProps {
   person: Person;
@@ -40,6 +41,7 @@ export default function AIInsightsCard({
   
   // Use pre-warmed model status from AgentContext
   const { status: modelStatus, progress: modelProgress, isReady: modelReady, warmUp } = useModelStatus();
+  const { getFullContextForLLM } = useAgent();
   
   const isGenerating = useRef(false); // <-- Lock for preventing race conditions
   
@@ -107,7 +109,13 @@ export default function AIInsightsCard({
       
       const agent = getFounderAgent();
       
+      // Get full memory context for personalized analysis
+      const memoryContext = getFullContextForLLM();
+      const agentMemoryContext = getAgentMemory().buildFullContext();
+      const fullUserContext = [memoryContext, agentMemoryContext].filter(Boolean).join('\n\n');
+      
       const result = await agent.analyzeFounder(person, {
+        userContext: fullUserContext, // Inject memory context for personalization
         onProgress: (progressStage) => {
           // Only update stage if not already generating (model was pre-warmed)
           if (progressStage === 'generating') {
@@ -149,11 +157,17 @@ export default function AIInsightsCard({
     try {
       const agent = getFounderAgent();
       
+      // Get full memory context for personalized follow-up
+      const memoryContext = getFullContextForLLM();
+      const agentMemoryContext = getAgentMemory().buildFullContext();
+      const fullUserContext = [memoryContext, agentMemoryContext].filter(Boolean).join('\n\n');
+      
       const result = await agent.askFollowUp(
         person,
         analysis.rawResponse,
         followUpQuestion,
         {
+          userContext: fullUserContext, // Inject memory context
           onToken: (token) => {
             setFollowUpResponse(prev => prev + token);
           },
@@ -167,7 +181,7 @@ export default function AIInsightsCard({
     } finally {
       setIsAskingFollowUp(false);
     }
-  }, [followUpQuestion, analysis, person]);
+  }, [followUpQuestion, analysis, person, getFullContextForLLM]);
 
   useEffect(() => {
     if (!cachedAnalysis && stage === 'idle') {

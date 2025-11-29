@@ -14,6 +14,7 @@ import type { Person, SavedSearch, List } from '../api/specter';
 import { logger } from '../utils/logger';
 import { inputManager, UserInput } from '../ai/inputManager';
 import { getCactusClient } from '../ai/cactusClient';
+import { getAgentMemory, agentMemory } from '../ai/agentMemory';
 
 // ============================================
 // TYPES
@@ -361,12 +362,17 @@ export function AgentProvider({ children }: { children: React.ReactNode }) {
         // Start input manager session
         await inputManager.startSession();
         
-        // Load memory from storage
+        // Load agentMemory singleton (primary memory source)
+        await agentMemory.load();
+        const memStats = agentMemory.getStats();
+        logger.info('AgentContext', 'Loaded agentMemory singleton', memStats);
+        
+        // Load AgentContext memory from storage (secondary, for saved searches etc)
         const stored = await AsyncStorage.getItem(STORAGE_KEY);
         if (stored) {
           const memory = JSON.parse(stored) as AgentMemory;
           dispatch({ type: 'SET_MEMORY', payload: memory });
-          logger.info('AgentContext', 'Loaded memory from storage', {
+          logger.info('AgentContext', 'Loaded context memory from storage', {
             interactions: memory.recentInteractions.length,
             searches: memory.savedSearches.length,
           });
@@ -438,31 +444,60 @@ export function AgentProvider({ children }: { children: React.ReactNode }) {
   }, [state.systemPrompt, state.memory]);
   
   const getPreferenceSummary = useCallback(() => {
-    const prefs = state.memory.preferences;
+    // Use BOTH AgentContext memory AND agentMemory singleton
+    const contextPrefs = state.memory.preferences;
+    const memoryStats = agentMemory.getStats();
+    const memoryPrefSummary = agentMemory.buildPreferenceSummary();
+    
     const parts: string[] = [];
     
-    if (prefs.totalLikes > 0 || prefs.totalDislikes > 0) {
-      parts.push(`${prefs.totalLikes} likes, ${prefs.totalDislikes} dislikes`);
+    // Combine stats from both sources
+    const totalLikes = contextPrefs.totalLikes + memoryStats.likedCount;
+    const totalDislikes = contextPrefs.totalDislikes + memoryStats.dislikedCount;
+    
+    if (totalLikes > 0 || totalDislikes > 0) {
+      parts.push(`${totalLikes} likes, ${totalDislikes} dislikes`);
     }
     
-    if (prefs.likedIndustries.length > 0) {
-      parts.push(`Prefers: ${prefs.likedIndustries.slice(0, 2).join(', ')}`);
+    // Add preferences from agentMemory singleton
+    if (memoryPrefSummary) {
+      // Parse the summary for display
+      const prefLines = memoryPrefSummary.split('\n').filter(l => l.trim());
+      if (prefLines.length > 0) {
+        const firstPref = prefLines[0].replace('- ', '');
+        parts.push(firstPref);
+      }
+    } else if (contextPrefs.likedIndustries.length > 0) {
+      parts.push(`Prefers: ${contextPrefs.likedIndustries.slice(0, 2).join(', ')}`);
     }
     
     if (state.memory.savedSearches.length > 0) {
       parts.push(`${state.memory.savedSearches.length} saved searches`);
     }
     
+    // Also show tool calls if any
+    if (memoryStats.toolCallsThisSession > 0) {
+      parts.push(`${memoryStats.toolCallsThisSession} AI tools used`);
+    }
+    
     return parts.length > 0 ? parts.join(' • ') : 'No preferences recorded yet';
   }, [state.memory]);
   
   const getFullContextForLLM = useCallback(() => {
-    // Combine AgentContext memory with InputManager session data
+    // Combine AgentContext memory with InputManager session data AND agentMemory singleton
     const memoryContext = state.systemPrompt || buildSystemPromptFromMemory(state.memory);
     const inputContext = inputManager.buildContextForLLM();
     const patterns = inputManager.getInteractionPatterns();
     
+    // Get full context from agentMemory singleton (includes likes, dislikes, preferences)
+    const agentMemoryContext = agentMemory.buildFullContext();
+    
     const parts: string[] = [memoryContext];
+    
+    // Add agentMemory context (the primary source of learned preferences)
+    if (agentMemoryContext) {
+      parts.push(agentMemoryContext);
+    }
     
     if (inputContext) {
       parts.push(inputContext);
