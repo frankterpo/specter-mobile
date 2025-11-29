@@ -12,6 +12,13 @@ import {
 } from './prompts';
 import type { Person } from '../api/specter';
 import { logger } from '../utils/logger';
+import { ANALYSIS_TOOLS, executeAnalysisTool } from './analysisTools';
+
+export interface ToolCallRecord {
+  tool: string;
+  args: any;
+  result: string;
+}
 
 export interface FounderAnalysisResult {
   summary: string[];
@@ -23,6 +30,7 @@ export interface FounderAnalysisResult {
     tokensPerSecond: number;
     totalTimeMs: number;
   };
+  toolTrace?: ToolCallRecord[];
 }
 
 export interface FollowUpResult {
@@ -35,12 +43,14 @@ export interface FollowUpResult {
 
 export interface StreamingCallbacks {
   onToken?: (token: string) => void;
-  onProgress?: (stage: 'downloading' | 'initializing' | 'generating') => void;
+  onProgress?: (stage: 'downloading' | 'initializing' | 'generating' | 'investigating') => void;
 }
 
 export interface AnalysisOptions extends StreamingCallbacks {
   /** User context from AgentContext for personalization */
   userContext?: string;
+  /** Auth token for API tools */
+  token?: string;
 }
 
 /**
@@ -92,40 +102,172 @@ export class FounderAgent {
       : undefined;
     const messages = buildFounderSummaryPrompt(person, promptOptions);
 
+      // Force tool usage for companies with IDs (Agentic Trigger)
+      if (options?.token) {
+        const companyIds = person.experience
+          ?.filter(e => e.company_id)
+          .map(e => e.company_id)
+          .slice(0, 2); // Check top 2 companies
+
+        if (companyIds && companyIds.length > 0) {
+          // Append to the last user message to avoid confusing message history state
+          const lastMsg = messages[messages.length - 1];
+          if (lastMsg && lastMsg.role === 'user') {
+            // CRITICAL: Force tool usage with explicit format
+            lastMsg.content += `\n\n🚨 CRITICAL: Use 'lookup_company_funding' tool for company IDs: ${companyIds.join(', ')} before generating analysis.`;
+          }
+        }
+      }
+
     let fullResponse = '';
-    const result = await client.complete({
-      messages,
-      options: {
-        maxTokens: 400,
-        temperature: 0.4, // Lower for more consistent output
-      },
-      onToken: (token) => {
-        fullResponse += token;
-        options?.onToken?.(token);
-      },
-    });
+    let finalResult: CactusCompleteResult | null = null;
+    let toolCallsCount = 0;
+    const MAX_TOOL_CALLS = 3;
+    const toolTrace: ToolCallRecord[] = [];
+
+    // Agentic Loop
+    while (toolCallsCount < MAX_TOOL_CALLS) {
+      const tools = options?.token ? ANALYSIS_TOOLS : undefined;
+      // Minimal logging for performance
+      if (__DEV__ && toolCallsCount === 0) {
+        logger.debug('FounderAgent', 'Starting analysis', { hasTools: !!tools });
+      }
+
+      const result = await client.complete({
+        messages,
+        options: {
+          maxTokens: 400,
+          temperature: 0.4,
+        },
+        tools: options?.token ? ANALYSIS_TOOLS : undefined, // Only use tools if we have a token
+        onToken: (token) => {
+          // Pass through tokens only if we're not inside a tool call block (hard to detect with stream, 
+          // but for now assume first pass is reasoning or final answer)
+          // If it's a tool call, the model usually outputs a specific JSON structure which we might leak.
+          // For UX, we might want to buffer? 
+          // Current implementation of CactusClient just streams raw tokens.
+          // We'll just buffer `fullResponse` and stream. If it turns out to be a tool call, 
+          // the UI might show some JSON temporarily, which is acceptable for "thinking".
+          fullResponse += token;
+          options?.onToken?.(token);
+        },
+      });
+
+      // Log only on tool calls for performance
+      if (result.functionCalls?.length && __DEV__) {
+        logger.info('FounderAgent', 'Tool calls detected', { count: result.functionCalls.length });
+      }
+
+      finalResult = result;
+      fullResponse = result.response; // Reset to full response
+
+      // Check if model called tools
+      const modelCalledTools = result.functionCalls && result.functionCalls.length > 0;
+      
+      // FALLBACK: If model didn't call tools but we have company_ids, force tool execution
+      if (!modelCalledTools && toolCallsCount === 0 && options?.token) {
+        const companyIds = person.experience
+          ?.filter(e => e.company_id && e.company_id !== 'REPLACE_WITH_REAL_COMPANY_ID_FROM_POSTGRES')
+          .map(e => e.company_id)
+          .slice(0, 2);
+
+        if (companyIds && companyIds.length > 0) {
+          logger.warn('FounderAgent', 'Model did not call tools, forcing execution', { companyIds });
+          console.log('[AGENT_DEBUG] FALLBACK: Forcing tool execution for company_ids:', companyIds);
+          
+          try {
+            // Manually execute tools
+            for (const companyId of companyIds) {
+              try {
+                const toolOutput = await executeAnalysisTool('lookup_company_funding', { company_id: companyId }, options.token);
+                toolTrace.push({ 
+                  tool: 'lookup_company_funding', 
+                  args: { company_id: companyId }, 
+                  result: toolOutput 
+                });
+                
+                // Add tool result to history for next iteration
+                messages.push({
+                  role: 'user',
+                  content: `[System] Tool 'lookup_company_funding' was called with company_id="${companyId}". Result: ${toolOutput}\n\nNow generate your analysis using this verified funding data.`,
+                });
+              } catch (toolError: any) {
+                logger.error('FounderAgent', 'Tool execution failed', toolError);
+                const errorMsg = `Error calling lookup_company_funding for ${companyId}: ${toolError.message}`;
+                toolTrace.push({ 
+                  tool: 'lookup_company_funding', 
+                  args: { company_id: companyId }, 
+                  result: errorMsg 
+                });
+              }
+            }
+            
+            toolCallsCount++;
+            // Continue loop to let model synthesize with tool results
+            continue;
+          } catch (error: any) {
+            logger.error('FounderAgent', 'Fallback tool execution failed', error);
+            // Don't crash - just break and use what we have
+            break;
+          }
+        }
+      }
+
+      if (modelCalledTools && options?.token) {
+        logger.info('FounderAgent', 'Agent triggering tools', { calls: result.functionCalls.length });
+        options?.onProgress?.('investigating');
+
+        // Add agent's thought process (response) to history
+        messages.push({
+          role: 'assistant',
+          content: result.response || 'Thinking...',
+        });
+
+        // Execute tools
+        for (const call of result.functionCalls) {
+          const toolOutput = await executeAnalysisTool(call.name, call.arguments, options.token);
+          toolTrace.push({ tool: call.name, args: call.arguments, result: toolOutput });
+          
+          // Add tool result to history
+          messages.push({
+            role: 'user', // Inject as user message since 'tool' role not supported yet
+            content: `[System] Tool '${call.name}' output: ${toolOutput}`,
+          });
+        }
+        
+        toolCallsCount++;
+        // Loop back to let the agent synthesize the new info
+      } else {
+        // No tools called and no fallback needed, we are done
+        break;
+      }
+    }
+
+    if (!finalResult) throw new Error("Analysis failed");
 
     // Parse the response into structured sections
-    const parsed = parseAnalysisResponse(result.response || fullResponse);
+    const parsed = parseAnalysisResponse(finalResult.response || fullResponse);
 
     logger.info('FounderAgent', 'Analysis complete', {
       personId: person.id,
       summaryPoints: parsed.summary.length,
       strengthsPoints: parsed.strengths.length,
       risksPoints: parsed.risks.length,
-      tokensPerSecond: result.tokensPerSecond,
+      tokensPerSecond: finalResult.tokensPerSecond,
+      toolLoops: toolCallsCount,
     });
 
     return {
       summary: parsed.summary,
       strengths: parsed.strengths,
       risks: parsed.risks,
-      rawResponse: result.response || fullResponse,
+      rawResponse: finalResult.response || fullResponse,
       generatedAt: new Date().toISOString(),
       stats: {
-        tokensPerSecond: result.tokensPerSecond,
-        totalTimeMs: result.totalTimeMs,
+        tokensPerSecond: finalResult.tokensPerSecond,
+        totalTimeMs: finalResult.totalTimeMs,
       },
+      toolTrace,
     };
   }
 

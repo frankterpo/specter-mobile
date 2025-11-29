@@ -12,9 +12,12 @@ const FOUNDER_ANALYSIS_BASE = `You are an AI analyst for venture capital investo
 
 Your role is to analyze founders and provide investment-relevant insights.
 
+CRITICAL: You have access to tools that can query the Specter API for real-time data. When you see a company_id in the founder's experience, you MUST use the 'lookup_company_funding' tool to get accurate funding information before generating your analysis. DO NOT guess or make assumptions about funding - always use tools to verify.
+
 Guidelines:
 - Be concise and direct - investors are busy
 - Focus on signals that matter for investment decisions
+- ALWAYS use tools when company_id is available - never skip tool calls
 - Acknowledge when data is limited - don't hallucinate
 - Highlight both opportunities and risks honestly
 - Use bullet points for easy scanning`;
@@ -64,7 +67,9 @@ export function buildFounderSummaryPrompt(person: Person, options?: PromptOption
 
 ${personContext}
 
-Provide a brief analysis with these exact sections:
+IMPORTANT: If you see company_id fields in the experience data above, you MUST use the 'lookup_company_funding' tool to get accurate funding information before writing your analysis. Do not proceed without calling tools first.
+
+After using tools (if needed), provide a brief analysis with these exact sections:
 
 **SUMMARY**
 (3-4 bullet points about this person as a founder/talent)
@@ -249,27 +254,26 @@ export function parseAnalysisResponse(response: string): ParsedAnalysis {
   for (const line of lines) {
     const lower = line.toLowerCase();
 
-    // Detect section headers
-    if (lower.includes('summary')) {
+    // Detect section headers - robust matching
+    if (lower.includes('summary') || lower.match(/^#+\s*summary/)) {
       currentSection = 'summary';
       continue;
     }
-    if (lower.includes('strength')) {
+    if (lower.includes('strength') || lower.match(/^#+\s*strength/)) {
       currentSection = 'strengths';
       continue;
     }
-    if (lower.includes('risk') || lower.includes('concern') || lower.includes('question')) {
+    if (lower.includes('risk') || lower.includes('concern') || lower.match(/^#+\s*risk/)) {
       currentSection = 'risks';
       continue;
     }
 
-    // Parse bullet points
-    if (line.match(/^[-*•]\s+/) || line.match(/^\d+\.\s+/)) {
-      const content = line
-        .replace(/^[-*•]\s*/, '')
-        .replace(/^\d+\.\s*/, '')
-        .replace(/^\*\*/, '')
-        .replace(/\*\*$/, '')
+    // Parse bullet points and numbered lists
+    const listMatch = line.match(/^([-*•]|\d+\.?)\s+(.*)/);
+    if (listMatch) {
+      const content = listMatch[2]
+        .replace(/^\*\*/, '') // Remove leading bold
+        .replace(/\*\*$/, '') // Remove trailing bold
         .trim();
 
       if (content && currentSection) {

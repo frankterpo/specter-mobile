@@ -1,21 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  TextInput,
-  ActivityIndicator,
-  Animated,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
-import NetInfo from '@react-native-community/netinfo';
-import { getFounderAgent, type FounderAnalysisResult } from '../ai/founderAgent';
-import type { Person } from '../api/specter';
-import { logger } from '../utils/logger';
-import { useModelStatus, useAgent } from '../context/AgentContext';
-import { getAgentMemory } from '../ai/agentMemory';
+import { useAuth } from '@clerk/clerk-expo';
 
 interface AIInsightsCardProps {
   person: Person;
@@ -23,7 +6,7 @@ interface AIInsightsCardProps {
   onAnalysisComplete?: (analysis: FounderAnalysisResult) => void;
 }
 
-type Stage = 'idle' | 'downloading' | 'initializing' | 'generating' | 'complete' | 'error';
+type Stage = 'idle' | 'downloading' | 'initializing' | 'generating' | 'investigating' | 'complete' | 'error';
 
 export default function AIInsightsCard({
   person,
@@ -42,6 +25,7 @@ export default function AIInsightsCard({
   // Use pre-warmed model status from AgentContext
   const { status: modelStatus, progress: modelProgress, isReady: modelReady, warmUp } = useModelStatus();
   const { getFullContextForLLM } = useAgent();
+  const { getToken } = useAuth();
   
   const isGenerating = useRef(false); // <-- Lock for preventing race conditions
   
@@ -67,7 +51,7 @@ export default function AIInsightsCard({
   }, [stage]);
 
   useEffect(() => {
-    if (stage === 'generating') {
+    if (stage === 'generating' || stage === 'investigating') {
       Animated.loop(
         Animated.sequence([
           Animated.timing(pulseAnim, { toValue: 0.6, duration: 800, useNativeDriver: true }),
@@ -108,6 +92,7 @@ export default function AIInsightsCard({
       }
       
       const agent = getFounderAgent();
+      const token = await getToken();
       
       // Get full memory context for personalized analysis
       const memoryContext = getFullContextForLLM();
@@ -116,9 +101,10 @@ export default function AIInsightsCard({
       
       const result = await agent.analyzeFounder(person, {
         userContext: fullUserContext, // Inject memory context for personalization
+        token: token || undefined,
         onProgress: (progressStage) => {
           // Only update stage if not already generating (model was pre-warmed)
-          if (progressStage === 'generating') {
+          if (progressStage === 'generating' || progressStage === 'investigating') {
             setStage(progressStage);
           }
         },
@@ -146,7 +132,7 @@ export default function AIInsightsCard({
     } finally {
       isGenerating.current = false; // <-- Release lock
     }
-  }, [person, onAnalysisComplete, modelReady, modelStatus, warmUp]);
+  }, [person, onAnalysisComplete, modelReady, modelStatus, warmUp, getToken]);
 
   const askFollowUp = useCallback(async () => {
     if (!followUpQuestion.trim() || !analysis) return;
@@ -201,6 +187,7 @@ export default function AIInsightsCard({
           : 'Downloading Neural Engine...';
       case 'initializing': return 'Initializing Cortex...';
       case 'generating': return 'Analyzing Founder Data...';
+      case 'investigating': return 'Investigating (using Specter API)...';
       default: return '';
     }
   };

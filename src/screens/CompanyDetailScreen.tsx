@@ -23,16 +23,18 @@ import { Image } from "expo-image";
 import * as Haptics from "expo-haptics";
 import { useAgent } from "../context/AgentContext";
 import { MainStackParamList } from "../types/navigation";
-import { Company } from "../api/specter";
+import { Company, fetchCompanyDetail } from "../api/specter";
 import { logger } from "../utils/logger";
 import { getAgentMemory } from "../ai/agentMemory";
+import { useAuth } from "@clerk/clerk-expo";
 
 type Props = NativeStackScreenProps<MainStackParamList, "CompanyDetail">;
 
 export default function CompanyDetailScreen({ route, navigation }: Props) {
-  const { companyId } = route.params;
+  const { companyId, companyData } = route.params;
   const insets = useSafeAreaInsets();
   const { trackInteraction } = useAgent();
+  const { getToken } = useAuth();
   
   const [company, setCompany] = useState<Company | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -111,20 +113,26 @@ export default function CompanyDetailScreen({ route, navigation }: Props) {
       setIsLoading(true);
       setError(null);
       
-      // TODO: Implement fetchCompanyById in specter.ts
-      // For now, we'll show a placeholder with the ID
-      // const data = await fetchCompanyById(companyId);
-      // setCompany(data);
-      
-      // Placeholder - in production, fetch from API
-      setCompany({
-        id: companyId,
-        company_id: companyId,
-        name: "Loading...",
-        organization_name: "Loading company details...",
-      });
-      
       logger.info("CompanyDetail", `Loading company: ${companyId}`);
+      
+      // If we already have company data passed in, use it
+      if (companyData) {
+        logger.info("CompanyDetail", `Using passed company data: ${companyData.organization_name || companyData.name}`);
+        setCompany(companyData);
+        setIsLoading(false);
+        return;
+      }
+      
+      // Otherwise fetch from API
+      const token = await getToken();
+      const data = await fetchCompanyDetail(token || undefined, companyId);
+      
+      if (data) {
+        logger.info("CompanyDetail", `Loaded company: ${data.organization_name || data.name}`);
+        setCompany(data);
+      } else {
+        setError("Company not found");
+      }
     } catch (err: any) {
       logger.error("CompanyDetail", "Failed to load company", err);
       setError(err.message || "Failed to load company details");
@@ -145,6 +153,9 @@ export default function CompanyDetailScreen({ route, navigation }: Props) {
       industries: company.industries,
       region: company.hq?.region,
       fundingStage: company.growth_stage,
+      metadata: {
+        companies: [company.organization_name || company.name || ''].filter(Boolean),
+      }
     });
     
     logger.info("CompanyDetail", `Liked company: ${company.organization_name || company.name}`);
@@ -162,6 +173,9 @@ export default function CompanyDetailScreen({ route, navigation }: Props) {
       industries: company.industries,
       region: company.hq?.region,
       fundingStage: company.growth_stage,
+      metadata: {
+        companies: [company.organization_name || company.name || ''].filter(Boolean),
+      }
     });
     
     logger.info("CompanyDetail", `Disliked company: ${company.organization_name || company.name}`);
@@ -178,6 +192,9 @@ export default function CompanyDetailScreen({ route, navigation }: Props) {
       industries: company.industries,
       region: company.hq?.region,
       fundingStage: company.growth_stage,
+      metadata: {
+        companies: [company.organization_name || company.name || ''].filter(Boolean),
+      }
     });
     
     logger.info("CompanyDetail", `Saved company: ${company.organization_name || company.name}`);
@@ -210,6 +227,16 @@ export default function CompanyDetailScreen({ route, navigation }: Props) {
     );
   }
 
+  // Get active persona for display
+  const agentMemory = getAgentMemory();
+  const activePersona = agentMemory.getActivePersona();
+  const matchScore = company ? agentMemory.calculateMatchScore({
+    industry: company.industries?.[0],
+    fundingStage: company.funding?.last_funding_type,
+    region: company.hq?.country,
+    companies: [company.organization_name || company.name || ''].filter(Boolean),
+  }) : { score: 50, reasons: [] };
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Header */}
@@ -220,6 +247,31 @@ export default function CompanyDetailScreen({ route, navigation }: Props) {
         <Text style={styles.headerTitle} numberOfLines={1}>Company</Text>
         <Pressable onPress={handleSave} style={styles.headerButton}>
           <Ionicons name="bookmark-outline" size={24} color="#1E293B" />
+        </Pressable>
+      </View>
+
+      {/* Persona & AI Status Bar */}
+      <View style={styles.personaBar}>
+        <View style={styles.personaInfo}>
+          <View style={[styles.personaBadge, { backgroundColor: activePersona ? '#8B5CF6' : '#6B7280' }]}>
+            <Ionicons name="person-circle" size={14} color="#FFF" />
+            <Text style={styles.personaBadgeText}>
+              {activePersona?.name || 'Global'}
+            </Text>
+          </View>
+          <View style={[
+            styles.matchScoreBadge,
+            { backgroundColor: matchScore.score >= 70 ? '#22C55E' : matchScore.score >= 40 ? '#F59E0B' : '#EF4444' }
+          ]}>
+            <Text style={styles.matchScoreText}>{matchScore.score}% Match</Text>
+          </View>
+        </View>
+        <Pressable 
+          style={styles.aiQuickBtn}
+          onPress={() => navigation.navigate('Diagnostics' as any)}
+        >
+          <Ionicons name="sparkles" size={16} color="#8B5CF6" />
+          <Text style={styles.aiQuickBtnText}>AI</Text>
         </Pressable>
       </View>
 
@@ -444,8 +496,63 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     backgroundColor: "#FFF",
+    borderBottomWidth: 0,
+    borderBottomColor: "#E2E8F0",
+  },
+  // Persona & AI Status Bar
+  personaBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: "#F8FAFC",
     borderBottomWidth: 1,
     borderBottomColor: "#E2E8F0",
+  },
+  personaInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  personaBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  personaBadgeText: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#FFFFFF",
+  },
+  matchScoreBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+  },
+  matchScoreText: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#FFFFFF",
+  },
+  aiQuickBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    backgroundColor: "#F5F3FF",
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#DDD6FE",
+  },
+  aiQuickBtnText: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#8B5CF6",
   },
   headerButton: {
     width: 40,

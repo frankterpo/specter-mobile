@@ -58,12 +58,20 @@ export interface CactusCompleteResult {
 
 export interface CompletionLog {
   timestamp: string;
+  activePersona: string;  // Which persona was active during this completion
   systemPrompt: string;
   userMessage: string;
   response: string;
   toolCalls?: { name: string; arguments: Record<string, any>; result?: any }[];
   inferenceTimeMs: number;
   tokensPerSecond: number;
+  // Context indicators
+  contextIndicators: {
+    hasPreferences: boolean;
+    hasLikes: boolean;
+    hasDislikes: boolean;
+    systemPromptLength: number;
+  };
 }
 
 const MAX_COMPLETION_LOGS = 20;
@@ -194,14 +202,33 @@ class CactusClient {
   async complete(params: CactusCompleteParams): Promise<CactusCompleteResult> {
     await this.ensureReady();
 
-    logger.info('CactusClient', 'Starting completion', {
+    // Extract system and user messages for logging
+    const systemMsg = params.messages.find(m => m.role === 'system')?.content || '';
+    const userMsg = params.messages.find(m => m.role === 'user')?.content || '';
+
+    // Extract persona info from system prompt for diagnostics
+    const personaMatch = systemMsg.match(/Active investment persona: "([^"]+)"/);
+    const activePersona = personaMatch ? personaMatch[1] : 'None (Global)';
+    
+    // Count persona-specific context indicators
+    const hasPreferences = systemMsg.includes('USER PREFERENCES');
+    const hasLikes = systemMsg.includes('RECENT LIKES');
+    const hasDislikes = systemMsg.includes('Avoids:') || systemMsg.includes('DISLIKES');
+
+    logger.info('CactusClient', '🎭 PERSONA-AWARE COMPLETION', {
+      activePersona,
+      hasPreferences,
+      hasLikes,
+      hasDislikes,
+      systemPromptLength: systemMsg.length,
       messageCount: params.messages.length,
       hasTools: !!params.tools?.length,
     });
 
-    // Extract system and user messages for logging
-    const systemMsg = params.messages.find(m => m.role === 'system')?.content || '';
-    const userMsg = params.messages.find(m => m.role === 'user')?.content || '';
+    // Log first 500 chars of system prompt to verify persona context
+    logger.debug('CactusClient', 'System prompt preview', {
+      preview: systemMsg.slice(0, 500) + (systemMsg.length > 500 ? '...' : ''),
+    });
 
     try {
       const result = await this.lm.complete({
@@ -221,9 +248,10 @@ class CactusClient {
         tokensPerSecond: result.tokensPerSecond,
       });
 
-      // Log completion for diagnostics
+      // Log completion for diagnostics with persona info
       logCompletion({
         timestamp: new Date().toISOString(),
+        activePersona,
         systemPrompt: systemMsg,
         userMessage: userMsg,
         response: result.response,
@@ -233,6 +261,12 @@ class CactusClient {
         })),
         inferenceTimeMs: result.totalTimeMs,
         tokensPerSecond: result.tokensPerSecond,
+        contextIndicators: {
+          hasPreferences,
+          hasLikes,
+          hasDislikes,
+          systemPromptLength: systemMsg.length,
+        },
       });
 
       return {

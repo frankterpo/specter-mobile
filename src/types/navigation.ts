@@ -6,13 +6,14 @@ export type AuthStackParamList = {
   SignUp: undefined;
 };
 
-import type { Person } from '../api/specter';
+import type { Person, Company } from '../api/specter';
 
 export type MainStackParamList = {
   Dashboard: undefined;
   SwipeDeck: { updatedPerson?: Person } | undefined;
   PersonDetail: { personId: string };
-  CompanyDetail: { companyId: string };
+  CompanyDetail: { companyId: string; companyData?: Company };
   Settings: undefined;
   Diagnostics: undefined;
+  Persona: undefined;
 };

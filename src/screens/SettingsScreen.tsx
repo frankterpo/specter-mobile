@@ -83,12 +83,12 @@ export default function SettingsScreen({ navigation }: SettingsScreenProps) {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Header */}
       <View style={styles.header}>
-        <Pressable
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        >
+          <Pressable
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
           <Ionicons name="arrow-back" size={22} color="#1E293B" />
-        </Pressable>
+          </Pressable>
         <Text style={styles.title}>Settings</Text>
         <View style={styles.headerSpacer} />
       </View>
@@ -102,18 +102,18 @@ export default function SettingsScreen({ navigation }: SettingsScreenProps) {
         <View style={styles.profileCard}>
           <View style={styles.avatar}>
             <Text style={styles.avatarText}>
-              {user?.firstName?.[0]?.toUpperCase() || user?.emailAddresses?.[0]?.emailAddress?.[0]?.toUpperCase() || "U"}
-            </Text>
-          </View>
+                  {user?.firstName?.[0]?.toUpperCase() || user?.emailAddresses?.[0]?.emailAddress?.[0]?.toUpperCase() || "U"}
+                </Text>
+              </View>
           <View style={styles.profileInfo}>
             <Text style={styles.userName}>
-              {user?.firstName && user?.lastName
-                ? `${user.firstName} ${user.lastName}`
-                : user?.firstName || "User"}
-            </Text>
+                  {user?.firstName && user?.lastName
+                    ? `${user.firstName} ${user.lastName}`
+                    : user?.firstName || "User"}
+                </Text>
             <Text style={styles.userEmail}>
-              {user?.emailAddresses?.[0]?.emailAddress || "user@example.com"}
-            </Text>
+                  {user?.emailAddresses?.[0]?.emailAddress || "user@example.com"}
+                </Text>
           </View>
         </View>
 
@@ -126,8 +126,8 @@ export default function SettingsScreen({ navigation }: SettingsScreenProps) {
             <MenuItem icon="lock-closed-outline" label="Change Password" />
             <View style={styles.menuDivider} />
             <MenuItem icon="notifications-outline" label="Notifications" />
-          </View>
-        </View>
+              </View>
+            </View>
 
         {/* AI & Data Section */}
         <View style={styles.section}>
@@ -146,7 +146,7 @@ export default function SettingsScreen({ navigation }: SettingsScreenProps) {
               label="Export Data" 
               iconColor="#3B82F6"
             />
-          </View>
+            </View>
         </View>
 
         {/* About Section */}
@@ -158,23 +158,23 @@ export default function SettingsScreen({ navigation }: SettingsScreenProps) {
             <MenuItem icon="information-circle-outline" label="About Specter" />
             <View style={styles.menuDivider} />
             <MenuItem icon="document-text-outline" label="Privacy Policy" />
-          </View>
+            </View>
         </View>
 
         {/* Sign Out */}
-        <Pressable
-          onPress={handleLogout}
-          disabled={isLoggingOut}
-          style={({ pressed }) => [
+          <Pressable
+            onPress={handleLogout}
+            disabled={isLoggingOut}
+            style={({ pressed }) => [
             styles.signOutButton,
             (pressed || isLoggingOut) && styles.signOutButtonPressed,
-          ]}
-        >
+            ]}
+          >
           <Ionicons name="log-out-outline" size={20} color="#EF4444" />
           <Text style={styles.signOutText}>
-            {isLoggingOut ? "Signing Out..." : "Sign Out"}
-          </Text>
-        </Pressable>
+                {isLoggingOut ? "Signing Out..." : "Sign Out"}
+              </Text>
+          </Pressable>
 
         {/* Version */}
         <Text style={styles.versionText}>Specter Mobile v1.0.0</Text>

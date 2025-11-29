@@ -62,7 +62,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
       });
 
       console.log("[SignIn] Sign in response status:", signInAttempt.status);
-      
+
       if (signInAttempt.status === "complete") {
         console.log("[SignIn] Sign in complete, setting active session:", signInAttempt.createdSessionId);
         await setActive({ session: signInAttempt.createdSessionId });

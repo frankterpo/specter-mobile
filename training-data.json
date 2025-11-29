@@ -1,0 +1,442 @@
+{
+  "metadata": {
+    "exported_at": "2025-11-29T21:10:41.243Z",
+    "likes_count": 40,
+    "dislikes_count": 17
+  },
+  "likes": [
+    {
+      "id": "per_11bed61045eae630787d748d",
+      "name": "Axel Schmiegelow",
+      "headline": "Artificial Intelligence | Agentic Generative AI",
+      "country": "Germany",
+      "about": "Passionate about leveraging AI to create sustainable business models in travel and other industries. With 20+ years of experience, I help companies navigate the intersection of technology and human-centric, eco-conscious, individualized consumer businesses.\n\n🤖 AI Strategy | 🌿 Sustainable Business | ✈️ Tourism Innovation\n\nAdvised 50+ companies on AI implementation and digital transformation\nDeveloped award-winning applications and sustainable tourism frameworks\nRegular speaker at global tech an",
+      "label": 1
+    },
+    {
+      "id": "per_85a2719f785c8ae0fcbeccc2",
+      "name": "Thomas Dohmke",
+      "headline": "Entrepreneur",
+      "country": "United States",
+      "about": "Building something new. Former CEO @GitHub. \n",
+      "label": 1
+    },
+    {
+      "id": "per_db34c0a966a2dd046ad23b7c",
+      "name": "Kevin Henrikson",
+      "headline": "Founder building in AI healthcare | Scaled Microsoft & Instacart eng teams | Focused on curing complexity in healthcare IT through better systems | Pilot",
+      "country": "United States",
+      "about": "I have spent most of my career trying to make annoying but important things less painful at scale: email, marketplaces, and now the administrative side of healthcare.\n\nI started deep in the guts of enterprise email with Zimbra. I joined early, lived in the forums, talked to thousands of admins, and helped grow it into a product that eventually got acquired and shipped to millions of users. That experience taught me how important it is to listen to customers who live in your product every day, no",
+      "label": 1
+    },
+    {
+      "id": "per_c972dbd5d044373dde31c822",
+      "name": "Akon Dey",
+      "headline": "Co-Founder, Predictable Labs, Inc.",
+      "country": "United States",
+      "about": "An experienced, versatile Technology Leader with over 30 years experience in R&D building cutting-edge  technologies in the United States, Australia and India. An entrepreneur, who has worked in global, highly collaborative organizations including startups as well as large corporations. Successfully driven product development organizations to build OLTP, OLAP, data-warehouse, big-data analytics, and real-time systems, including cloud/cluster infrastructure, data repositories with scalability and",
+      "label": 1
+    },
+    {
+      "id": "per_feab0ecff196ce6547fa2ec0",
+      "name": "Marco Henrique de Almeida Inácio",
+      "headline": "Systems Engineer at Cloudflare • PhD in Stats",
+      "country": "United Kingdom",
+      "about": "My Github: https://github.com/randommm\n\nMy full CV: https://marcoinacio.com/cv.pdf\n\nRust tutorials: https://rust.marcoinacio.com/\n\nPython tutorials: https://pytutorial.marcoinacio.com/",
+      "label": 1
+    },
+    {
+      "id": "per_e18d521f79ef72831be061b7",
+      "name": "Teguh Santoso Lembono",
+      "headline": "Applied Scientist - Robotics AI @ Amazon Robotics",
+      "country": "Germany",
+      "about": "I am working as Applied Scientist in Robotics AI at Amazon Robotics. Before that, I obtained my PhD degree at Ecole Polytechnique Federale de Lausanne (EPFL) in 2022.  I obtained my Bachelor of Engineering in Mechanical Engineering from Nanyang Technological University in 2012, and Master of Science in Mechanical Engineering from National University of Singapore in 2016. My research interests include machine learning, optimal control and motion planning. I have plenty research experiences in usi",
+      "label": 1
+    },
+    {
+      "id": "per_97538d2234950f7ac69ff3ff",
+      "name": "Tharindu F.",
+      "headline": "Staff Software Engineer at CAIS",
+      "country": "United Kingdom",
+      "label": 1
+    },
+    {
+      "id": "per_66f26cf3e57ee547c29ebc72",
+      "name": "Richa Pandit",
+      "headline": "Low-Code, AI & Automation Consultant | Advocate for Governance, Innovation & Business Impact",
+      "country": "United Kingdom",
+      "about": "Solution Architect with deep expertise in Databricks, Microsoft Power Platform, Intelligent Automation and Generative AI chatbot solutions. I specialize in building intelligent, scalable systems that enhance efficiency, decision-making, and user engagement across the enterprise.\n\nWith 14 years of experience delivering digital transformation initiatives, I’ve led cross-functional teams in designing low-code apps, automating complex workflows, and integrating AI-driven conversational interfaces. M",
+      "label": 1
+    },
+    {
+      "id": "per_9adf4f38f23e7d877154c519",
+      "name": "Richard Wang",
+      "headline": "Co-founder and CEO at Voya Energy",
+      "country": "United States",
+      "about": "Richard Wang is a highly regarded entrepreneur and technical expert in the field of battery technologies. He is the founder and former CEO of Cuberg, which he led through a successful acquisition by Northvolt and grew to 225 employees. At Cuberg, he oversaw the development of its lithium metal cell and pack technologies and spearheaded its go-to-market strategy. He graduated from Stanford University with his PhD in materials science and from Caltech with his BS in mechanical engineering.  He was",
+      "label": 1
+    },
+    {
+      "id": "per_cbb258da0e8b87698fef7cd2",
+      "name": "Shahriar Rabii",
+      "headline": "Co-Founder and President of Majestic Labs",
+      "country": "United States",
+      "label": 1
+    },
+    {
+      "id": "per_f1494a9bfdd200aa925f5b7c",
+      "name": "Christopher Buchanan",
+      "headline": "FAST/CTV expert, Business Development & Strategic Content Partnerships",
+      "country": "United States",
+      "about": "Fearless media executive with deep entertainment experience managing companies, content & artists, and frontline entrepreneurial expertise with a focus on strategic partnerships, content acquisition & revenue generation. \n \nCurrently, Buchanan is a CTV/Streaming/FAST/AVOD consultant for South Medio Partners in Los Angeles.\n\nAs Direct, Business Development for Samsung TV Plus, he owned the full partnership lifecycle with channel providers, identifying and selling in new partnership opportunities,",
+      "label": 1
+    },
+    {
+      "id": "per_66bf0ba0c818dfb3ee4d30ba",
+      "name": "Rolands Mesters",
+      "headline": "Building BirdyChat | ex GoCardless",
+      "country": "Latvia",
+      "label": 1
+    },
+    {
+      "id": "per_4d22cbd10db3acd10cbc14e7",
+      "name": "Matt Morris",
+      "headline": "Executive Leader | CPS Security, AI & Digital Infrastructure | The Operational Edge Briefing | Scaled Consulting Practice Revenue 19× and Team 10x | Former Global MD – 1898 & Co. | Builds High-Growth Practices",
+      "country": "United States",
+      "about": "The Visionary Executive in Steel-Toed Boots and a Blazer\n\nI build and scale high-impact businesses at the intersection of AI, cybersecurity, and critical infrastructure. After leading 19× revenue growth and 10x team growth at my most recent enterprise role and founding a CPS security, AI, and digital infrastructure-focused firm (Ghostline Strategies), I’m now exploring new leadership opportunities to help organizations strengthen resilience and unlock their next stage of growth.\n\nI’m as comforta",
+      "label": 1
+    },
+    {
+      "id": "per_de7d9a08afa45006bd272302",
+      "name": "Paul Petrick",
+      "headline": "Attorney | Founder | AI Legal Tech | Ex-Apple",
+      "country": "United States",
+      "about": "I’m an attorney and product builder fascinated by how thoughtfully designed systems can make work more efficient and our lives more enjoyable.\n\nThat passion has shaped a varied career. After law school (HLS ’04) and my time in BigLaw and on Capitol Hill, I co-founded Matcha, later acquired by Apple. At Apple, I led product for search and recommendations used by millions. Since then, I’ve served as Head of Strategy at a VC-backed AI startup and consulted across industries from entertainment to e-",
+      "label": 1
+    },
+    {
+      "id": "per_5c029493ded9d46dfb5ab352",
+      "name": "Abbas Guvenilir",
+      "headline": "Founding a stealth startup with some really talented people. Please reach out if you want to help out.",
+      "country": "United States",
+      "label": 1
+    },
+    {
+      "id": "per_ddfa6e2aca314f68e6321fe1",
+      "name": "Tomas Piaggio",
+      "headline": "Co-Founder & CTO @ Stealth | Firebase GDE | Ex Amazon",
+      "country": "Uruguay",
+      "about": "Tomas Piaggio is a software engineer and community advocate, currently CTO & Co-Founder at a stealth startup, a Google Developer Expert for Firebase, and a Google for Startups Accelerator Mentor. He leads the Google Developer Groups (aka GDG) in Montevideo and is a Software Architecture Professor at ORT University Uruguay.",
+      "label": 1
+    },
+    {
+      "id": "per_d4351a21cd3e7b58932cfe6c",
+      "name": "Nikhil Nayab",
+      "headline": "Building at the intersection of Crypto<​>GenAI and Privacy",
+      "country": "United States",
+      "about": "Results-driven executive leader with a track record of spearheading digital transformation and driving new product development, consistently surpassing margin and revenue goals. Extensive industry experience across startups, consulting firms and large banks. Functional expertise spans crypto, banking, payments, trading and systems, climate tech, proptech, and digital assets (custody, trading, lending) for retail and institutional clients.",
+      "label": 1
+    },
+    {
+      "id": "per_7107ea3f5b28505d40bb89d2",
+      "name": "Ann Ractliffe",
+      "headline": "Former Fortune 500 Executive | Start Up Founder | Finance & Strategy Consulting | Business Development & Executive Coaching",
+      "country": "United States",
+      "about": "I am an innovative Finance Executive and Trusted Advisor to senior leadership who excels in analyzing the financial impact of business strategy, solving complex challenges, and optimizing processes that create strong, sustainable contributions to the growth and profitability of global organizations. Throughout my career, I’ve been sought out based on my success as an influential thought leader skilled in building and motivating high-performing teams while providing strategic guidance and driving",
+      "label": 1
+    },
+    {
+      "id": "per_0e4a76244e92c332ebe0d8a9",
+      "name": "Erkang Zheng",
+      "headline": "Building AI to unlock human potential ✦ Founder, Ariso + JupiterOne ✦ Recovering CISO & CEO",
+      "country": "United States",
+      "about": "I envision a world where\ndecisions are made on facts, not fear;\nwe live and work fulfilled, not frustrated;\nAI is used for good, and accessible to all. \n\nI am a hands-on leader in data, AI and cyber. An engineer by trade, entrepreneur at heart, I am passionate about technology and solving real-world challenges.\n\nAs the founder of JupiterOne, I’ve led the creation of a cloud-native security platform that brings knowledge, transparency, and confidence to digital operations across organizations of ",
+      "label": 1
+    },
+    {
+      "id": "per_79688cee8fa92a135bad2d48",
+      "name": "Jane Startseva",
+      "headline": "Vice President of Business Development, France, Benelux and Eastern Europe",
+      "country": "United Kingdom",
+      "about": "Business development professional with a particular interest in entertainment industry",
+      "label": 1
+    },
+    {
+      "id": "per_a6ea892234d80ac4fdc2d13c",
+      "name": "Sumit Sharma",
+      "headline": "Data Analytics @ Pinterest 📌",
+      "country": "Ireland",
+      "about": "A highly motivated Senior Business Intelligence and Analytics Professional with 13 years of experience gained through close partnership with operations, engineering and product executives to deliver large-scale, high-value business solutions. Areas of expertise include reporting & visual analytics, data architecture, logically solving problems and leading high performance teams and programmes; and approaching it all with a sense of empathy.\n\nSKILLS\nData Analysis | Data Science | Data Visualisati",
+      "label": 1
+    },
+    {
+      "id": "per_4ed882783f28b7e566bc5357",
+      "name": "Enrique Criado Cámara",
+      "headline": "Expert Engagement Manager at McKinsey & Company | Strategy & Business Development | New Business Building | Growth | Product Management",
+      "country": "Spain",
+      "about": "As an Engagement Manager at McKinsey I help clients with growth, launching and scaling new businesses, creating new products and entering new markets. I have experience across airlines, insurance, EVs, real estate and energy among others. I lead cross functional teams to meet growth targets while creating the processes and structures to scale.\n\nPreviously I was a 3x founder and operator with experience in proptech, contech and edtech with a focus on SaaS and marketplace models. \n\nI co-founded an",
+      "label": 1
+    },
+    {
+      "id": "per_20501c5bcd19610284c6b60f",
+      "name": "Mohan Rajasekar",
+      "headline": "Entrepreneur | ex-Allstate | 2x InsurTech Founder | Stanford & IIT | Musician - Foodie - Horticulturist",
+      "country": "United States",
+      "about": "I’m an entrepreneur, engineer, and technologist who loves building products, teams, and ventures that solve real problems and move the world forward.\n\nAs President of Syndeste (Allstate subsidiary), I helped build a flood-insurance business from the ground up - over 30,000 customers across the U.S. through our flagship product Beyond Floods. It became a meaningful contribution to closing the national flood protection gap - something I see as both an economic and national-resilience issue.\n\nBefor",
+      "label": 1
+    },
+    {
+      "id": "per_d12bd798bbb67f8b63443a4d",
+      "name": "Achraf Jday",
+      "headline": "AI & Cybersecurity | Award-Winning Innovator (NASA, Microsoft, Meta) | Global Tech Speaker & Mentor | Driving AI Transformation in Business & Society",
+      "country": "France",
+      "about": "I am an AI & Cybersecurity professional with a passion for using technology to solve global challenges and empower people. Over the past years, I have combined technical expertise, entrepreneurial drive, and international experience to build a profile at the intersection of innovation, leadership, and impact.\n\n🏆 Multi-Award Winner: Global hackathon and innovation challenges with NASA, Microsoft, Meta, EPFL ...; ranked 1st in the Île-de-France Cybersecurity Championship.\n\n🌍 Speaker & Educator: ",
+      "label": 1
+    },
+    {
+      "id": "per_606e84c37816d259fcfdbfbc",
+      "name": "Chandler T Wilson",
+      "headline": "Artisan Data Science for Corporate Strategy, Banking, PE/VC and Public Affairs | Complex Systems @Oxford | ex EU, Walmart, Wells Fargo, and HSBC",
+      "country": "United States",
+      "about": "I've spent the past 15 years building AI, OSINT and alternative data capabilities at Fortune 100 companies and government institutions to drive strategic decisions. My journey began at the EU Commission and Parliament (EPP Group) in 2010, where I developed their first data-driven insights programs. Since then, I've led transformation initiatives at Walmart (2014-2018), and HSBC (2018-2020), implementing technologies that were years ahead of mainstream adoption across the enterprise in business a",
+      "label": 1
+    },
+    {
+      "id": "per_f3feeb0b949bb3ea34a4ea23",
+      "name": "Amaro Taylor-Weiner",
+      "headline": "Building something new",
+      "country": "United States",
+      "label": 1
+    },
+    {
+      "id": "per_78b322f26f3ebe1c928b47b1",
+      "name": "Eric Du",
+      "headline": "Strategy | Defense Innovation | Biotech",
+      "country": "United States",
+      "about": "Eric is an experienced strategist and aspiring business leader in pharmaceutical and life sciences industry. He has supported growth strategy, M&A diligence, performance transformation in consulting and corporate settings. Eric is also a certified project manager and facilitator who has led both short-term and long-term engagements ranging from strategy development to execution.\n\nPMP and Lean Six Sigma Green Belt certified.",
+      "label": 1
+    },
+    {
+      "id": "per_d1d50b9563bb893179d63f7d",
+      "name": "Rikhi Jain",
+      "headline": "GTM & Product Executive | Founder (Stealth AI) | ex Meta",
+      "country": "United States",
+      "about": "I’ve spent the last 20 years building, scaling, and leading across some of the most defining chapters of modern technology, from Cisco in the 2000s to Meta through its most transformational decade, and now into the new frontier of AI.\n\nI’m an operator who loves being in the arena. I’ve helped scale global platforms to billions of users, and I’ve also built companies from zero -- three of them over the course of my career. I’m at my best when I’m learning, solving hard problems, and leading teams",
+      "label": 1
+    },
+    {
+      "id": "per_e23b04cf64f09ba127133718",
+      "name": "Sri A.",
+      "headline": "2X AI founder, Ex-Flipkart, IIM, Building Agentic AI",
+      "country": "United States",
+      "about": "A serial entrepreneur and product leader building the financial infrastructure for the autonomous future.\n\nSpecializes in turning complex data problems into scalable, high-impact solutions. The trajectory has evolved from optimizing supply chains for e-commerce giants and democratizing healthcare access for millions, to now architecting the payment protocols for the Agentic Economy.\n\nApproaches the rise of autonomous agents as a fundamental economic shift, pioneering a new layer of \"Financial Op",
+      "label": 1
+    },
+    {
+      "id": "per_8db265691732392b6feb2276",
+      "name": "Joon Sung Park",
+      "headline": "Building frontier simulations",
+      "country": "United States",
+      "label": 1
+    },
+    {
+      "id": "per_8b50e9cf5996e291b925aa8e",
+      "name": "Jill Jones",
+      "headline": "Founder | CEO | Board Member | Strategic Advisor",
+      "country": "United States",
+      "about": "CEO, board member and hands-on leader who specializes in helping organizations transform their HR, Finance & Analytics functions through leading-edge technology solutions. \n\nSpecialties include: Executive Leadership, Board Leadership, Private Equity, High Growth Technology Companies, Corporate Management, Corporate Transactions, Sales Management, Partnership Management, Human Resources, Finance, Analytics, Technology Design and Implementation, Business Process Transformation, Change Management a",
+      "label": 1
+    },
+    {
+      "id": "per_1149d2811d6b83a69a590958",
+      "name": "Amin Bashi",
+      "headline": "Building great products by first building great teams",
+      "country": "Canada",
+      "about": "I'm an experienced product executive with a proven track record of building world-class B2C, B2B, and B2B2C products.\n\nIn 2022, I joined Product School full-time as their VP of Product (Enterprise) to set up a strong foundation for Product School's growth in enterprise training.\n\nIn 2020, I co-founded Bloom and led our engineering, product, and design teams. Bloom offered the world's first comprehensive set of cohort-based programs designed to prepare professional retirees for a fulfilling retir",
+      "label": 1
+    },
+    {
+      "id": "per_9df784466ad0815d79338c5e",
+      "name": "Bill Liu",
+      "headline": "Entrepreneur, Engineer and Dreamer",
+      "country": "United States",
+      "about": "Technology Entrepreneur & Inventor. Pioneered flexible display and foldable smartphone industry. Led the startup from inception to a global company with 2,500 employees and a market cap of $6B usd. Raised over $1.5B usd from series-A to pre-IPO financing for the company's fast growth.\n\n40 Under 40, Fortune (2019); \n35 Innovators Under 35, MIT Technology Review (2017);\nYoung Global Leader, World Economic Forum (2017);\nTop 10 Most Innovative Entrepreneurs in the US and China, Forbes (2015);\nAPL 50",
+      "label": 1
+    },
+    {
+      "id": "per_c46d3b40c579da884e9a5039",
+      "name": "Ankit Kawatra",
+      "headline": "Founder (Stealth) | Stanford MBA | Founder, Feeding India (acquired by Zomato)",
+      "country": "India",
+      "label": 1
+    },
+    {
+      "id": "per_1e075419a07992b71f45b9cf",
+      "name": "Bethany W.",
+      "headline": "Picture Wendy from Billions, but tapped into the quantum field with a large dash of Rick Rubin.",
+      "country": "United States",
+      "about": "Latest Build: Pharos— Purpose Intelligence (DM for details)\n\nAuthor/Co-Founder: Language As Dimension Theory (Linguistic Dimension Theory- (LDT)) Bethany Woodard, Jeffrey Samuel Schulman, Jr. 2025 (Academic White Paper in working draft on request)\n\nSound unique? This is the magic. Combining 25 years of experience in HR, business advisory, talent and organizational behavior, with science, intuitive wisdom, research, strategy, and cultural architecture to thoughtfully help leaders build their visi",
+      "label": 1
+    },
+    {
+      "id": "per_acd5a77b238baf00b0524593",
+      "name": "Alex Zaytsav",
+      "headline": "CTO & Co-Founder at PrimeTwin",
+      "country": "Germany",
+      "about": "• Engineering leader with 13+ years across startups and enterprise, from 0→1 to scale.\n• Co-founded and sold an NLP startup (acq. by ServiceNow), where my tech is now used by 80% of the Fortune 500.\n• Currently Co-Founder and CTO at PrimeTwin, leading product, engineering, and technical strategy.\n• Previously built DogQ (no-code test automation) and scaled PANION from early engineer to a 16+ person org before its closure.\n• Strong at org-building, product-engineering alignment, and setting engin",
+      "label": 1
+    },
+    {
+      "id": "per_1d6334738b6784ee1fb3f0b5",
+      "name": "Ian Crosby",
+      "headline": "Angel investor, 3x founder",
+      "country": "Canada",
+      "about": "I’m currently building Synthetic, my 3rd startup in small business accounting. I also invest in vertical saas/AI startups. \n\nPreviously, I led the accounting products group at Mercury, following the acquisition of Teal.dev by Mercury in August 2024.\n\nPreviously, I co-founded and led Teal.dev, an embedded small business accounting platform that enables neobanks and vertical SaaS companies to solve accounting for their customers.\n\nPrior to Teal, I led Financial Services for Shopify. This included ",
+      "label": 1
+    },
+    {
+      "id": "per_2f2cb345f1fe41e5cc75af83",
+      "name": "Edu Álvarez de Toledo",
+      "headline": "Co-Founder flyboard | BCG | Stanford",
+      "country": "Spain",
+      "label": 1
+    },
+    {
+      "id": "per_412e78a26ffccf07dc3d840f",
+      "name": "Michael Dick",
+      "headline": "Design founder • ex-Brex, Meta, Twitch",
+      "country": "United States",
+      "about": "Hi, I'm Mike – a product-driven designer, engineer, and leader. I love building ideas and leading compassionate, curious teams to create remarkable experiences.",
+      "label": 1
+    },
+    {
+      "id": "per_707e6fceb067ad66e04fcfe7",
+      "name": "Badri Rajasekar",
+      "headline": "CEO & Builder",
+      "country": "United States",
+      "about": "Executive Leadership, Techonology, Distributed Internet Scale Services, Scaling teams, AI/ML, Real-time communications, Cloud, Mobile, Operations",
+      "label": 1
+    }
+  ],
+  "dislikes": [
+    {
+      "id": "per_91802d7e71333fecd6549f6e",
+      "name": "Dan Teodosiu",
+      "headline": "Computer scientist, executive and entrepreneur. ex-CTO at Criteo and Onfido.",
+      "country": "France",
+      "label": 0
+    },
+    {
+      "id": "per_a3cd42d80b66cf0cde95f2d4",
+      "name": "Peter Suaris",
+      "headline": "Vice President SW at Analog Inference",
+      "country": "United States",
+      "label": 0
+    },
+    {
+      "id": "per_8456ca183d13801cdda48cc6",
+      "name": "Lisa Alderson",
+      "headline": "Precision Medicine Entrepreneur | CEO of Adela. Founder of Genome Medical and Clarified Precision Medicine. Board Member, Advisor, Speaker, Global Educator. X: @LisaA",
+      "country": "United States",
+      "label": 0
+    },
+    {
+      "id": "per_3693e449cd437513af21e4fb",
+      "name": "Medi Ashraphijuo, PhD, CFA",
+      "headline": "Co-Founder @ NoFeeSwap",
+      "country": "United States",
+      "label": 0
+    },
+    {
+      "id": "per_53b6dabd40c55144c5e1060e",
+      "name": "Jagdeep Singh Bhambra",
+      "headline": "Award-winning C-level Executive / Board Member / NED / Investor / Entrepreneur / Speaker / Mentor. Built 6 digital banks / eWallets across the globe. World-class delivery across multiple sectors!",
+      "country": "United Kingdom",
+      "label": 0
+    },
+    {
+      "id": "per_5621408cbe475437e1bc24e5",
+      "name": "Patrick Palacin",
+      "headline": "Managing Director @ avi tech",
+      "country": "Germany",
+      "label": 0
+    },
+    {
+      "id": "per_841bde00c5183e673e5eacdc",
+      "name": "Nell Watson",
+      "headline": "Trusted Advisor ∙ AI Wrangler ∙ Responsibility Advocate",
+      "country": "United Kingdom",
+      "label": 0
+    },
+    {
+      "id": "per_1e203443bee1234d176a4f2c",
+      "name": "Si Dhanak",
+      "headline": "CEO & Co-Founder of deduction.com.",
+      "country": "United States",
+      "label": 0
+    },
+    {
+      "id": "per_494b1dc40b95978cc0d1c180",
+      "name": "James Story",
+      "headline": "Senior Commercial Manager @ McDonald’s | Ex-Deliveroo & Amazon",
+      "country": "United Kingdom",
+      "label": 0
+    },
+    {
+      "id": "per_f548dff183c5241349f476e5",
+      "name": "Percival Biterbo",
+      "headline": "Executive at Google",
+      "country": "United Kingdom",
+      "label": 0
+    },
+    {
+      "id": "per_a937543b6052602b11b297ba",
+      "name": "Daniele Caneschi",
+      "headline": "Head of EMEA - Sabre Virtual Payments",
+      "country": "United Kingdom",
+      "label": 0
+    },
+    {
+      "id": "per_d11d0d6779a7d3b566becd28",
+      "name": "Arindam Bandyopadhyay",
+      "headline": "Principal Member of Technical Staff  at Oracle",
+      "country": "United Kingdom",
+      "label": 0
+    },
+    {
+      "id": "per_023d6ce9644b37a21256ddaa",
+      "name": "Thomas Copeman",
+      "headline": "Founder | Investor | Advisor — Learning, building and backing what’s next — from early AI neural networks to Lululemon and $HBAR",
+      "country": "United Kingdom",
+      "label": 0
+    },
+    {
+      "id": "per_e4e397cd44837622f2ec6b42",
+      "name": "Michael TURRI",
+      "headline": "Founder | Operating Partner | Product x Brand x Marketing",
+      "country": "France",
+      "label": 0
+    },
+    {
+      "id": "per_c60ad4bbddf37be68a4dc4a6",
+      "name": "Praneet Dutta",
+      "headline": "Founder (we’re hiring!) | ex-DeepMind GenAI Research TL",
+      "country": "United States",
+      "label": 0
+    },
+    {
+      "id": "per_8a8f63966b7ad289f94713a1",
+      "name": "Yuan Cao",
+      "headline": "Senior Staff Research Scientist at Google DeepMind",
+      "country": "United States",
+      "label": 0
+    },
+    {
+      "id": "per_9b81badff18a2ef7a5c34b51",
+      "name": "Leanne Zhu",
+      "headline": "Innovating and partnering for personalized healthcare",
+      "country": "United States",
+      "label": 0
+    }
+  ]
+}

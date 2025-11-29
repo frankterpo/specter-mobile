@@ -109,7 +109,7 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
       if (!token) {
         throw new AuthError("Authentication required. Please sign in.");
       }
-
+      
       const response = await fetchPeople(token, {
         limit: LIMIT,
         offset: newOffset,
@@ -355,8 +355,8 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
   };
 
   const renderEmptyState = () => (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}>
+      <View style={[styles.container, { paddingTop: insets.top }]}>
+        <View style={styles.header}>
         <View style={styles.logoContainer}>
           <View style={styles.logoIcon}>
             <Ionicons name="prism" size={20} color="#1a365d" />
@@ -382,36 +382,36 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
             </View>
           )}
         </View>
-        <View style={styles.headerRight}>
-          <Pressable 
-            onPress={() => setFilterModalVisible(true)} 
-            style={[styles.iconButton, hasActiveFilters() && styles.iconButtonActive]}
-          >
-            <Ionicons 
-              name="options-outline" 
+          <View style={styles.headerRight}>
+            <Pressable 
+              onPress={() => setFilterModalVisible(true)} 
+              style={[styles.iconButton, hasActiveFilters() && styles.iconButtonActive]}
+            >
+              <Ionicons 
+                name="options-outline" 
               size={22} 
               color={hasActiveFilters() ? "#1a365d" : "#64748b"} 
-            />
-            {hasActiveFilters() && <View style={styles.filterBadge} />}
-          </Pressable>
-          <Pressable onPress={() => navigation.navigate("Settings")} style={styles.iconButton}>
+              />
+              {hasActiveFilters() && <View style={styles.filterBadge} />}
+            </Pressable>
+            <Pressable onPress={() => navigation.navigate("Settings")} style={styles.iconButton}>
             <Ionicons name="settings-outline" size={22} color="#64748b" />
-          </Pressable>
+            </Pressable>
+          </View>
         </View>
-      </View>
 
-      <View style={styles.centerContent}>
+        <View style={styles.centerContent}>
         <View style={styles.emptyStateIcon}>
           <Ionicons name={error ? "alert-circle-outline" : "checkmark-circle-outline"} size={64} color="#cbd5e1" />
         </View>
         <Text style={styles.emptyTitle}>
           {error ? "Connection Issue" : "All Caught Up"}
         </Text>
-        <Text style={styles.emptySubtitle}>
+          <Text style={styles.emptySubtitle}>
           {error 
             ? "We couldn't load the profiles. Please check your internet connection and try again." 
             : "You've reviewed all available profiles matching your filters."}
-        </Text>
+          </Text>
         <Pressable 
           onPress={() => loadPeople(0, true)} 
           style={({pressed}) => [styles.retryButton, pressed && styles.buttonPressed]}
@@ -419,15 +419,15 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
           <Text style={styles.retryButtonText}>
             {error ? "Try Again" : "Refresh Feed"}
           </Text>
-        </Pressable>
-      </View>
+          </Pressable>
+        </View>
 
-      <FilterModal
-        visible={filterModalVisible}
-        onClose={() => setFilterModalVisible(false)}
-        onApply={handleApplyFilters}
-        currentFilters={filters}
-      />
+        <FilterModal
+          visible={filterModalVisible}
+          onClose={() => setFilterModalVisible(false)}
+          onApply={handleApplyFilters}
+          currentFilters={filters}
+        />
     </View>
   );
 
@@ -452,7 +452,7 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
           <View style={styles.logoIcon}>
             <Ionicons name="prism" size={20} color="#1a365d" />
           </View>
-          <Text style={styles.logo}>Specter</Text>
+        <Text style={styles.logo}>Specter</Text>
           {/* AI Model Status Indicator */}
           {modelStatus === 'downloading' && (
             <View style={styles.aiStatusBadge}>
@@ -498,74 +498,74 @@ export default function SwipeDeckScreen({ navigation, route }: SwipeDeckScreenPr
 
       {/* Status Filter Bar */}
       <View style={styles.filterBarWrapper}>
-        <ScrollView 
-          horizontal 
-          showsHorizontalScrollIndicator={false}
-          style={styles.statusFilterBar}
-          contentContainerStyle={styles.statusFilterContent}
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false}
+        style={styles.statusFilterBar}
+        contentContainerStyle={styles.statusFilterContent}
+      >
+        <Pressable
+          onPress={() => toggleStatusFilter('myStatus', 'not_viewed')}
+          style={[
+            styles.statusChip,
+            statusFilters.myStatus === 'not_viewed' && styles.statusChipActive
+          ]}
         >
-          <Pressable
-            onPress={() => toggleStatusFilter('myStatus', 'not_viewed')}
-            style={[
-              styles.statusChip,
-              statusFilters.myStatus === 'not_viewed' && styles.statusChipActive
-            ]}
-          >
-            <Text style={[
-              styles.statusChipText,
-              statusFilters.myStatus === 'not_viewed' && styles.statusChipTextActive
-            ]}>
+          <Text style={[
+            styles.statusChipText,
+            statusFilters.myStatus === 'not_viewed' && styles.statusChipTextActive
+          ]}>
               New
-            </Text>
-          </Pressable>
+          </Text>
+        </Pressable>
 
-          <Pressable
-            onPress={() => toggleStatusFilter('myStatus', 'viewed')}
-            style={[
-              styles.statusChip,
-              statusFilters.myStatus === 'viewed' && styles.statusChipActive
-            ]}
-          >
-            <Text style={[
-              styles.statusChipText,
-              statusFilters.myStatus === 'viewed' && styles.statusChipTextActive
-            ]}>
-              Viewed
-            </Text>
-          </Pressable>
+        <Pressable
+          onPress={() => toggleStatusFilter('myStatus', 'viewed')}
+          style={[
+            styles.statusChip,
+            statusFilters.myStatus === 'viewed' && styles.statusChipActive
+          ]}
+        >
+          <Text style={[
+            styles.statusChipText,
+            statusFilters.myStatus === 'viewed' && styles.statusChipTextActive
+          ]}>
+            Viewed
+          </Text>
+        </Pressable>
 
-          <Pressable
-            onPress={() => toggleStatusFilter('myStatus', 'liked')}
-            style={[
-              styles.statusChip,
-              statusFilters.myStatus === 'liked' && styles.statusChipActive
-            ]}
-          >
-            <Text style={[
-              styles.statusChipText,
-              statusFilters.myStatus === 'liked' && styles.statusChipTextActive
-            ]}>
-              Liked
-            </Text>
-          </Pressable>
+        <Pressable
+          onPress={() => toggleStatusFilter('myStatus', 'liked')}
+          style={[
+            styles.statusChip,
+            statusFilters.myStatus === 'liked' && styles.statusChipActive
+          ]}
+        >
+          <Text style={[
+            styles.statusChipText,
+            statusFilters.myStatus === 'liked' && styles.statusChipTextActive
+          ]}>
+            Liked
+          </Text>
+        </Pressable>
 
-          <View style={styles.statusDivider} />
+        <View style={styles.statusDivider} />
 
-          <Pressable
-            onPress={() => toggleStatusFilter('teamLiked', !statusFilters.teamLiked)}
-            style={[
-              styles.statusChip,
-              statusFilters.teamLiked && styles.statusChipActive
-            ]}
-          >
-            <Text style={[
-              styles.statusChipText,
-              statusFilters.teamLiked && styles.statusChipTextActive
-            ]}>
+        <Pressable
+          onPress={() => toggleStatusFilter('teamLiked', !statusFilters.teamLiked)}
+          style={[
+            styles.statusChip,
+            statusFilters.teamLiked && styles.statusChipActive
+          ]}
+        >
+          <Text style={[
+            styles.statusChipText,
+            statusFilters.teamLiked && styles.statusChipTextActive
+          ]}>
               Team Picks
-            </Text>
-          </Pressable>
-        </ScrollView>
+          </Text>
+        </Pressable>
+      </ScrollView>
       </View>
 
       <View style={styles.cardContainer}>
@@ -710,18 +710,18 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onPass, onViewProf
               
               {/* Avatar */}
               <View style={styles.avatarContainer}>
-                {person.profile_image_url ? (
-                  <Image
-                    source={{ uri: person.profile_image_url }}
+              {person.profile_image_url ? (
+                <Image
+                  source={{ uri: person.profile_image_url }}
                     style={styles.avatar}
-                    contentFit="cover"
-                    transition={200}
-                  />
-                ) : (
+                  contentFit="cover"
+                  transition={200}
+                />
+              ) : (
                   <View style={[styles.avatar, styles.avatarPlaceholder]}>
                     <Text style={styles.avatarInitials}>{initials}</Text>
-                  </View>
-                )}
+                </View>
+              )}
               </View>
             </View>
 
@@ -732,27 +732,27 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onPass, onViewProf
               <Text style={styles.fieldLabel}>Tagline</Text>
               <Text style={styles.fieldValue} numberOfLines={2}>
                 {person.tagline || "No tagline available"}
-              </Text>
-            </View>
+                </Text>
+              </View>
 
             {/* Experience */}
             <View style={styles.fieldGroup}>
               <Text style={styles.fieldLabel}>Current Experience</Text>
               <Text style={styles.fieldValue} numberOfLines={1}>
                 {currentJob ? `${currentJob.title} • ${currentJob.company_name}` : "Unknown"}
-              </Text>
-            </View>
+                </Text>
+              </View>
 
             {/* Region & Seniority Row */}
             <View style={styles.row}>
               <View style={[styles.fieldGroup, { flex: 1 }]}>
                 <Text style={styles.fieldLabel}>Region</Text>
                 <Text style={styles.fieldValue}>{person.region || "Unknown"}</Text>
-              </View>
+                </View>
               <View style={[styles.fieldGroup, { flex: 1 }]}>
                 <Text style={styles.fieldLabel}>Seniority</Text>
                 <Text style={styles.fieldValue}>{person.seniority || "Unknown"}</Text>
-              </View>
+                </View>
             </View>
 
             {/* Stats Row */}
@@ -762,13 +762,13 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onPass, onViewProf
                 <Text style={styles.fieldValue}>
                   {person.followers_count ? Number(person.followers_count).toLocaleString() : "-"}
                 </Text>
-              </View>
+                </View>
               <View style={[styles.fieldGroup, { flex: 1 }]}>
                 <Text style={styles.fieldLabel}>Connections</Text>
                 <Text style={styles.fieldValue}>
                   {person.connections_count ? Number(person.connections_count).toLocaleString() : "-"}
                 </Text>
-              </View>
+                </View>
             </View>
 
           </View>

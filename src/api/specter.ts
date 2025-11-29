@@ -145,6 +145,39 @@ function withTimeout<T>(
 }
 
 /**
+ * Fetch with exponential backoff retry
+ */
+async function fetchWithRetry(
+  url: string,
+  options: RequestInit,
+  retries = 3,
+  backoff = 500
+): Promise<Response> {
+  try {
+    const response = await fetch(url, options);
+    
+    // Retry on rate limits or server errors (5xx)
+    if ((response.status === 429 || response.status >= 500) && retries > 0) {
+      const delay = backoff + Math.random() * 100; // Add jitter
+      if (__DEV__) console.log(`[API] Retry ${response.status} for ${url} in ${Math.round(delay)}ms...`);
+      await new Promise(r => setTimeout(r, delay));
+      return fetchWithRetry(url, options, retries - 1, backoff * 2);
+    }
+    
+    return response;
+  } catch (error) {
+    // Retry on network errors
+    if (retries > 0) {
+      const delay = backoff + Math.random() * 100;
+      if (__DEV__) console.log(`[API] Network retry for ${url} in ${Math.round(delay)}ms...`);
+      await new Promise(r => setTimeout(r, delay));
+      return fetchWithRetry(url, options, retries - 1, backoff * 2);
+    }
+    throw error;
+  }
+}
+
+/**
  * Map filter options from UI to backend API format
  * Backend expects specific field names and structures
  */
@@ -334,7 +367,7 @@ export async function fetchPeople(
         });
       }
 
-      const fetchPromise = fetch(
+      const fetchPromise = fetchWithRetry(
         `${API_BASE_URL}/private/queries/${params.queryId}/people?limit=${params.limit}&offset=${params.offset}`,
         {
           method: "GET",
@@ -404,7 +437,7 @@ export async function fetchPeople(
 
     // Make API call with timeout
     // Note: Railway API requires Clerk token in Authorization header
-    const fetchPromise = fetch(`${API_BASE_URL}/private/people`, {
+    const fetchPromise = fetchWithRetry(`${API_BASE_URL}/private/people`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -1442,9 +1475,47 @@ export async function fetchPeopleSavedSearchResults(
     }
 
     const data = await response.json();
+    
+    // Debug logging
+    if (__DEV__) {
+      console.log(`[fetchPeopleSavedSearchResults] Response for search ${searchId}:`, {
+        hasItems: !!data.items,
+        itemsLength: data.items?.length,
+        isArray: Array.isArray(data),
+        dataKeys: Object.keys(data),
+        total: data.total,
+        rawDataSample: Array.isArray(data) ? data.slice(0, 2) : (data.items ? data.items.slice(0, 2) : null),
+      });
+    }
+    
+    // Handle different response formats
+    let items: Person[] = [];
+    if (Array.isArray(data)) {
+      items = data;
+    } else if (data.items && Array.isArray(data.items)) {
+      items = data.items;
+    } else if (data.results && Array.isArray(data.results)) {
+      items = data.results;
+    }
+    
+    // If API returns incorrect total (e.g., total: 1 but items.length: 20),
+    // use items.length as the total since that's what we actually got
+    const apiTotal = data.total || 0;
+    // If we have items and the API total is less than items.length, use items.length
+    // Also if API total is suspiciously low (1) but we have multiple items, use items.length
+    const actualTotal = (items.length > 0 && (items.length > apiTotal || (apiTotal === 1 && items.length > 1))) 
+      ? items.length 
+      : (apiTotal || items.length);
+    
+    if (items.length > 0 && actualTotal !== apiTotal) {
+      console.warn(`[fetchPeopleSavedSearchResults] API returned total: ${apiTotal} but we got ${items.length} items. Using ${actualTotal} as total.`);
+    }
+    
+    console.log(`[fetchPeopleSavedSearchResults] Final: ${items.length} items, API total: ${apiTotal}, Using total: ${actualTotal}`);
+    
     return {
-      items: data.items || data || [],
-      total: data.total,
+      items,
+      total: actualTotal,
     };
   } catch (error: any) {
     if (error instanceof AuthError) {
@@ -1507,9 +1578,47 @@ export async function fetchCompanySavedSearchResults(
     }
 
     const data = await response.json();
+    
+    // Debug logging
+    if (__DEV__) {
+      console.log(`[fetchCompanySavedSearchResults] Response for search ${searchId}:`, {
+        hasItems: !!data.items,
+        itemsLength: data.items?.length,
+        isArray: Array.isArray(data),
+        dataKeys: Object.keys(data),
+        total: data.total,
+        rawDataSample: Array.isArray(data) ? data.slice(0, 2) : (data.items ? data.items.slice(0, 2) : null),
+      });
+    }
+    
+    // Handle different response formats
+    let items: Company[] = [];
+    if (Array.isArray(data)) {
+      items = data;
+    } else if (data.items && Array.isArray(data.items)) {
+      items = data.items;
+    } else if (data.results && Array.isArray(data.results)) {
+      items = data.results;
+    }
+    
+    // If API returns incorrect total (e.g., total: 1 but items.length: 20),
+    // use items.length as the total since that's what we actually got
+    const apiTotal = data.total || 0;
+    // If we have items and the API total is less than items.length, use items.length
+    // Also if API total is suspiciously low (1) but we have multiple items, use items.length
+    const actualTotal = (items.length > 0 && (items.length > apiTotal || (apiTotal === 1 && items.length > 1))) 
+      ? items.length 
+      : (apiTotal || items.length);
+    
+    if (items.length > 0 && actualTotal !== apiTotal) {
+      console.warn(`[fetchCompanySavedSearchResults] API returned total: ${apiTotal} but we got ${items.length} items. Using ${actualTotal} as total.`);
+    }
+    
+    console.log(`[fetchCompanySavedSearchResults] Final: ${items.length} items, API total: ${apiTotal}, Using total: ${actualTotal}`);
+    
     return {
-      items: data.items || data || [],
-      total: data.total,
+      items,
+      total: actualTotal,
     };
   } catch (error: any) {
     if (error instanceof AuthError) {
@@ -1573,13 +1682,45 @@ export async function fetchTalentSignals(
 
     const data = await response.json();
     
+    // Debug logging
     if (__DEV__) {
-      console.log(`✅ Fetched ${data.items?.length || 0} talent signals`);
+      console.log(`[fetchTalentSignals] Response for search ${searchId}:`, {
+        hasItems: !!data.items,
+        itemsLength: data.items?.length,
+        isArray: Array.isArray(data),
+        dataKeys: Object.keys(data),
+        total: data.total,
+      });
     }
     
+    // Handle different response formats
+    let items: TalentSignal[] = [];
+    if (Array.isArray(data)) {
+      items = data;
+    } else if (data.items && Array.isArray(data.items)) {
+      items = data.items;
+    } else if (data.results && Array.isArray(data.results)) {
+      items = data.results;
+    }
+    
+    // If API returns incorrect total (e.g., total: 1 but items.length: 20),
+    // use items.length as the total since that's what we actually got
+    const apiTotal = data.total || 0;
+    // If we have items and the API total is less than items.length, use items.length
+    // Also if API total is suspiciously low (1) but we have multiple items, use items.length
+    const actualTotal = (items.length > 0 && (items.length > apiTotal || (apiTotal === 1 && items.length > 1))) 
+      ? items.length 
+      : (apiTotal || items.length);
+    
+    if (items.length > 0 && actualTotal !== apiTotal) {
+      console.warn(`[fetchTalentSignals] API returned total: ${apiTotal} but we got ${items.length} items. Using ${actualTotal} as total.`);
+    }
+    
+    console.log(`[fetchTalentSignals] Final: ${items.length} items, API total: ${apiTotal}, Using total: ${actualTotal}`);
+    
     return {
-      items: data.items || data || [],
-      total: data.total,
+      items,
+      total: actualTotal,
     };
   } catch (error: any) {
     if (error instanceof AuthError) {
@@ -1645,7 +1786,8 @@ export async function getTalentSignalById(
 // ============================================
 
 /**
- * Fetch investor interest signals from a saved search
+ * Fetch investor interest / strategic intelligence signals from a saved search
+ * Note: This endpoint only supports "stratintel" product_type searches
  */
 export async function fetchInvestorInterestSignals(
   _token?: string, // Token kept for backwards compatibility
@@ -1663,6 +1805,7 @@ export async function fetchInvestorInterestSignals(
     if (params.offset) queryParams.set('offset', params.offset.toString());
     
     // Correct endpoint: /searches/investor-interest/{searchId}/results
+    // Note: This only works for "stratintel" product_type, not "investors"
     const url = `${SPECTER_API_BASE_URL}/searches/investor-interest/${searchId}/results?${queryParams}`;
     console.log("[fetchInvestorInterestSignals] Fetching from:", url);
     
@@ -1691,13 +1834,45 @@ export async function fetchInvestorInterestSignals(
 
     const data = await response.json();
     
+    // Debug logging
     if (__DEV__) {
-      console.log(`✅ Fetched ${data.items?.length || 0} investor interest signals`);
+      console.log(`[fetchInvestorInterestSignals] Response for search ${searchId}:`, {
+        hasItems: !!data.items,
+        itemsLength: data.items?.length,
+        isArray: Array.isArray(data),
+        dataKeys: Object.keys(data),
+        total: data.total,
+      });
     }
     
+    // Handle different response formats
+    let items: InvestorInterestSignal[] = [];
+    if (Array.isArray(data)) {
+      items = data;
+    } else if (data.items && Array.isArray(data.items)) {
+      items = data.items;
+    } else if (data.results && Array.isArray(data.results)) {
+      items = data.results;
+    }
+    
+    // If API returns incorrect total (e.g., total: 1 but items.length: 20),
+    // use items.length as the total since that's what we actually got
+    const apiTotal = data.total || 0;
+    // If we have items and the API total is less than items.length, use items.length
+    // Also if API total is suspiciously low (1) but we have multiple items, use items.length
+    const actualTotal = (items.length > 0 && (items.length > apiTotal || (apiTotal === 1 && items.length > 1))) 
+      ? items.length 
+      : (apiTotal || items.length);
+    
+    if (items.length > 0 && actualTotal !== apiTotal) {
+      console.warn(`[fetchInvestorInterestSignals] API returned total: ${apiTotal} but we got ${items.length} items. Using ${actualTotal} as total.`);
+    }
+    
+    console.log(`[fetchInvestorInterestSignals] Final: ${items.length} items, API total: ${apiTotal}, Using total: ${actualTotal}`);
+    
     return {
-      items: data.items || data || [],
-      total: data.total,
+      items,
+      total: actualTotal,
     };
   } catch (error: any) {
     if (error instanceof AuthError) {
@@ -1875,18 +2050,30 @@ export async function enrichCompanies(
 // ============================================
 
 /**
- * Get company by ID
+ * Get company by ID - uses public API with X-API-Key
  */
 export async function fetchCompanyDetail(
-  token: string,
-  companyId: string
+  _token?: string, // Token kept for backwards compatibility but not used
+  companyId?: string
 ): Promise<Company | null> {
   try {
-    const fetchPromise = fetch(`${API_BASE_URL}/private/companies/${companyId}`, {
+    const apiKey = getSpecterApiKey();
+    if (!apiKey || !companyId) {
+      console.warn("[fetchCompanyDetail] No API key or companyId");
+      return null;
+    }
+    
+    console.log("[fetchCompanyDetail] Fetching company:", companyId);
+    
+    // Try the public API endpoint first
+    const url = `${SPECTER_API_BASE_URL}/companies/${companyId}`;
+    console.log("[fetchCompanyDetail] URL:", url);
+    
+    const fetchPromise = fetchWithRetry(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "X-API-KEY": apiKey,
       },
     });
 
@@ -1896,7 +2083,10 @@ export async function fetchCompanyDetail(
       "API request timed out"
     );
 
+    console.log("[fetchCompanyDetail] Response status:", response.status);
+
     if (response.status === 404) {
+      console.log("[fetchCompanyDetail] Company not found");
       return null;
     }
 
@@ -1906,10 +2096,13 @@ export async function fetchCompanyDetail(
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error("[fetchCompanyDetail] Error:", errorText);
       throw new Error(`API Error ${response.status}: ${errorText}`);
     }
 
-    return await response.json();
+    const data = await response.json();
+    console.log("[fetchCompanyDetail] Got company data:", data?.organization_name || data?.name);
+    return data;
   } catch (error: any) {
     if (error instanceof AuthError) {
       throw error;
@@ -2006,9 +2199,31 @@ export async function fetchCompanyPeople(
     }
 
     const data = await response.json();
+    
+    // Debug logging
+    if (__DEV__) {
+      console.log(`[fetchPeopleSavedSearchResults] Response for search ${searchId}:`, {
+        hasItems: !!data.items,
+        itemsLength: data.items?.length,
+        isArray: Array.isArray(data),
+        dataKeys: Object.keys(data),
+        total: data.total,
+      });
+    }
+    
+    // Handle different response formats
+    let items: Person[] = [];
+    if (Array.isArray(data)) {
+      items = data;
+    } else if (data.items && Array.isArray(data.items)) {
+      items = data.items;
+    } else if (data.results && Array.isArray(data.results)) {
+      items = data.results;
+    }
+    
     return {
-      items: data.items || data || [],
-      total: data.total,
+      items,
+      total: data.total || items.length,
     };
   } catch (error: any) {
     if (error instanceof AuthError) {
@@ -2034,7 +2249,7 @@ export async function searchCompanies(
     
     const url = `${API_BASE_URL}/private/companies/search?${queryParams}`;
     
-    const fetchPromise = fetch(url, {
+    const fetchPromise = fetchWithRetry(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

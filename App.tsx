@@ -93,7 +93,7 @@ export default function App() {
       <SafeAreaProvider>
         <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
           <AgentProvider>
-            <RootNavigator />
+          <RootNavigator />
           </AgentProvider>
         </ClerkProvider>
       </SafeAreaProvider>

@@ -48,6 +48,8 @@ export interface InteractionRecord {
     seniority?: string;
     highlights?: string[];
     region?: string;
+    companies?: string[];
+    education?: string[];
   };
 }
 
@@ -415,12 +417,45 @@ export function AgentProvider({ children }: { children: React.ReactNode }) {
     }
   }, [state.memory, state.isLoading]);
   
-  const trackInteraction = useCallback((interaction: Omit<InteractionRecord, 'timestamp'>) => {
+  const trackInteraction = useCallback((interaction: Omit<InteractionRecord, 'timestamp'> & { name?: string; industries?: string[]; region?: string; fundingStage?: string }) => {
     const fullInteraction: InteractionRecord = {
-      ...interaction,
+      entityId: interaction.entityId,
+      entityType: interaction.entityType,
+      action: interaction.action,
       timestamp: new Date().toISOString(),
+      metadata: interaction.metadata,
     };
     dispatch({ type: 'ADD_INTERACTION', payload: fullInteraction });
+    
+    // ALSO record to agentMemory singleton for persona-isolated storage
+    const memory = getAgentMemory();
+    const entityName = interaction.name || interaction.entityId;
+    const features = {
+      industry: interaction.industries?.[0] || interaction.metadata?.industry,
+      region: interaction.region || interaction.metadata?.region,
+      highlights: interaction.metadata?.highlights,
+      companies: interaction.metadata?.companies,
+      education: interaction.metadata?.education,
+    };
+    
+    if (interaction.action === 'like') {
+      memory.recordLike({
+        id: interaction.entityId,
+        name: entityName,
+        type: interaction.entityType,
+        features,
+      });
+      logger.info('AgentContext', `Recorded LIKE to agentMemory: ${entityName}`);
+    } else if (interaction.action === 'dislike') {
+      memory.recordDislike({
+        id: interaction.entityId,
+        name: entityName,
+        type: interaction.entityType,
+        features,
+      });
+      logger.info('AgentContext', `Recorded DISLIKE to agentMemory: ${entityName}`);
+    }
+    
     logger.debug('AgentContext', 'Tracked interaction', { 
       action: interaction.action, 
       entityId: interaction.entityId 

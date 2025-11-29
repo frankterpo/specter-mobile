@@ -205,6 +205,97 @@ export const SPECTER_NATIVE_TOOLS: Tool[] = [
       required: ['category', 'value'],
     },
   },
+  // BULK ACTION TOOLS
+  {
+    name: 'auto_source_saved_search',
+    description: 'Automatically source and score signals from a saved search. Returns top matches based on user preferences. Use for bulk pilot sourcing.',
+    parameters: {
+      type: 'object',
+      properties: {
+        search_id: {
+          type: 'string',
+          description: 'The saved search ID to source from',
+        },
+        limit: {
+          type: 'string',
+          description: 'Maximum signals to process (default 20)',
+        },
+        min_score: {
+          type: 'string',
+          description: 'Minimum match score (0-100) to include (default 60)',
+        },
+      },
+      required: ['search_id'],
+    },
+  },
+  {
+    name: 'bulk_like',
+    description: 'Like multiple people at once. Use for bulk actions after user reviews a shortlist.',
+    parameters: {
+      type: 'object',
+      properties: {
+        person_ids: {
+          type: 'string',
+          description: 'Comma-separated list of person IDs to like',
+        },
+        reason: {
+          type: 'string',
+          description: 'Reason for bulk like (for preference learning)',
+        },
+      },
+      required: ['person_ids'],
+    },
+  },
+  {
+    name: 'bulk_dislike',
+    description: 'Dislike multiple people at once. Use for bulk pass actions.',
+    parameters: {
+      type: 'object',
+      properties: {
+        person_ids: {
+          type: 'string',
+          description: 'Comma-separated list of person IDs to dislike',
+        },
+        reason: {
+          type: 'string',
+          description: 'Reason for bulk dislike (for preference learning)',
+        },
+      },
+      required: ['person_ids'],
+    },
+  },
+  {
+    name: 'score_signal_batch',
+    description: 'Score a batch of signals against user preferences. Returns scored and ranked list.',
+    parameters: {
+      type: 'object',
+      properties: {
+        search_id: {
+          type: 'string',
+          description: 'The saved search ID to score signals from',
+        },
+        limit: {
+          type: 'string',
+          description: 'Maximum signals to score (default 50)',
+        },
+      },
+      required: ['search_id'],
+    },
+  },
+  {
+    name: 'generate_sourcing_report',
+    description: 'Generate a summary report of sourcing activity including likes, dislikes, and preference patterns.',
+    parameters: {
+      type: 'object',
+      properties: {
+        days: {
+          type: 'string',
+          description: 'Number of days to include in report (default 7)',
+        },
+      },
+      required: [],
+    },
+  },
 ];
 
 // Legacy format for backwards compatibility
@@ -486,6 +577,238 @@ Stats: ${stats.totalInteractions} total interactions, ${stats.totalConversations
         return {
           success: true,
           data: formatPeopleForAI(likedPeople.slice(0, limitNum)),
+        };
+      }
+
+      // ============================================
+      // BULK ACTION TOOLS
+      // ============================================
+
+      case 'auto_source_saved_search': {
+        const { search_id, limit = '20', min_score = '60' } = tool.arguments;
+        const limitNum = parseInt(limit);
+        const minScoreNum = parseInt(min_score);
+        
+        // Fetch results from saved search
+        const results = await fetchPeopleSavedSearchResults(token, search_id, { limit: limitNum });
+        
+        // Score each result against preferences
+        const scored = results.items.map(person => {
+          const currentJob = person.experience?.find(e => e.is_current);
+          const features = {
+            industry: currentJob?.industry,
+            seniority: person.seniority,
+            region: person.region,
+            highlights: person.people_highlights,
+          };
+          const { score, reasons, warnings } = memory.calculateMatchScore(features);
+          return {
+            person,
+            score,
+            reasons,
+            warnings,
+          };
+        });
+        
+        // Filter by min score and sort
+        const filtered = scored
+          .filter(s => s.score >= minScoreNum)
+          .sort((a, b) => b.score - a.score);
+        
+        // Format results
+        const lines = [`Auto-sourced ${filtered.length} signals (min score: ${minScoreNum}%):\n`];
+        filtered.forEach((s, i) => {
+          const name = s.person.full_name || `${s.person.first_name} ${s.person.last_name}`;
+          lines.push(`${i + 1}. ${name} (${s.score}% match)`);
+          lines.push(`   ID: ${s.person.id}`);
+          if (s.reasons.length) lines.push(`   ✓ ${s.reasons.slice(0, 2).join(', ')}`);
+          if (s.warnings.length) lines.push(`   ⚠ ${s.warnings[0]}`);
+        });
+        
+        return {
+          success: true,
+          data: lines.join('\n'),
+        };
+      }
+
+      case 'bulk_like': {
+        const { person_ids, reason } = tool.arguments;
+        const ids = person_ids.split(',').map((id: string) => id.trim());
+        
+        let liked = 0;
+        let skipped = 0;
+        
+        for (const personId of ids) {
+          // Skip if already liked
+          if (memory.isLiked(personId)) {
+            skipped++;
+            continue;
+          }
+          
+          try {
+            await likePerson(token, personId);
+            memory.recordLike({
+              id: personId,
+              name: `Person ${personId}`,
+              type: 'person',
+              context: reason,
+            });
+            liked++;
+          } catch (err) {
+            logger.warn('AgenticTools', `Failed to like ${personId}`, err);
+          }
+        }
+        
+        return {
+          success: true,
+          data: `Bulk liked ${liked} people (${skipped} already liked). ${reason ? `Reason: ${reason}` : ''}`,
+          memoryUpdated: liked > 0,
+        };
+      }
+
+      case 'bulk_dislike': {
+        const { person_ids, reason } = tool.arguments;
+        const ids = person_ids.split(',').map((id: string) => id.trim());
+        
+        let disliked = 0;
+        let skipped = 0;
+        
+        for (const personId of ids) {
+          // Skip if already disliked
+          if (memory.isDisliked(personId)) {
+            skipped++;
+            continue;
+          }
+          
+          try {
+            await dislikePerson(token, personId);
+            memory.recordDislike({
+              id: personId,
+              name: `Person ${personId}`,
+              type: 'person',
+              context: reason,
+            });
+            disliked++;
+          } catch (err) {
+            logger.warn('AgenticTools', `Failed to dislike ${personId}`, err);
+          }
+        }
+        
+        return {
+          success: true,
+          data: `Bulk disliked ${disliked} people (${skipped} already disliked). ${reason ? `Reason: ${reason}` : ''}`,
+          memoryUpdated: disliked > 0,
+        };
+      }
+
+      case 'score_signal_batch': {
+        const { search_id, limit = '50' } = tool.arguments;
+        const limitNum = parseInt(limit);
+        
+        // Fetch results
+        const results = await fetchPeopleSavedSearchResults(token, search_id, { limit: limitNum });
+        
+        // Score all
+        const scored = results.items.map(person => {
+          const currentJob = person.experience?.find(e => e.is_current);
+          const features = {
+            industry: currentJob?.industry,
+            seniority: person.seniority,
+            region: person.region,
+            highlights: person.people_highlights,
+          };
+          const { score, reasons } = memory.calculateMatchScore(features);
+          return {
+            id: person.id,
+            name: person.full_name || `${person.first_name} ${person.last_name}`,
+            score,
+            reasons,
+          };
+        });
+        
+        // Sort by score
+        scored.sort((a, b) => b.score - a.score);
+        
+        // Summary stats
+        const high = scored.filter(s => s.score >= 70).length;
+        const medium = scored.filter(s => s.score >= 50 && s.score < 70).length;
+        const low = scored.filter(s => s.score < 50).length;
+        
+        const lines = [
+          `Scored ${scored.length} signals:`,
+          `  🟢 High match (70%+): ${high}`,
+          `  🟡 Medium match (50-69%): ${medium}`,
+          `  🔴 Low match (<50%): ${low}`,
+          '',
+          'Top 10:',
+        ];
+        
+        scored.slice(0, 10).forEach((s, i) => {
+          lines.push(`${i + 1}. ${s.name} - ${s.score}% (ID: ${s.id})`);
+        });
+        
+        return {
+          success: true,
+          data: lines.join('\n'),
+        };
+      }
+
+      case 'generate_sourcing_report': {
+        const { days = '7' } = tool.arguments;
+        const daysNum = parseInt(days);
+        const stats = memory.getStats();
+        const rewardHistory = memory.getRewardHistory();
+        
+        // Filter to recent
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - daysNum);
+        const recentRewards = rewardHistory.filter(r => new Date(r.timestamp) > cutoff);
+        
+        // Calculate stats
+        const likes = recentRewards.filter(r => r.action === 'LIKE').length;
+        const dislikes = recentRewards.filter(r => r.action === 'DISLIKE').length;
+        const saves = recentRewards.filter(r => r.action === 'SAVE').length;
+        const totalReward = recentRewards.reduce((sum, r) => sum + r.reward, 0);
+        
+        // Get preference trends
+        const prefs = memory.getLearnedPreferences()
+          .filter(p => p.confidence > 0.3)
+          .sort((a, b) => b.confidence - a.confidence)
+          .slice(0, 5);
+        
+        const lines = [
+          `📊 SOURCING REPORT (Last ${daysNum} days)`,
+          '',
+          '📈 Activity:',
+          `  • ${likes} likes`,
+          `  • ${dislikes} passes`,
+          `  • ${saves} saves`,
+          `  • Total reward: ${totalReward.toFixed(1)}`,
+          '',
+          '🎯 Top Preferences:',
+        ];
+        
+        prefs.forEach(p => {
+          lines.push(`  • ${p.category}: ${p.value} (${Math.round(p.confidence * 100)}%)`);
+        });
+        
+        // Add negative preferences
+        const negPrefs = memory.getLearnedPreferences()
+          .filter(p => p.negativeConfidence > 0.3)
+          .sort((a, b) => b.negativeConfidence - a.negativeConfidence)
+          .slice(0, 3);
+        
+        if (negPrefs.length) {
+          lines.push('');
+          lines.push('⚠️ Avoiding:');
+          negPrefs.forEach(p => {
+            lines.push(`  • ${p.category}: ${p.value} (${Math.round(p.negativeConfidence * 100)}%)`);
+          });
+        }
+        
+        return {
+          success: true,
+          data: lines.join('\n'),
         };
       }
 

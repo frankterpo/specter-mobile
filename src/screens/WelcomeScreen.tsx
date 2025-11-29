@@ -37,8 +37,8 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
           <View style={styles.badgeContainer}>
             <Text style={styles.badgeText}>MOBILE</Text>
           </View>
-        </View>
-
+          </View>
+          
         {/* Hero Text */}
         <View style={styles.textSection}>
           <Text style={styles.headline}>
