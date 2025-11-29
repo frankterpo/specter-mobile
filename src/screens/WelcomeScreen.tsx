@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from 'expo-linear-gradient';
 
 type AuthStackParamList = {
   Welcome: undefined;
@@ -18,55 +19,57 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
   const insets = useSafeAreaInsets();
 
   return (
-    <View className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
-      {/* Logo Section */}
-      <View className="flex-1 items-center justify-center px-6">
-        <View className="items-center mb-8">
-          {/* Logo Icon */}
-          <View className="w-20 h-20 rounded-2xl items-center justify-center mb-4" style={styles.logoContainer}>
-            <Ionicons name="analytics" size={40} color="#1a365d" />
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      {/* Background Gradient */}
+      <LinearGradient
+        colors={['#0F172A', '#1E293B']}
+        style={StyleSheet.absoluteFill}
+      />
+
+      {/* Main Content */}
+      <View style={styles.content}>
+        {/* Logo Area */}
+        <View style={styles.logoSection}>
+          <View style={styles.iconWrapper}>
+            <Ionicons name="prism" size={48} color="#38BDF8" />
           </View>
-          
-          {/* App Name */}
-          <Text className="text-4xl font-bold mb-3" style={styles.title}>
-            Specter Mobile
+          <Text style={styles.brandName}>Specter</Text>
+          <View style={styles.badgeContainer}>
+            <Text style={styles.badgeText}>MOBILE</Text>
+          </View>
+        </View>
+
+        {/* Hero Text */}
+        <View style={styles.textSection}>
+          <Text style={styles.headline}>
+            Data-Driven Venture Capital
           </Text>
-          
-          {/* Tagline */}
-          <Text className="text-base text-center" style={styles.tagline}>
-            Operating System for Venture Capital
+          <Text style={styles.subheadline}>
+            Access proprietary signals, track emerging talent, and make investment decisions with AI-powered insights.
           </Text>
         </View>
       </View>
 
-      {/* Buttons Section */}
-      <View className="px-6" style={{ paddingBottom: insets.bottom + 40 }}>
-        {/* Sign In Button */}
+      {/* Action Buttons */}
+      <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 24) }]}>
         <Pressable
           onPress={() => navigation.navigate("SignIn")}
-          className="rounded-xl py-4 mb-3"
           style={({ pressed }) => [
-            styles.signInButton,
-            pressed && styles.buttonPressed,
+            styles.primaryButton,
+            pressed && styles.buttonPressed
           ]}
         >
-          <Text className="text-white text-center text-base font-semibold">
-            Sign In
-          </Text>
+          <Text style={styles.primaryButtonText}>Sign In</Text>
         </Pressable>
 
-        {/* Sign Up Button */}
         <Pressable
           onPress={() => navigation.navigate("SignUp")}
-          className="rounded-xl py-4 border-2"
           style={({ pressed }) => [
-            styles.signUpButton,
-            pressed && styles.buttonPressed,
+            styles.secondaryButton,
+            pressed && styles.buttonPressed
           ]}
         >
-          <Text className="text-center text-base font-semibold" style={styles.signUpButtonText}>
-            Sign Up
-          </Text>
+          <Text style={styles.secondaryButtonText}>Create Account</Text>
         </Pressable>
       </View>
     </View>
@@ -74,28 +77,103 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
 }
 
 const styles = StyleSheet.create({
-  logoContainer: {
-    backgroundColor: "#f7fafc",
-    borderWidth: 2,
-    borderColor: "#e2e8f0",
+  container: {
+    flex: 1,
+    backgroundColor: '#0F172A',
   },
-  title: {
-    color: "#1a365d",
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 32,
   },
-  tagline: {
-    color: "#64748b",
+  logoSection: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginBottom: 48,
   },
-  signInButton: {
-    backgroundColor: "#1a365d",
+  iconWrapper: {
+    width: 80,
+    height: 80,
+    borderRadius: 24,
+    backgroundColor: 'rgba(56, 189, 248, 0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(56, 189, 248, 0.2)',
   },
-  signUpButton: {
-    backgroundColor: "white",
-    borderColor: "#1a365d",
+  brandName: {
+    fontSize: 42,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: -1,
+    marginBottom: 12,
   },
-  signUpButtonText: {
-    color: "#1a365d",
+  badgeContainer: {
+    backgroundColor: 'rgba(56, 189, 248, 0.15)',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(56, 189, 248, 0.3)',
+  },
+  badgeText: {
+    color: '#38BDF8',
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 1,
+  },
+  textSection: {
+    gap: 16,
+  },
+  headline: {
+    fontSize: 32,
+    fontWeight: '600',
+    color: '#F8FAFC',
+    lineHeight: 40,
+  },
+  subheadline: {
+    fontSize: 17,
+    color: '#94A3B8',
+    lineHeight: 26,
+  },
+  footer: {
+    paddingHorizontal: 32,
+    gap: 16,
+  },
+  primaryButton: {
+    backgroundColor: '#38BDF8',
+    height: 56,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#38BDF8',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 4,
+  },
+  primaryButtonText: {
+    color: '#0F172A',
+    fontSize: 17,
+    fontWeight: '600',
+  },
+  secondaryButton: {
+    backgroundColor: 'transparent',
+    height: 56,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#334155',
+  },
+  secondaryButtonText: {
+    color: '#F8FAFC',
+    fontSize: 17,
+    fontWeight: '600',
   },
   buttonPressed: {
-    opacity: 0.7,
+    opacity: 0.8,
+    transform: [{ scale: 0.98 }],
   },
 });

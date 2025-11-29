@@ -15,6 +15,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 import { useSignIn } from "@clerk/clerk-expo";
+import { LinearGradient } from "expo-linear-gradient";
 
 type AuthStackParamList = {
   Welcome: undefined;
@@ -37,9 +38,14 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSignIn = async () => {
-    if (!isLoaded) return;
+    console.log("[SignIn] handleSignIn called, isLoaded:", isLoaded);
+    if (!isLoaded) {
+      console.log("[SignIn] Clerk not loaded yet");
+      return;
+    }
 
     if (!email.trim() || !password.trim()) {
+      console.log("[SignIn] Missing email or password");
       setErrorMessage("Please enter both email and password");
       return;
     }
@@ -49,33 +55,46 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
     setErrorMessage("");
 
     try {
+      console.log("[SignIn] Attempting sign in with email:", email.trim());
       const signInAttempt = await signIn.create({
         identifier: email.trim(),
         password,
       });
 
+      console.log("[SignIn] Sign in response status:", signInAttempt.status);
+      
       if (signInAttempt.status === "complete") {
+        console.log("[SignIn] Sign in complete, setting active session:", signInAttempt.createdSessionId);
         await setActive({ session: signInAttempt.createdSessionId });
+        console.log("[SignIn] Session activated successfully");
         // Navigation handled by App.tsx auth state
       } else {
+        console.log("[SignIn] Sign in incomplete, status:", signInAttempt.status);
         setErrorMessage("Sign in incomplete. Please check your credentials.");
         console.error("Sign in incomplete:", JSON.stringify(signInAttempt, null, 2));
       }
     } catch (error: any) {
+      console.error("[SignIn] Sign in error:", error);
       const errorMsg =
         error.errors?.[0]?.longMessage ||
         error.errors?.[0]?.message ||
         error.message ||
         "Failed to sign in. Please check your credentials.";
       setErrorMessage(errorMsg);
-      console.error("Sign in error:", error);
+      console.error("Sign in error details:", JSON.stringify(error, null, 2));
     } finally {
       setIsLoading(false);
+      console.log("[SignIn] Sign in attempt finished");
     }
   };
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
+      <LinearGradient
+        colors={['#0F172A', '#1E293B']}
+        style={StyleSheet.absoluteFill}
+      />
+      
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardView}
@@ -88,7 +107,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
           {/* Header */}
           <View style={styles.header}>
             <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
-              <Ionicons name="arrow-back" size={24} color="#1a365d" />
+              <Ionicons name="arrow-back" size={24} color="#F8FAFC" />
             </Pressable>
 
             <Text style={styles.title}>Welcome back</Text>
@@ -107,7 +126,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
                   setErrorMessage("");
                 }}
                 placeholder="you@example.com"
-                placeholderTextColor="#94a3b8"
+                placeholderTextColor="#64748B"
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -127,7 +146,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
                     setErrorMessage("");
                   }}
                   placeholder="Enter your password"
-                  placeholderTextColor="#94a3b8"
+                  placeholderTextColor="#64748B"
                   secureTextEntry={!showPassword}
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -136,7 +155,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
                   style={styles.passwordInput}
                 />
                 <Pressable onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
-                  <Ionicons name={showPassword ? "eye-off" : "eye"} size={22} color="#64748b" />
+                  <Ionicons name={showPassword ? "eye-off" : "eye"} size={22} color="#94A3B8" />
                 </Pressable>
               </View>
             </View>
@@ -144,6 +163,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
             {/* Error Message */}
             {errorMessage ? (
               <View style={styles.errorContainer}>
+                <Ionicons name="alert-circle" size={20} color="#EF4444" />
                 <Text style={styles.errorText}>{errorMessage}</Text>
               </View>
             ) : null}
@@ -158,7 +178,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
               ]}
             >
               {isLoading ? (
-                <ActivityIndicator color="white" />
+                <ActivityIndicator color="#0F172A" />
               ) : (
                 <Text style={styles.signInButtonText}>Sign In</Text>
               )}
@@ -181,7 +201,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#0F172A",
   },
   keyboardView: {
     flex: 1,
@@ -190,64 +210,66 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   header: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 32,
     paddingTop: 16,
     paddingBottom: 32,
   },
   backButton: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: "#f7fafc",
+    borderRadius: 12,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 24,
   },
   title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "#1a365d",
-    marginTop: 24,
+    fontSize: 32,
+    fontWeight: "700",
+    color: "#F8FAFC",
     marginBottom: 8,
   },
   subtitle: {
-    fontSize: 16,
-    color: "#64748b",
+    fontSize: 17,
+    color: "#94A3B8",
   },
   form: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 32,
   },
   inputContainer: {
-    marginBottom: 16,
+    marginBottom: 20,
   },
   label: {
     fontSize: 14,
-    fontWeight: "500",
-    color: "#334155",
+    fontWeight: "600",
+    color: "#CBD5E1",
     marginBottom: 8,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   input: {
-    backgroundColor: "#f7fafc",
+    backgroundColor: "rgba(30, 41, 59, 0.5)",
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: "#334155",
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 16,
     fontSize: 16,
-    color: "#1e293b",
+    color: "#F8FAFC",
   },
   passwordContainer: {
     position: "relative",
   },
   passwordInput: {
-    backgroundColor: "#f7fafc",
+    backgroundColor: "rgba(30, 41, 59, 0.5)",
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: "#334155",
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 16,
     paddingRight: 48,
     fontSize: 16,
-    color: "#1e293b",
+    color: "#F8FAFC",
   },
   eyeButton: {
     position: "absolute",
@@ -255,33 +277,43 @@ const styles = StyleSheet.create({
     top: 16,
   },
   errorContainer: {
-    backgroundColor: "#fef2f2",
+    backgroundColor: "rgba(239, 68, 68, 0.1)",
     borderWidth: 1,
-    borderColor: "#fecaca",
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
+    borderColor: "rgba(239, 68, 68, 0.2)",
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 24,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
   errorText: {
-    color: "#dc2626",
+    color: "#EF4444",
     fontSize: 14,
+    flex: 1,
   },
   signInButton: {
-    backgroundColor: "#1a365d",
-    borderRadius: 12,
+    backgroundColor: "#38BDF8",
+    borderRadius: 16,
     paddingVertical: 16,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 16,
+    marginBottom: 24,
     minHeight: 56,
+    shadowColor: '#38BDF8',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 4,
   },
   signInButtonText: {
-    color: "white",
-    fontSize: 16,
+    color: "#0F172A",
+    fontSize: 17,
     fontWeight: "600",
   },
   buttonPressed: {
-    opacity: 0.7,
+    opacity: 0.8,
+    transform: [{ scale: 0.98 }],
   },
   footer: {
     flexDirection: "row",
@@ -290,12 +322,12 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   footerText: {
-    fontSize: 16,
-    color: "#64748b",
+    fontSize: 15,
+    color: "#94A3B8",
   },
   linkText: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "600",
-    color: "#1a365d",
+    color: "#38BDF8",
   },
 });

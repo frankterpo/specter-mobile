@@ -4,6 +4,13 @@
 const API_BASE_URL = "https://specter-api-staging.up.railway.app";
 const ENTITY_STATUS_BASE_URL = "https://app.staging.tryspecter.com/api/entity-status";
 const LISTS_BASE_URL = "https://app.staging.tryspecter.com/api/lists";
+// Specter Public API - uses X-API-KEY authentication
+const SPECTER_API_BASE_URL = "https://app.tryspecter.com/api/v1";
+
+// Get API key from environment
+const getSpecterApiKey = (): string | null => {
+  return process.env.EXPO_PUBLIC_SPECTER_API_KEY || null;
+};
 
 // Timeout constants
 const API_TIMEOUT_MS = 15000; // 15 seconds
@@ -475,15 +482,27 @@ export async function fetchPeople(
  * Fetch single person details
  */
 export async function fetchPersonDetail(
-  token: string,
-  personId: string
+  _token?: string, // Token kept for backwards compatibility but not used
+  personId?: string
 ): Promise<Person> {
   try {
-    const fetchPromise = fetch(`${API_BASE_URL}/private/people/${personId}`, {
+    const apiKey = getSpecterApiKey();
+    if (!apiKey) {
+      throw new Error("No EXPO_PUBLIC_SPECTER_API_KEY configured");
+    }
+    
+    if (!personId) {
+      throw new Error("No personId provided");
+    }
+    
+    console.log("[fetchPersonDetail] Fetching person:", personId);
+    
+    // Use the public Specter API with X-API-Key
+    const fetchPromise = fetch(`${SPECTER_API_BASE_URL}/people/${personId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "X-API-KEY": apiKey,
       },
     });
 
@@ -499,10 +518,12 @@ export async function fetchPersonDetail(
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error("[fetchPersonDetail] API Error:", response.status, errorText);
       throw new Error(`API Error ${response.status}: ${errorText}`);
     }
 
     const data = await response.json();
+    console.log("[fetchPersonDetail] Success, got person:", data.full_name || data.first_name);
     return data;
   } catch (error: any) {
     if (error instanceof AuthError) {
@@ -879,6 +900,267 @@ export interface List {
   updated_at?: string;
 }
 
+// ============================================
+// SAVED SEARCHES TYPES
+// ============================================
+
+export interface SavedSearch {
+  id: number;
+  name: string;
+  is_global: boolean;
+  query_id: number;
+  // Feed types from Specter API:
+  // 1. company - Company saved searches
+  // 2. people - People saved searches
+  // 3. talent - Talent Signals saved searches (different from people)
+  // 4. investors - Investor saved searches
+  // 5. stratintel - Strategic Intelligence / Interest Signals
+  // 6. interest_signals - Interest Signals (alias for stratintel)
+  product_type: 'company' | 'people' | 'talent' | 'investors' | 'stratintel' | 'interest_signals';
+  full_count: number;
+  new_count: number;
+  // Additional fields from the web app
+  new_funding_count?: number;
+  new_growth_count?: number;
+  new_funding_highlights_count?: number;
+  new_growth_highlights_count?: number;
+  visibility?: 'private' | 'public';
+  creator?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+// ============================================
+// TALENT SIGNALS TYPES
+// ============================================
+
+export interface TalentSignal {
+  // Signal metadata
+  signal_date: string;
+  signal_score: number;
+  signal_type: string; // e.g., "New Company", "departure", "hire", "promotion"
+  signal_status?: string; // e.g., "Stealth"
+  out_of_stealth_advantage?: number;
+  announcement_delay_months?: number;
+  talent_last_signal?: boolean;
+  
+  // New position info
+  new_position_title?: string;
+  new_position_company_id?: string;
+  new_position_company_name?: string;
+  new_position_company_website?: string;
+  new_position_company_tagline?: string;
+  
+  // Past position info
+  past_position_company_id?: string;
+  past_position_title?: string;
+  past_position_company_name?: string;
+  past_position_company_website?: string;
+  
+  // Signal IDs
+  talent_signal_ids?: string[];
+  investor_signal_ids?: string[];
+  
+  // Person data (matches Person interface)
+  person_id: string;
+  profile_picture_url?: string;
+  first_name: string;
+  last_name: string;
+  full_name: string;
+  linkedin_url?: string;
+  twitter_url?: string;
+  github_url?: string;
+  about?: string;
+  tagline?: string;
+  location?: string;
+  region?: string;
+  highlights?: string[];
+  level_of_seniority?: string;
+  years_of_experience?: number;
+  education_level?: string;
+  experience?: {
+    company_name: string;
+    company_id?: string;
+    domain?: string;
+    linkedin_url?: string;
+    description?: string;
+    company_size?: string;
+    industries?: string[];
+    title?: string;
+    departments?: string[];
+    start_date?: string;
+    end_date?: string | null;
+    location?: string;
+    is_current?: boolean;
+    founded_year?: number;
+    job_order?: number;
+  };
+  current_tenure?: number;
+  average_tenure?: number;
+  education?: {
+    name: string;
+    linkedin_url?: string;
+    field_of_study?: string;
+    degree_title?: string;
+    description?: string;
+    start_date?: string;
+    end_date?: string;
+    location?: string;
+  };
+  languages?: { name: string; proficiency_level: string }[];
+  skills?: string[];
+  linkedin_followers?: number;
+  linkedin_connections?: number;
+}
+
+// ============================================
+// INVESTOR INTEREST TYPES
+// ============================================
+
+export interface InvestorInterestSignal {
+  signal_id: string;
+  signal_date: string;
+  signal_score: number;
+  signal_type: string; // e.g., "Company"
+  source_types?: string;
+  signal_total_funding_usd?: number;
+  signal_last_funding_usd?: number;
+  signal_last_funding_date?: string;
+  signal_investors?: { name: string }[];
+  entity_id: string; // Can be person_id or company_id
+  
+  // Company data (when signal_type is "Company")
+  company?: {
+    name: string;
+    description?: string;
+    website?: string;
+    linkedin_url?: string;
+    twitter_url?: string;
+    founded_year?: number;
+    hq?: {
+      city?: string;
+      state?: string;
+      country?: string;
+      region?: string;
+    };
+    industries?: string[];
+  };
+  
+  // Person data (when signal is about a person)
+  person?: {
+    full_name: string;
+    description?: string;
+    website?: string;
+    linkedin_url?: string;
+    twitter_url?: string;
+    founded_year?: number;
+    location?: {
+      city?: string;
+      state?: string;
+      country?: string;
+      region?: string;
+    };
+    industries?: string;
+  };
+}
+
+// ============================================
+// ENRICHMENT TYPES
+// ============================================
+
+export interface EnrichPersonInput {
+  linkedin_url?: string;
+  email?: string;
+  first_name?: string;
+  last_name?: string;
+  company?: string;
+}
+
+export interface EnrichCompanyInput {
+  domain?: string;
+  linkedin_url?: string;
+  name?: string;
+}
+
+export interface EnrichResult<T> {
+  input_index: number;
+  data?: T;
+  status: 'found' | 'not_found' | 'pending';
+  match_confidence: number;
+}
+
+// ============================================
+// COMPANY TYPES
+// ============================================
+
+export interface Company {
+  id?: string; // Some endpoints return 'id'
+  company_id?: string; // Some endpoints return 'company_id'
+  name?: string; // Some endpoints return 'name'
+  organization_name?: string; // Company search results return 'organization_name'
+  description?: string;
+  tagline?: string;
+  logo_url?: string;
+  industries?: string[];
+  sub_industries?: string[];
+  operating_status?: string;
+  highlights?: string[];
+  new_highlights?: string[];
+  regions?: string[];
+  founded_year?: number;
+  founders?: string[];
+  founder_info?: {
+    specter_person_id?: string;
+    full_name?: string;
+    title?: string;
+    departments?: string[];
+    seniority?: string;
+  }[];
+  founder_count?: number;
+  employee_count?: number;
+  employee_count_range?: string;
+  revenue_estimate_usd?: number;
+  investors?: string[];
+  investor_count?: number;
+  patent_count?: number;
+  trademark_count?: number;
+  website?: {
+    domain?: string;
+    url?: string;
+    domain_aliases?: string[];
+  };
+  hq?: {
+    city?: string;
+    state?: string;
+    country?: string;
+    region?: string;
+  };
+  contact?: {
+    phone_number?: string;
+    email?: string;
+  };
+  growth_stage?: string;
+  funding?: {
+    total_funding_usd?: number;
+    last_funding_usd?: number;
+    last_funding_date?: string;
+    last_funding_type?: string;
+    round_count?: number;
+    round_details?: {
+      type?: string;
+      date?: string;
+      raised?: number;
+      investors?: string[];
+    }[];
+    post_money_valuation_usd?: number;
+  };
+  socials?: {
+    twitter?: { url?: string; follower_count?: number };
+    facebook?: { url?: string };
+    linkedin?: { url?: string; follower_count?: number };
+  };
+}
+
 /**
  * Fetch all lists for current user
  */
@@ -1046,5 +1328,794 @@ export async function removeFromList(
     }
     console.error("❌ removeFromList error:", error);
     throw new Error(error.message || "Failed to remove from list");
+  }
+}
+
+// ============================================
+// SAVED SEARCHES API
+// ============================================
+
+/**
+ * Fetch all saved searches shared with the API
+ * Returns searches across all product types (company, people, talent, investors)
+ */
+export async function fetchSavedSearches(
+  _token?: string // Token kept for backwards compatibility but not used
+): Promise<SavedSearch[]> {
+  try {
+    const apiKey = getSpecterApiKey();
+    if (!apiKey) {
+      console.warn("[fetchSavedSearches] No EXPO_PUBLIC_SPECTER_API_KEY configured");
+      return [];
+    }
+    
+    console.log("[fetchSavedSearches] Fetching from:", `${SPECTER_API_BASE_URL}/searches`);
+    const fetchPromise = fetch(`${SPECTER_API_BASE_URL}/searches`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": apiKey,
+      },
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    console.log("[fetchSavedSearches] Response status:", response.status);
+    
+    if (response.status === 401 || response.status === 403) {
+      const errorText = await response.text();
+      console.error("[fetchSavedSearches] Auth error:", response.status, errorText);
+      // Don't throw AuthError - just return empty array to avoid logout
+      return [];
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("[fetchSavedSearches] API error:", response.status, errorText);
+      return [];
+    }
+
+    const data = await response.json();
+    console.log("[fetchSavedSearches] Success! Got", data?.length || 0, "searches");
+    
+    return data || [];
+  } catch (error: any) {
+    console.error("❌ fetchSavedSearches error:", error);
+    // Don't throw - just return empty to avoid crashing the app
+    return [];
+  }
+}
+
+/**
+ * Fetch results from a people saved search
+ */
+export async function fetchPeopleSavedSearchResults(
+  _token?: string, // Token kept for backwards compatibility but not used
+  searchId?: number,
+  params: { limit?: number; offset?: number } = {}
+): Promise<{ items: Person[]; total?: number }> {
+  try {
+    const apiKey = getSpecterApiKey();
+    if (!apiKey) {
+      console.warn("[fetchPeopleSavedSearchResults] No EXPO_PUBLIC_SPECTER_API_KEY configured");
+      return { items: [] };
+    }
+    
+    if (!searchId) {
+      console.error("[fetchPeopleSavedSearchResults] No searchId provided");
+      return { items: [] };
+    }
+    
+    const queryParams = new URLSearchParams();
+    if (params.limit) queryParams.set('limit', params.limit.toString());
+    if (params.offset) queryParams.set('offset', params.offset.toString());
+    
+    // Correct endpoint: /searches/people/{searchId}/results
+    const url = `${SPECTER_API_BASE_URL}/searches/people/${searchId}/results?${queryParams}`;
+    console.log("[fetchPeopleSavedSearchResults] Fetching from:", url);
+    
+    const fetchPromise = fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": apiKey,
+      },
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    return {
+      items: data.items || data || [],
+      total: data.total,
+    };
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ fetchPeopleSavedSearchResults error:", error);
+    return { items: [] };
+  }
+}
+
+/**
+ * Fetch results from a company saved search
+ */
+export async function fetchCompanySavedSearchResults(
+  _token?: string, // Token kept for backwards compatibility but not used
+  searchId?: number,
+  params: { limit?: number; offset?: number } = {}
+): Promise<{ items: Company[]; total?: number }> {
+  try {
+    const apiKey = getSpecterApiKey();
+    if (!apiKey) {
+      console.warn("[fetchCompanySavedSearchResults] No EXPO_PUBLIC_SPECTER_API_KEY configured");
+      return { items: [] };
+    }
+    
+    if (!searchId) {
+      console.error("[fetchCompanySavedSearchResults] No searchId provided");
+      return { items: [] };
+    }
+    
+    const queryParams = new URLSearchParams();
+    if (params.limit) queryParams.set('limit', params.limit.toString());
+    if (params.offset) queryParams.set('offset', params.offset.toString());
+    
+    // Correct endpoint: /searches/companies/{searchId}/results (note: plural "companies")
+    const url = `${SPECTER_API_BASE_URL}/searches/companies/${searchId}/results?${queryParams}`;
+    console.log("[fetchCompanySavedSearchResults] Fetching from:", url);
+    
+    const fetchPromise = fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": apiKey,
+      },
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    return {
+      items: data.items || data || [],
+      total: data.total,
+    };
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ fetchCompanySavedSearchResults error:", error);
+    return { items: [] };
+  }
+}
+
+// ============================================
+// TALENT SIGNALS API
+// ============================================
+
+/**
+ * Fetch talent signals from a saved search
+ */
+export async function fetchTalentSignals(
+  _token?: string, // Token kept for backwards compatibility
+  searchId?: number,
+  params: { limit?: number; offset?: number; date_from?: string; date_to?: string } = {}
+): Promise<{ items: TalentSignal[]; total?: number }> {
+  try {
+    const apiKey = getSpecterApiKey();
+    if (!apiKey || !searchId) {
+      return { items: [] };
+    }
+    
+    const queryParams = new URLSearchParams();
+    if (params.limit) queryParams.set('limit', params.limit.toString());
+    if (params.offset) queryParams.set('offset', params.offset.toString());
+    if (params.date_from) queryParams.set('date_from', params.date_from);
+    if (params.date_to) queryParams.set('date_to', params.date_to);
+    
+    // Correct endpoint: /searches/talent/{searchId}/results
+    const url = `${SPECTER_API_BASE_URL}/searches/talent/${searchId}/results?${queryParams}`;
+    console.log("[fetchTalentSignals] Fetching from:", url);
+    
+    const fetchPromise = fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": apiKey,
+      },
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    
+    if (__DEV__) {
+      console.log(`✅ Fetched ${data.items?.length || 0} talent signals`);
+    }
+    
+    return {
+      items: data.items || data || [],
+      total: data.total,
+    };
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ fetchTalentSignals error:", error);
+    return { items: [] };
+  }
+}
+
+/**
+ * Get a single talent signal by ID
+ */
+export async function getTalentSignalById(
+  _token?: string, // Token kept for backwards compatibility
+  signalId?: string
+): Promise<TalentSignal | null> {
+  try {
+    const apiKey = getSpecterApiKey();
+    if (!apiKey || !signalId) {
+      return null;
+    }
+    
+    const fetchPromise = fetch(`${SPECTER_API_BASE_URL}/talent/${signalId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": apiKey,
+      },
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 404) {
+      return null;
+    }
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    return await response.json();
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ getTalentSignalById error:", error);
+    return null;
+  }
+}
+
+// ============================================
+// INVESTOR INTEREST API
+// ============================================
+
+/**
+ * Fetch investor interest signals from a saved search
+ */
+export async function fetchInvestorInterestSignals(
+  _token?: string, // Token kept for backwards compatibility
+  searchId?: number,
+  params: { limit?: number; offset?: number } = {}
+): Promise<{ items: InvestorInterestSignal[]; total?: number }> {
+  try {
+    const apiKey = getSpecterApiKey();
+    if (!apiKey || !searchId) {
+      return { items: [] };
+    }
+    
+    const queryParams = new URLSearchParams();
+    if (params.limit) queryParams.set('limit', params.limit.toString());
+    if (params.offset) queryParams.set('offset', params.offset.toString());
+    
+    // Correct endpoint: /searches/investor-interest/{searchId}/results
+    const url = `${SPECTER_API_BASE_URL}/searches/investor-interest/${searchId}/results?${queryParams}`;
+    console.log("[fetchInvestorInterestSignals] Fetching from:", url);
+    
+    const fetchPromise = fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": apiKey,
+      },
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    
+    if (__DEV__) {
+      console.log(`✅ Fetched ${data.items?.length || 0} investor interest signals`);
+    }
+    
+    return {
+      items: data.items || data || [],
+      total: data.total,
+    };
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ fetchInvestorInterestSignals error:", error);
+    return { items: [] };
+  }
+}
+
+/**
+ * Get a single investor interest signal by ID
+ */
+export async function getInvestorInterestById(
+  _token?: string, // Token kept for backwards compatibility
+  signalId?: string
+): Promise<InvestorInterestSignal | null> {
+  try {
+    const apiKey = getSpecterApiKey();
+    if (!apiKey || !signalId) {
+      return null;
+    }
+    
+    const fetchPromise = fetch(`${SPECTER_API_BASE_URL}/investor-interest/${signalId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": apiKey,
+      },
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 404) {
+      return null;
+    }
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    return await response.json();
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ getInvestorInterestById error:", error);
+    return null;
+  }
+}
+
+// ============================================
+// ENRICHMENT API
+// ============================================
+
+/**
+ * Enrich people data from external identifiers
+ */
+export async function enrichPeople(
+  _token?: string, // Token kept for backwards compatibility
+  people?: EnrichPersonInput[]
+): Promise<EnrichResult<Person>[]> {
+  try {
+    const apiKey = getSpecterApiKey();
+    if (!apiKey || !people?.length) {
+      return [];
+    }
+    
+    const fetchPromise = fetch(`${SPECTER_API_BASE_URL}/enrichment/people`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": apiKey,
+      },
+      body: JSON.stringify({ people }),
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS * 2, // Enrichment may take longer
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    
+    if (__DEV__) {
+      const found = data.results?.filter((r: any) => r.status === 'found').length || 0;
+      console.log(`✅ Enriched ${found}/${people.length} people`);
+    }
+    
+    return data.results || [];
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ enrichPeople error:", error);
+    return [];
+  }
+}
+
+/**
+ * Enrich company data from external identifiers
+ */
+export async function enrichCompanies(
+  _token?: string, // Token kept for backwards compatibility
+  companies?: EnrichCompanyInput[]
+): Promise<EnrichResult<Company>[]> {
+  try {
+    const apiKey = getSpecterApiKey();
+    if (!apiKey || !companies?.length) {
+      return [];
+    }
+    
+    const fetchPromise = fetch(`${SPECTER_API_BASE_URL}/enrichment/companies`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": apiKey,
+      },
+      body: JSON.stringify({ companies }),
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS * 2, // Enrichment may take longer
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    
+    if (__DEV__) {
+      const found = data.results?.filter((r: any) => r.status === 'found').length || 0;
+      console.log(`✅ Enriched ${found}/${companies.length} companies`);
+    }
+    
+    return data.results || [];
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ enrichCompanies error:", error);
+    return [];
+  }
+}
+
+// ============================================
+// COMPANY API
+// ============================================
+
+/**
+ * Get company by ID
+ */
+export async function fetchCompanyDetail(
+  token: string,
+  companyId: string
+): Promise<Company | null> {
+  try {
+    const fetchPromise = fetch(`${API_BASE_URL}/private/companies/${companyId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 404) {
+      return null;
+    }
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    return await response.json();
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ fetchCompanyDetail error:", error);
+    return null;
+  }
+}
+
+/**
+ * Get similar companies
+ */
+export async function fetchSimilarCompanies(
+  token: string,
+  companyId: string,
+  params: { limit?: number } = {}
+): Promise<Company[]> {
+  try {
+    const queryParams = new URLSearchParams();
+    if (params.limit) queryParams.set('limit', params.limit.toString());
+    
+    const url = `${API_BASE_URL}/private/companies/${companyId}/similar?${queryParams}`;
+    
+    const fetchPromise = fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    return data.items || data || [];
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ fetchSimilarCompanies error:", error);
+    return [];
+  }
+}
+
+/**
+ * Get company employees/founders
+ */
+export async function fetchCompanyPeople(
+  token: string,
+  companyId: string,
+  params: { limit?: number; offset?: number } = {}
+): Promise<{ items: Person[]; total?: number }> {
+  try {
+    const queryParams = new URLSearchParams();
+    if (params.limit) queryParams.set('limit', params.limit.toString());
+    if (params.offset) queryParams.set('offset', params.offset.toString());
+    
+    const url = `${API_BASE_URL}/private/companies/${companyId}/people?${queryParams}`;
+    
+    const fetchPromise = fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    return {
+      items: data.items || data || [],
+      total: data.total,
+    };
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ fetchCompanyPeople error:", error);
+    return { items: [] };
+  }
+}
+
+/**
+ * Search companies by name
+ */
+export async function searchCompanies(
+  token: string,
+  query: string,
+  params: { limit?: number } = {}
+): Promise<Company[]> {
+  try {
+    const queryParams = new URLSearchParams();
+    queryParams.set('name', query);
+    if (params.limit) queryParams.set('limit', params.limit.toString());
+    
+    const url = `${API_BASE_URL}/private/companies/search?${queryParams}`;
+    
+    const fetchPromise = fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    return data.items || data || [];
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ searchCompanies error:", error);
+    return [];
+  }
+}
+
+// ============================================
+// GLOBAL TEXT SEARCH
+// ============================================
+
+/**
+ * Global entity search across people and companies
+ */
+export async function searchEntities(
+  token: string,
+  query: string,
+  params: { type?: 'people' | 'company' | 'all'; limit?: number } = {}
+): Promise<Array<{ id: string; type: string; name: string; [key: string]: any }>> {
+  try {
+    const fetchPromise = fetch(`${API_BASE_URL}/private/entities/search`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        query,
+        type: params.type || 'all',
+        limit: params.limit || 20,
+      }),
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    return data.items || data || [];
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ searchEntities error:", error);
+    return [];
   }
 }

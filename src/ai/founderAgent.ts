@@ -8,6 +8,7 @@ import {
   buildMeetingPrepPrompt,
   parseAnalysisResponse,
   type ParsedAnalysis,
+  type PromptOptions,
 } from './prompts';
 import type { Person } from '../api/specter';
 import { logger } from '../utils/logger';
@@ -37,6 +38,11 @@ export interface StreamingCallbacks {
   onProgress?: (stage: 'downloading' | 'initializing' | 'generating') => void;
 }
 
+export interface AnalysisOptions extends StreamingCallbacks {
+  /** User context from AgentContext for personalization */
+  userContext?: string;
+}
+
 /**
  * Founder Agent - Generates AI insights about founders
  * All inference runs locally on-device via Cactus
@@ -56,29 +62,35 @@ export class FounderAgent {
   /**
    * Generate a comprehensive founder analysis
    * Includes summary, strengths, and risks
+   * @param person - The person to analyze
+   * @param options - Analysis options including callbacks and user context
    */
   async analyzeFounder(
     person: Person,
-    callbacks?: StreamingCallbacks
+    options?: AnalysisOptions
   ): Promise<FounderAnalysisResult> {
     logger.info('FounderAgent', 'Starting founder analysis', {
       personId: person.id,
       name: `${person.first_name} ${person.last_name}`,
+      hasUserContext: !!options?.userContext,
     });
 
     const client = getCactusClient();
 
     // Download model if needed
-    callbacks?.onProgress?.('downloading');
+    options?.onProgress?.('downloading');
     await client.download();
 
     // Initialize model
-    callbacks?.onProgress?.('initializing');
+    options?.onProgress?.('initializing');
     await client.ensureReady();
 
-    // Generate analysis
-    callbacks?.onProgress?.('generating');
-    const messages = buildFounderSummaryPrompt(person);
+    // Generate analysis with optional user context
+    options?.onProgress?.('generating');
+    const promptOptions: PromptOptions | undefined = options?.userContext 
+      ? { userContext: options.userContext } 
+      : undefined;
+    const messages = buildFounderSummaryPrompt(person, promptOptions);
 
     let fullResponse = '';
     const result = await client.complete({
@@ -89,7 +101,7 @@ export class FounderAgent {
       },
       onToken: (token) => {
         fullResponse += token;
-        callbacks?.onToken?.(token);
+        options?.onToken?.(token);
       },
     });
 
@@ -119,12 +131,16 @@ export class FounderAgent {
 
   /**
    * Ask a follow-up question about a founder
+   * @param person - The person being discussed
+   * @param previousAnalysis - The previous AI analysis
+   * @param question - The follow-up question
+   * @param options - Analysis options including callbacks and user context
    */
   async askFollowUp(
     person: Person,
     previousAnalysis: string,
     question: string,
-    callbacks?: StreamingCallbacks
+    options?: AnalysisOptions
   ): Promise<FollowUpResult> {
     logger.info('FounderAgent', 'Follow-up question', {
       personId: person.id,
@@ -133,8 +149,11 @@ export class FounderAgent {
 
     const client = getCactusClient();
 
-    callbacks?.onProgress?.('generating');
-    const messages = buildFollowUpPrompt(person, previousAnalysis, question);
+    options?.onProgress?.('generating');
+    const promptOptions: PromptOptions | undefined = options?.userContext 
+      ? { userContext: options.userContext } 
+      : undefined;
+    const messages = buildFollowUpPrompt(person, previousAnalysis, question, promptOptions);
 
     let fullResponse = '';
     const result = await client.complete({
@@ -145,7 +164,7 @@ export class FounderAgent {
       },
       onToken: (token) => {
         fullResponse += token;
-        callbacks?.onToken?.(token);
+        options?.onToken?.(token);
       },
     });
 
@@ -160,10 +179,12 @@ export class FounderAgent {
 
   /**
    * Generate meeting prep briefing
+   * @param person - The person you're meeting
+   * @param options - Analysis options including callbacks and user context
    */
   async prepareMeeting(
     person: Person,
-    callbacks?: StreamingCallbacks
+    options?: AnalysisOptions
   ): Promise<FollowUpResult> {
     logger.info('FounderAgent', 'Meeting prep', {
       personId: person.id,
@@ -171,8 +192,11 @@ export class FounderAgent {
 
     const client = getCactusClient();
 
-    callbacks?.onProgress?.('generating');
-    const messages = buildMeetingPrepPrompt(person);
+    options?.onProgress?.('generating');
+    const promptOptions: PromptOptions | undefined = options?.userContext 
+      ? { userContext: options.userContext } 
+      : undefined;
+    const messages = buildMeetingPrepPrompt(person, promptOptions);
 
     let fullResponse = '';
     const result = await client.complete({
@@ -183,7 +207,7 @@ export class FounderAgent {
       },
       onToken: (token) => {
         fullResponse += token;
-        callbacks?.onToken?.(token);
+        options?.onToken?.(token);
       },
     });
 

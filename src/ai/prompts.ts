@@ -5,10 +5,10 @@ import type { Message } from './cactusClient';
 import type { Person } from '../api/specter';
 
 /**
- * System prompt for founder analysis
+ * Base system prompt for founder analysis
  * Optimized for concise, investor-relevant output
  */
-const FOUNDER_ANALYSIS_SYSTEM = `You are an AI analyst for venture capital investors using the Specter platform.
+const FOUNDER_ANALYSIS_BASE = `You are an AI analyst for venture capital investors using the Specter platform.
 
 Your role is to analyze founders and provide investment-relevant insights.
 
@@ -20,15 +20,43 @@ Guidelines:
 - Use bullet points for easy scanning`;
 
 /**
- * Build a founder summary request
+ * Build system prompt with optional user context
+ * @param userContext - Dynamic context from AgentContext (user preferences, saved searches)
  */
-export function buildFounderSummaryPrompt(person: Person): Message[] {
+export function buildSystemPrompt(userContext?: string): string {
+  if (!userContext) {
+    return FOUNDER_ANALYSIS_BASE;
+  }
+  
+  return `${FOUNDER_ANALYSIS_BASE}
+
+User Context:
+${userContext}
+
+Use this context to personalize your analysis - highlight aspects that align with the user's interests and flag potential mismatches.`;
+}
+
+/**
+ * Options for building prompts with context
+ */
+export interface PromptOptions {
+  /** Dynamic user context from AgentContext */
+  userContext?: string;
+}
+
+/**
+ * Build a founder summary request
+ * @param person - The person to analyze
+ * @param options - Optional configuration including user context
+ */
+export function buildFounderSummaryPrompt(person: Person, options?: PromptOptions): Message[] {
   const personContext = formatPersonForPrompt(person);
+  const systemPrompt = buildSystemPrompt(options?.userContext);
 
   return [
     {
       role: 'system',
-      content: FOUNDER_ANALYSIS_SYSTEM,
+      content: systemPrompt,
     },
     {
       role: 'user',
@@ -54,18 +82,24 @@ Be concise. Each bullet should be 1 line.`,
 
 /**
  * Build a follow-up question prompt
+ * @param person - The person being discussed
+ * @param previousAnalysis - The previous AI analysis
+ * @param question - The follow-up question
+ * @param options - Optional configuration including user context
  */
 export function buildFollowUpPrompt(
   person: Person,
   previousAnalysis: string,
-  question: string
+  question: string,
+  options?: PromptOptions
 ): Message[] {
   const personContext = formatPersonForPrompt(person);
+  const systemPrompt = buildSystemPrompt(options?.userContext);
 
   return [
     {
       role: 'system',
-      content: FOUNDER_ANALYSIS_SYSTEM,
+      content: systemPrompt,
     },
     {
       role: 'user',
@@ -88,14 +122,17 @@ ${previousAnalysis}`,
 
 /**
  * Build meeting prep prompt
+ * @param person - The person you're meeting
+ * @param options - Optional configuration including user context
  */
-export function buildMeetingPrepPrompt(person: Person): Message[] {
+export function buildMeetingPrepPrompt(person: Person, options?: PromptOptions): Message[] {
   const personContext = formatPersonForPrompt(person);
+  const systemPrompt = buildSystemPrompt(options?.userContext);
 
   return [
     {
       role: 'system',
-      content: FOUNDER_ANALYSIS_SYSTEM,
+      content: systemPrompt,
     },
     {
       role: 'user',

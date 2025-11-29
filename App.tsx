@@ -8,6 +8,7 @@ import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
 import AuthNavigator from "./src/navigation/AuthNavigator";
 import MainNavigator from "./src/navigation/MainNavigator";
+import { AgentProvider } from "./src/context/AgentContext";
 
 /*
 IMPORTANT NOTICE: DO NOT REMOVE
@@ -61,13 +62,18 @@ const tokenCache = {
 function RootNavigator() {
   const { isSignedIn, isLoaded } = useAuth();
 
+  console.log("[RootNavigator] Auth state:", { isSignedIn, isLoaded });
+
   if (!isLoaded) {
+    console.log("[RootNavigator] Clerk not loaded, showing loading...");
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#1a365d" />
       </View>
     );
   }
+
+  console.log("[RootNavigator] Rendering navigator, isSignedIn:", isSignedIn);
 
   return (
     <NavigationContainer>
@@ -86,7 +92,9 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
-          <RootNavigator />
+          <AgentProvider>
+            <RootNavigator />
+          </AgentProvider>
         </ClerkProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
