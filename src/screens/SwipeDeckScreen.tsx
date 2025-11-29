@@ -15,15 +15,15 @@ import { Ionicons } from "@expo/vector-icons";
 import { logger } from "../utils/logger";
 import { Image } from "expo-image";
 import { useAuth } from "@clerk/clerk-expo";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming,
-  runOnJS,
-  interpolate,
-} from "react-native-reanimated";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+// import Animated, {
+//   useAnimatedStyle,
+//   useSharedValue,
+//   withSpring,
+//   withTiming,
+//   runOnJS,
+//   interpolate,
+// } from "react-native-reanimated";
+// import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
 import FilterModal, { FilterOptions } from "../components/FilterModal";
 import ListModal from "../components/ListModal";
@@ -808,9 +808,6 @@ type SwipeCardProps = {
 };
 
 function SwipeCard({ person, index, isTop, onLike, onDislike, onPass, onViewProfile, onAddToList }: SwipeCardProps) {
-  const translateX = useSharedValue(0);
-  const translateY = useSharedValue(0);
-
   // Safety: ensure person has required data
   if (!person || !person.id) {
     console.warn("Invalid person data in SwipeCard");
@@ -820,71 +817,6 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onPass, onViewProf
   const currentJob = getCurrentJob(person.experience || []);
   const fullName = person.full_name || getFullName(person);
   const initials = getInitials(person);
-
-  const panGesture = Gesture.Pan()
-    .onUpdate((event) => {
-      if (!isTop) return;
-      translateX.value = event.translationX;
-      translateY.value = event.translationY;
-    })
-    .onEnd((event) => {
-      if (!isTop) return;
-
-      // Check for swipe down first (Pass action)
-      if (event.translationY > SWIPE_THRESHOLD) {
-        translateY.value = withTiming(SCREEN_HEIGHT, { duration: 300 });
-        runOnJS(onPass)();
-        return;
-      }
-
-      // Check for horizontal swipe (Like/Dislike)
-      if (Math.abs(event.translationX) > SWIPE_THRESHOLD) {
-        const direction = event.translationX > 0 ? 1 : -1;
-        translateX.value = withTiming(direction * SCREEN_WIDTH * 1.5, { duration: 300 });
-        
-        if (direction > 0) {
-          runOnJS(onLike)();
-        } else {
-          runOnJS(onDislike)();
-        }
-      } else {
-        translateX.value = withSpring(0);
-        translateY.value = withSpring(0);
-      }
-    });
-
-  const cardStyle = useAnimatedStyle(() => {
-    const rotate = interpolate(
-      translateX.value,
-      [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-      [-ROTATION_ANGLE, 0, ROTATION_ANGLE]
-    );
-
-    const scale = interpolate(index, [0, 1, 2], [1, 0.95, 0.9]);
-    const translateYValue = interpolate(index, [0, 1, 2], [0, 10, 20]);
-
-    return {
-      transform: [
-        { translateX: translateX.value },
-        { translateY: isTop ? translateY.value : translateYValue },
-        { rotate: `${rotate}deg` },
-        { scale },
-      ],
-      zIndex: 3 - index,
-    };
-  });
-
-  const likeOpacity = useAnimatedStyle(() => ({
-    opacity: interpolate(translateX.value, [0, SCREEN_WIDTH / 4], [0, 1]),
-  }));
-
-  const nopeOpacity = useAnimatedStyle(() => ({
-    opacity: interpolate(translateX.value, [-SCREEN_WIDTH / 4, 0], [1, 0]),
-  }));
-
-  const passOpacity = useAnimatedStyle(() => ({
-    opacity: interpolate(translateY.value, [0, SCREEN_HEIGHT / 4], [0, 0.7]),
-  }));
 
   // Status badge rendering - shows ONE status (mutually exclusive)
   const renderStatusBadge = () => {
@@ -923,8 +855,7 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onPass, onViewProf
   };
 
   return (
-    <GestureDetector gesture={panGesture}>
-      <Animated.View style={[styles.card, cardStyle]}>
+    <View style={[styles.card, { zIndex: 3 - index, top: index * 10, transform: [{ scale: 1 - index * 0.05 }] }]}>
         {/* Action buttons positioned ON the card */}
         {isTop && (
           <>
@@ -959,19 +890,6 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onPass, onViewProf
         )}
 
         <Pressable onPress={onViewProfile} style={styles.cardPressable}>
-          {/* Swipe overlays */}
-          <Animated.View style={[styles.swipeOverlay, styles.likeOverlay, likeOpacity]}>
-            <Text style={styles.overlayText}>LIKED ❤️</Text>
-          </Animated.View>
-
-          <Animated.View style={[styles.swipeOverlay, styles.nopeOverlay, nopeOpacity]}>
-            <Text style={styles.overlayText}>NOPE ✖️</Text>
-          </Animated.View>
-
-          <Animated.View style={[styles.swipeOverlay, styles.passOverlay, passOpacity]}>
-            <Text style={styles.overlayText}>PASS ⏭️</Text>
-          </Animated.View>
-
           {/* Card content */}
           <View style={styles.newCardContent}>
             {/* Circular profile photo */}
@@ -1116,8 +1034,7 @@ function SwipeCard({ person, index, isTop, onLike, onDislike, onPass, onViewProf
             )}
           </View>
         </Pressable>
-      </Animated.View>
-    </GestureDetector>
+    </View>
   );
 }
 
