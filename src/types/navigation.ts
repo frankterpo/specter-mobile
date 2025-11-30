@@ -14,6 +14,12 @@ export type MainTabParamList = {
   InvestorsTab: undefined;
   TransactionsTab: undefined;
   MySpecterTab: undefined;
+  AIAgentTab: undefined;
+};
+
+// AI Agent stack
+export type AIAgentStackParamList = {
+  AIAgent: undefined;
 };
 
 // Companies stack
@@ -58,6 +64,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Search: undefined;
   Profile: undefined;
+  Diagnostics: undefined;
 };
 
 // Legacy compatibility - for existing screens

@@ -39,3 +39,12 @@ android/
 
 # Expo log
 expo.log
+
+# Build logs
+*.log
+
+# Cursor
+.cursor/
+
+# Database
+*.db

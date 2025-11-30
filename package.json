@@ -43,8 +43,6 @@
     "expo-application": "~6.1.4",
     "expo-asset": "11.1.5",
     "expo-auth-session": "^6.0.3",
-    "expo-av": "~15.1.4",
-    "expo-background-fetch": "~13.1.5",
     "expo-battery": "~9.1.4",
     "expo-blur": "~14.1.4",
     "expo-brightness": "~13.1.4",
@@ -88,7 +86,6 @@
     "expo-status-bar": "~2.2.3",
     "expo-symbols": "~0.4.4",
     "expo-system-ui": "~5.0.7",
-    "expo-video": "~2.1.8",
     "expo-web-browser": "~14.1.6",
     "lottie-react-native": "7.2.2",
     "nativewind": "^4.0.36",
@@ -105,6 +102,7 @@
     "react-native-linear-gradient": "^2.8.3",
     "react-native-markdown-display": "^7.0.2",
     "react-native-mmkv": "^3.2.0",
+    "react-native-nitro-modules": "^0.31.10",
     "react-native-pager-view": "6.7.1",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
@@ -137,6 +135,7 @@
   "private": true,
   "patchedDependencies": {
     "react-native@0.79.2": "patches/react-native@0.79.2.patch",
-    "expo-asset@11.1.5": "patches/expo-asset@11.1.5.patch"
+    "expo-asset@11.1.5": "patches/expo-asset@11.1.5.patch",
+    "react-native-css-interop@0.2.1": "patches/react-native-css-interop+0.2.1.patch"
   }
 }

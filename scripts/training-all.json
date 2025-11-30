@@ -1,0 +1,233 @@
+{
+  "exported_at": "2025-11-30T07:14:17.370Z",
+  "personas": [
+    {
+      "persona": {
+        "id": "early",
+        "name": "🌱 Early Stage VC",
+        "description": "Pre-seed to Seed investors looking for exceptional founders",
+        "recipe": {
+          "positiveHighlights": [
+            "serial_founder",
+            "prior_exit",
+            "yc_alumni",
+            "techstars_alumni",
+            "unicorn_experience",
+            "fortune_500_experience"
+          ],
+          "negativeHighlights": [
+            "no_linkedin",
+            "career_gap",
+            "short_tenure"
+          ],
+          "redFlags": [
+            "stealth_only",
+            "no_experience",
+            "junior_level"
+          ],
+          "weights": {
+            "serial_founder": 0.95,
+            "prior_exit": 0.9,
+            "yc_alumni": 0.85,
+            "unicorn_experience": 0.85,
+            "no_linkedin": -0.3,
+            "career_gap": -0.2,
+            "stealth_only": -0.5,
+            "no_experience": -0.8
+          }
+        }
+      },
+      "metadata": {
+        "exported_at": "2025-11-30T07:14:17.367Z",
+        "feedback_count": 8,
+        "weights_count": 10
+      },
+      "preference_pairs": [
+        {
+          "entity_id": "per_db_001",
+          "entity_type": "person",
+          "action": "like",
+          "datapoints": [
+            "serial_founder",
+            "prior_exit",
+            "yc_alumni"
+          ],
+          "note": "Workflow test",
+          "ai_score": 100,
+          "ai_recommendation": null,
+          "user_agreed": true,
+          "created_at": "2025-11-30 02:59:57"
+        },
+        {
+          "entity_id": "per_db_004",
+          "entity_type": "person",
+          "action": "dislike",
+          "datapoints": [
+            "career_gap"
+          ],
+          "note": "Workflow test",
+          "ai_score": 16,
+          "ai_recommendation": null,
+          "user_agreed": true,
+          "created_at": "2025-11-30 02:59:57"
+        },
+        {
+          "entity_id": "per_test_001",
+          "entity_type": "person",
+          "action": "like",
+          "datapoints": [
+            "serial_founder",
+            "prior_exit"
+          ],
+          "note": "Strong founder profile, worth meeting",
+          "ai_score": 92,
+          "ai_recommendation": "STRONG_PASS",
+          "user_agreed": true,
+          "created_at": "2025-11-30 07:13:59"
+        },
+        {
+          "entity_id": "per_test_002",
+          "entity_type": "person",
+          "action": "like",
+          "datapoints": [
+            "fortune_500_experience",
+            "technical_background"
+          ],
+          "note": "Strong founder profile, worth meeting",
+          "ai_score": 68,
+          "ai_recommendation": "SOFT_PASS",
+          "user_agreed": true,
+          "created_at": "2025-11-30 07:13:59"
+        },
+        {
+          "entity_id": "per_test_003",
+          "entity_type": "person",
+          "action": "like",
+          "datapoints": [
+            "product_leader",
+            "no_startup_experience"
+          ],
+          "note": "Strong founder profile, worth meeting",
+          "ai_score": 45,
+          "ai_recommendation": "BORDERLINE",
+          "user_agreed": false,
+          "created_at": "2025-11-30 07:13:59"
+        },
+        {
+          "entity_id": "per_test_004",
+          "entity_type": "person",
+          "action": "dislike",
+          "datapoints": [
+            "consultant_only",
+            "no_technical_background"
+          ],
+          "note": "Not a fit for early stage",
+          "ai_score": 32,
+          "ai_recommendation": "PASS",
+          "user_agreed": true,
+          "created_at": "2025-11-30 07:13:59"
+        },
+        {
+          "entity_id": "per_agent_001",
+          "entity_type": "person",
+          "action": "like",
+          "datapoints": [
+            "serial_founder",
+            "technical_background"
+          ],
+          "note": "Strong founder profiles from agent",
+          "ai_score": null,
+          "ai_recommendation": null,
+          "user_agreed": false,
+          "created_at": "2025-11-30 07:14:08"
+        },
+        {
+          "entity_id": "per_agent_002",
+          "entity_type": "person",
+          "action": "like",
+          "datapoints": [
+            "serial_founder",
+            "technical_background"
+          ],
+          "note": "Strong founder profiles from agent",
+          "ai_score": null,
+          "ai_recommendation": null,
+          "user_agreed": false,
+          "created_at": "2025-11-30 07:14:08"
+        }
+      ],
+      "learned_weights": [
+        {
+          "datapoint": "serial_founder",
+          "weight": 1,
+          "like_count": 8,
+          "dislike_count": 0,
+          "last_updated": "2025-11-30 07:13:59"
+        },
+        {
+          "datapoint": "prior_exit",
+          "weight": 1,
+          "like_count": 3,
+          "dislike_count": 0,
+          "last_updated": "2025-11-30 07:13:59"
+        },
+        {
+          "datapoint": "fortune_500_experience",
+          "weight": 1,
+          "like_count": 2,
+          "dislike_count": 0,
+          "last_updated": "2025-11-30 07:13:59"
+        },
+        {
+          "datapoint": "technical_background",
+          "weight": 1,
+          "like_count": 6,
+          "dislike_count": 0,
+          "last_updated": "2025-11-30 07:13:59"
+        },
+        {
+          "datapoint": "product_leader",
+          "weight": 1,
+          "like_count": 2,
+          "dislike_count": 0,
+          "last_updated": "2025-11-30 07:13:59"
+        },
+        {
+          "datapoint": "no_startup_experience",
+          "weight": 1,
+          "like_count": 2,
+          "dislike_count": 0,
+          "last_updated": "2025-11-30 07:13:59"
+        },
+        {
+          "datapoint": "consultant_only",
+          "weight": -1,
+          "like_count": 0,
+          "dislike_count": 2,
+          "last_updated": "2025-11-30 07:13:59"
+        },
+        {
+          "datapoint": "no_technical_background",
+          "weight": -1,
+          "like_count": 0,
+          "dislike_count": 2,
+          "last_updated": "2025-11-30 07:13:59"
+        },
+        {
+          "datapoint": "yc_alumni",
+          "weight": 1,
+          "like_count": 1,
+          "dislike_count": 0,
+          "last_updated": "2025-11-30 02:59:57"
+        },
+        {
+          "datapoint": "career_gap",
+          "weight": -1,
+          "like_count": 0,
+          "dislike_count": 1,
+          "last_updated": "2025-11-30 02:59:57"
+        }
+      ]
+    }
+  ]
+}

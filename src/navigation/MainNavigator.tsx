@@ -12,6 +12,7 @@ import {
   InvestorsStackParamList,
   TransactionsStackParamList,
   MySpecterStackParamList,
+  AIAgentStackParamList,
   RootStackParamList,
 } from "../types/navigation";
 
@@ -24,6 +25,7 @@ import InvestorsFeedScreen from "../screens/InvestorsFeedScreen";
 import TransactionsFeedScreen from "../screens/TransactionsFeedScreen";
 import MySpecterScreen from "../screens/MySpecterScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+import AIAgentScreen from "../screens/AIAgentScreen";
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -32,6 +34,7 @@ const PeopleStack = createNativeStackNavigator<PeopleStackParamList>();
 const InvestorsStack = createNativeStackNavigator<InvestorsStackParamList>();
 const TransactionsStack = createNativeStackNavigator<TransactionsStackParamList>();
 const MySpecterStack = createNativeStackNavigator<MySpecterStackParamList>();
+const AIAgentStack = createNativeStackNavigator<AIAgentStackParamList>();
 
 // Companies Tab Navigator
 function CompaniesNavigator() {
@@ -77,6 +80,15 @@ function MySpecterNavigator() {
     <MySpecterStack.Navigator screenOptions={{ headerShown: false }}>
       <MySpecterStack.Screen name="Searches" component={MySpecterScreen} />
     </MySpecterStack.Navigator>
+  );
+}
+
+// AI Agent Tab Navigator
+function AIAgentNavigator() {
+  return (
+    <AIAgentStack.Navigator screenOptions={{ headerShown: false }}>
+      <AIAgentStack.Screen name="AIAgent" component={AIAgentScreen} />
+    </AIAgentStack.Navigator>
   );
 }
 
@@ -169,6 +181,16 @@ function MainTabs() {
           tabBarLabel: "My Specter",
           tabBarIcon: ({ focused }) => (
             <TabIcon name={focused ? "bookmark" : "bookmark-outline"} focused={focused} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="AIAgentTab"
+        component={AIAgentNavigator}
+        options={{
+          tabBarLabel: "AI Agent",
+          tabBarIcon: ({ focused }) => (
+            <TabIcon name={focused ? "sparkles" : "sparkles-outline"} focused={focused} />
           ),
         }}
       />

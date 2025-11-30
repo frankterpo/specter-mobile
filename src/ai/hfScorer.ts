@@ -37,7 +37,6 @@ export async function initEmbeddings(): Promise<void> {
       'feature-extraction',
       'Xenova/all-MiniLM-L6-v2',
       { 
-        quantized: true,
         progress_callback: (progress: any) => {
           if (progress.status === 'progress') {
             console.log(`   Loading: ${Math.round(progress.progress)}%`);

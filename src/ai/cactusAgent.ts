@@ -1,12 +1,26 @@
 // Cactus AI Agent Integration
 // On-device LLM with tool calling for Specter deal sourcing
 
-import {
-  initCactus,
-  loadModel,
-  CactusContext,
-  CompletionParams,
-} from 'cactus-react-native';
+import { CactusLM } from 'cactus-react-native';
+
+// Types from Cactus SDK
+interface Message {
+  role: 'user' | 'assistant' | 'system';
+  content?: string;
+  images?: string[];
+}
+
+interface CactusLMCompleteResult {
+  success: boolean;
+  response: string;
+  functionCalls?: { name: string; arguments: Record<string, any> }[];
+  timeToFirstTokenMs: number;
+  totalTimeMs: number;
+  tokensPerSecond: number;
+  prefillTokens: number;
+  decodeTokens: number;
+  totalTokens: number;
+}
 
 // Tool definitions for the agent
 export interface Tool {
@@ -167,45 +181,45 @@ export const AGENT_TOOLS: Tool[] = [
   }
 ];
 
-// Cactus model configuration
-export interface CactusConfig {
-  modelPath: string;
-  contextSize?: number;
-  threads?: number;
-  gpuLayers?: number;
+// Completion parameters type
+export interface CompletionParams {
+  prompt: string;
+  maxTokens?: number;
+  temperature?: number;
+  topP?: number;
+  stopSequences?: string[];
 }
 
 // Default config for Qwen 3B
-export const DEFAULT_CONFIG: CactusConfig = {
-  modelPath: 'qwen2.5-3b-instruct-q4_k_m.gguf',
-  contextSize: 4096,
-  threads: 4,
-  gpuLayers: 0
-};
+export const DEFAULT_MODEL_PATH = 'qwen2.5-3b-instruct-q4_k_m.gguf';
 
 // Agent state
-let cactusContext: CactusContext | null = null;
+let cactusLM: CactusLM | null = null;
 let isInitialized = false;
 
 /**
  * Initialize Cactus with model
  */
-export async function initAgent(config: CactusConfig = DEFAULT_CONFIG): Promise<void> {
+export async function initAgent(modelName: string = DEFAULT_MODEL_PATH): Promise<void> {
   if (isInitialized) return;
   
   try {
     console.log('🌵 Initializing Cactus agent...');
     
-    // Initialize Cactus
-    await initCactus();
+    // Create CactusLM instance with model name
+    cactusLM = new CactusLM({ model: modelName });
     
-    // Load model
-    cactusContext = await loadModel({
-      modelPath: config.modelPath,
-      contextSize: config.contextSize,
-      threads: config.threads,
-      gpuLayers: config.gpuLayers
+    // Download model if needed
+    console.log('📥 Downloading model if needed...');
+    await cactusLM.download({
+      onProgress: (progress) => {
+        console.log(`   Download: ${Math.round(progress * 100)}%`);
+      }
     });
+    
+    // Initialize the model
+    console.log('🔧 Initializing model...');
+    await cactusLM.init();
     
     isInitialized = true;
     console.log('✅ Cactus agent initialized');
@@ -270,21 +284,26 @@ export async function complete(
   prompt: string,
   options?: Partial<CompletionParams>
 ): Promise<string> {
-  if (!cactusContext) {
+  if (!cactusLM) {
     throw new Error('Cactus not initialized. Call initAgent() first.');
   }
   
-  const params: CompletionParams = {
-    prompt,
-    maxTokens: options?.maxTokens || 512,
-    temperature: options?.temperature || 0.7,
-    topP: options?.topP || 0.9,
-    stopSequences: options?.stopSequences || ['</tool>', '</args>', '\n\nHuman:'],
-    ...options
-  };
+  // Convert prompt to messages format
+  const messages: Message[] = [
+    { role: 'user', content: prompt }
+  ];
   
-  const result = await cactusContext.complete(params);
-  return result.text;
+  const result: CactusLMCompleteResult = await cactusLM.complete({
+    messages,
+    options: {
+      maxTokens: options?.maxTokens || 512,
+      temperature: options?.temperature || 0.7,
+      topP: options?.topP || 0.9,
+      stopSequences: options?.stopSequences || ['</tool>', '</args>', '\n\nHuman:'],
+    }
+  });
+  
+  return result.response;
 }
 
 /**
@@ -296,7 +315,7 @@ export async function runAgentLoop(
   toolExecutor: (tool: string, args: Record<string, any>) => Promise<any>,
   maxSteps: number = 3
 ): Promise<{ response: string; toolCalls: ToolResult[] }> {
-  if (!cactusContext) {
+  if (!cactusLM) {
     throw new Error('Cactus not initialized. Call initAgent() first.');
   }
   
@@ -340,20 +359,17 @@ export async function runAgentLoop(
  * Check if agent is initialized
  */
 export function isAgentReady(): boolean {
-  return isInitialized && cactusContext !== null;
+  return isInitialized && cactusLM !== null;
 }
 
 /**
  * Cleanup agent resources
  */
 export async function cleanupAgent(): Promise<void> {
-  if (cactusContext) {
+  if (cactusLM) {
     // Cactus cleanup if available
-    cactusContext = null;
+    cactusLM = null;
     isInitialized = false;
   }
 }
-
-// Export types
-export type { CactusContext, CompletionParams };
 
