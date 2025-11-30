@@ -80,7 +80,7 @@ export default function SettingsScreen() {
       <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
         <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="close" size={24} color={colors.text.primary} />
-        </Pressable>
+          </Pressable>
         <Text style={styles.headerTitle}>Settings</Text>
         <View style={{ width: 40 }} />
       </View>
@@ -106,11 +106,11 @@ export default function SettingsScreen() {
           <View style={styles.profileInfo}>
             <Text style={styles.profileName}>
               {user?.fullName || user?.primaryEmailAddress?.emailAddress || "User"}
-            </Text>
+          </Text>
             <Text style={styles.profileEmail}>
               {user?.primaryEmailAddress?.emailAddress || ""}
-            </Text>
-          </View>
+                </Text>
+              </View>
           <Pressable style={styles.editBtn}>
             <Text style={styles.editBtnText}>Edit</Text>
           </Pressable>
@@ -138,7 +138,7 @@ export default function SettingsScreen() {
               description="Password and security settings"
             />
           </View>
-        </View>
+              </View>
 
         {/* Integrations section */}
         <View style={styles.section}>
@@ -155,8 +155,8 @@ export default function SettingsScreen() {
               label="Data Export"
               description="Export your data"
             />
-          </View>
-        </View>
+              </View>
+            </View>
 
         {/* Support section */}
         <View style={styles.section}>
@@ -179,8 +179,8 @@ export default function SettingsScreen() {
               label="About"
               description="App version and info"
             />
-          </View>
-        </View>
+              </View>
+              </View>
 
         {/* Sign out */}
         <View style={styles.section}>
@@ -191,7 +191,7 @@ export default function SettingsScreen() {
               onPress={handleSignOut}
               danger
             />
-          </View>
+            </View>
         </View>
 
         {/* App info */}
