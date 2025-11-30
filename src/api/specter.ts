@@ -867,6 +867,78 @@ export function formatFunding(amount?: number): string {
 }
 
 // ============================================
+// COMPANY TYPES
+// ============================================
+
+export interface Company {
+  id?: string;
+  company_id?: string;
+  name?: string;
+  organization_name?: string;
+  description?: string;
+  tagline?: string;
+  logo_url?: string;
+  industries?: string[];
+  sub_industries?: string[];
+  operating_status?: string;
+  highlights?: string[];
+  new_highlights?: string[];
+  regions?: string[];
+  founded_year?: number;
+  founders?: string[];
+  founder_info?: {
+    specter_person_id?: string;
+    full_name?: string;
+    title?: string;
+    departments?: string[];
+    seniority?: string;
+  }[];
+  founder_count?: number;
+  employee_count?: number;
+  employee_count_range?: string;
+  revenue_estimate_usd?: number;
+  investors?: string[];
+  investor_count?: number;
+  patent_count?: number;
+  trademark_count?: number;
+  website?: {
+    domain?: string;
+    url?: string;
+    domain_aliases?: string[];
+  };
+  hq?: {
+    city?: string;
+    state?: string;
+    country?: string;
+    region?: string;
+  };
+  contact?: {
+    phone_number?: string;
+    email?: string;
+  };
+  growth_stage?: string;
+  funding?: {
+    total_funding_usd?: number;
+    last_funding_usd?: number;
+    last_funding_date?: string;
+    last_funding_type?: string;
+    round_count?: number;
+    round_details?: {
+      type?: string;
+      date?: string;
+      raised?: number;
+      investors?: string[];
+    }[];
+    post_money_valuation_usd?: number;
+  };
+  socials?: {
+    twitter?: { url?: string; follower_count?: number };
+    facebook?: { url?: string };
+    linkedin?: { url?: string; follower_count?: number };
+  };
+}
+
+// ============================================
 // LIST MANAGEMENT
 // ============================================
 
@@ -1046,5 +1118,247 @@ export async function removeFromList(
     }
     console.error("❌ removeFromList error:", error);
     throw new Error(error.message || "Failed to remove from list");
+  }
+}
+
+// ============================================
+// COMPANY API
+// ============================================
+
+/**
+ * Fetch companies from Specter API
+ */
+export async function fetchCompanies(
+  token: string,
+  params: { limit?: number; offset?: number; filters?: any } = {}
+): Promise<{ items: Company[]; total?: number; has_more?: boolean }> {
+  try {
+    const body: any = {
+      limit: params.limit || 20,
+      offset: params.offset || 0,
+    };
+    
+    if (params.filters) {
+      body.filters = params.filters;
+    }
+
+    const fetchPromise = fetch(`${API_BASE_URL}/private/companies`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired. Please sign in again.");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    return {
+      items: data.items || data || [],
+      total: data.total,
+      has_more: data.has_more,
+    };
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ fetchCompanies error:", error);
+    throw new Error(
+      error.message || "Failed to fetch companies. Please check your connection."
+    );
+  }
+}
+
+/**
+ * Fetch single company details
+ */
+export async function fetchCompanyDetail(
+  token: string,
+  companyId: string
+): Promise<Company | null> {
+  try {
+    const fetchPromise = fetch(`${API_BASE_URL}/private/companies/${companyId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 404) {
+      return null;
+    }
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired. Please sign in again.");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ fetchCompanyDetail error:", error);
+    return null;
+  }
+}
+
+/**
+ * Search companies by name
+ */
+export async function searchCompanies(
+  token: string,
+  query: string,
+  params: { limit?: number } = {}
+): Promise<Company[]> {
+  try {
+    const queryParams = new URLSearchParams();
+    queryParams.set("name", query);
+    if (params.limit) queryParams.set("limit", params.limit.toString());
+
+    const fetchPromise = fetch(
+      `${API_BASE_URL}/private/companies/search?${queryParams}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    return data.items || data || [];
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ searchCompanies error:", error);
+    return [];
+  }
+}
+
+/**
+ * Like a company
+ */
+export async function likeCompany(
+  token: string,
+  companyId: string
+): Promise<void> {
+  try {
+    const requestBody = { status: "liked" };
+
+    const fetchPromise = fetch(`${ENTITY_STATUS_BASE_URL}/companies/${companyId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ likeCompany error:", error);
+    throw new Error(error.message || "Failed to like company");
+  }
+}
+
+/**
+ * Dislike a company
+ */
+export async function dislikeCompany(
+  token: string,
+  companyId: string
+): Promise<void> {
+  try {
+    const requestBody = { status: "disliked" };
+
+    const fetchPromise = fetch(`${ENTITY_STATUS_BASE_URL}/companies/${companyId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    const response = await withTimeout(
+      fetchPromise,
+      API_TIMEOUT_MS,
+      "API request timed out"
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      throw new AuthError("Authentication expired");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error ${response.status}: ${errorText}`);
+    }
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    console.error("❌ dislikeCompany error:", error);
+    throw new Error(error.message || "Failed to dislike company");
   }
 }

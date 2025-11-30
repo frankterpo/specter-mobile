@@ -1,297 +1,364 @@
-import React, { useState } from "react";
-import { View, Text, ScrollView, Pressable, StyleSheet, Alert } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import React from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  StyleSheet,
+  Alert,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { useUser, useClerk } from "@clerk/clerk-expo";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useAuth, useUser } from "@clerk/clerk-expo";
+import { Image } from "expo-image";
+import { colors } from "../theme/colors";
 
-type MainStackParamList = {
-  PeopleList: undefined;
-  PersonDetail: { personId: string };
-  Settings: undefined;
-};
+interface SettingItemProps {
+  icon: keyof typeof Ionicons.glyphMap;
+  label: string;
+  description?: string;
+  onPress?: () => void;
+  rightElement?: React.ReactNode;
+  danger?: boolean;
+}
 
-type SettingsScreenProps = {
-  navigation: NativeStackNavigationProp<MainStackParamList, "Settings">;
-};
+function SettingItem({
+  icon,
+  label,
+  description,
+  onPress,
+  rightElement,
+  danger = false,
+}: SettingItemProps) {
+  return (
+    <Pressable style={styles.settingItem} onPress={onPress}>
+      <View style={[styles.settingIcon, danger && styles.settingIconDanger]}>
+        <Ionicons
+          name={icon}
+          size={20}
+          color={danger ? colors.error : colors.brand.green}
+        />
+      </View>
+      <View style={styles.settingContent}>
+        <Text style={[styles.settingLabel, danger && styles.settingLabelDanger]}>
+          {label}
+        </Text>
+        {description && <Text style={styles.settingDescription}>{description}</Text>}
+      </View>
+      {rightElement || (
+        <Ionicons name="chevron-forward" size={18} color={colors.text.tertiary} />
+      )}
+    </Pressable>
+  );
+}
 
-export default function SettingsScreen({ navigation }: SettingsScreenProps) {
+export default function SettingsScreen() {
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const { signOut } = useAuth();
   const { user } = useUser();
-  const { signOut } = useClerk();
 
-  const handleLogout = () => {
+  const handleSignOut = () => {
     Alert.alert(
       "Sign Out",
       "Are you sure you want to sign out?",
       [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
+        { text: "Cancel", style: "cancel" },
         {
           text: "Sign Out",
           style: "destructive",
-          onPress: async () => {
-            setIsLoggingOut(true);
-            try {
-              await signOut();
-              // Navigation handled by App.tsx auth state
-            } catch (error) {
-              console.error("Logout error:", error);
-              Alert.alert("Error", "Failed to sign out. Please try again.");
-            } finally {
-              setIsLoggingOut(false);
-            }
-          },
+          onPress: () => signOut(),
         },
-      ],
-      { cancelable: true }
+      ]
     );
   };
 
   return (
-    <View className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
+    <View style={styles.container}>
       {/* Header */}
-      <View className="px-6 pt-4 pb-4" style={styles.header}>
-        <View className="flex-row items-center">
-          <Pressable
-            onPress={() => navigation.goBack()}
-            className="w-10 h-10 items-center justify-center rounded-full mr-3"
-            style={styles.backButton}
-          >
-            <Ionicons name="arrow-back" size={24} color="#1a365d" />
-          </Pressable>
-          <Text className="text-2xl font-bold" style={styles.title}>
-            Settings
-          </Text>
-        </View>
+      <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
+        <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Ionicons name="close" size={24} color={colors.text.primary} />
+        </Pressable>
+        <Text style={styles.headerTitle}>Settings</Text>
+        <View style={{ width: 40 }} />
       </View>
 
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        {/* Profile Section */}
-        <View className="px-6 pt-6 pb-4">
-          <Text className="text-xs font-semibold mb-3" style={styles.sectionHeader}>
-            PROFILE
-          </Text>
-          <View className="rounded-xl p-4" style={styles.profileCard}>
-            <View className="flex-row items-center">
-              <View
-                className="w-14 h-14 rounded-full items-center justify-center mr-4"
-                style={styles.avatar}
-              >
-                <Text className="text-xl font-semibold text-white">
-                  {user?.firstName?.[0]?.toUpperCase() || user?.emailAddresses?.[0]?.emailAddress?.[0]?.toUpperCase() || "U"}
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Profile section */}
+        <View style={styles.profileCard}>
+          <View style={styles.profileAvatar}>
+            {user?.imageUrl ? (
+              <Image source={{ uri: user.imageUrl }} style={styles.avatar} />
+            ) : (
+              <View style={styles.avatarPlaceholder}>
+                <Text style={styles.avatarText}>
+                  {(user?.firstName?.[0] || "") + (user?.lastName?.[0] || "U")}
                 </Text>
               </View>
-              <View className="flex-1">
-                <Text className="text-base font-semibold mb-1" style={styles.userName}>
-                  {user?.firstName && user?.lastName
-                    ? `${user.firstName} ${user.lastName}`
-                    : user?.firstName || "User"}
-                </Text>
-                <Text className="text-sm" style={styles.userEmail}>
-                  {user?.emailAddresses?.[0]?.emailAddress || "user@example.com"}
-                </Text>
-              </View>
-            </View>
+            )}
+          </View>
+          <View style={styles.profileInfo}>
+            <Text style={styles.profileName}>
+              {user?.fullName || user?.primaryEmailAddress?.emailAddress || "User"}
+            </Text>
+            <Text style={styles.profileEmail}>
+              {user?.primaryEmailAddress?.emailAddress || ""}
+            </Text>
+          </View>
+          <Pressable style={styles.editBtn}>
+            <Text style={styles.editBtnText}>Edit</Text>
+          </Pressable>
+        </View>
+
+        {/* Account section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Account</Text>
+          <View style={styles.settingGroup}>
+            <SettingItem
+              icon="person-outline"
+              label="Profile"
+              description="Edit your profile information"
+            />
+            <View style={styles.divider} />
+            <SettingItem
+              icon="notifications-outline"
+              label="Notifications"
+              description="Manage alert preferences"
+            />
+            <View style={styles.divider} />
+            <SettingItem
+              icon="lock-closed-outline"
+              label="Privacy & Security"
+              description="Password and security settings"
+            />
           </View>
         </View>
 
-        {/* Account Section */}
-        <View className="px-6 py-4">
-          <Text className="text-xs font-semibold mb-3" style={styles.sectionHeader}>
-            ACCOUNT
-          </Text>
-
-          <Pressable
-            className="rounded-xl p-4 mb-2"
-            style={({ pressed }) => [styles.menuItem, pressed && styles.menuItemPressed]}
-          >
-            <View className="flex-row items-center">
-              <View
-                className="w-10 h-10 rounded-full items-center justify-center mr-3"
-                style={styles.iconContainer}
-              >
-                <Ionicons name="person-outline" size={20} color="#1a365d" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-base" style={styles.menuItemText}>
-                  Edit Profile
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#cbd5e1" />
-            </View>
-          </Pressable>
-
-          <Pressable
-            className="rounded-xl p-4 mb-2"
-            style={({ pressed }) => [styles.menuItem, pressed && styles.menuItemPressed]}
-          >
-            <View className="flex-row items-center">
-              <View
-                className="w-10 h-10 rounded-full items-center justify-center mr-3"
-                style={styles.iconContainer}
-              >
-                <Ionicons name="lock-closed-outline" size={20} color="#1a365d" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-base" style={styles.menuItemText}>
-                  Change Password
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#cbd5e1" />
-            </View>
-          </Pressable>
-
-          <Pressable
-            className="rounded-xl p-4"
-            style={({ pressed }) => [styles.menuItem, pressed && styles.menuItemPressed]}
-          >
-            <View className="flex-row items-center">
-              <View
-                className="w-10 h-10 rounded-full items-center justify-center mr-3"
-                style={styles.iconContainer}
-              >
-                <Ionicons name="notifications-outline" size={20} color="#1a365d" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-base" style={styles.menuItemText}>
-                  Notifications
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#cbd5e1" />
-            </View>
-          </Pressable>
+        {/* Integrations section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Integrations</Text>
+          <View style={styles.settingGroup}>
+            <SettingItem
+              icon="git-branch-outline"
+              label="Connected Apps"
+              description="CRM and other integrations"
+            />
+            <View style={styles.divider} />
+            <SettingItem
+              icon="cloud-outline"
+              label="Data Export"
+              description="Export your data"
+            />
+          </View>
         </View>
 
-        {/* About Section */}
-        <View className="px-6 py-4">
-          <Text className="text-xs font-semibold mb-3" style={styles.sectionHeader}>
-            ABOUT
-          </Text>
-
-          <Pressable
-            className="rounded-xl p-4 mb-2"
-            style={({ pressed }) => [styles.menuItem, pressed && styles.menuItemPressed]}
-          >
-            <View className="flex-row items-center">
-              <View
-                className="w-10 h-10 rounded-full items-center justify-center mr-3"
-                style={styles.iconContainer}
-              >
-                <Ionicons name="help-circle-outline" size={20} color="#1a365d" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-base" style={styles.menuItemText}>
-                  Help & Support
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#cbd5e1" />
-            </View>
-          </Pressable>
-
-          <Pressable
-            className="rounded-xl p-4"
-            style={({ pressed }) => [styles.menuItem, pressed && styles.menuItemPressed]}
-          >
-            <View className="flex-row items-center">
-              <View
-                className="w-10 h-10 rounded-full items-center justify-center mr-3"
-                style={styles.iconContainer}
-              >
-                <Ionicons name="information-circle-outline" size={20} color="#1a365d" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-base" style={styles.menuItemText}>
-                  About Specter
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#cbd5e1" />
-            </View>
-          </Pressable>
+        {/* Support section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Support</Text>
+          <View style={styles.settingGroup}>
+            <SettingItem
+              icon="help-circle-outline"
+              label="Help Center"
+              description="FAQs and documentation"
+            />
+            <View style={styles.divider} />
+            <SettingItem
+              icon="chatbubble-outline"
+              label="Contact Support"
+              description="Get help from our team"
+            />
+            <View style={styles.divider} />
+            <SettingItem
+              icon="information-circle-outline"
+              label="About"
+              description="App version and info"
+            />
+          </View>
         </View>
 
-        {/* Logout Button */}
-        <View className="px-6 pt-4 pb-8">
-          <Pressable
-            onPress={handleLogout}
-            disabled={isLoggingOut}
-            className="rounded-xl py-4"
-            style={({ pressed }) => [
-              styles.logoutButton,
-              (pressed || isLoggingOut) && styles.logoutButtonPressed,
-            ]}
-          >
-            <View className="flex-row items-center justify-center">
-              <Ionicons name="log-out-outline" size={20} color="#dc2626" />
-              <Text className="text-base font-semibold ml-2" style={styles.logoutButtonText}>
-                {isLoggingOut ? "Signing Out..." : "Sign Out"}
-              </Text>
-            </View>
-          </Pressable>
+        {/* Sign out */}
+        <View style={styles.section}>
+          <View style={styles.settingGroup}>
+            <SettingItem
+              icon="log-out-outline"
+              label="Sign Out"
+              onPress={handleSignOut}
+              danger
+            />
+          </View>
         </View>
 
-        {/* Bottom Padding */}
-        <View style={{ height: insets.bottom + 20 }} />
+        {/* App info */}
+        <View style={styles.appInfo}>
+          <Text style={styles.appName}>Specter Mobile</Text>
+          <Text style={styles.appVersion}>Version 1.0.0</Text>
+        </View>
+
+        <View style={{ height: 40 }} />
       </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.content.bgSecondary,
+  },
   header: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#e2e8f0",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingBottom: 12,
+    backgroundColor: colors.content.bg,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.content.border,
   },
   backButton: {
-    backgroundColor: "#f7fafc",
+    padding: 8,
+    marginLeft: -8,
   },
-  title: {
-    color: "#1a365d",
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: colors.text.primary,
   },
-  sectionHeader: {
-    color: "#64748b",
-    letterSpacing: 0.5,
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 16,
+    gap: 20,
   },
   profileCard: {
-    backgroundColor: "#f7fafc",
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: colors.card.bg,
+    borderRadius: 12,
+    padding: 16,
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: colors.card.border,
+  },
+  profileAvatar: {
+    marginRight: 14,
   },
   avatar: {
-    backgroundColor: "#1a365d",
+    width: 56,
+    height: 56,
+    borderRadius: 28,
   },
-  userName: {
-    color: "#1e293b",
+  avatarPlaceholder: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: colors.brand.green,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  userEmail: {
-    color: "#64748b",
+  avatarText: {
+    color: colors.text.inverse,
+    fontSize: 20,
+    fontWeight: "600",
   },
-  menuItem: {
-    backgroundColor: "#f7fafc",
+  profileInfo: {
+    flex: 1,
+  },
+  profileName: {
+    fontSize: 17,
+    fontWeight: "600",
+    color: colors.text.primary,
+    marginBottom: 2,
+  },
+  profileEmail: {
+    fontSize: 13,
+    color: colors.text.tertiary,
+  },
+  editBtn: {
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 8,
+    backgroundColor: colors.brand.green + "15",
+  },
+  editBtnText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: colors.brand.green,
+  },
+  section: {
+    gap: 10,
+  },
+  sectionTitle: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: colors.text.tertiary,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+    marginLeft: 4,
+  },
+  settingGroup: {
+    backgroundColor: colors.card.bg,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: colors.card.border,
+    overflow: "hidden",
   },
-  menuItemPressed: {
-    opacity: 0.7,
+  settingItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 14,
+    gap: 12,
   },
-  iconContainer: {
-    backgroundColor: "#e0e7ff",
+  settingIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    backgroundColor: colors.brand.green + "15",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  menuItemText: {
-    color: "#1e293b",
+  settingIconDanger: {
+    backgroundColor: colors.error + "15",
   },
-  logoutButton: {
-    backgroundColor: "#fef2f2",
-    borderWidth: 1,
-    borderColor: "#fecaca",
+  settingContent: {
+    flex: 1,
   },
-  logoutButtonPressed: {
-    opacity: 0.7,
+  settingLabel: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: colors.text.primary,
   },
-  logoutButtonText: {
-    color: "#dc2626",
+  settingLabelDanger: {
+    color: colors.error,
+  },
+  settingDescription: {
+    fontSize: 12,
+    color: colors.text.tertiary,
+    marginTop: 2,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: colors.content.border,
+    marginLeft: 62,
+  },
+  appInfo: {
+    alignItems: "center",
+    paddingVertical: 20,
+    gap: 4,
+  },
+  appName: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: colors.text.secondary,
+  },
+  appVersion: {
+    fontSize: 12,
+    color: colors.text.tertiary,
   },
 });
