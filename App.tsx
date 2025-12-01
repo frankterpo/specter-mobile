@@ -36,7 +36,11 @@ const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 const tokenCache = {
   async getToken(key: string) {
     try {
-      return await SecureStore.getItemAsync(key);
+      const token = await SecureStore.getItemAsync(key);
+      if (__DEV__ && token) {
+        console.log(`🔑 [TokenCache] Retrieved token for key: ${key.substring(0, 20)}...`);
+      }
+      return token;
     } catch (error) {
       console.error("SecureStore getToken error:", error);
       return null;
@@ -44,14 +48,20 @@ const tokenCache = {
   },
   async saveToken(key: string, value: string) {
     try {
-      return await SecureStore.setItemAsync(key, value);
+      await SecureStore.setItemAsync(key, value);
+      if (__DEV__) {
+        console.log(`💾 [TokenCache] Saved token for key: ${key.substring(0, 20)}...`);
+      }
     } catch (error) {
       console.error("SecureStore saveToken error:", error);
     }
   },
   async clearToken(key: string) {
     try {
-      return await SecureStore.deleteItemAsync(key);
+      await SecureStore.deleteItemAsync(key);
+      if (__DEV__) {
+        console.log(`🗑️ [TokenCache] Cleared token for key: ${key.substring(0, 20)}...`);
+      }
     } catch (error) {
       console.error("SecureStore clearToken error:", error);
     }

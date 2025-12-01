@@ -7,19 +7,12 @@ export type AuthStackParamList = {
   SignUp: undefined;
 };
 
-// Bottom tab navigator
+// Bottom tab navigator - 4 tabs only
 export type MainTabParamList = {
   CompaniesTab: undefined;
   PeopleTab: undefined;
-  InvestorsTab: undefined;
-  TransactionsTab: undefined;
-  MySpecterTab: undefined;
-  AIAgentTab: undefined;
-};
-
-// AI Agent stack
-export type AIAgentStackParamList = {
-  AIAgent: undefined;
+  ListsTab: undefined;
+  SettingsTab: undefined;
 };
 
 // Companies stack
@@ -34,28 +27,15 @@ export type PeopleStackParamList = {
   PersonDetail: { personId: string };
 };
 
-// Investors stack
-export type InvestorsStackParamList = {
-  InvestorsFeed: undefined;
-  InterestSignals: undefined;
-  InvestorDetail: { investorId: string };
-};
-
-// Transactions stack
-export type TransactionsStackParamList = {
-  FundingRounds: undefined;
-  Acquisitions: undefined;
-  IPOs: undefined;
-  TransactionDetail: { transactionId: string };
-};
-
-// My Specter stack
-export type MySpecterStackParamList = {
-  Searches: undefined;
-  Lists: undefined;
-  Landscapes: undefined;
-  SearchDetail: { searchId: string };
+// Lists stack
+export type ListsStackParamList = {
+  ListsFeed: undefined;
   ListDetail: { listId: string };
+};
+
+// Settings stack
+export type SettingsStackParamList = {
+  SettingsMain: undefined;
 };
 
 // Root stack (wraps tabs + modal screens)
@@ -64,10 +44,34 @@ export type RootStackParamList = {
   Settings: undefined;
   Search: undefined;
   Profile: undefined;
-  Diagnostics: undefined;
 };
 
-// Legacy compatibility - for existing screens
+// Legacy compatibility types
+export type InvestorsStackParamList = {
+  InvestorsFeed: undefined;
+  InterestSignals: undefined;
+  InvestorDetail: { investorId: string };
+};
+
+export type TransactionsStackParamList = {
+  FundingRounds: undefined;
+  Acquisitions: undefined;
+  IPOs: undefined;
+  TransactionDetail: { transactionId: string };
+};
+
+export type MySpecterStackParamList = {
+  Searches: undefined;
+  Lists: undefined;
+  Landscapes: undefined;
+  SearchDetail: { searchId: string };
+  ListDetail: { listId: string };
+};
+
+export type AIAgentStackParamList = {
+  AIAgent: undefined;
+};
+
 export type MainStackParamList = {
   SwipeDeck: undefined;
   PersonDetail: { personId: string };

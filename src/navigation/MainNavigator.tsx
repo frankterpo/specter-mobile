@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Platform } from "react-native";
+import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
@@ -9,10 +9,8 @@ import {
   MainTabParamList,
   CompaniesStackParamList,
   PeopleStackParamList,
-  InvestorsStackParamList,
-  TransactionsStackParamList,
-  MySpecterStackParamList,
-  AIAgentStackParamList,
+  ListsStackParamList,
+  SettingsStackParamList,
   RootStackParamList,
 } from "../types/navigation";
 
@@ -21,20 +19,15 @@ import CompaniesFeedScreen from "../screens/CompaniesFeedScreen";
 import CompanyDetailScreen from "../screens/CompanyDetailScreen";
 import PeopleFeedScreen from "../screens/PeopleFeedScreen";
 import PersonDetailScreen from "../screens/PersonDetailScreen";
-import InvestorsFeedScreen from "../screens/InvestorsFeedScreen";
-import TransactionsFeedScreen from "../screens/TransactionsFeedScreen";
-import MySpecterScreen from "../screens/MySpecterScreen";
+import ListsScreen from "../screens/ListsScreen";
 import SettingsScreen from "../screens/SettingsScreen";
-import AIAgentScreen from "../screens/AIAgentScreen";
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const CompaniesStack = createNativeStackNavigator<CompaniesStackParamList>();
 const PeopleStack = createNativeStackNavigator<PeopleStackParamList>();
-const InvestorsStack = createNativeStackNavigator<InvestorsStackParamList>();
-const TransactionsStack = createNativeStackNavigator<TransactionsStackParamList>();
-const MySpecterStack = createNativeStackNavigator<MySpecterStackParamList>();
-const AIAgentStack = createNativeStackNavigator<AIAgentStackParamList>();
+const ListsStack = createNativeStackNavigator<ListsStackParamList>();
+const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 
 // Companies Tab Navigator
 function CompaniesNavigator() {
@@ -56,39 +49,21 @@ function PeopleNavigator() {
   );
 }
 
-// Investors Tab Navigator
-function InvestorsNavigator() {
+// Lists Tab Navigator
+function ListsNavigator() {
   return (
-    <InvestorsStack.Navigator screenOptions={{ headerShown: false }}>
-      <InvestorsStack.Screen name="InvestorsFeed" component={InvestorsFeedScreen} />
-    </InvestorsStack.Navigator>
+    <ListsStack.Navigator screenOptions={{ headerShown: false }}>
+      <ListsStack.Screen name="ListsFeed" component={ListsScreen} />
+    </ListsStack.Navigator>
   );
 }
 
-// Transactions Tab Navigator
-function TransactionsNavigator() {
+// Settings Tab Navigator
+function SettingsNavigator() {
   return (
-    <TransactionsStack.Navigator screenOptions={{ headerShown: false }}>
-      <TransactionsStack.Screen name="FundingRounds" component={TransactionsFeedScreen} />
-    </TransactionsStack.Navigator>
-  );
-}
-
-// My Specter Tab Navigator
-function MySpecterNavigator() {
-  return (
-    <MySpecterStack.Navigator screenOptions={{ headerShown: false }}>
-      <MySpecterStack.Screen name="Searches" component={MySpecterScreen} />
-    </MySpecterStack.Navigator>
-  );
-}
-
-// AI Agent Tab Navigator
-function AIAgentNavigator() {
-  return (
-    <AIAgentStack.Navigator screenOptions={{ headerShown: false }}>
-      <AIAgentStack.Screen name="AIAgent" component={AIAgentScreen} />
-    </AIAgentStack.Navigator>
+    <SettingsStack.Navigator screenOptions={{ headerShown: false }}>
+      <SettingsStack.Screen name="SettingsMain" component={SettingsScreen} />
+    </SettingsStack.Navigator>
   );
 }
 
@@ -109,7 +84,7 @@ function TabIcon({
   );
 }
 
-// Main Tab Navigator
+// Main Tab Navigator - 4 tabs only
 function MainTabs() {
   const insets = useSafeAreaInsets();
 
@@ -118,17 +93,17 @@ function MainTabs() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: colors.sidebar.bg,
-          borderTopColor: colors.sidebar.border,
+          backgroundColor: colors.card.bg,
+          borderTopColor: colors.content.border,
           borderTopWidth: 1,
-          height: 60 + insets.bottom,
+          height: 52 + insets.bottom,
           paddingBottom: insets.bottom,
-          paddingTop: 8,
+          paddingTop: 6,
         },
         tabBarActiveTintColor: colors.brand.green,
         tabBarInactiveTintColor: colors.text.tertiary,
         tabBarLabelStyle: {
-          fontSize: 10,
+          fontSize: 11,
           fontWeight: "500",
           marginTop: 2,
         },
@@ -155,42 +130,22 @@ function MainTabs() {
         }}
       />
       <Tab.Screen
-        name="InvestorsTab"
-        component={InvestorsNavigator}
+        name="ListsTab"
+        component={ListsNavigator}
         options={{
-          tabBarLabel: "Investors",
+          tabBarLabel: "Lists",
           tabBarIcon: ({ focused }) => (
-            <TabIcon name={focused ? "trending-up" : "trending-up-outline"} focused={focused} />
+            <TabIcon name={focused ? "list" : "list-outline"} focused={focused} />
           ),
         }}
       />
       <Tab.Screen
-        name="TransactionsTab"
-        component={TransactionsNavigator}
+        name="SettingsTab"
+        component={SettingsNavigator}
         options={{
-          tabBarLabel: "Deals",
+          tabBarLabel: "Settings",
           tabBarIcon: ({ focused }) => (
-            <TabIcon name={focused ? "cash" : "cash-outline"} focused={focused} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="MySpecterTab"
-        component={MySpecterNavigator}
-        options={{
-          tabBarLabel: "My Specter",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon name={focused ? "bookmark" : "bookmark-outline"} focused={focused} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="AIAgentTab"
-        component={AIAgentNavigator}
-        options={{
-          tabBarLabel: "AI Agent",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon name={focused ? "sparkles" : "sparkles-outline"} focused={focused} />
+            <TabIcon name={focused ? "settings" : "settings-outline"} focused={focused} />
           ),
         }}
       />
@@ -198,7 +153,7 @@ function MainTabs() {
   );
 }
 
-// Root Navigator with modal screens
+// Root Navigator
 export default function MainNavigator() {
   return (
     <RootStack.Navigator
@@ -208,14 +163,6 @@ export default function MainNavigator() {
       }}
     >
       <RootStack.Screen name="MainTabs" component={MainTabs} />
-      <RootStack.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{
-          presentation: "modal",
-          animation: "slide_from_bottom",
-        }}
-      />
     </RootStack.Navigator>
   );
 }

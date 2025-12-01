@@ -1,9 +1,26 @@
 // Specter API Service
 // Real API integration for VC people database
 
-const API_BASE_URL = "https://specter-api-staging.up.railway.app";
-const ENTITY_STATUS_BASE_URL = "https://app.staging.tryspecter.com/api/entity-status";
-const LISTS_BASE_URL = "https://app.staging.tryspecter.com/api/lists";
+// Detect if running on web (for CORS error handling)
+const isWeb = typeof window !== "undefined";
+
+// Base URLs - use local proxy for web development, direct URLs for mobile
+// To use proxy: 1) Run `npm run proxy` in terminal, 2) Refresh browser
+const PROXY_BASE = isWeb ? "http://localhost:3001/proxy" : "";
+const API_BASE_URL_RAW = "https://specter-api-staging.up.railway.app";
+const ENTITY_STATUS_BASE_URL_RAW = "https://app.staging.tryspecter.com/api/entity-status";
+const LISTS_BASE_URL_RAW = "https://app.staging.tryspecter.com/api/lists";
+
+// Use proxy for web, direct URLs for mobile
+const API_BASE_URL = isWeb 
+  ? `${PROXY_BASE}/specter-api` 
+  : API_BASE_URL_RAW;
+const ENTITY_STATUS_BASE_URL = isWeb 
+  ? `${PROXY_BASE}/specter-app/api/entity-status` 
+  : ENTITY_STATUS_BASE_URL_RAW;
+const LISTS_BASE_URL = isWeb 
+  ? `${PROXY_BASE}/specter-app/api/lists` 
+  : LISTS_BASE_URL_RAW;
 
 // Timeout constants
 const API_TIMEOUT_MS = 15000; // 15 seconds
@@ -465,6 +482,16 @@ export async function fetchPeople(
       throw error;
     }
     console.error("❌ fetchPeople error:", error);
+    
+    // Check for CORS errors (web only)
+    if (isWeb && (error.message?.includes("CORS") || error.message?.includes("Access-Control"))) {
+      throw new Error(
+        "CORS Error: The API server needs to allow requests from localhost. " +
+        "For web testing, please test on iOS/Android where CORS doesn't apply, " +
+        "or ask the backend team to add CORS headers for localhost:8081."
+      );
+    }
+    
     throw new Error(
       error.message || "Failed to fetch people. Please check your connection."
     );
@@ -1177,6 +1204,16 @@ export async function fetchCompanies(
       throw error;
     }
     console.error("❌ fetchCompanies error:", error);
+    
+    // Check for CORS errors (web only)
+    if (isWeb && (error.message?.includes("CORS") || error.message?.includes("Access-Control"))) {
+      throw new Error(
+        "CORS Error: The API server needs to allow requests from localhost. " +
+        "For web testing, please test on iOS/Android where CORS doesn't apply, " +
+        "or ask the backend team to add CORS headers for localhost:8081."
+      );
+    }
+    
     throw new Error(
       error.message || "Failed to fetch companies. Please check your connection."
     );

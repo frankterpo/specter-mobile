@@ -6,12 +6,14 @@ import {
   Pressable,
   StyleSheet,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { Image } from "expo-image";
+import * as SecureStore from "expo-secure-store";
 import { colors } from "../theme/colors";
 
 interface SettingItemProps {
@@ -56,10 +58,40 @@ function SettingItem({
 export default function SettingsScreen() {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const { signOut } = useAuth();
+  const { signOut, isSignedIn } = useAuth();
   const { user } = useUser();
+  const [isSigningOut, setIsSigningOut] = React.useState(false);
 
-  const handleSignOut = () => {
+  const clearAllAuthData = async () => {
+    try {
+      // Get all keys from SecureStore and clear Clerk-related ones
+      // Clerk uses various keys, let's clear common ones
+      const clerkKeys = [
+        "__clerk_client_jwt",
+        "__clerk_db_jwt",
+        "__clerk_refresh_token",
+        "__clerk_session",
+        "__clerk_client_uat",
+      ];
+      
+      for (const key of clerkKeys) {
+        try {
+          await SecureStore.deleteItemAsync(key);
+          console.log(`✅ [Settings] Cleared ${key}`);
+        } catch (error) {
+          // Key might not exist, that's okay
+        }
+      }
+      
+      // Also try to clear all keys that start with __clerk
+      // Note: SecureStore doesn't have a listKeys method, so we clear known ones
+      console.log("✅ [Settings] All Clerk keys cleared from SecureStore");
+    } catch (error) {
+      console.error("❌ [Settings] Error clearing SecureStore:", error);
+    }
+  };
+
+  const handleSignOut = async () => {
     Alert.alert(
       "Sign Out",
       "Are you sure you want to sign out?",
@@ -68,7 +100,81 @@ export default function SettingsScreen() {
         {
           text: "Sign Out",
           style: "destructive",
-          onPress: () => signOut(),
+          onPress: async () => {
+            try {
+              setIsSigningOut(true);
+              console.log("🚪 [Settings] Starting sign out...");
+              
+              // First, try to sign out from Clerk properly
+              try {
+                console.log("🔄 [Settings] Calling Clerk signOut()...");
+                await signOut();
+                console.log("✅ [Settings] Clerk signOut() completed");
+                
+                // Wait a moment for state to update
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                // Check if still signed in
+                if (isSignedIn) {
+                  console.warn("⚠️ [Settings] Still signed in after signOut(), forcing clear...");
+                  await clearAllAuthData();
+                }
+              } catch (signOutError: any) {
+                console.error("❌ [Settings] Clerk signOut() failed:", signOutError);
+                console.error("❌ [Settings] Error details:", {
+                  message: signOutError?.message,
+                  name: signOutError?.name,
+                  stack: signOutError?.stack,
+                });
+                // Continue with force clear even if signOut fails
+                await clearAllAuthData();
+              }
+              
+              // Force clear all auth data from SecureStore (always do this)
+              await clearAllAuthData();
+              
+              console.log("✅ [Settings] Sign out process completed");
+              
+              // Show success message
+              Alert.alert(
+                "Signed Out", 
+                "You have been signed out successfully. The app will refresh.",
+                [
+                  { 
+                    text: "OK",
+                    onPress: () => {
+                      // The app should automatically navigate to auth screen
+                      // due to isSignedIn state change in App.tsx
+                    }
+                  },
+                ]
+              );
+            } catch (error: any) {
+              console.error("❌ [Settings] Sign out error:", error);
+              Alert.alert(
+                "Sign Out Error",
+                error?.message || "Failed to sign out completely. The app will restart.",
+                [
+                  {
+                    text: "Force Clear",
+                    style: "destructive",
+                    onPress: async () => {
+                      await clearAllAuthData();
+                      // Force app restart by clearing everything
+                      Alert.alert(
+                        "Please Restart",
+                        "All auth data cleared. Please close and reopen the app.",
+                        [{ text: "OK" }]
+                      );
+                    },
+                  },
+                  { text: "Cancel" },
+                ]
+              );
+            } finally {
+              setIsSigningOut(false);
+            }
+          },
         },
       ]
     );
@@ -77,12 +183,8 @@ export default function SettingsScreen() {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
-        <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Ionicons name="close" size={24} color={colors.text.primary} />
-          </Pressable>
+      <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
         <Text style={styles.headerTitle}>Settings</Text>
-        <View style={{ width: 40 }} />
       </View>
 
       <ScrollView
@@ -190,6 +292,52 @@ export default function SettingsScreen() {
               label="Sign Out"
               onPress={handleSignOut}
               danger
+              rightElement={
+                isSigningOut ? (
+                  <ActivityIndicator size="small" color={colors.error} />
+                ) : undefined
+              }
+            />
+            <View style={styles.divider} />
+            <SettingItem
+              icon="trash-outline"
+              label="Force Logout (Clear All Data)"
+              description="Use if normal logout doesn't work"
+              onPress={async () => {
+                Alert.alert(
+                  "Force Logout",
+                  "This will clear all authentication data. You'll need to sign in again. Continue?",
+                  [
+                    { text: "Cancel", style: "cancel" },
+                    {
+                      text: "Force Clear",
+                      style: "destructive",
+                      onPress: async () => {
+                        try {
+                          setIsSigningOut(true);
+                          await clearAllAuthData();
+                          // Try signOut as well
+                          try {
+                            await signOut();
+                          } catch (e) {
+                            console.log("signOut failed, but continuing with force clear");
+                          }
+                          Alert.alert(
+                            "Data Cleared",
+                            "All auth data cleared. Please close and reopen the app, then sign in again.",
+                            [{ text: "OK" }]
+                          );
+                        } catch (error) {
+                          Alert.alert("Error", "Failed to clear data. Please restart the app manually.");
+                        } finally {
+                          setIsSigningOut(false);
+                        }
+                      },
+                    },
+                  ]
+                );
+              }}
+              danger
             />
             </View>
         </View>
@@ -212,22 +360,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.content.bgSecondary,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingBottom: 12,
     backgroundColor: colors.content.bg,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.content.border,
-  },
-  backButton: {
-    padding: 8,
-    marginLeft: -8,
   },
   headerTitle: {
-    fontSize: 18,
-    fontWeight: "600",
+    fontSize: 20,
+    fontWeight: "700",
     color: colors.text.primary,
   },
   scrollView: {
