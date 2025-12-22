@@ -9,7 +9,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.vibecode"
+      "bundleIdentifier": "com.anonymous.vibecode",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "edgeToEdgeEnabled": true,
@@ -18,13 +21,22 @@
     "extra": {
       "eas": {
         "projectId": "adbe5265-2344-44cb-8161-4a21cf0b60f1"
-      }
+      },
+      "clerkPublishableKey": "pk_live_Y2xlcmsudHJ5c3BlY3Rlci5jb20k"
     },
     "owner": "frankterpo",
     "plugins": [
       "expo-asset",
       "expo-secure-store",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "abiFilters": ["arm64-v8a"]
+          }
+        }
+      ]
     ]
   }
 }

@@ -53,20 +53,20 @@ export default function CompanyCard({
       onPress={onPress}
     >
       {/* Logo */}
-      <View style={styles.logoContainer}>
-        {company.logo_url ? (
-          <Image
-            source={{ uri: company.logo_url }}
-            style={styles.logo}
-            contentFit="contain"
-          />
-        ) : (
-          <View style={styles.logoPlaceholder}>
+        <View style={styles.logoContainer}>
+          {company.logo_url ? (
+            <Image
+              source={{ uri: company.logo_url }}
+              style={styles.logo}
+              contentFit="contain"
+            />
+          ) : (
+            <View style={styles.logoPlaceholder}>
             <Text style={styles.logoText}>{name.charAt(0)}</Text>
           </View>
         )}
         {statusColor && <View style={[styles.statusDot, { backgroundColor: statusColor }]} />}
-      </View>
+            </View>
 
       {/* Info */}
       <View style={styles.info}>
@@ -87,7 +87,7 @@ export default function CompanyCard({
           {employees && (
             <Text style={styles.metric}>
               {typeof employees === "number" ? `${employees} emp` : employees}
-            </Text>
+          </Text>
           )}
           {!funding && !employees && company.founded_year && (
             <Text style={styles.metric}>Est. {company.founded_year}</Text>

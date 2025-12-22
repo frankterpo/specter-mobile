@@ -48,3 +48,11 @@ expo.log
 
 # Database
 *.db
+.env.local
+server.js
+api-test.js
+test-entity-status-endpoints.js
+test-new-routes.js
+check-entity-status-in-response.js
+comprehensive-clerk-discovery.js
+create_test_token.js

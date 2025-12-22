@@ -7,16 +7,17 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useAuth } from "@clerk/clerk-expo";
-import {
-  fetchLists,
-  addToList,
-  removeFromList,
-  getPersonLists,
-  List,
-} from "../api/specter";
+import { specterPublicAPI } from "../api/public-client";
+import { colors } from "../theme/colors";
+import { useClerkToken } from "../hooks/useClerkToken";
+
+interface List {
+  id: string;
+  name: string;
+}
 
 interface ListModalProps {
   visible: boolean;
@@ -31,7 +32,7 @@ export default function ListModal({
   personId,
   personName,
 }: ListModalProps) {
-  const { getToken } = useAuth();
+  const { getAuthToken } = useClerkToken();
   const [lists, setLists] = useState<List[]>([]);
   const [selectedLists, setSelectedLists] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -48,51 +49,53 @@ export default function ListModal({
     setIsLoading(true);
     setError(null);
     try {
-      const token = await getToken();
-      if (!token) {
-        setError("Authentication required");
-        return;
-      }
-
-      const [userLists, personListIds] = await Promise.all([
-        fetchLists(token),
-        getPersonLists(token, personId),
-      ]);
-
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
+      const userLists = await specterPublicAPI.lists.getPeopleLists(token);
       setLists(userLists);
-      setSelectedLists(personListIds);
-    } catch (error: any) {
-      console.error("❌ Load lists error:", error);
-      setError(error.message || "Failed to load lists");
+      setSelectedLists([]);
+    } catch (err: any) {
+      console.error("Load lists error:", err);
+      setError(err.message || "Failed to load lists");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const toggleList = async (listId: string) => {
+  const toggleList = (listId: string) => {
+    setSelectedLists((prev) =>
+      prev.includes(listId)
+        ? prev.filter((id) => id !== listId)
+        : [...prev, listId]
+    );
+  };
+
+  const handleSave = async () => {
+    if (selectedLists.length === 0) {
+      Alert.alert("Select a List", "Please select at least one list to add this person to.");
+      return;
+    }
+
     setIsUpdating(true);
-    setError(null);
     try {
-      const token = await getToken();
-      if (!token) {
-        setError("Authentication required");
-        return;
-      }
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
 
-      const isSelected = selectedLists.includes(listId);
-
-      if (isSelected) {
-        await removeFromList(token, listId, personId);
-        setSelectedLists((prev) => prev.filter((id) => id !== listId));
-      } else {
-        await addToList(token, listId, personId);
-        setSelectedLists((prev) => [...prev, listId]);
-      }
-    } catch (error: any) {
-      console.error("❌ Toggle list error:", error);
-      setError(error.message || "Failed to update list");
-      // Revert optimistic update on error
-      await loadData();
+      // Add person to all selected lists
+      await Promise.all(
+        selectedLists.map((listId) =>
+          specterPublicAPI.lists.addPersonToList(listId, personId, token)
+        )
+      );
+      
+      Alert.alert(
+        "Success",
+        `${personName} added to ${selectedLists.length} list(s).`
+      );
+      onClose();
+    } catch (err: any) {
+      console.error("Save error:", err);
+      Alert.alert("Error", err.message || "Failed to add to lists");
     } finally {
       setIsUpdating(false);
     }
@@ -102,96 +105,91 @@ export default function ListModal({
     <Modal
       visible={visible}
       animationType="slide"
-      transparent={true}
+      transparent
       onRequestClose={onClose}
     >
-      <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
+      <Pressable style={styles.overlay} onPress={onClose}>
+        <Pressable style={styles.modalContent} onPress={(e) => e.stopPropagation()}>
+          <View style={styles.handle} />
+
           {/* Header */}
           <View style={styles.header}>
-            <View>
-              <Text style={styles.headerTitle}>Add to List</Text>
-              <Text style={styles.headerSubtitle}>{personName}</Text>
-            </View>
-            <Pressable onPress={onClose} style={styles.closeButton}>
-              <Ionicons name="close" size={24} color="#1a365d" />
-            </Pressable>
+            <Text style={styles.title}>Add to List</Text>
+            <Text style={styles.subtitle} numberOfLines={1}>
+              {personName}
+            </Text>
           </View>
 
           {/* Content */}
-          {error ? (
-            <View style={styles.emptyContainer}>
-              <Ionicons name="alert-circle-outline" size={60} color="#ef4444" />
-              <Text style={styles.emptyTitle}>Error Loading Lists</Text>
-              <Text style={styles.emptySubtitle}>{error}</Text>
-              <Pressable onPress={loadData} style={styles.retryButton}>
+          {isLoading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color={colors.brand.green} />
+            </View>
+          ) : error ? (
+            <View style={styles.errorContainer}>
+              <Ionicons name="alert-circle" size={32} color={colors.error} />
+              <Text style={styles.errorText}>{error}</Text>
+              <Pressable style={styles.retryButton} onPress={loadData}>
                 <Text style={styles.retryButtonText}>Retry</Text>
               </Pressable>
             </View>
-          ) : isLoading ? (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#1a365d" />
-              <Text style={styles.loadingText}>Loading lists...</Text>
-            </View>
           ) : lists.length === 0 ? (
             <View style={styles.emptyContainer}>
-              <Ionicons name="list-outline" size={60} color="#cbd5e1" />
-              <Text style={styles.emptyTitle}>No Lists Yet</Text>
-              <Text style={styles.emptySubtitle}>
-                Create lists in the web app to organize people
+              <Ionicons name="list-outline" size={48} color={colors.text.tertiary} />
+              <Text style={styles.emptyText}>No lists yet</Text>
+              <Text style={styles.emptySubtext}>
+                Create a list in the Lists tab first
               </Text>
             </View>
           ) : (
-            <ScrollView style={styles.content}>
-              {lists.map((list) => {
-                const isSelected = selectedLists.includes(list.id);
-                return (
-                  <Pressable
-                    key={list.id}
-                    onPress={() => toggleList(list.id)}
-                    style={[
-                      styles.listItem,
-                      isSelected && styles.listItemSelected,
-                    ]}
-                    disabled={isUpdating}
-                  >
-                    <View style={styles.listItemLeft}>
-                      <View
-                        style={[
-                          styles.checkbox,
-                          isSelected && styles.checkboxSelected,
-                        ]}
-                      >
-                        {isSelected && (
-                          <Ionicons name="checkmark" size={16} color="white" />
-                        )}
-                      </View>
-                      <View style={styles.listInfo}>
-                        <Text style={styles.listName}>{list.name}</Text>
-                        {list.description && (
-                          <Text style={styles.listDescription} numberOfLines={1}>
-                            {list.description}
-                          </Text>
-                        )}
-                      </View>
-                    </View>
-                    {list.person_count !== undefined && (
-                      <Text style={styles.listCount}>{list.person_count}</Text>
-                    )}
-                  </Pressable>
-                );
-              })}
+            <ScrollView style={styles.listContainer}>
+              {lists.map((list) => (
+                <Pressable
+                  key={list.id}
+                  style={[
+                    styles.listItem,
+                    selectedLists.includes(list.id) && styles.listItemSelected,
+                  ]}
+                  onPress={() => toggleList(list.id)}
+                >
+                  <View style={styles.listIcon}>
+                    <Ionicons
+                      name={selectedLists.includes(list.id) ? "checkbox" : "square-outline"}
+                      size={20}
+                      color={
+                        selectedLists.includes(list.id)
+                          ? colors.brand.green
+                          : colors.text.tertiary
+                      }
+                    />
+                  </View>
+                  <Text style={styles.listName}>{list.name}</Text>
+                </Pressable>
+              ))}
             </ScrollView>
           )}
 
-          {/* Footer */}
-          <View style={styles.footer}>
-            <Pressable onPress={onClose} style={styles.doneButton}>
-              <Text style={styles.doneButtonText}>Done</Text>
-            </Pressable>
-          </View>
-        </View>
-      </View>
+          {/* Actions */}
+          {!isLoading && !error && lists.length > 0 && (
+            <View style={styles.actions}>
+              <Pressable style={styles.cancelButton} onPress={onClose}>
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.saveButton, isUpdating && styles.saveButtonDisabled]}
+                onPress={handleSave}
+                disabled={isUpdating}
+              >
+                {isUpdating ? (
+                  <ActivityIndicator size="small" color={colors.text.inverse} />
+                ) : (
+                  <Text style={styles.saveButtonText}>Add to List</Text>
+                )}
+              </Pressable>
+            </View>
+          )}
+        </Pressable>
+      </Pressable>
     </Modal>
   );
 }
@@ -199,145 +197,135 @@ export default function ListModal({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
     justifyContent: "flex-end",
   },
-  modalContainer: {
-    backgroundColor: "white",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+  modalContent: {
+    backgroundColor: colors.card.bg,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
     maxHeight: "70%",
+    paddingBottom: 32,
+  },
+  handle: {
+    width: 36,
+    height: 4,
+    backgroundColor: colors.content.border,
+    borderRadius: 2,
+    alignSelf: "center",
+    marginTop: 12,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#e5e5e5",
+    borderBottomColor: colors.content.borderLight,
   },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#1a365d",
+  title: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: colors.text.primary,
   },
-  headerSubtitle: {
+  subtitle: {
     fontSize: 14,
-    color: "#64748b",
-    marginTop: 2,
-  },
-  closeButton: {
-    width: 32,
-    height: 32,
-    alignItems: "center",
-    justifyContent: "center",
+    color: colors.text.secondary,
+    marginTop: 4,
   },
   loadingContainer: {
     padding: 40,
     alignItems: "center",
   },
-  loadingText: {
-    marginTop: 12,
+  errorContainer: {
+    padding: 40,
+    alignItems: "center",
+  },
+  errorText: {
     fontSize: 14,
-    color: "#64748b",
+    color: colors.error,
+    marginTop: 12,
+    textAlign: "center",
+  },
+  retryButton: {
+    marginTop: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    backgroundColor: colors.brand.green,
+    borderRadius: 6,
+  },
+  retryButtonText: {
+    fontSize: 14,
+    color: colors.text.inverse,
+    fontWeight: "500",
   },
   emptyContainer: {
     padding: 40,
     alignItems: "center",
   },
-  emptyTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#1a365d",
-    marginTop: 16,
+  emptyText: {
+    fontSize: 16,
+    color: colors.text.secondary,
+    marginTop: 12,
+    fontWeight: "500",
   },
-  emptySubtitle: {
+  emptySubtext: {
     fontSize: 14,
-    color: "#64748b",
-    marginTop: 8,
+    color: colors.text.tertiary,
+    marginTop: 4,
     textAlign: "center",
   },
-  content: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+  listContainer: {
+    maxHeight: 300,
   },
   listItem: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    marginBottom: 8,
-    backgroundColor: "#f9fafb",
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.content.borderLight,
   },
   listItemSelected: {
-    backgroundColor: "#eff6ff",
+    backgroundColor: colors.brand.green + "10",
   },
-  listItemLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-    gap: 12,
-  },
-  checkbox: {
-    width: 24,
-    height: 24,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: "#cbd5e1",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  checkboxSelected: {
-    backgroundColor: "#1a365d",
-    borderColor: "#1a365d",
-  },
-  listInfo: {
-    flex: 1,
+  listIcon: {
+    marginRight: 12,
   },
   listName: {
+    flex: 1,
     fontSize: 15,
-    fontWeight: "500",
-    color: "#1a365d",
+    color: colors.text.primary,
   },
-  listDescription: {
-    fontSize: 13,
-    color: "#64748b",
-    marginTop: 2,
+  actions: {
+    flexDirection: "row",
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    gap: 12,
   },
-  listCount: {
-    fontSize: 13,
-    color: "#64748b",
-    fontWeight: "500",
-  },
-  footer: {
-    padding: 20,
-    borderTopWidth: 1,
-    borderTopColor: "#e5e5e5",
-  },
-  doneButton: {
-    paddingVertical: 14,
-    borderRadius: 12,
-    backgroundColor: "#1a365d",
-    alignItems: "center",
-  },
-  doneButtonText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "white",
-  },
-  retryButton: {
-    marginTop: 16,
-    paddingHorizontal: 24,
+  cancelButton: {
+    flex: 1,
     paddingVertical: 12,
     borderRadius: 8,
-    backgroundColor: "#1a365d",
+    backgroundColor: colors.content.bgSecondary,
+    alignItems: "center",
   },
-  retryButtonText: {
-    fontSize: 14,
+  cancelButtonText: {
+    fontSize: 15,
     fontWeight: "600",
-    color: "white",
+    color: colors.text.secondary,
+  },
+  saveButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 8,
+    backgroundColor: colors.brand.green,
+    alignItems: "center",
+  },
+  saveButtonDisabled: {
+    opacity: 0.6,
+  },
+  saveButtonText: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: colors.text.inverse,
   },
 });

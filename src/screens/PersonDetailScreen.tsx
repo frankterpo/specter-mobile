@@ -12,18 +12,16 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import { useAuth } from "@clerk/clerk-expo";
 import * as Haptics from "expo-haptics";
 import { colors, getHighlightColor } from "../theme/colors";
 import {
-  fetchPersonDetail,
-  likePerson,
-  dislikePerson,
   Person,
   getCurrentJob,
   getFullName,
 } from "../api/specter";
+import { specterPublicAPI } from "../api/public-client";
 import { PeopleStackParamList } from "../types/navigation";
+import { useClerkToken } from "../hooks/useClerkToken";
 
 type RouteProps = RouteProp<PeopleStackParamList, "PersonDetail">;
 
@@ -31,7 +29,7 @@ export default function PersonDetailScreen() {
   const navigation = useNavigation();
   const route = useRoute<RouteProps>();
   const insets = useSafeAreaInsets();
-  const { getToken } = useAuth();
+  const { getAuthToken } = useClerkToken();
 
   const { personId } = route.params;
   const [person, setPerson] = useState<Person | null>(null);
@@ -48,12 +46,9 @@ export default function PersonDetailScreen() {
     setError(null);
 
     try {
-      const token = await getToken();
-      if (!token) {
-        throw new Error("Authentication required");
-      }
-
-      const data = await fetchPersonDetail(token, personId);
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
+      const data = await specterPublicAPI.people.getById(personId, token);
       setPerson(data);
     } catch (err: any) {
       setError(err.message || "Failed to load person details");
@@ -64,21 +59,15 @@ export default function PersonDetailScreen() {
   };
 
   const handleLike = async () => {
-    if (!person || actionLoading) return;
-
+    if (!person) return;
     setActionLoading("like");
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-
     try {
-      const token = await getToken();
-      if (!token) throw new Error("Authentication required");
-
-      await likePerson(token, person.id);
-      setPerson({
-        ...person,
-        entity_status: { status: "liked", updated_at: new Date().toISOString() },
-      });
-    } catch (err: any) {
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
+      await specterPublicAPI.people.like(person.id, token);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      setPerson((prev) => prev ? { ...prev, my_status: "liked" } : prev);
+    } catch (err) {
       console.error("Like error:", err);
     } finally {
       setActionLoading(null);
@@ -86,34 +75,24 @@ export default function PersonDetailScreen() {
   };
 
   const handleDislike = async () => {
-    if (!person || actionLoading) return;
-
+    if (!person) return;
     setActionLoading("dislike");
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-
     try {
-      const token = await getToken();
-      if (!token) throw new Error("Authentication required");
-
-      await dislikePerson(token, person.id);
-      setPerson({
-        ...person,
-        entity_status: { status: "disliked", updated_at: new Date().toISOString() },
-      });
-    } catch (err: any) {
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
+      await specterPublicAPI.people.dislike(person.id, token);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      setPerson((prev) => prev ? { ...prev, my_status: "disliked" } : prev);
+    } catch (err) {
       console.error("Dislike error:", err);
     } finally {
       setActionLoading(null);
     }
   };
 
-  const openUrl = (url: string) => {
-    Linking.openURL(url).catch(() => {});
-  };
-
   if (isLoading) {
     return (
-      <View style={[styles.container, styles.centered]}>
+      <View style={[styles.container, styles.centered, { paddingTop: insets.top }]}>
         <ActivityIndicator size="large" color={colors.brand.green} />
       </View>
     );
@@ -121,7 +100,8 @@ export default function PersonDetailScreen() {
 
   if (error || !person) {
     return (
-      <View style={[styles.container, styles.centered]}>
+      <View style={[styles.container, styles.centered, { paddingTop: insets.top }]}>
+        <Ionicons name="alert-circle" size={48} color={colors.error} />
         <Text style={styles.errorText}>{error || "Person not found"}</Text>
         <Pressable style={styles.retryButton} onPress={loadPersonDetail}>
           <Text style={styles.retryButtonText}>Retry</Text>
@@ -130,258 +110,203 @@ export default function PersonDetailScreen() {
     );
   }
 
-  const name = getFullName(person);
-  const currentJob = getCurrentJob(person.experience || []);
-  const highlights = person.people_highlights || [];
-  const location = person.location || person.region || "";
-  const isLiked = person.entity_status?.status === "liked";
-  const isDisliked = person.entity_status?.status === "disliked";
+  const fullName = getFullName(person);
+  const currentJob = getCurrentJob(person);
+  const initials = fullName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Header */}
-      <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
+      <View style={styles.header}>
         <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color={colors.text.primary} />
         </Pressable>
-        <View style={styles.headerActions}>
-          <Pressable style={styles.headerBtn}>
-            <Ionicons name="share-outline" size={22} color={colors.text.secondary} />
-          </Pressable>
-          <Pressable style={styles.headerBtn}>
-            <Ionicons name="bookmark-outline" size={22} color={colors.text.secondary} />
-          </Pressable>
-        </View>
+        <Text style={styles.headerTitle} numberOfLines={1}>
+          {fullName}
+        </Text>
+        <View style={{ width: 40 }} />
       </View>
 
       <ScrollView
         style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 100 }}
       >
-        {/* Profile card */}
-        <View style={styles.card}>
-          {/* Avatar + Name */}
-          <View style={styles.profileHeader}>
-            <View style={styles.avatarContainer}>
-              {person.profile_image_url ? (
-                <Image
-                  source={{ uri: person.profile_image_url }}
-                  style={styles.avatar}
-                  contentFit="cover"
-                />
-              ) : (
-                <View style={styles.avatarPlaceholder}>
-                  <Text style={styles.avatarText}>
-                    {(person.first_name?.[0] || "") + (person.last_name?.[0] || "")}
-                  </Text>
-                </View>
-              )}
-              {/* Status badge */}
-              {isLiked && (
-                <View style={[styles.statusBadge, styles.statusLiked]}>
-                  <Ionicons name="heart" size={12} color={colors.text.inverse} />
-                </View>
-              )}
-            </View>
-
-            <View style={styles.profileInfo}>
-              <Text style={styles.name}>{name}</Text>
-              {currentJob && (
-                <Text style={styles.title}>
-                  {currentJob.title} at {currentJob.company_name}
-                </Text>
-              )}
-              {location && (
-                <View style={styles.locationRow}>
-                  <Ionicons name="location-outline" size={14} color={colors.text.tertiary} />
-                  <Text style={styles.locationText}>{location}</Text>
-                </View>
-              )}
-            </View>
-          </View>
-
-          {/* Tagline */}
-          {person.tagline && (
-            <Text style={styles.tagline}>{person.tagline}</Text>
-          )}
-
-          {/* Highlights */}
-          {highlights.length > 0 && (
-            <View style={styles.highlightsRow}>
-              {highlights.slice(0, 4).map((highlight, idx) => (
-                <View
-                  key={idx}
-                  style={[
-                    styles.highlightBadge,
-                    { backgroundColor: getHighlightColor(highlight) + "20" },
-                  ]}
-                >
-                  <View
-                    style={[styles.highlightDot, { backgroundColor: getHighlightColor(highlight) }]}
-                  />
-                  <Text style={[styles.highlightText, { color: getHighlightColor(highlight) }]}>
-                    {formatHighlight(highlight)}
-                  </Text>
-                </View>
-              ))}
+        {/* Profile Header */}
+        <View style={styles.profileHeader}>
+          {person.profile_image_url ? (
+            <Image
+              source={{ uri: person.profile_image_url }}
+              style={styles.avatar}
+              contentFit="cover"
+            />
+          ) : (
+            <View style={[styles.avatar, styles.avatarPlaceholder]}>
+              <Text style={styles.avatarText}>{initials}</Text>
             </View>
           )}
 
-          {/* Action buttons */}
-          <View style={styles.actionRow}>
-            <Pressable
-              style={[styles.actionBtn, styles.dislikeBtn, isDisliked && styles.actionBtnActive]}
-              onPress={handleDislike}
-              disabled={actionLoading !== null}
-            >
-              {actionLoading === "dislike" ? (
-                <ActivityIndicator size="small" color={colors.error} />
-              ) : (
-                <>
-                  <Ionicons name="close" size={22} color={colors.error} />
-                  <Text style={[styles.actionBtnText, { color: colors.error }]}>Pass</Text>
-                </>
-              )}
-            </Pressable>
-            <Pressable
-              style={[styles.actionBtn, styles.likeBtn, isLiked && styles.actionBtnActive]}
-              onPress={handleLike}
-              disabled={actionLoading !== null}
-            >
-              {actionLoading === "like" ? (
-                <ActivityIndicator size="small" color={colors.brand.green} />
-              ) : (
-                <>
-                  <Ionicons name={isLiked ? "heart" : "heart-outline"} size={22} color={colors.brand.green} />
-                  <Text style={[styles.actionBtnText, { color: colors.brand.green }]}>
-                    {isLiked ? "Liked" : "Like"}
-                  </Text>
-                </>
-              )}
-            </Pressable>
-          </View>
-        </View>
+          <Text style={styles.personName}>{fullName}</Text>
 
-        {/* Info card */}
-        <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Details</Text>
-          <View style={styles.infoGrid}>
-            <View style={styles.infoItem}>
-              <Ionicons name="briefcase-outline" size={18} color={colors.text.tertiary} />
-              <Text style={styles.infoLabel}>Seniority</Text>
-              <Text style={styles.infoValue}>{person.seniority || "N/A"}</Text>
+          {currentJob && (
+            <Text style={styles.personTitle}>
+              {currentJob.title} at {currentJob.org_name}
+            </Text>
+          )}
+
+          {person.location && (
+            <View style={styles.locationRow}>
+              <Ionicons name="location" size={14} color={colors.text.tertiary} />
+              <Text style={styles.locationText}>{person.location}</Text>
             </View>
-            <View style={styles.infoItem}>
-              <Ionicons name="time-outline" size={18} color={colors.text.tertiary} />
-              <Text style={styles.infoLabel}>Experience</Text>
-              <Text style={styles.infoValue}>
-                {person.years_of_experience ? `${person.years_of_experience} years` : "N/A"}
+          )}
+
+          {/* Status Badge */}
+          {person.my_status && (
+            <View
+              style={[
+                styles.statusBadge,
+                person.my_status === "liked" && styles.statusLiked,
+                person.my_status === "disliked" && styles.statusDisliked,
+              ]}
+            >
+              <Ionicons
+                name={person.my_status === "liked" ? "heart" : "close"}
+                size={14}
+                color={person.my_status === "liked" ? colors.success : colors.error}
+              />
+              <Text
+                style={[
+                  styles.statusText,
+                  person.my_status === "liked" && styles.statusTextLiked,
+                  person.my_status === "disliked" && styles.statusTextDisliked,
+                ]}
+              >
+                {person.my_status === "liked" ? "Liked" : "Passed"}
               </Text>
             </View>
-            <View style={styles.infoItem}>
-              <Ionicons name="school-outline" size={18} color={colors.text.tertiary} />
-              <Text style={styles.infoLabel}>Education</Text>
-              <Text style={styles.infoValue}>{person.education_level || "N/A"}</Text>
-            </View>
-            <View style={styles.infoItem}>
-              <Ionicons name="book-outline" size={18} color={colors.text.tertiary} />
-              <Text style={styles.infoLabel}>Field</Text>
-              <Text style={styles.infoValue}>{person.field_of_study || "N/A"}</Text>
-            </View>
-          </View>
+          )}
         </View>
 
-        {/* Experience card */}
-        {person.experience && person.experience.length > 0 && (
-          <View style={styles.card}>
-            <Text style={styles.sectionTitle}>Experience</Text>
-            <View style={styles.experienceList}>
-              {person.experience.slice(0, 5).map((exp, idx) => (
-                <View key={idx} style={styles.experienceItem}>
-                  <View style={styles.experienceHeader}>
-                    <View style={styles.expIconContainer}>
-                      <Ionicons
-                        name={exp.is_current ? "business" : "business-outline"}
-                        size={18}
-                        color={exp.is_current ? colors.brand.green : colors.text.tertiary}
-                      />
-                    </View>
-                    <View style={styles.experienceInfo}>
-                      <Text style={styles.expTitle}>{exp.title}</Text>
-                      <Text style={styles.expCompany}>{exp.company_name}</Text>
-                      {(exp.start_date || exp.end_date) && (
-                        <Text style={styles.expDates}>
-                          {exp.start_date || "?"} - {exp.is_current ? "Present" : exp.end_date || "?"}
-                        </Text>
-                      )}
-                    </View>
-                    {exp.is_current && (
-                      <View style={styles.currentBadge}>
-                        <Text style={styles.currentBadgeText}>Current</Text>
-                      </View>
-                    )}
-                  </View>
-                </View>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* Social links */}
-        <View style={styles.card}>
+        {/* Links Section */}
+        <View style={styles.section}>
           <Text style={styles.sectionTitle}>Links</Text>
           <View style={styles.linksRow}>
             {person.linkedin_url && (
               <Pressable
-                style={styles.linkBtn}
-                onPress={() => openUrl(person.linkedin_url || "")}
+                style={styles.linkButton}
+                onPress={() => Linking.openURL(person.linkedin_url!)}
               >
-                <Ionicons name="logo-linkedin" size={18} color="#0077B5" />
+                <Ionicons name="logo-linkedin" size={20} color="#0A66C2" />
                 <Text style={styles.linkText}>LinkedIn</Text>
               </Pressable>
             )}
             {person.twitter_url && (
               <Pressable
-                style={styles.linkBtn}
-                onPress={() => openUrl(person.twitter_url || "")}
+                style={styles.linkButton}
+                onPress={() => Linking.openURL(person.twitter_url!)}
               >
-                <Ionicons name="logo-twitter" size={18} color="#1DA1F2" />
+                <Ionicons name="logo-twitter" size={20} color="#1DA1F2" />
                 <Text style={styles.linkText}>Twitter</Text>
               </Pressable>
             )}
             {person.github_url && (
               <Pressable
-                style={styles.linkBtn}
-                onPress={() => openUrl(person.github_url || "")}
+                style={styles.linkButton}
+                onPress={() => Linking.openURL(person.github_url!)}
               >
-                <Ionicons name="logo-github" size={18} color={colors.text.primary} />
+                <Ionicons name="logo-github" size={20} color={colors.text.primary} />
                 <Text style={styles.linkText}>GitHub</Text>
               </Pressable>
-            )}
-            {!person.linkedin_url && !person.twitter_url && !person.github_url && (
-              <Text style={styles.noLinksText}>No social links available</Text>
             )}
           </View>
         </View>
 
-        <View style={{ height: 40 }} />
+        {/* Bio Section */}
+        {person.headline && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>About</Text>
+            <Text style={styles.bioText}>{person.headline}</Text>
+          </View>
+        )}
+
+        {/* Experience Section */}
+        {person.job_history && person.job_history.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Experience</Text>
+            {person.job_history.slice(0, 5).map((job, index) => (
+              <View key={index} style={styles.experienceItem}>
+                <View style={styles.experienceDot} />
+                <View style={styles.experienceContent}>
+                  <Text style={styles.experienceTitle}>{job.title}</Text>
+                  <Text style={styles.experienceCompany}>{job.org_name}</Text>
+                  {job.start_date && (
+                    <Text style={styles.experienceDate}>
+                      {job.start_date} - {job.end_date || "Present"}
+                    </Text>
+                  )}
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* Education Section */}
+        {person.education && person.education.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Education</Text>
+            {person.education.slice(0, 3).map((edu, index) => (
+              <View key={index} style={styles.educationItem}>
+                <Ionicons name="school-outline" size={18} color={colors.brand.green} />
+                <View style={styles.educationContent}>
+                  <Text style={styles.educationSchool}>{edu.school_name}</Text>
+                  {edu.degree && <Text style={styles.educationDegree}>{edu.degree}</Text>}
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
       </ScrollView>
+
+      {/* Action Buttons */}
+      <View style={[styles.actionsContainer, { paddingBottom: insets.bottom + 16 }]}>
+        <Pressable
+          style={[styles.actionButton, styles.actionDislike]}
+          onPress={handleDislike}
+          disabled={actionLoading !== null}
+        >
+          {actionLoading === "dislike" ? (
+            <ActivityIndicator size="small" color={colors.error} />
+          ) : (
+            <Ionicons name="close" size={28} color={colors.error} />
+          )}
+        </Pressable>
+
+        <Pressable
+          style={[styles.actionButton, styles.actionLike]}
+          onPress={handleLike}
+          disabled={actionLoading !== null}
+        >
+          {actionLoading === "like" ? (
+            <ActivityIndicator size="small" color={colors.success} />
+          ) : (
+            <Ionicons name="heart" size={28} color={colors.success} />
+          )}
+        </Pressable>
+      </View>
     </View>
   );
-}
-
-function formatHighlight(highlight: string): string {
-  return highlight
-    .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.content.bgSecondary,
+    backgroundColor: colors.card.bg,
   },
   centered: {
     justifyContent: "center",
@@ -390,268 +315,211 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
     paddingHorizontal: 16,
-    paddingBottom: 12,
-    backgroundColor: colors.content.bg,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.content.border,
+    paddingVertical: 12,
   },
   backButton: {
     padding: 8,
-    marginLeft: -8,
+    marginRight: 8,
   },
-  headerActions: {
-    flexDirection: "row",
-    gap: 8,
-  },
-  headerBtn: {
-    padding: 8,
+  headerTitle: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: "600",
+    color: colors.text.primary,
+    textAlign: "center",
   },
   scrollView: {
     flex: 1,
   },
-  scrollContent: {
-    padding: 16,
-    gap: 12,
-  },
-  card: {
-    backgroundColor: colors.card.bg,
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: colors.card.border,
-  },
   profileHeader: {
-    flexDirection: "row",
-    marginBottom: 14,
-  },
-  avatarContainer: {
-    marginRight: 14,
-    position: "relative",
+    alignItems: "center",
+    paddingVertical: 24,
+    paddingHorizontal: 16,
   },
   avatar: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: colors.content.bgSecondary,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 16,
   },
   avatarPlaceholder: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: colors.brand.blue,
+    backgroundColor: colors.brand.green,
     alignItems: "center",
     justifyContent: "center",
   },
   avatarText: {
-    color: colors.text.inverse,
-    fontSize: 22,
+    fontSize: 36,
     fontWeight: "600",
+    color: colors.text.inverse,
   },
-  statusBadge: {
-    position: "absolute",
-    bottom: -2,
-    right: -2,
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 2,
-    borderColor: colors.card.bg,
-  },
-  statusLiked: {
-    backgroundColor: colors.brand.green,
-  },
-  profileInfo: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  name: {
-    fontSize: 20,
+  personName: {
+    fontSize: 24,
     fontWeight: "700",
     color: colors.text.primary,
-    marginBottom: 4,
+    textAlign: "center",
   },
-  title: {
-    fontSize: 14,
+  personTitle: {
+    fontSize: 16,
     color: colors.text.secondary,
-    marginBottom: 4,
+    textAlign: "center",
+    marginTop: 4,
   },
   locationRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
+    marginTop: 8,
   },
   locationText: {
-    fontSize: 13,
+    fontSize: 14,
     color: colors.text.tertiary,
   },
-  tagline: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    lineHeight: 20,
-    marginBottom: 14,
-  },
-  highlightsRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
-    marginBottom: 16,
-  },
-  highlightBadge: {
+  statusBadge: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 6,
-    gap: 6,
+    gap: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    marginTop: 12,
+    backgroundColor: colors.content.bgSecondary,
   },
-  highlightDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-  },
-  highlightText: {
-    fontSize: 12,
-    fontWeight: "600",
-  },
-  actionRow: {
-    flexDirection: "row",
-    gap: 12,
-  },
-  actionBtn: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    borderRadius: 10,
-    gap: 8,
-  },
-  actionBtnActive: {
-    borderWidth: 2,
-  },
-  dislikeBtn: {
-    backgroundColor: colors.tag.red.bg,
-  },
-  likeBtn: {
+  statusLiked: {
     backgroundColor: colors.tag.green.bg,
   },
-  actionBtnText: {
-    fontSize: 15,
-    fontWeight: "600",
+  statusDisliked: {
+    backgroundColor: colors.tag.red.bg,
+  },
+  statusText: {
+    fontSize: 13,
+    fontWeight: "500",
+    color: colors.text.secondary,
+  },
+  statusTextLiked: {
+    color: colors.success,
+  },
+  statusTextDisliked: {
+    color: colors.error,
+  },
+  section: {
+    paddingHorizontal: 16,
+    marginTop: 24,
   },
   sectionTitle: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: "600",
-    color: colors.text.primary,
+    color: colors.text.tertiary,
     marginBottom: 12,
-  },
-  infoGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
-  },
-  infoItem: {
-    width: "47%",
-    backgroundColor: colors.content.bgSecondary,
-    borderRadius: 10,
-    padding: 12,
-    gap: 4,
-  },
-  infoLabel: {
-    fontSize: 11,
-    color: colors.text.tertiary,
-    marginTop: 4,
-  },
-  infoValue: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: colors.text.primary,
-  },
-  experienceList: {
-    gap: 12,
-  },
-  experienceItem: {
-    borderBottomWidth: 1,
-    borderBottomColor: colors.content.border,
-    paddingBottom: 12,
-  },
-  experienceHeader: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-  },
-  expIconContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    backgroundColor: colors.content.bgSecondary,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 12,
-  },
-  experienceInfo: {
-    flex: 1,
-  },
-  expTitle: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: colors.text.primary,
-    marginBottom: 2,
-  },
-  expCompany: {
-    fontSize: 13,
-    color: colors.text.secondary,
-    marginBottom: 2,
-  },
-  expDates: {
-    fontSize: 12,
-    color: colors.text.tertiary,
-  },
-  currentBadge: {
-    backgroundColor: colors.brand.green + "20",
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 4,
-  },
-  currentBadgeText: {
-    fontSize: 10,
-    fontWeight: "600",
-    color: colors.brand.green,
+    letterSpacing: 0.5,
+    textTransform: "uppercase",
   },
   linksRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
+    gap: 12,
   },
-  linkBtn: {
+  linkButton: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    backgroundColor: colors.content.bgSecondary,
+    gap: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     borderRadius: 8,
+    backgroundColor: colors.content.bgSecondary,
   },
   linkText: {
-    fontSize: 13,
-    color: colors.text.secondary,
+    fontSize: 14,
+    color: colors.text.primary,
+    fontWeight: "500",
   },
-  noLinksText: {
-    fontSize: 13,
-    color: colors.text.tertiary,
-    fontStyle: "italic",
+  bioText: {
+    fontSize: 15,
+    color: colors.text.primary,
+    lineHeight: 22,
   },
-  errorText: {
-    fontSize: 16,
-    color: colors.error,
+  experienceItem: {
+    flexDirection: "row",
     marginBottom: 16,
   },
+  experienceDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: colors.brand.green,
+    marginTop: 6,
+    marginRight: 12,
+  },
+  experienceContent: {
+    flex: 1,
+  },
+  experienceTitle: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: colors.text.primary,
+  },
+  experienceCompany: {
+    fontSize: 14,
+    color: colors.text.secondary,
+    marginTop: 2,
+  },
+  experienceDate: {
+    fontSize: 13,
+    color: colors.text.tertiary,
+    marginTop: 2,
+  },
+  educationItem: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 12,
+    marginBottom: 12,
+  },
+  educationContent: {
+    flex: 1,
+  },
+  educationSchool: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: colors.text.primary,
+  },
+  educationDegree: {
+    fontSize: 14,
+    color: colors.text.secondary,
+    marginTop: 2,
+  },
+  actionsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 16,
+    gap: 24,
+    backgroundColor: colors.card.bg,
+    borderTopWidth: 1,
+    borderTopColor: colors.content.borderLight,
+  },
+  actionButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  actionDislike: {
+    backgroundColor: colors.tag.red.bg,
+  },
+  actionLike: {
+    backgroundColor: colors.tag.green.bg,
+  },
+  errorText: {
+    marginTop: 12,
+    fontSize: 14,
+    color: colors.error,
+    textAlign: "center",
+    paddingHorizontal: 40,
+  },
   retryButton: {
-    paddingHorizontal: 20,
+    marginTop: 16,
     paddingVertical: 10,
+    paddingHorizontal: 24,
     backgroundColor: colors.brand.green,
     borderRadius: 8,
   },

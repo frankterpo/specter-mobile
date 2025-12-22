@@ -7,13 +7,25 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "node": "22.12.0"
+      "node": "22.12.0",
+      "env": {
+        "ORG_GRADLE_PROJECT_reactNativeArchitectures": "arm64-v8a",
+            "EXPO_PUBLIC_SPECTER_API_URL": "https://specter-api-prod.up.railway.app/api/v1"
+      }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "ORG_GRADLE_PROJECT_reactNativeArchitectures": "arm64-v8a",
+            "EXPO_PUBLIC_SPECTER_API_URL": "https://specter-api-prod.up.railway.app/api/v1"
+      }
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "ORG_GRADLE_PROJECT_reactNativeArchitectures": "arm64-v8a",
+            "EXPO_PUBLIC_SPECTER_API_URL": "https://specter-api-prod.up.railway.app/api/v1"
+      }
     }
   },
   "submit": {

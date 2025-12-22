@@ -1,15 +1,18 @@
+import { Platform } from "react-native";
+
 // Specter API Service
 // Real API integration for VC people database
 
 // Detect if running on web (for CORS error handling)
-const isWeb = typeof window !== "undefined";
+const isWeb = Platform.OS === "web";
 
 // Base URLs - use local proxy for web development, direct URLs for mobile
 // To use proxy: 1) Run `npm run proxy` in terminal, 2) Refresh browser
 const PROXY_BASE = isWeb ? "http://localhost:3001/proxy" : "";
-const API_BASE_URL_RAW = "https://specter-api-staging.up.railway.app";
-const ENTITY_STATUS_BASE_URL_RAW = "https://app.staging.tryspecter.com/api/entity-status";
-const LISTS_BASE_URL_RAW = "https://app.staging.tryspecter.com/api/lists";
+// PRODUCTION API URLs
+const API_BASE_URL_RAW = "https://specter-api-prod.up.railway.app";
+const ENTITY_STATUS_BASE_URL_RAW = "https://app.tryspecter.com/api/entity-status";
+const LISTS_BASE_URL_RAW = "https://app.tryspecter.com/api/lists";
 
 // Use proxy for web, direct URLs for mobile
 const API_BASE_URL = isWeb 
@@ -421,8 +424,7 @@ export async function fetchPeople(
         "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify(body),
-      mode: "cors", // Explicitly request CORS
-      credentials: "omit", // Don't send cookies
+      ...(isWeb ? { mode: "cors", credentials: "omit" } : {}), // CORS only for web
     });
 
     const response = await withTimeout(
@@ -1169,13 +1171,23 @@ export async function fetchCompanies(
       body.filters = params.filters;
     }
 
+    if (__DEV__) {
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+      console.log("📤 COMPANIES API REQUEST TO BACKEND:");
+      console.log("URL:", `${API_BASE_URL}/private/companies`);
+      console.log("Method: POST");
+      console.log("Body:", JSON.stringify(body, null, 2));
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    }
+
     const fetchPromise = fetch(`${API_BASE_URL}/private/companies`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify(body),
+      ...(isWeb ? { mode: "cors", credentials: "omit" } : {}), // CORS only for web
     });
 
     const response = await withTimeout(

@@ -9,11 +9,11 @@ import {
   StyleSheet,
   TextInput,
 } from "react-native";
-import { useAuth } from "@clerk/clerk-expo";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
-import { List, fetchLists, addToList } from "../api/specter";
+import { specterPublicAPI } from "../api/public-client";
+import { useClerkToken } from "../hooks/useClerkToken";
 
 interface AddToListSheetProps {
   visible: boolean;
@@ -30,55 +30,56 @@ export default function AddToListSheet({
   entityType,
   entityName,
 }: AddToListSheetProps) {
-  const { getToken } = useAuth();
   const insets = useSafeAreaInsets();
+  const { getAuthToken } = useClerkToken();
 
-  const [lists, setLists] = useState<List[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [lists, setLists] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [addingToList, setAddingToList] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const loadLists = useCallback(async () => {
     try {
-      const token = await getToken();
-      if (!token) return;
-
-      const response = await fetchLists(token);
+      setIsLoading(true);
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
+      const response = await specterPublicAPI.lists.getPeopleLists(token);
       setLists(response);
     } catch (error) {
       console.error("Failed to load lists:", error);
     } finally {
       setIsLoading(false);
     }
-  }, [getToken]);
+  }, []);
 
   useEffect(() => {
     if (visible) {
-      setIsLoading(true);
       loadLists();
     }
   }, [visible, loadLists]);
 
-  const handleAddToList = useCallback(async (list: List) => {
+  const handleAddToList = useCallback(
+    async (list: any) => {
     try {
       setAddingToList(list.id);
-      const token = await getToken();
-      if (!token) return;
-
-      await addToList(token, list.id, entityId);
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
+        await specterPublicAPI.lists.addPersonToList(list.id, entityId, token);
       onClose();
     } catch (error) {
       console.error("Failed to add to list:", error);
     } finally {
       setAddingToList(null);
     }
-  }, [getToken, entityId, onClose]);
-
-  const filteredLists = lists.filter((list) =>
-    list.name.toLowerCase().includes(searchQuery.toLowerCase())
+    },
+    [entityId, onClose]
   );
 
-  const renderListItem = useCallback(({ item }: { item: List }) => (
+  const filteredLists = lists.filter((list: any) =>
+    list.name?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const renderListItem = useCallback(({ item }: { item: any }) => (
     <Pressable
       style={({ pressed }) => [styles.listItem, pressed && styles.listItemPressed]}
       onPress={() => handleAddToList(item)}
@@ -138,20 +139,34 @@ export default function AddToListSheet({
             </View>
           ) : filteredLists.length === 0 ? (
             <View style={styles.emptyContainer}>
+              <Ionicons
+                name="list-outline"
+                size={48}
+                color={colors.text.tertiary}
+              />
               <Text style={styles.emptyText}>No lists found</Text>
+              <Text style={styles.emptySubtext}>
+                Create a new list to get started
+              </Text>
             </View>
           ) : (
             <FlatList
               data={filteredLists}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.id || `list-${item.name}`}
               renderItem={renderListItem}
-              showsVerticalScrollIndicator={false}
               style={styles.list}
+              showsVerticalScrollIndicator={false}
             />
           )}
 
           {/* Create new list button */}
-          <Pressable style={styles.createButton}>
+          <Pressable
+            style={styles.createButton}
+            onPress={() => {
+              // TODO: Implement create list functionality
+              console.log("Create new list - TODO");
+            }}
+          >
             <Ionicons name="add" size={18} color={colors.brand.green} />
             <Text style={styles.createButtonText}>Create New List</Text>
           </Pressable>
@@ -226,6 +241,14 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 14,
     color: colors.text.tertiary,
+    marginTop: 12,
+    fontWeight: "500",
+  },
+  emptySubtext: {
+    fontSize: 12,
+    color: colors.text.tertiary,
+    marginTop: 4,
+    textAlign: "center",
   },
   list: {
     maxHeight: 300,
@@ -272,6 +295,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
     color: colors.brand.green,
+  },
+  createButtonDisabled: {
+    borderColor: colors.text.tertiary,
+    opacity: 0.5,
+  },
+  createButtonTextDisabled: {
+    color: colors.text.tertiary,
   },
 });
 

@@ -7,12 +7,13 @@ export type AuthStackParamList = {
   SignUp: undefined;
 };
 
-// Bottom tab navigator - 4 tabs only
+// Bottom tab navigator - 5 tabs (includes API Testing)
 export type MainTabParamList = {
   CompaniesTab: undefined;
   PeopleTab: undefined;
   ListsTab: undefined;
   SettingsTab: undefined;
+  ApiTestingTab: undefined;
 };
 
 // Companies stack
@@ -38,9 +39,16 @@ export type SettingsStackParamList = {
   SettingsMain: undefined;
 };
 
-// Root stack (wraps tabs + modal screens)
+// API Testing stack
+export type ApiTestingStackParamList = {
+  ApiTestingMain: undefined;
+};
+
+// Root stack (wraps tabs + auth screens)
 export type RootStackParamList = {
   MainTabs: undefined;
+  SignIn: undefined;
+  SignUp: undefined;
   Settings: undefined;
   Search: undefined;
   Profile: undefined;

@@ -11,43 +11,55 @@ import {
   TextInput,
   Modal,
 } from "react-native";
-import { useAuth } from "@clerk/clerk-expo";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
-import { List, fetchLists } from "../api/specter";
+import { specterPublicAPI } from "../api/public-client";
+import { useClerkToken } from "../hooks/useClerkToken";
 
 type ListType = "companies" | "people";
 
+interface List {
+  id: string;
+  name: string;
+  count?: number;
+}
+
 export default function ListsScreen() {
-  const { getToken } = useAuth();
   const insets = useSafeAreaInsets();
+  const { getAuthToken } = useClerkToken();
 
   const [lists, setLists] = useState<List[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState<ListType>("companies");
+  const [activeTab, setActiveTab] = useState<ListType>("people");
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newListName, setNewListName] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
 
   const loadLists = useCallback(async () => {
     try {
-      const token = await getToken();
-      if (!token) return;
-
-      const response = await fetchLists(token);
-      setLists(response);
+      if (activeTab === "people") {
+        const token = await getAuthToken();
+        if (!token) throw new Error("Not authenticated");
+        const response = await specterPublicAPI.lists.getPeopleLists(token);
+        setLists(response);
+      } else {
+        // Companies lists not yet available in public API
+        setLists([]);
+      }
     } catch (error) {
       console.error("Failed to load lists:", error);
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  }, [getToken]);
+  }, [activeTab]);
 
   useEffect(() => {
+    setIsLoading(true);
     loadLists();
-  }, [loadLists]);
+  }, [loadLists, activeTab]);
 
   const handleRefresh = useCallback(() => {
     setIsRefreshing(true);
@@ -57,18 +69,31 @@ export default function ListsScreen() {
   const handleListPress = useCallback((list: List) => {
     // TODO: Navigate to list detail
     console.log("Open list:", list.name);
+    Alert.alert("List Selected", `Opening ${list.name}...`);
   }, []);
 
-  const handleCreateList = useCallback(() => {
+  const handleCreateList = useCallback(async () => {
     if (!newListName.trim()) {
       Alert.alert("Error", "Please enter a list name");
       return;
     }
-    // TODO: Call API to create list
-    console.log("Create list:", newListName);
-    setShowCreateModal(false);
-    setNewListName("");
-  }, [newListName]);
+    
+    setIsCreating(true);
+    try {
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
+      await specterPublicAPI.lists.createPeopleList(newListName, undefined, token);
+      Alert.alert("Success", `List "${newListName}" created!`);
+      setShowCreateModal(false);
+      setNewListName("");
+      loadLists(); // Refresh lists
+    } catch (error) {
+      console.error("Failed to create list:", error);
+      Alert.alert("Error", "Failed to create list");
+    } finally {
+      setIsCreating(false);
+    }
+  }, [newListName, loadLists]);
 
   const renderListItem = useCallback(({ item }: { item: List }) => (
     <Pressable
@@ -78,18 +103,13 @@ export default function ListsScreen() {
       <View style={styles.listIcon}>
         <Ionicons name="list" size={18} color={colors.brand.green} />
       </View>
-      <View style={styles.listInfo}>
-        <Text style={styles.listName} numberOfLines={1}>{item.name}</Text>
-        {item.description && (
-          <Text style={styles.listDescription} numberOfLines={1}>
-            {item.description}
-          </Text>
+      <View style={styles.listContent}>
+        <Text style={styles.listName}>{item.name}</Text>
+        {item.count !== undefined && (
+          <Text style={styles.listCount}>{item.count} items</Text>
         )}
       </View>
-      <View style={styles.listMeta}>
-        <Text style={styles.listCount}>{item.person_count || 0}</Text>
-        <Ionicons name="chevron-forward" size={16} color={colors.text.tertiary} />
-      </View>
+      <Ionicons name="chevron-forward" size={18} color={colors.text.tertiary} />
     </Pressable>
   ), [handleListPress]);
 
@@ -99,41 +119,46 @@ export default function ListsScreen() {
       <View style={styles.emptyContainer}>
         <Ionicons name="list-outline" size={48} color={colors.text.tertiary} />
         <Text style={styles.emptyText}>No lists yet</Text>
-        <Pressable
-          style={styles.createButton}
-          onPress={() => setShowCreateModal(true)}
-        >
+        <Text style={styles.emptySubtext}>
+          Create a list to organize {activeTab}
+        </Text>
+        <Pressable style={styles.createButton} onPress={() => setShowCreateModal(true)}>
           <Ionicons name="add" size={18} color={colors.text.inverse} />
-          <Text style={styles.createButtonText}>Create your first list</Text>
+          <Text style={styles.createButtonText}>Create List</Text>
         </Pressable>
       </View>
     );
-  }, [isLoading]);
+  }, [isLoading, activeTab]);
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Lists</Text>
-        <Text style={styles.count}>{lists.length}</Text>
+        <Pressable
+          style={styles.addButton}
+          onPress={() => setShowCreateModal(true)}
+        >
+          <Ionicons name="add" size={24} color={colors.brand.green} />
+        </Pressable>
       </View>
 
       {/* Tabs */}
-      <View style={styles.tabs}>
-        <Pressable
-          style={[styles.tab, activeTab === "companies" && styles.tabActive]}
-          onPress={() => setActiveTab("companies")}
-        >
-          <Text style={[styles.tabText, activeTab === "companies" && styles.tabTextActive]}>
-            Companies
-          </Text>
-        </Pressable>
+      <View style={styles.tabsContainer}>
         <Pressable
           style={[styles.tab, activeTab === "people" && styles.tabActive]}
           onPress={() => setActiveTab("people")}
         >
           <Text style={[styles.tabText, activeTab === "people" && styles.tabTextActive]}>
             People
+          </Text>
+        </Pressable>
+        <Pressable
+          style={[styles.tab, activeTab === "companies" && styles.tabActive]}
+          onPress={() => setActiveTab("companies")}
+        >
+          <Text style={[styles.tabText, activeTab === "companies" && styles.tabTextActive]}>
+            Companies
           </Text>
         </Pressable>
       </View>
@@ -157,35 +182,23 @@ export default function ListsScreen() {
             />
           }
           ListEmptyComponent={renderEmpty}
-          contentContainerStyle={lists.length === 0 ? styles.emptyList : undefined}
+          contentContainerStyle={lists.length === 0 ? { flex: 1 } : undefined}
         />
       )}
 
-      {/* FAB */}
-      {lists.length > 0 && (
-        <Pressable
-          style={[styles.fab, { bottom: insets.bottom + 16 }]}
-          onPress={() => setShowCreateModal(true)}
-        >
-          <Ionicons name="add" size={28} color={colors.text.inverse} />
-        </Pressable>
-      )}
-
-      {/* Create List Modal */}
+      {/* Create Modal */}
       <Modal
         visible={showCreateModal}
-        animationType="slide"
         transparent
+        animationType="fade"
         onRequestClose={() => setShowCreateModal(false)}
       >
-        <View style={styles.modalOverlay}>
-          <View style={[styles.modalContent, { paddingBottom: insets.bottom + 20 }]}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Create List</Text>
-              <Pressable onPress={() => setShowCreateModal(false)} hitSlop={12}>
-                <Ionicons name="close" size={24} color={colors.text.secondary} />
-              </Pressable>
-            </View>
+        <Pressable
+          style={styles.modalOverlay}
+          onPress={() => setShowCreateModal(false)}
+        >
+          <View style={styles.modalContent} onStartShouldSetResponder={() => true}>
+            <Text style={styles.modalTitle}>Create New List</Text>
             <TextInput
               style={styles.modalInput}
               placeholder="List name"
@@ -194,18 +207,30 @@ export default function ListsScreen() {
               onChangeText={setNewListName}
               autoFocus
             />
-            <Pressable
-              style={[
-                styles.modalButton,
-                !newListName.trim() && styles.modalButtonDisabled,
-              ]}
-              onPress={handleCreateList}
-              disabled={!newListName.trim()}
-            >
-              <Text style={styles.modalButtonText}>Create</Text>
-            </Pressable>
+            <View style={styles.modalButtons}>
+              <Pressable
+                style={styles.modalCancelButton}
+                onPress={() => {
+                  setShowCreateModal(false);
+                  setNewListName("");
+                }}
+              >
+                <Text style={styles.modalCancelButtonText}>Cancel</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.modalCreateButton, isCreating && styles.modalCreateButtonDisabled]}
+                onPress={handleCreateList}
+                disabled={isCreating}
+              >
+                {isCreating ? (
+                  <ActivityIndicator size="small" color={colors.text.inverse} />
+                ) : (
+                  <Text style={styles.modalCreateButtonText}>Create</Text>
+                )}
+              </Pressable>
+            </View>
           </View>
-        </View>
+        </Pressable>
       </Modal>
     </View>
   );
@@ -224,36 +249,37 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "700",
     color: colors.text.primary,
   },
-  count: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    backgroundColor: colors.content.bgSecondary,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 10,
+  addButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.brand.green + "15",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  tabs: {
+  tabsContainer: {
     flexDirection: "row",
     paddingHorizontal: 12,
-    gap: 8,
     marginBottom: 8,
+    gap: 8,
   },
   tab: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    flex: 1,
+    paddingVertical: 10,
     borderRadius: 8,
     backgroundColor: colors.content.bgSecondary,
+    alignItems: "center",
   },
   tabActive: {
     backgroundColor: colors.brand.green,
   },
   tabText: {
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: "600",
     color: colors.text.secondary,
   },
   tabTextActive: {
@@ -264,10 +290,43 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 40,
+  },
+  emptyText: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: colors.text.secondary,
+    marginTop: 16,
+  },
+  emptySubtext: {
+    fontSize: 14,
+    color: colors.text.tertiary,
+    marginTop: 8,
+    textAlign: "center",
+  },
+  createButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: colors.brand.green,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 20,
+    gap: 6,
+  },
+  createButtonText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: colors.text.inverse,
+  },
   listItem: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 12,
+    paddingVertical: 14,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
     borderBottomColor: colors.content.borderLight,
@@ -276,129 +335,85 @@ const styles = StyleSheet.create({
     backgroundColor: colors.content.bgSecondary,
   },
   listIcon: {
-    width: 36,
-    height: 36,
+    width: 40,
+    height: 40,
     borderRadius: 8,
     backgroundColor: colors.brand.green + "15",
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 12,
   },
-  listInfo: {
+  listContent: {
     flex: 1,
+    marginLeft: 12,
   },
   listName: {
     fontSize: 15,
-    fontWeight: "600",
+    fontWeight: "500",
     color: colors.text.primary,
   },
-  listDescription: {
-    fontSize: 12,
-    color: colors.text.tertiary,
-    marginTop: 2,
-  },
-  listMeta: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
   listCount: {
-    fontSize: 14,
-    fontWeight: "600",
+    fontSize: 13,
     color: colors.text.secondary,
-    backgroundColor: colors.content.bgSecondary,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 10,
-  },
-  emptyList: {
-    flex: 1,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 12,
-  },
-  emptyText: {
-    fontSize: 15,
-    color: colors.text.secondary,
-  },
-  createButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: colors.brand.green,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 8,
-    gap: 6,
-    marginTop: 8,
-  },
-  createButtonText: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: colors.text.inverse,
-  },
-  fab: {
-    position: "absolute",
-    right: 16,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: colors.brand.green,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 5,
+    marginTop: 2,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "flex-end",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContent: {
     backgroundColor: colors.card.bg,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    borderRadius: 12,
     padding: 20,
-  },
-  modalHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 20,
+    width: "85%",
   },
   modalTitle: {
     fontSize: 18,
     fontWeight: "600",
     color: colors.text.primary,
+    marginBottom: 16,
+    textAlign: "center",
   },
   modalInput: {
     borderWidth: 1,
     borderColor: colors.content.border,
     borderRadius: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 15,
     color: colors.text.primary,
     marginBottom: 16,
   },
-  modalButton: {
-    backgroundColor: colors.brand.green,
+  modalButtons: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  modalCancelButton: {
+    flex: 1,
+    paddingVertical: 12,
     borderRadius: 8,
-    paddingVertical: 14,
+    backgroundColor: colors.content.bgSecondary,
     alignItems: "center",
   },
-  modalButtonDisabled: {
-    backgroundColor: colors.text.tertiary,
+  modalCancelButtonText: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: colors.text.secondary,
   },
-  modalButtonText: {
-    fontSize: 16,
+  modalCreateButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 8,
+    backgroundColor: colors.brand.green,
+    alignItems: "center",
+  },
+  modalCreateButtonDisabled: {
+    opacity: 0.6,
+  },
+  modalCreateButtonText: {
+    fontSize: 15,
     fontWeight: "600",
     color: colors.text.inverse,
   },
 });
-

@@ -11,6 +11,7 @@ import {
   PeopleStackParamList,
   ListsStackParamList,
   SettingsStackParamList,
+  ApiTestingStackParamList,
   RootStackParamList,
 } from "../types/navigation";
 
@@ -21,6 +22,9 @@ import PeopleFeedScreen from "../screens/PeopleFeedScreen";
 import PersonDetailScreen from "../screens/PersonDetailScreen";
 import ListsScreen from "../screens/ListsScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+import ApiTestingScreen from "../screens/ApiTestingScreen";
+import SignInScreen from "../screens/SignInScreen";
+import SignUpScreen from "../screens/SignUpScreen";
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -28,6 +32,7 @@ const CompaniesStack = createNativeStackNavigator<CompaniesStackParamList>();
 const PeopleStack = createNativeStackNavigator<PeopleStackParamList>();
 const ListsStack = createNativeStackNavigator<ListsStackParamList>();
 const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
+const ApiTestingStack = createNativeStackNavigator<ApiTestingStackParamList>();
 
 // Companies Tab Navigator
 function CompaniesNavigator() {
@@ -64,6 +69,15 @@ function SettingsNavigator() {
     <SettingsStack.Navigator screenOptions={{ headerShown: false }}>
       <SettingsStack.Screen name="SettingsMain" component={SettingsScreen} />
     </SettingsStack.Navigator>
+  );
+}
+
+// API Testing Tab Navigator
+function ApiTestingNavigator() {
+  return (
+    <ApiTestingStack.Navigator screenOptions={{ headerShown: false }}>
+      <ApiTestingStack.Screen name="ApiTestingMain" component={ApiTestingScreen} />
+    </ApiTestingStack.Navigator>
   );
 }
 
@@ -149,6 +163,16 @@ function MainTabs() {
           ),
         }}
       />
+      <Tab.Screen
+        name="ApiTestingTab"
+        component={ApiTestingNavigator}
+        options={{
+          tabBarLabel: "API Test",
+          tabBarIcon: ({ focused }) => (
+            <TabIcon name={focused ? "code-slash" : "code-slash-outline"} focused={focused} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -163,6 +187,8 @@ export default function MainNavigator() {
       }}
     >
       <RootStack.Screen name="MainTabs" component={MainTabs} />
+      <RootStack.Screen name="SignIn" component={SignInScreen} />
+      <RootStack.Screen name="SignUp" component={SignUpScreen} />
     </RootStack.Navigator>
   );
 }
