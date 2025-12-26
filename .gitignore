@@ -48,3 +48,7 @@ expo.log
 
 # Database
 *.db
+server.js
+test-specter-user-api.js
+test-comprehensive-api.js
+qa-test-all.js
