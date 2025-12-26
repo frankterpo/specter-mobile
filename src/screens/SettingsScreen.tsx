@@ -11,10 +11,10 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useAuth, useUser } from "@clerk/clerk-expo";
 import { Image } from "expo-image";
-import * as SecureStore from "expo-secure-store";
 import { colors } from "../theme/colors";
+import { getUserContext, clearUserContext, UserContext } from "../stores/userStore";
+import { useClerk } from "@clerk/clerk-expo";
 
 interface SettingItemProps {
   icon: keyof typeof Ionicons.glyphMap;
@@ -58,121 +58,46 @@ function SettingItem({
 export default function SettingsScreen() {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const { signOut, isSignedIn } = useAuth();
-  const { user } = useUser();
-  const [isSigningOut, setIsSigningOut] = React.useState(false);
+  const { signOut } = useClerk();
+  const [userContext, setUserContext] = React.useState<UserContext | null>(null);
+  const [isLoading, setIsLoading] = React.useState(true);
 
-  const clearAllAuthData = async () => {
-    try {
-      // Get all keys from SecureStore and clear Clerk-related ones
-      // Clerk uses various keys, let's clear common ones
-      const clerkKeys = [
-        "__clerk_client_jwt",
-        "__clerk_db_jwt",
-        "__clerk_refresh_token",
-        "__clerk_session",
-        "__clerk_client_uat",
-      ];
-      
-      for (const key of clerkKeys) {
+  React.useEffect(() => {
+    loadUserContext();
+  }, []);
+
+  const loadUserContext = async () => {
         try {
-          await SecureStore.deleteItemAsync(key);
-          console.log(`✅ [Settings] Cleared ${key}`);
-        } catch (error) {
-          // Key might not exist, that's okay
-        }
-      }
-      
-      // Also try to clear all keys that start with __clerk
-      // Note: SecureStore doesn't have a listKeys method, so we clear known ones
-      console.log("✅ [Settings] All Clerk keys cleared from SecureStore");
+      const context = await getUserContext();
+      setUserContext(context);
     } catch (error) {
-      console.error("❌ [Settings] Error clearing SecureStore:", error);
+      console.error("Failed to load user context:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleSignOut = async () => {
+  const handleClearUserData = async () => {
     Alert.alert(
-      "Sign Out",
-      "Are you sure you want to sign out?",
+      "Clear User Data",
+      "This will clear your user settings. You'll need to re-enter your email to continue using the app.",
       [
         { text: "Cancel", style: "cancel" },
         {
-          text: "Sign Out",
+          text: "Clear",
           style: "destructive",
           onPress: async () => {
             try {
-              setIsSigningOut(true);
-              console.log("🚪 [Settings] Starting sign out...");
-              
-              // First, try to sign out from Clerk properly
-              try {
-                console.log("🔄 [Settings] Calling Clerk signOut()...");
-                await signOut();
-                console.log("✅ [Settings] Clerk signOut() completed");
-                
-                // Wait a moment for state to update
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                // Check if still signed in
-                if (isSignedIn) {
-                  console.warn("⚠️ [Settings] Still signed in after signOut(), forcing clear...");
-                  await clearAllAuthData();
-                }
-              } catch (signOutError: any) {
-                console.error("❌ [Settings] Clerk signOut() failed:", signOutError);
-                console.error("❌ [Settings] Error details:", {
-                  message: signOutError?.message,
-                  name: signOutError?.name,
-                  stack: signOutError?.stack,
-                });
-                // Continue with force clear even if signOut fails
-                await clearAllAuthData();
-              }
-              
-              // Force clear all auth data from SecureStore (always do this)
-              await clearAllAuthData();
-              
-              console.log("✅ [Settings] Sign out process completed");
-              
-              // Show success message
+              await clearUserContext();
+              // Force app reload by navigating away
               Alert.alert(
-                "Signed Out", 
-                "You have been signed out successfully. The app will refresh.",
-                [
-                  { 
-                    text: "OK",
-                    onPress: () => {
-                      // The app should automatically navigate to auth screen
-                      // due to isSignedIn state change in App.tsx
-                    }
-                  },
-                ]
+                "Data Cleared",
+                "Please restart the app to continue.",
+                [{ text: "OK" }]
               );
-            } catch (error: any) {
-              console.error("❌ [Settings] Sign out error:", error);
-              Alert.alert(
-                "Sign Out Error",
-                error?.message || "Failed to sign out completely. The app will restart.",
-                [
-                  {
-                    text: "Force Clear",
-                    style: "destructive",
-                    onPress: async () => {
-                      await clearAllAuthData();
-                      // Force app restart by clearing everything
-                      Alert.alert(
-                        "Please Restart",
-                        "All auth data cleared. Please close and reopen the app.",
-                        [{ text: "OK" }]
-                      );
-                    },
-                  },
-                  { text: "Cancel" },
-                ]
-              );
-            } finally {
-              setIsSigningOut(false);
+            } catch (error) {
+              console.error("Failed to clear user data:", error);
+              Alert.alert("Error", "Failed to clear user data");
             }
           },
         },
@@ -180,172 +105,153 @@ export default function SettingsScreen() {
     );
   };
 
+  const handleLogout = async () => {
+    Alert.alert(
+      "Sign Out",
+      "Are you sure you want to sign out? You'll need to sign in again to use the app.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Sign Out",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              console.log("Signing out...");
+              await signOut();
+              await clearUserContext();
+              console.log("Signed out successfully");
+              Alert.alert(
+                "Signed Out",
+                "You have been signed out successfully. Restart the app to see sign-in screen.",
+                [{ text: "OK" }]
+              );
+            } catch (error) {
+              console.error("Failed to sign out:", error);
+              Alert.alert("Error", "Failed to sign out");
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  if (isLoading) {
+    return (
+      <View style={[styles.container, { paddingTop: insets.top }]}>
+        <ActivityIndicator size="large" color={colors.brand.green} />
+      </View>
+    );
+  }
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      <ScrollView showsVerticalScrollIndicator={false}>
       {/* Header */}
-      <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
+        <View style={styles.header}>
         <Text style={styles.headerTitle}>Settings</Text>
       </View>
 
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Profile section */}
-        <View style={styles.profileCard}>
-          <View style={styles.profileAvatar}>
-            {user?.imageUrl ? (
-              <Image source={{ uri: user.imageUrl }} style={styles.avatar} />
-            ) : (
-              <View style={styles.avatarPlaceholder}>
-                <Text style={styles.avatarText}>
-                  {(user?.firstName?.[0] || "") + (user?.lastName?.[0] || "U")}
+        {/* User Section */}
+        <View style={styles.section}>
+          <View style={styles.userSection}>
+            <View style={styles.userAvatar}>
+              <Text style={styles.userAvatarText}>
+                {userContext?.userEmail?.[0]?.toUpperCase() || "?"}
                 </Text>
               </View>
-            )}
-          </View>
-          <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>
-              {user?.fullName || user?.primaryEmailAddress?.emailAddress || "User"}
+            <View style={styles.userInfo}>
+              <Text style={styles.userName}>
+                {userContext?.displayName || userContext?.userEmail || "Unknown User"}
           </Text>
-            <Text style={styles.profileEmail}>
-              {user?.primaryEmailAddress?.emailAddress || ""}
+              <Text style={styles.userEmail}>{userContext?.userEmail || ""}</Text>
+              <Text style={styles.userStatus}>
+                Using Railway + Clerk Auth
                 </Text>
               </View>
-          <Pressable style={styles.editBtn}>
-            <Text style={styles.editBtnText}>Edit</Text>
-          </Pressable>
+          </View>
         </View>
 
-        {/* Account section */}
+        {/* Account Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Account</Text>
-          <View style={styles.settingGroup}>
+          <Text style={styles.sectionTitle}>ACCOUNT</Text>
+          
             <SettingItem
               icon="person-outline"
-              label="Profile"
-              description="Edit your profile information"
+            label="User ID"
+            description={userContext?.userId || "Not set"}
             />
-            <View style={styles.divider} />
+          
             <SettingItem
-              icon="notifications-outline"
-              label="Notifications"
-              description="Manage alert preferences"
+            icon="key-outline"
+            label="API Status"
+            description="Connected via Railway + Clerk JWT"
             />
-            <View style={styles.divider} />
-            <SettingItem
-              icon="lock-closed-outline"
-              label="Privacy & Security"
-              description="Password and security settings"
-            />
-          </View>
               </View>
 
-        {/* Integrations section */}
+        {/* App Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Integrations</Text>
-          <View style={styles.settingGroup}>
+          <Text style={styles.sectionTitle}>APP</Text>
+
+          <SettingItem
+            icon="notifications-outline"
+            label="Notifications"
+            description="Coming soon"
+          />
+
             <SettingItem
-              icon="git-branch-outline"
-              label="Connected Apps"
-              description="CRM and other integrations"
+            icon="color-palette-outline"
+            label="Appearance"
+            description="Light mode"
             />
-            <View style={styles.divider} />
+
             <SettingItem
-              icon="cloud-outline"
-              label="Data Export"
-              description="Export your data"
+            icon="help-circle-outline"
+            label="Help & Support"
+            description="Get help with the app"
             />
-              </View>
             </View>
 
-        {/* Support section */}
+        {/* About Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Support</Text>
-          <View style={styles.settingGroup}>
+          <Text style={styles.sectionTitle}>ABOUT</Text>
+
             <SettingItem
-              icon="help-circle-outline"
-              label="Help Center"
-              description="FAQs and documentation"
+            icon="information-circle-outline"
+            label="Version"
+            description="1.0.0 (Railway + Clerk Auth)"
+            rightElement={null}
             />
-            <View style={styles.divider} />
+
             <SettingItem
-              icon="chatbubble-outline"
-              label="Contact Support"
-              description="Get help from our team"
+            icon="document-text-outline"
+            label="Terms of Service"
             />
-            <View style={styles.divider} />
+
             <SettingItem
-              icon="information-circle-outline"
-              label="About"
-              description="App version and info"
+            icon="shield-checkmark-outline"
+            label="Privacy Policy"
             />
-              </View>
               </View>
 
-        {/* Sign out */}
+        {/* Danger Zone */}
         <View style={styles.section}>
-          <View style={styles.settingGroup}>
+          <Text style={[styles.sectionTitle, { color: colors.error }]}>DANGER ZONE</Text>
+
             <SettingItem
               icon="log-out-outline"
               label="Sign Out"
-              onPress={handleSignOut}
+            description="Sign out from your account"
               danger
-              rightElement={
-                isSigningOut ? (
-                  <ActivityIndicator size="small" color={colors.error} />
-                ) : undefined
-              }
-            />
-            <View style={styles.divider} />
+            onPress={handleLogout}
+          />
+
             <SettingItem
               icon="trash-outline"
-              label="Force Logout (Clear All Data)"
-              description="Use if normal logout doesn't work"
-              onPress={async () => {
-                Alert.alert(
-                  "Force Logout",
-                  "This will clear all authentication data. You'll need to sign in again. Continue?",
-                  [
-                    { text: "Cancel", style: "cancel" },
-                    {
-                      text: "Force Clear",
-                      style: "destructive",
-                      onPress: async () => {
-                        try {
-                          setIsSigningOut(true);
-                          await clearAllAuthData();
-                          // Try signOut as well
-                          try {
-                            await signOut();
-                          } catch (e) {
-                            console.log("signOut failed, but continuing with force clear");
-                          }
-                          Alert.alert(
-                            "Data Cleared",
-                            "All auth data cleared. Please close and reopen the app, then sign in again.",
-                            [{ text: "OK" }]
-                          );
-                        } catch (error) {
-                          Alert.alert("Error", "Failed to clear data. Please restart the app manually.");
-                        } finally {
-                          setIsSigningOut(false);
-                        }
-                      },
-                    },
-                  ]
-                );
-              }}
+            label="Clear User Data"
+            description="Remove all local user data"
               danger
-            />
-            </View>
-        </View>
-
-        {/* App info */}
-        <View style={styles.appInfo}>
-          <Text style={styles.appName}>Specter Mobile</Text>
-          <Text style={styles.appVersion}>Version 1.0.0</Text>
+            onPress={handleClearUserData}
+          />
         </View>
 
         <View style={{ height: 40 }} />
@@ -357,43 +263,38 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.content.bgSecondary,
+    backgroundColor: colors.card.bg,
   },
   header: {
     paddingHorizontal: 16,
-    paddingBottom: 12,
-    backgroundColor: colors.content.bg,
+    paddingVertical: 12,
   },
   headerTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "700",
     color: colors.text.primary,
   },
-  scrollView: {
-    flex: 1,
+  section: {
+    marginTop: 20,
   },
-  scrollContent: {
-    padding: 16,
-    gap: 20,
+  sectionTitle: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: colors.text.tertiary,
+    marginHorizontal: 16,
+    marginBottom: 8,
+    letterSpacing: 0.5,
   },
-  profileCard: {
+  userSection: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: colors.card.bg,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: colors.content.bgSecondary,
+    marginHorizontal: 12,
     borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: colors.card.border,
   },
-  profileAvatar: {
-    marginRight: 14,
-  },
-  avatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-  },
-  avatarPlaceholder: {
+  userAvatar: {
     width: 56,
     height: 56,
     borderRadius: 28,
@@ -401,58 +302,37 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  avatarText: {
-    color: colors.text.inverse,
-    fontSize: 20,
+  userAvatarText: {
+    fontSize: 22,
     fontWeight: "600",
+    color: colors.text.inverse,
   },
-  profileInfo: {
+  userInfo: {
     flex: 1,
+    marginLeft: 12,
   },
-  profileName: {
+  userName: {
     fontSize: 17,
     fontWeight: "600",
     color: colors.text.primary,
-    marginBottom: 2,
   },
-  profileEmail: {
-    fontSize: 13,
-    color: colors.text.tertiary,
+  userEmail: {
+    fontSize: 14,
+    color: colors.text.secondary,
+    marginTop: 2,
   },
-  editBtn: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 8,
-    backgroundColor: colors.brand.green + "15",
-  },
-  editBtnText: {
-    fontSize: 13,
-    fontWeight: "600",
+  userStatus: {
+    fontSize: 12,
     color: colors.brand.green,
-  },
-  section: {
-    gap: 10,
-  },
-  sectionTitle: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: colors.text.tertiary,
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
-    marginLeft: 4,
-  },
-  settingGroup: {
-    backgroundColor: colors.card.bg,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: colors.card.border,
-    overflow: "hidden",
+    marginTop: 4,
+    fontWeight: "500",
   },
   settingItem: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 14,
-    gap: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    backgroundColor: colors.card.bg,
   },
   settingIcon: {
     width: 36,
@@ -467,37 +347,19 @@ const styles = StyleSheet.create({
   },
   settingContent: {
     flex: 1,
+    marginLeft: 12,
   },
   settingLabel: {
     fontSize: 15,
-    fontWeight: "500",
     color: colors.text.primary,
+    fontWeight: "500",
   },
   settingLabelDanger: {
     color: colors.error,
   },
   settingDescription: {
-    fontSize: 12,
-    color: colors.text.tertiary,
-    marginTop: 2,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: colors.content.border,
-    marginLeft: 62,
-  },
-  appInfo: {
-    alignItems: "center",
-    paddingVertical: 20,
-    gap: 4,
-  },
-  appName: {
-    fontSize: 14,
-    fontWeight: "600",
+    fontSize: 13,
     color: colors.text.secondary,
-  },
-  appVersion: {
-    fontSize: 12,
-    color: colors.text.tertiary,
+    marginTop: 2,
   },
 });

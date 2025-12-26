@@ -12,19 +12,13 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useAuth } from "@clerk/clerk-expo";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
-import {
-  Person,
-  fetchPeople,
-  likePerson,
-  dislikePerson,
-  StatusFilters,
-  getFullName,
-} from "../api/specter";
+import { specterPublicAPI, Person, FetchPeopleResponse } from "../api/public-client";
+import { getFullName } from "../api/specter";
 import { PeopleStackParamList } from "../types/navigation";
+import { useClerkToken } from "../hooks/useClerkToken";
 import PersonCard from "../components/ui/PersonCard";
 import AddToListSheet from "../components/AddToListSheet";
 
@@ -41,8 +35,8 @@ const STATUS_FILTERS: { id: StatusFilter; label: string }[] = [
 
 export default function PeopleFeedScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { getToken } = useAuth();
   const insets = useSafeAreaInsets();
+  const { getAuthToken } = useClerkToken();
 
   const [people, setPeople] = useState<Person[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -54,72 +48,105 @@ export default function PeopleFeedScreen() {
   const [activeFilter, setActiveFilter] = useState<StatusFilter>("all");
   const [listSheetPerson, setListSheetPerson] = useState<Person | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [currentListId, setCurrentListId] = useState<string | null>(null);
+  const [currentSearchId, setCurrentSearchId] = useState<string | null>(null);
+  const [useLists, setUseLists] = useState<boolean>(true); // true = use lists, false = use searches, 'companies' = use companies
+  const [initialized, setInitialized] = useState<boolean>(false);
   const searchInputRef = useRef<TextInput>(null);
-  const peopleLengthRef = useRef(0);
+  const currentPageRef = useRef(0); // Track current page (0-based)
+  const isLoadingRef = useRef(false); // Guard against concurrent loads
+  const isMountedRef = useRef(true); // Track if component is mounted
 
-  const getStatusFilters = useCallback((): StatusFilters | undefined => {
-    if (activeFilter === "all") return undefined;
-    return { myStatus: activeFilter === "not_viewed" ? "not_viewed" : activeFilter };
-  }, [activeFilter]);
+  // TODO: Re-enable status filters when user context is added
+  // const getStatusFilters = useCallback((): StatusFilters | undefined => {
+  //   if (activeFilter === "all") return undefined;
+  //   return { myStatus: activeFilter === "not_viewed" ? "not_viewed" : activeFilter };
+  // }, [activeFilter]);
+
+  // Initialize: Use company connections to get people
+  const initializeList = useCallback(async () => {
+    try {
+      if (__DEV__) {
+        console.log("📋 [PeopleFeed] Initializing people signals...");
+      }
+
+      // Just set up the basic state - no API calls needed for initialization
+      // The main loading will happen in loadPeople
+      setInitialized(true);
+
+      if (__DEV__) {
+        console.log("✅ [PeopleFeed] Ready to load people signals");
+      }
+
+    } catch (error: any) {
+      console.error("❌ [PeopleFeed] Failed to initialize:", error);
+      setError("Failed to initialize people feed. Please try again.");
+    }
+  }, []);
 
   const loadPeople = useCallback(async (refresh = false) => {
+    // Guard against concurrent loads
+    if (isLoadingRef.current) {
+      console.log("⏸️ [PeopleFeed] Already loading, skipping");
+      return;
+    }
+
+    // If not initialized, initialize first
+    if (!initialized) {
+      await initializeList();
+      return;
+    }
+
+    isLoadingRef.current = true;
+
     try {
       setError(null);
       
-      if (__DEV__) {
-        console.log("🔄 [PeopleFeed] Starting loadPeople", { refresh, currentCount: peopleLengthRef.current });
-      }
-      
-      const token = await getToken();
-      if (!token) {
-        const errorMsg = "Authentication required. Please sign in again.";
-        console.error("❌ [PeopleFeed] No token:", errorMsg);
-        setError(errorMsg);
-        setIsLoading(false);
-        setIsRefreshing(false);
-        setIsLoadingMore(false);
-        return;
-      }
-
-      if (__DEV__) {
-        console.log("✅ [PeopleFeed] Token obtained:", token.substring(0, 20) + "...");
-      }
-
-      const offset = refresh ? 0 : peopleLengthRef.current;
-
-      const statusFilters = getStatusFilters();
+      const page = refresh ? 0 : currentPageRef.current;
       
       if (__DEV__) {
-        console.log("📤 [PeopleFeed] Calling fetchPeople", { limit: 30, offset, statusFilters });
+        console.log("🔄 [PeopleFeed] Starting loadPeople", {
+          refresh,
+          page,
+          listId: currentListId,
+          searchId: currentSearchId
+        });
       }
-      
-      const response = await fetchPeople(token, {
-        limit: 30,
-        offset,
-        statusFilters,
-      });
+
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
+
+      // Use people signals API (main endpoint from web app)
+      const response = await specterPublicAPI.people.getPeopleSignals(
+        token,
+        {
+          page: page,
+          limit: 30,
+          // Add filters here later if needed
+        }
+      );
 
       if (__DEV__) {
         console.log("📥 [PeopleFeed] Response received:", {
           itemsCount: response.items?.length || 0,
           total: response.total,
           hasMore: response.has_more,
-        });
+      });
       }
 
       if (refresh) {
         setPeople(response.items);
-        peopleLengthRef.current = response.items.length;
+        currentPageRef.current = 0;
       } else {
-        setPeople((prev) => {
-          const updated = [...prev, ...response.items];
-          peopleLengthRef.current = updated.length;
-          return updated;
-        });
+        setPeople((prev) => [...prev, ...response.items]);
       }
 
       setTotal(response.total);
-      setHasMore(response.has_more ?? response.items.length === 30);
+      setHasMore(response.has_more ?? (response.items.length === 30));
+      
+      if (!refresh) {
+        currentPageRef.current = page + 1;
+      }
     } catch (error: any) {
       console.error("❌ [PeopleFeed] Failed to load people:", error);
       console.error("❌ [PeopleFeed] Error details:", {
@@ -130,69 +157,105 @@ export default function PeopleFeedScreen() {
       const errorMessage = error?.message || "Failed to load people. Please try again.";
       setError(errorMessage);
     } finally {
+      isLoadingRef.current = false;
+      if (isMountedRef.current) {
       setIsLoading(false);
       setIsRefreshing(false);
       setIsLoadingMore(false);
     }
-  }, [getToken, getStatusFilters]);
+    }
+  }, [initialized, initializeList]);
 
+  // Mount/unmount tracking
   useEffect(() => {
-    setIsLoading(true);
-    setPeople([]);
-    loadPeople(true);
-  }, [activeFilter, loadPeople]);
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  // Initialize list on mount
+  useEffect(() => {
+    initializeList();
+  }, [initializeList]);
+
+  // Load people when initialized
+  useEffect(() => {
+    if (initialized) {
+      setIsLoading(true);
+      setPeople([]);
+      currentPageRef.current = 0;
+      isLoadingRef.current = false; // Reset guard
+      loadPeople(true);
+    }
+  }, [initialized, loadPeople]);
 
   const handleRefresh = useCallback(() => {
     setIsRefreshing(true);
+    currentPageRef.current = 0;
     loadPeople(true);
   }, [loadPeople]);
 
   const handleLoadMore = useCallback(() => {
-    if (!isLoadingMore && hasMore && !isLoading) {
+    // Don't load more if there's an error, or already loading, or no more data
+    if (!isLoadingMore && hasMore && !isLoading && !error && people.length > 0) {
       setIsLoadingMore(true);
       loadPeople(false);
     }
-  }, [isLoadingMore, hasMore, isLoading, loadPeople]);
+  }, [isLoadingMore, hasMore, isLoading, error, people.length, loadPeople]);
 
   const handlePersonPress = useCallback((person: Person) => {
     navigation.navigate("PersonDetail", { personId: person.id });
   }, [navigation]);
 
+  // TODO: Re-enable when user context is added
   const handleLike = useCallback(async (person: Person) => {
     try {
-      const token = await getToken();
-      if (!token) return;
-      await likePerson(token, person.id);
-      // Update local state
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
+      await specterPublicAPI.people.like(person.id, token);
       setPeople((prev) =>
         prev.map((p) =>
           p.id === person.id
-            ? { ...p, entity_status: { ...p.entity_status, status: "liked" as const } }
+            ? {
+                ...p,
+                entity_status: {
+                  ...(p.entity_status || {}),
+                  status: "liked" as const,
+                },
+              }
             : p
         )
       );
     } catch (error) {
       console.error("Failed to like person:", error);
+      // Show error to user if needed
     }
-  }, [getToken]);
+  }, []);
 
   const handleDislike = useCallback(async (person: Person) => {
     try {
-      const token = await getToken();
-      if (!token) return;
-      await dislikePerson(token, person.id);
-      // Update local state
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
+      await specterPublicAPI.people.dislike(person.id, token);
       setPeople((prev) =>
         prev.map((p) =>
           p.id === person.id
-            ? { ...p, entity_status: { ...p.entity_status, status: "disliked" as const } }
+            ? {
+                ...p,
+                entity_status: {
+                  ...(p.entity_status || {}),
+                  status: "disliked" as const,
+                },
+              }
             : p
         )
       );
     } catch (error) {
       console.error("Failed to dislike person:", error);
+      // Show error to user if needed
     }
-  }, [getToken]);
+  }, []);
 
   const handleAddToList = useCallback((person: Person) => {
     setListSheetPerson(person);

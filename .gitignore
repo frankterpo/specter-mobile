@@ -48,3 +48,17 @@ expo.log
 
 # Database
 *.db
+
+# API Tester and scripts with secrets
+server.js
+test-*.js
+*-discovery.js
+*-test.js
+api-*.js
+*-results.json
+create_test_token.js
+comprehensive-*.js
+
+# Environment files
+.env.local
+.env*.local

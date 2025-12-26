@@ -12,20 +12,17 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useAuth } from "@clerk/clerk-expo";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
-import {
-  Company,
-  fetchCompanies,
-  likeCompany,
-  dislikeCompany,
-  StatusFilters,
-} from "../api/specter";
+import { specterPublicAPI, Company } from "../api/public-client";
+import { getFullName } from "../api/specter";
+import { useClerkToken } from "../hooks/useClerkToken";
+import { Company, StatusFilters } from "../api/specter";
 import { CompaniesStackParamList } from "../types/navigation";
 import CompanyCard from "../components/ui/CompanyCard";
 import AddToListSheet from "../components/AddToListSheet";
+import { specterPublicAPI } from "../api/public-client";
 
 type NavigationProp = NativeStackNavigationProp<CompaniesStackParamList, "CompaniesFeed">;
 
@@ -40,8 +37,8 @@ const STATUS_FILTERS: { id: StatusFilter; label: string }[] = [
 
 export default function CompaniesFeedScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { getToken } = useAuth();
   const insets = useSafeAreaInsets();
+  const { getAuthToken } = useClerkToken();
 
   const [companies, setCompanies] = useState<Company[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -55,68 +52,47 @@ export default function CompaniesFeedScreen() {
   const [error, setError] = useState<string | null>(null);
   const searchInputRef = useRef<TextInput>(null);
   const companiesLengthRef = useRef(0);
-
-  const getStatusFilters = useCallback((): StatusFilters | undefined => {
-    if (activeFilter === "all") return undefined;
-    return { myStatus: activeFilter === "not_viewed" ? "not_viewed" : activeFilter };
-  }, [activeFilter]);
+  const isLoadingRef = useRef(false);
+  const isMountedRef = useRef(true);
+  const currentPageRef = useRef(0);
 
   const loadCompanies = useCallback(async (refresh = false) => {
+    if (isLoadingRef.current) {
+      console.log("⏸️ [CompaniesFeed] Already loading, skipping");
+      return;
+    }
+    isLoadingRef.current = true;
+
     try {
       setError(null);
-      
-      if (__DEV__) {
-        console.log("🔄 [CompaniesFeed] Starting loadCompanies", { refresh, currentCount: companiesLengthRef.current });
-      }
-      
-      const token = await getToken();
-      if (!token) {
-        const errorMsg = "Authentication required. Please sign in again.";
-        console.error("❌ [CompaniesFeed] No token:", errorMsg);
-        setError(errorMsg);
-        setIsLoading(false);
-        setIsRefreshing(false);
-        setIsLoadingMore(false);
-        return;
-      }
 
-      if (__DEV__) {
-        console.log("✅ [CompaniesFeed] Token obtained:", token.substring(0, 20) + "...");
-      }
+      const page = refresh ? 0 : currentPageRef.current;
 
-      const offset = refresh ? 0 : companiesLengthRef.current;
+      console.log(`📤 [CompaniesFeed] Loading companies {"page": ${page}, "refresh": ${refresh}}`);
 
-      if (__DEV__) {
-        console.log("📤 [CompaniesFeed] Calling fetchCompanies", { limit: 30, offset });
-      }
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
 
-      const response = await fetchCompanies(token, {
-        limit: 30,
-        offset,
-        // Note: Company API may not support statusFilters yet
+      // Load first 50 companies ranked (like in browser)
+      const response = await specterPublicAPI.companies.getCompanySignals(
+        token,
+        {
+          page: 0,
+          limit: 50,
+          // No pagination - load all 50 at once
+        }
+      );
+
+      console.log(`📥 [CompaniesFeed] Loaded ${response.items?.length || 0} ranked companies:`, {
+        total: response.total,
+        hasMore: response.has_more,
       });
 
-      if (__DEV__) {
-        console.log("📥 [CompaniesFeed] Response received:", {
-          itemsCount: response.items?.length || 0,
-          total: response.total,
-          hasMore: response.has_more,
-        });
-      }
-
-      if (refresh) {
+      // Replace all companies with the ranked results
         setCompanies(response.items);
-        companiesLengthRef.current = response.items.length;
-      } else {
-        setCompanies((prev) => {
-          const updated = [...prev, ...response.items];
-          companiesLengthRef.current = updated.length;
-          return updated;
-        });
-      }
-
       setTotal(response.total);
-      setHasMore(response.has_more ?? response.items.length === 30);
+      setHasMore(false); // No more loading needed
+
     } catch (error: any) {
       console.error("❌ [CompaniesFeed] Failed to load companies:", error);
       console.error("❌ [CompaniesFeed] Error details:", {
@@ -127,29 +103,39 @@ export default function CompaniesFeedScreen() {
       const errorMessage = error?.message || "Failed to load companies. Please try again.";
       setError(errorMessage);
     } finally {
+      isLoadingRef.current = false;
+      if (isMountedRef.current) {
       setIsLoading(false);
       setIsRefreshing(false);
       setIsLoadingMore(false);
     }
-  }, [getToken]);
+    }
+  }, [getAuthToken]);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
     setCompanies([]);
+    companiesLengthRef.current = 0;
+    isLoadingRef.current = false;
     loadCompanies(true);
-  }, [activeFilter, loadCompanies]);
+  }, [activeFilter]);
 
   const handleRefresh = useCallback(() => {
     setIsRefreshing(true);
     loadCompanies(true);
   }, [loadCompanies]);
 
+  // No pagination - we load all 50 ranked companies at once
   const handleLoadMore = useCallback(() => {
-    if (!isLoadingMore && hasMore && !isLoading) {
-      setIsLoadingMore(true);
-      loadCompanies(false);
-    }
-  }, [isLoadingMore, hasMore, isLoading, loadCompanies]);
+    // No-op since we load everything at once
+  }, []);
 
   const handleCompanyPress = useCallback((company: Company) => {
     const companyId = company.id || company.company_id;
@@ -159,58 +145,22 @@ export default function CompaniesFeedScreen() {
   }, [navigation]);
 
   const handleLike = useCallback(async (company: Company) => {
-    try {
-      const token = await getToken();
-      if (!token) return;
-      const companyId = company.id || company.company_id;
-      if (companyId) {
-        await likeCompany(token, companyId);
-        // Update local state
-        setCompanies((prev) =>
-          prev.map((c) =>
-            (c.id || c.company_id) === companyId
-              ? { ...c, entity_status: { status: "liked" } } as Company
-              : c
-          )
-        );
-      }
-    } catch (error) {
-      console.error("Failed to like company:", error);
-    }
-  }, [getToken]);
+    console.log("Like functionality coming soon");
+  }, []);
 
   const handleDislike = useCallback(async (company: Company) => {
-    try {
-      const token = await getToken();
-      if (!token) return;
-      const companyId = company.id || company.company_id;
-      if (companyId) {
-        await dislikeCompany(token, companyId);
-        // Update local state
-        setCompanies((prev) =>
-          prev.map((c) =>
-            (c.id || c.company_id) === companyId
-              ? { ...c, entity_status: { status: "disliked" } } as Company
-              : c
-          )
-        );
-      }
-    } catch (error) {
-      console.error("Failed to dislike company:", error);
-    }
-  }, [getToken]);
+    console.log("Dislike functionality coming soon");
+  }, []);
 
   const handleAddToList = useCallback((company: Company) => {
     setListSheetCompany(company);
   }, []);
 
-  // Filter companies by search query
   const filteredCompanies = companies.filter((c) => {
     if (!searchQuery) return true;
-    const name = (c.name || c.organization_name || "").toLowerCase();
-    const industry = (c.industries?.[0] || "").toLowerCase();
+    const name = (c.name || "").toLowerCase();
     const query = searchQuery.toLowerCase();
-    return name.includes(query) || industry.includes(query);
+    return name.includes(query);
   });
 
   const renderCompanyCard = useCallback(({ item }: { item: Company }) => (
@@ -237,7 +187,8 @@ export default function CompaniesFeedScreen() {
     return (
       <View style={styles.emptyContainer}>
         <Ionicons name="business-outline" size={48} color={colors.text.tertiary} />
-        <Text style={styles.emptyText}>No companies found</Text>
+        <Text style={styles.emptyText}>Companies Coming Soon</Text>
+        <Text style={styles.emptySubtext}>Company data will be available in the next update</Text>
       </View>
     );
   }, [isLoading]);
@@ -247,7 +198,7 @@ export default function CompaniesFeedScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Companies</Text>
-        {total !== undefined && (
+        {total !== undefined && total > 0 && (
           <Text style={styles.count}>{total.toLocaleString()}</Text>
         )}
       </View>
@@ -307,7 +258,7 @@ export default function CompaniesFeedScreen() {
         </View>
       )}
 
-      {/* Company List */}
+      {/* Companies List */}
       {isLoading && companies.length === 0 && !error ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.brand.green} />
@@ -315,9 +266,7 @@ export default function CompaniesFeedScreen() {
       ) : (
         <FlatList
           data={filteredCompanies}
-          keyExtractor={(item, index) =>
-            item.id || item.company_id || `company-${index}`
-          }
+          keyExtractor={(item, index) => item.id || item.company_id || `company-${index}`}
           renderItem={renderCompanyCard}
           showsVerticalScrollIndicator={false}
           keyboardDismissMode="on-drag"
@@ -329,9 +278,6 @@ export default function CompaniesFeedScreen() {
               tintColor={colors.brand.green}
             />
           }
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.3}
-          ListFooterComponent={renderFooter}
           ListEmptyComponent={renderEmpty}
           initialNumToRender={15}
           maxToRenderPerBatch={10}
@@ -345,7 +291,7 @@ export default function CompaniesFeedScreen() {
         onClose={() => setListSheetCompany(null)}
         entityId={listSheetCompany?.id || listSheetCompany?.company_id || ""}
         entityType="company"
-        entityName={listSheetCompany?.name || listSheetCompany?.organization_name || ""}
+        entityName={listSheetCompany?.name || ""}
       />
     </View>
   );
@@ -409,8 +355,8 @@ const styles = StyleSheet.create({
   },
   filterChipText: {
     fontSize: 13,
-    fontWeight: "500",
     color: colors.text.secondary,
+    fontWeight: "500",
   },
   filterChipTextActive: {
     color: colors.text.inverse,
@@ -421,29 +367,35 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   footerLoader: {
-    paddingVertical: 16,
+    paddingVertical: 20,
   },
   emptyContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 60,
-    gap: 12,
+    paddingVertical: 60,
   },
   emptyText: {
-    fontSize: 15,
+    fontSize: 16,
     color: colors.text.secondary,
+    marginTop: 12,
+    fontWeight: "500",
+  },
+  emptySubtext: {
+    fontSize: 14,
+    color: colors.text.tertiary,
+    marginTop: 4,
+    textAlign: "center",
+    paddingHorizontal: 40,
   },
   errorContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fef2f2",
-    borderWidth: 1,
-    borderColor: "#fecaca",
-    borderRadius: 8,
-    padding: 12,
-    marginHorizontal: 16,
+    marginHorizontal: 12,
     marginVertical: 8,
+    padding: 12,
+    backgroundColor: colors.tag.red.bg,
+    borderRadius: 8,
     gap: 8,
   },
   errorText: {
@@ -453,13 +405,13 @@ const styles = StyleSheet.create({
   },
   retryButton: {
     paddingHorizontal: 12,
-    paddingVertical: 4,
+    paddingVertical: 6,
     backgroundColor: colors.error,
     borderRadius: 6,
   },
   retryButtonText: {
     fontSize: 12,
-    fontWeight: "600",
     color: colors.text.inverse,
+    fontWeight: "600",
   },
 });

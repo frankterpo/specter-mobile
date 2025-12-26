@@ -5,78 +5,64 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
+  Alert,
+  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
-  ActivityIndicator,
-  Keyboard,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Ionicons } from "@expo/vector-icons";
 import { useSignUp } from "@clerk/clerk-expo";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "../theme/colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-type AuthStackParamList = {
-  Welcome: undefined;
-  SignIn: undefined;
-  SignUp: undefined;
-};
-
-type SignUpScreenProps = {
-  navigation: NativeStackNavigationProp<AuthStackParamList, "SignUp">;
-};
-
-export default function SignUpScreen({ navigation }: SignUpScreenProps) {
+export default function SignUpScreen() {
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const { signUp, setActive, isLoaded } = useSignUp();
   
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [pendingVerification, setPendingVerification] = useState(false);
-  const [verificationCode, setVerificationCode] = useState("");
+  const [code, setCode] = useState("");
 
   const handleSignUp = async () => {
     if (!isLoaded) return;
 
-    if (!email.trim() || !password.trim()) {
-      setErrorMessage("Please enter both email and password");
+    if (!email || !password || !firstName || !lastName) {
+      Alert.alert("Error", "Please fill in all fields");
       return;
     }
 
     if (password.length < 8) {
-      setErrorMessage("Password must be at least 8 characters");
+      Alert.alert("Error", "Password must be at least 8 characters");
       return;
     }
 
-    Keyboard.dismiss();
     setIsLoading(true);
-    setErrorMessage("");
 
     try {
-      await signUp.create({
-        emailAddress: email.trim(),
+      const result = await signUp.create({
+        emailAddress: email,
         password,
-        firstName: firstName.trim() || undefined,
-        lastName: lastName.trim() || undefined,
+        firstName,
+        lastName,
       });
 
-      // Send email verification code
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
+      } else if (result.status === "missing_requirements") {
       setPendingVerification(true);
-    } catch (error: any) {
-      const errorMsg =
-        error.errors?.[0]?.longMessage ||
-        error.errors?.[0]?.message ||
-        error.message ||
-        "Failed to create account. Please try again.";
-      setErrorMessage(errorMsg);
-      console.error("Sign up error:", error);
+      } else {
+        console.log("Sign up result:", result);
+      }
+    } catch (err: any) {
+      console.error("Sign up error:", err);
+      Alert.alert("Error", err.errors?.[0]?.message || "Failed to sign up");
     } finally {
       setIsLoading(false);
     }
@@ -85,374 +71,319 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
   const handleVerifyCode = async () => {
     if (!isLoaded) return;
 
-    if (!verificationCode.trim()) {
-      setErrorMessage("Please enter the verification code");
-      return;
-    }
-
-    Keyboard.dismiss();
     setIsLoading(true);
-    setErrorMessage("");
 
     try {
-      const signUpAttempt = await signUp.attemptEmailAddressVerification({
-        code: verificationCode.trim(),
+      const result = await signUp.attemptEmailAddressVerification({
+        code,
       });
 
-      if (signUpAttempt.status === "complete") {
-        await setActive({ session: signUpAttempt.createdSessionId });
-        // Navigation handled by App.tsx auth state
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
       } else {
-        setErrorMessage("Verification incomplete. Please check the code and try again.");
-        console.error("Verification incomplete:", JSON.stringify(signUpAttempt, null, 2));
+        console.log("Verification result:", result);
+        Alert.alert("Error", "Invalid verification code");
       }
-    } catch (error: any) {
-      const errorMsg =
-        error.errors?.[0]?.longMessage ||
-        error.errors?.[0]?.message ||
-        error.message ||
-        "Invalid verification code. Please try again.";
-      setErrorMessage(errorMsg);
-      console.error("Verification error:", error);
+    } catch (err: any) {
+      console.error("Verification error:", err);
+      Alert.alert("Error", err.errors?.[0]?.message || "Failed to verify");
     } finally {
       setIsLoading(false);
     }
   };
 
+
   if (pendingVerification) {
     return (
-      <View style={[styles.container, { paddingTop: insets.top }]}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.keyboardView}
         >
-          <ScrollView
-            contentContainerStyle={styles.scrollContent}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-          >
-            {/* Header */}
+        <View style={[styles.container, { paddingTop: insets.top }]}>
+          <View style={styles.content}>
             <View style={styles.header}>
-              <Pressable
-                onPress={() => setPendingVerification(false)}
-                style={styles.backButton}
-              >
-                <Ionicons name="arrow-back" size={24} color="#1a365d" />
-              </Pressable>
-
-              <Text style={styles.title}>Verify your email</Text>
-              <Text style={styles.subtitle}>
-                We sent a verification code to {email}
-              </Text>
+              <Text style={styles.title}>Verify Email</Text>
+              <Text style={styles.subtitle}>Enter the code sent to {email}</Text>
             </View>
 
-            {/* Verification Form */}
-            <View style={styles.form}>
-              <View style={styles.inputContainer}>
+            <View style={styles.inputGroup}>
                 <Text style={styles.label}>Verification Code</Text>
                 <TextInput
-                  value={verificationCode}
-                  onChangeText={(text) => {
-                    setVerificationCode(text);
-                    setErrorMessage("");
-                  }}
-                  placeholder="Enter 6-digit code"
-                  placeholderTextColor="#94a3b8"
+                value={code}
+                onChangeText={setCode}
+                placeholder="Enter code"
+                placeholderTextColor={colors.text.tertiary}
                   keyboardType="number-pad"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  maxLength={6}
-                  returnKeyType="go"
-                  onSubmitEditing={handleVerifyCode}
                   style={styles.input}
                 />
               </View>
 
-              {errorMessage ? (
-                <View style={styles.errorContainer}>
-                  <Text style={styles.errorText}>{errorMessage}</Text>
-                </View>
-              ) : null}
-
               <Pressable
                 onPress={handleVerifyCode}
-                disabled={isLoading || !isLoaded}
                 style={({ pressed }) => [
-                  styles.signUpButton,
-                  (pressed || isLoading || !isLoaded) && styles.buttonPressed,
+                styles.primaryButton,
+                pressed && styles.buttonPressed,
                 ]}
+              disabled={isLoading || !isLoaded}
               >
                 {isLoading ? (
-                  <ActivityIndicator color="white" />
+                <ActivityIndicator color="#fff" />
                 ) : (
-                  <Text style={styles.signUpButtonText}>Verify Email</Text>
+                <Text style={styles.primaryButtonText}>Verify</Text>
                 )}
               </Pressable>
             </View>
-          </ScrollView>
+        </View>
         </KeyboardAvoidingView>
-      </View>
     );
   }
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardView}
       >
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
+      <View style={[styles.container, { paddingTop: insets.top }]}>
+        <View style={styles.content}>
           {/* Header */}
           <View style={styles.header}>
-            <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
-              <Ionicons name="arrow-back" size={24} color="#1a365d" />
-            </Pressable>
-
-            <Text style={styles.title}>Create account</Text>
-            <Text style={styles.subtitle}>Join Specter to get started</Text>
+            <Text style={styles.title}>Create Account</Text>
+            <Text style={styles.subtitle}>Join Specter</Text>
           </View>
 
-          {/* Form */}
-          <View style={styles.form}>
-            {/* First Name Input */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>First Name (Optional)</Text>
+          {/* Removed Google OAuth - using email/password only */}
+
+          {/* Name Inputs */}
+          <View style={styles.row}>
+            <View style={[styles.inputGroup, styles.halfInput]}>
+              <Text style={styles.label}>First Name</Text>
               <TextInput
                 value={firstName}
-                onChangeText={(text) => {
-                  setFirstName(text);
-                  setErrorMessage("");
-                }}
+                onChangeText={setFirstName}
                 placeholder="John"
-                placeholderTextColor="#94a3b8"
+                placeholderTextColor={colors.text.tertiary}
                 autoCapitalize="words"
-                autoCorrect={false}
-                returnKeyType="next"
                 style={styles.input}
               />
             </View>
-
-            {/* Last Name Input */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Last Name (Optional)</Text>
+            <View style={[styles.inputGroup, styles.halfInput]}>
+              <Text style={styles.label}>Last Name</Text>
               <TextInput
                 value={lastName}
-                onChangeText={(text) => {
-                  setLastName(text);
-                  setErrorMessage("");
-                }}
+                onChangeText={setLastName}
                 placeholder="Doe"
-                placeholderTextColor="#94a3b8"
+                placeholderTextColor={colors.text.tertiary}
                 autoCapitalize="words"
-                autoCorrect={false}
-                returnKeyType="next"
                 style={styles.input}
               />
+            </View>
             </View>
 
             {/* Email Input */}
-            <View style={styles.inputContainer}>
+          <View style={styles.inputGroup}>
               <Text style={styles.label}>Email</Text>
               <TextInput
                 value={email}
-                onChangeText={(text) => {
-                  setEmail(text);
-                  setErrorMessage("");
-                }}
-                placeholder="you@example.com"
-                placeholderTextColor="#94a3b8"
+              onChangeText={setEmail}
+              placeholder="Enter your email"
+              placeholderTextColor={colors.text.tertiary}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
-                returnKeyType="next"
                 style={styles.input}
               />
             </View>
 
             {/* Password Input */}
-            <View style={styles.inputContainer}>
+          <View style={styles.inputGroup}>
               <Text style={styles.label}>Password</Text>
               <View style={styles.passwordContainer}>
                 <TextInput
                   value={password}
-                  onChangeText={(text) => {
-                    setPassword(text);
-                    setErrorMessage("");
-                  }}
+                onChangeText={setPassword}
                   placeholder="At least 8 characters"
-                  placeholderTextColor="#94a3b8"
+                placeholderTextColor={colors.text.tertiary}
                   secureTextEntry={!showPassword}
                   autoCapitalize="none"
                   autoCorrect={false}
-                  returnKeyType="go"
-                  onSubmitEditing={handleSignUp}
                   style={styles.passwordInput}
                 />
-                <Pressable onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
-                  <Ionicons name={showPassword ? "eye-off" : "eye"} size={22} color="#64748b" />
+              <Pressable
+                onPress={() => setShowPassword(!showPassword)}
+                style={styles.eyeButton}
+              >
+                <Ionicons
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={20}
+                  color={colors.text.tertiary}
+                />
                 </Pressable>
               </View>
             </View>
 
-            {/* Error Message */}
-            {errorMessage ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>{errorMessage}</Text>
-              </View>
-            ) : null}
-
             {/* Sign Up Button */}
             <Pressable
               onPress={handleSignUp}
-              disabled={isLoading || !isLoaded}
               style={({ pressed }) => [
-                styles.signUpButton,
-                (pressed || isLoading || !isLoaded) && styles.buttonPressed,
+              styles.primaryButton,
+              pressed && styles.buttonPressed,
               ]}
+            disabled={isLoading || !isLoaded}
             >
               {isLoading ? (
-                <ActivityIndicator color="white" />
+              <ActivityIndicator color="#fff" />
               ) : (
-                <Text style={styles.signUpButtonText}>Create Account</Text>
+              <Text style={styles.primaryButtonText}>Create Account</Text>
               )}
             </Pressable>
 
             {/* Sign In Link */}
-            <View style={styles.footer}>
-              <Text style={styles.footerText}>Already have an account? </Text>
-              <Pressable onPress={() => navigation.navigate("SignIn")}>
-                <Text style={styles.linkText}>Sign In</Text>
+          <Pressable
+            onPress={() => navigation.navigate("SignIn" as never)}
+            style={styles.linkButton}
+          >
+            <Text style={styles.linkText}>
+              Already have an account? <Text style={styles.linkTextBold}>Sign in</Text>
+            </Text>
               </Pressable>
             </View>
           </View>
-        </ScrollView>
       </KeyboardAvoidingView>
-    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
   keyboardView: {
     flex: 1,
   },
-  scrollContent: {
-    paddingBottom: 40,
+  container: {
+    flex: 1,
+    backgroundColor: "#ffffff",
   },
-  header: {
+  content: {
+    flex: 1,
     paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 32,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#f7fafc",
-    alignItems: "center",
+    paddingBottom: 24,
     justifyContent: "center",
   },
+  header: {
+    alignItems: "center",
+    marginBottom: 32,
+  },
   title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "#1a365d",
-    marginTop: 24,
+    fontSize: 28,
+    fontWeight: "700",
+    color: colors.text.primary,
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
-    color: "#64748b",
+    color: colors.text.secondary,
   },
-  form: {
-    paddingHorizontal: 24,
-  },
-  inputContainer: {
+  socialButton: {
+    backgroundColor: colors.card.bg,
+    borderRadius: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
     marginBottom: 16,
+    borderWidth: 1,
+    borderColor: colors.content.border,
+  },
+  socialContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  socialText: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: colors.text.primary,
+    marginLeft: 12,
+  },
+  divider: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 24,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: colors.content.border,
+  },
+  dividerText: {
+    paddingHorizontal: 16,
+    fontSize: 14,
+    color: colors.text.tertiary,
+  },
+  row: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  inputGroup: {
+    marginBottom: 16,
+  },
+  halfInput: {
+    flex: 1,
   },
   label: {
     fontSize: 14,
     fontWeight: "500",
-    color: "#334155",
+    color: colors.text.primary,
     marginBottom: 8,
   },
   input: {
-    backgroundColor: "#f7fafc",
     borderWidth: 1,
-    borderColor: "#e2e8f0",
-    borderRadius: 12,
+    borderColor: colors.content.border,
+    borderRadius: 8,
+    paddingVertical: 12,
     paddingHorizontal: 16,
-    paddingVertical: 16,
     fontSize: 16,
-    color: "#1e293b",
+    color: colors.text.primary,
+    backgroundColor: colors.card.bg,
   },
   passwordContainer: {
-    position: "relative",
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: colors.content.border,
+    borderRadius: 8,
+    backgroundColor: colors.card.bg,
   },
   passwordInput: {
-    backgroundColor: "#f7fafc",
-    borderWidth: 1,
-    borderColor: "#e2e8f0",
-    borderRadius: 12,
+    flex: 1,
+    paddingVertical: 12,
     paddingHorizontal: 16,
-    paddingVertical: 16,
-    paddingRight: 48,
     fontSize: 16,
-    color: "#1e293b",
+    color: colors.text.primary,
   },
   eyeButton: {
-    position: "absolute",
-    right: 16,
-    top: 16,
-  },
-  errorContainer: {
-    backgroundColor: "#fef2f2",
-    borderWidth: 1,
-    borderColor: "#fecaca",
-    borderRadius: 8,
     padding: 12,
-    marginBottom: 16,
   },
-  errorText: {
-    color: "#dc2626",
-    fontSize: 14,
-  },
-  signUpButton: {
-    backgroundColor: "#1a365d",
+  primaryButton: {
+    backgroundColor: colors.brand.green,
     borderRadius: 12,
     paddingVertical: 16,
     alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 16,
-    minHeight: 56,
+    marginTop: 8,
   },
-  signUpButtonText: {
-    color: "white",
+  primaryButtonText: {
+    color: "#ffffff",
     fontSize: 16,
     fontWeight: "600",
   },
   buttonPressed: {
-    opacity: 0.7,
+    opacity: 0.8,
   },
-  footer: {
-    flexDirection: "row",
+  linkButton: {
     alignItems: "center",
-    justifyContent: "center",
-    marginTop: 8,
-  },
-  footerText: {
-    fontSize: 16,
-    color: "#64748b",
+    marginTop: 16,
   },
   linkText: {
-    fontSize: 16,
+    fontSize: 14,
+    color: colors.text.secondary,
+  },
+  linkTextBold: {
+    color: colors.brand.green,
     fontWeight: "600",
-    color: "#1a365d",
   },
 });

@@ -5,297 +5,258 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
+  Alert,
+  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
-  ActivityIndicator,
-  Keyboard,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Ionicons } from "@expo/vector-icons";
 import { useSignIn } from "@clerk/clerk-expo";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "../theme/colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useClerkToken } from "../hooks/useClerkToken";
 
-type AuthStackParamList = {
-  Welcome: undefined;
-  SignIn: undefined;
-  SignUp: undefined;
-};
-
-type SignInScreenProps = {
-  navigation: NativeStackNavigationProp<AuthStackParamList, "SignIn">;
-};
-
-export default function SignInScreen({ navigation }: SignInScreenProps) {
+export default function SignInScreen() {
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+  const { getAuthToken } = useClerkToken();
   const { signIn, setActive, isLoaded } = useSignIn();
+
+  console.log('SignInScreen rendered, isLoaded:', isLoaded);
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSignIn = async () => {
-    if (!isLoaded) return;
-
-    if (!email.trim() || !password.trim()) {
-      setErrorMessage("Please enter both email and password");
+    if (!email || !password) {
+      Alert.alert("Error", "Please enter both email and password");
       return;
     }
 
-    Keyboard.dismiss();
     setIsLoading(true);
-    setErrorMessage("");
 
     try {
-      const signInAttempt = await signIn.create({
-        identifier: email.trim(),
+      console.log("Attempting sign in with:", { email, isLoaded });
+      const result = await signIn.create({
+        identifier: email,
         password,
       });
 
-      if (signInAttempt.status === "complete") {
-        await setActive({ session: signInAttempt.createdSessionId });
-        // Navigation handled by App.tsx auth state
+      console.log("Sign in result:", result);
+
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
+        console.log("Sign in successful!");
       } else {
-        setErrorMessage("Sign in incomplete. Please check your credentials.");
-        console.error("Sign in incomplete:", JSON.stringify(signInAttempt, null, 2));
+        console.log("Sign in incomplete:", result);
       }
-    } catch (error: any) {
-      const errorMsg =
-        error.errors?.[0]?.longMessage ||
-        error.errors?.[0]?.message ||
-        error.message ||
-        "Failed to sign in. Please check your credentials.";
-      setErrorMessage(errorMsg);
-      console.error("Sign in error:", error);
+    } catch (err: any) {
+      console.error("Sign in error:", err);
+      Alert.alert("Error", err.errors?.[0]?.message || "Failed to sign in");
     } finally {
       setIsLoading(false);
     }
   };
 
+
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardView}
       >
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
+      <View style={[styles.container, { paddingTop: insets.top }]}>
+        <View style={styles.content}>
           {/* Header */}
           <View style={styles.header}>
-            <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
-              <Ionicons name="arrow-back" size={24} color="#1a365d" />
-            </Pressable>
-
-            <Text style={styles.title}>Welcome back</Text>
-            <Text style={styles.subtitle}>Sign in to your account</Text>
+            <Text style={styles.title}>Welcome Back</Text>
+            <Text style={styles.subtitle}>Sign in to Specter</Text>
           </View>
 
-          {/* Form */}
-          <View style={styles.form}>
+          {/* Removed Google OAuth - using email/password only */}
+
             {/* Email Input */}
-            <View style={styles.inputContainer}>
+          <View style={styles.inputGroup}>
               <Text style={styles.label}>Email</Text>
               <TextInput
                 value={email}
-                onChangeText={(text) => {
-                  setEmail(text);
-                  setErrorMessage("");
-                }}
-                placeholder="you@example.com"
-                placeholderTextColor="#94a3b8"
+              onChangeText={setEmail}
+              placeholder="Enter your email"
+              placeholderTextColor={colors.text.tertiary}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
-                returnKeyType="next"
                 style={styles.input}
               />
             </View>
 
             {/* Password Input */}
-            <View style={styles.inputContainer}>
+          <View style={styles.inputGroup}>
               <Text style={styles.label}>Password</Text>
               <View style={styles.passwordContainer}>
                 <TextInput
                   value={password}
-                  onChangeText={(text) => {
-                    setPassword(text);
-                    setErrorMessage("");
-                  }}
+                onChangeText={setPassword}
                   placeholder="Enter your password"
-                  placeholderTextColor="#94a3b8"
+                placeholderTextColor={colors.text.tertiary}
                   secureTextEntry={!showPassword}
                   autoCapitalize="none"
                   autoCorrect={false}
-                  returnKeyType="go"
-                  onSubmitEditing={handleSignIn}
                   style={styles.passwordInput}
                 />
-                <Pressable onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
-                  <Ionicons name={showPassword ? "eye-off" : "eye"} size={22} color="#64748b" />
+              <Pressable
+                onPress={() => setShowPassword(!showPassword)}
+                style={styles.eyeButton}
+              >
+                <Ionicons
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={20}
+                  color={colors.text.tertiary}
+                />
                 </Pressable>
               </View>
             </View>
 
-            {/* Error Message */}
-            {errorMessage ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>{errorMessage}</Text>
-              </View>
-            ) : null}
-
             {/* Sign In Button */}
             <Pressable
               onPress={handleSignIn}
-              disabled={isLoading || !isLoaded}
               style={({ pressed }) => [
-                styles.signInButton,
-                (pressed || isLoading || !isLoaded) && styles.buttonPressed,
+              styles.primaryButton,
+              pressed && styles.buttonPressed,
+              (isLoading) && styles.buttonDisabled,
               ]}
+            disabled={isLoading}
             >
               {isLoading ? (
-                <ActivityIndicator color="white" />
+              <ActivityIndicator color={colors.text.inverse} />
               ) : (
-                <Text style={styles.signInButtonText}>Sign In</Text>
+              <Text style={styles.primaryButtonText}>SIGN IN</Text>
               )}
             </Pressable>
 
             {/* Sign Up Link */}
-            <View style={styles.footer}>
-              <Text style={styles.footerText}>{"Don't have an account? "}</Text>
-              <Pressable onPress={() => navigation.navigate("SignUp")}>
-                <Text style={styles.linkText}>Sign Up</Text>
+          <Pressable
+            onPress={() => navigation.navigate("SignUp" as never)}
+            style={styles.linkButton}
+          >
+            <Text style={styles.linkText}>
+              Don't have an account? <Text style={styles.linkTextBold}>Sign up</Text>
+            </Text>
               </Pressable>
             </View>
           </View>
-        </ScrollView>
       </KeyboardAvoidingView>
-    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
   keyboardView: {
     flex: 1,
   },
-  scrollContent: {
-    paddingBottom: 40,
+  container: {
+    flex: 1,
+    backgroundColor: "#ffffff",
   },
-  header: {
+  content: {
+    flex: 1,
     paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 32,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#f7fafc",
-    alignItems: "center",
+    paddingBottom: 24,
     justifyContent: "center",
   },
+  header: {
+    alignItems: "center",
+    marginBottom: 32,
+  },
   title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "#1a365d",
-    marginTop: 24,
+    fontSize: 28,
+    fontWeight: "700",
+    color: colors.text.primary,
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
-    color: "#64748b",
+    color: colors.text.secondary,
   },
-  form: {
-    paddingHorizontal: 24,
-  },
-  inputContainer: {
+  inputGroup: {
     marginBottom: 16,
   },
   label: {
     fontSize: 14,
     fontWeight: "500",
-    color: "#334155",
+    color: colors.text.primary,
     marginBottom: 8,
   },
   input: {
-    backgroundColor: "#f7fafc",
     borderWidth: 1,
-    borderColor: "#e2e8f0",
-    borderRadius: 12,
+    borderColor: colors.content.border,
+    borderRadius: 8,
+    paddingVertical: 12,
     paddingHorizontal: 16,
-    paddingVertical: 16,
     fontSize: 16,
-    color: "#1e293b",
+    color: colors.text.primary,
+    backgroundColor: colors.card.bg,
   },
   passwordContainer: {
-    position: "relative",
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: colors.content.border,
+    borderRadius: 8,
+    backgroundColor: colors.card.bg,
   },
   passwordInput: {
-    backgroundColor: "#f7fafc",
-    borderWidth: 1,
-    borderColor: "#e2e8f0",
-    borderRadius: 12,
+    flex: 1,
+    paddingVertical: 12,
     paddingHorizontal: 16,
-    paddingVertical: 16,
-    paddingRight: 48,
     fontSize: 16,
-    color: "#1e293b",
+    color: colors.text.primary,
   },
   eyeButton: {
-    position: "absolute",
-    right: 16,
-    top: 16,
-  },
-  errorContainer: {
-    backgroundColor: "#fef2f2",
-    borderWidth: 1,
-    borderColor: "#fecaca",
-    borderRadius: 8,
     padding: 12,
-    marginBottom: 16,
   },
-  errorText: {
-    color: "#dc2626",
-    fontSize: 14,
-  },
-  signInButton: {
-    backgroundColor: "#1a365d",
-    borderRadius: 12,
+  primaryButton: {
+    backgroundColor: colors.brand.purple, // Specter purple from theme
+    borderRadius: 12, // Corner radius for square button
     paddingVertical: 16,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 16,
-    minHeight: 56,
-  },
-  signInButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  buttonPressed: {
-    opacity: 0.7,
-  },
-  footer: {
-    flexDirection: "row",
+    paddingHorizontal: 24,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 8,
+    minHeight: 56, // Square-like button
+    minWidth: 200, // Make it a proper square button
+    shadowColor: colors.brand.purple,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8, // Android shadow
   },
-  footerText: {
-    fontSize: 16,
-    color: "#64748b",
+  primaryButtonText: {
+    color: colors.text.inverse, // White text from theme
+    fontSize: 18,
+    fontWeight: "700",
+    letterSpacing: 0.5,
+  },
+  buttonPressed: {
+    opacity: 0.8,
+  },
+  buttonDisabled: {
+    opacity: 0.5,
+  },
+  linkButton: {
+    alignItems: "center",
+    marginTop: 16,
   },
   linkText: {
-    fontSize: 16,
+    fontSize: 14,
+    color: colors.text.secondary,
+  },
+  linkTextBold: {
+    color: colors.brand.green,
     fontWeight: "600",
-    color: "#1a365d",
   },
 });

@@ -45,99 +45,112 @@ export default function PersonCard({
       style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
       onPress={onPress}
     >
-      {/* Avatar */}
-      <View style={styles.avatarContainer}>
-        {person.profile_image_url ? (
-          <Image
-            source={{ uri: person.profile_image_url }}
-            style={styles.avatar}
-            contentFit="cover"
-          />
-        ) : (
-          <View style={styles.avatarPlaceholder}>
-            <Text style={styles.avatarText}>
-              {(person.first_name?.[0] || "") + (person.last_name?.[0] || "")}
-            </Text>
-          </View>
-        )}
-        {statusColor && <View style={[styles.statusDot, { backgroundColor: statusColor }]} />}
-      </View>
-
-      {/* Info */}
-      <View style={styles.info}>
-        <View style={styles.nameRow}>
-          <Text style={styles.name} numberOfLines={1}>{name}</Text>
-          {person.seniority && (
-            <>
-              <Text style={styles.separator}>•</Text>
-              <Text style={styles.seniority} numberOfLines={1}>{person.seniority}</Text>
-            </>
+      <View style={styles.topRow}>
+        <View style={styles.avatarContainer}>
+          {person.profile_image_url ? (
+            <Image
+              source={{ uri: person.profile_image_url }}
+              style={styles.avatar}
+              contentFit="cover"
+            />
+          ) : (
+            <View style={styles.avatarPlaceholder}>
+              <Text style={styles.avatarText}>
+                {(person.first_name?.[0] || "").toUpperCase()}
+                {(person.last_name?.[0] || "").toUpperCase()}
+              </Text>
+            </View>
           )}
+          {statusColor && <View style={[styles.statusDot, { backgroundColor: statusColor }]} />}
         </View>
-        {subtitle && (
-          <Text style={styles.subtitle} numberOfLines={1}>{subtitle}</Text>
-        )}
+
+        <View style={styles.info}>
+          <Text style={styles.name} numberOfLines={1}>
+            {name}
+          </Text>
+          {person.seniority && (
+            <Text style={styles.levelPill} numberOfLines={1}>
+              {person.seniority}
+            </Text>
+          )}
+          {subtitle ? (
+            <Text style={styles.subtitle} numberOfLines={1}>
+              {subtitle}
+            </Text>
+          ) : null}
+          {person.location ? (
+            <Text style={styles.location} numberOfLines={1}>
+              {person.location}
+            </Text>
+          ) : null}
+        </View>
       </View>
 
-      {/* Actions */}
-      <View style={styles.actions}>
-        <Pressable
+      <View style={styles.actionsRow}>
+          <Pressable
           style={[styles.actionBtn, status === "disliked" && styles.actionActive]}
-          onPress={onDislike}
+            onPress={onDislike}
           hitSlop={6}
-        >
+          >
           <Ionicons
             name="close"
             size={18}
-            color={status === "disliked" ? colors.error : colors.text.tertiary}
+            color={status === "disliked" ? colors.error : colors.text.secondary}
           />
-        </Pressable>
-        <Pressable
+          </Pressable>
+          <Pressable
           style={[styles.actionBtn, status === "liked" && styles.actionActive]}
-          onPress={onLike}
+            onPress={onLike}
           hitSlop={6}
-        >
+          >
           <Ionicons
             name="heart"
-            size={16}
-            color={status === "liked" ? colors.brand.green : colors.text.tertiary}
+            size={17}
+            color={status === "liked" ? colors.brand.green : colors.text.secondary}
           />
         </Pressable>
         <Pressable style={styles.actionBtn} onPress={onAddToList} hitSlop={6}>
-          <Ionicons name="add" size={18} color={colors.text.tertiary} />
-        </Pressable>
-      </View>
+          <Ionicons name="add" size={20} color={colors.text.secondary} />
+          </Pressable>
+        </View>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: colors.card.bg,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.content.borderLight,
+    backgroundColor: colors.content.bg,
+    borderRadius: 18,
+    padding: 16,
+    marginHorizontal: 16,
+    marginBottom: 12,
+    shadowColor: "#111827",
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 6 },
+    shadowRadius: 12,
+    elevation: 2,
   },
   cardPressed: {
-    backgroundColor: colors.content.bgSecondary,
+    opacity: 0.95,
+  },
+  topRow: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   avatarContainer: {
     position: "relative",
-    marginRight: 10,
+    marginRight: 12,
   },
   avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: colors.content.bgSecondary,
   },
   avatarPlaceholder: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: colors.brand.blue,
     alignItems: "center",
     justifyContent: "center",
@@ -151,54 +164,55 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: -2,
     right: -2,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
     borderWidth: 2,
-    borderColor: colors.card.bg,
+    borderColor: "#fff",
   },
   info: {
     flex: 1,
-    marginRight: 8,
-  },
-  nameRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 2,
+    gap: 4,
   },
   name: {
     fontSize: 14,
     fontWeight: "600",
     color: colors.text.primary,
-    flexShrink: 1,
   },
-  separator: {
-    fontSize: 12,
-    color: colors.text.tertiary,
-    marginHorizontal: 6,
-  },
-  seniority: {
-    fontSize: 12,
+  levelPill: {
+    alignSelf: "flex-start",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+    backgroundColor: "#eef4ff",
     color: colors.brand.blue,
-    fontWeight: "500",
+    fontSize: 11,
+    fontWeight: "600",
   },
   subtitle: {
     fontSize: 12,
     color: colors.text.secondary,
   },
-  actions: {
+  location: {
+    fontSize: 11,
+    color: colors.text.tertiary,
+  },
+  actionsRow: {
     flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
+    marginTop: 14,
+    gap: 8,
   },
   actionBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: colors.content.border,
     alignItems: "center",
     justifyContent: "center",
   },
   actionActive: {
-    backgroundColor: colors.content.bgTertiary,
+    backgroundColor: "#ecfdf5",
+    borderColor: "#d1fae5",
   },
 });
