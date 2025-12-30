@@ -1,120 +1,77 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   ScrollView,
   Pressable,
-  StyleSheet,
   ActivityIndicator,
   Linking,
+  StyleSheet,
+  Dimensions,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import { useAuth } from "@clerk/clerk-expo";
 import * as Haptics from "expo-haptics";
-import { colors, getHighlightColor } from "../theme/colors";
-import {
-  fetchPersonDetail,
-  likePerson,
-  dislikePerson,
-  Person,
-  getCurrentJob,
-  getFullName,
-} from "../api/specter";
+import { theme } from "../theme";
+import { specterPublicAPI } from "../api/public-client";
 import { PeopleStackParamList } from "../types/navigation";
+import { useClerkToken } from "../hooks/useClerkToken";
+import { Badge } from "../components/ui/shadcn/Badge";
+import { Avatar } from "../components/ui/shadcn/Avatar";
+import { GlassCard } from "../components/ui/glass/GlassCard";
+import { GlassButton } from "../components/ui/glass/GlassButton";
+import { LinearGradient } from "expo-linear-gradient";
+import Animated, { FadeIn, FadeInUp } from "react-native-reanimated";
+import { useQuery } from "@tanstack/react-query";
+import { useEntityStatusMutation } from "../hooks/useMutations";
+import AddToListSheet from "../components/AddToListSheet";
 
 type RouteProps = RouteProp<PeopleStackParamList, "PersonDetail">;
+const { width } = Dimensions.get('window');
+
+const TabButton = ({ label, active, onPress }: { label: string, active: boolean, onPress: () => void }) => {
+  const { colors } = theme;
+  return (
+    <Pressable onPress={onPress} style={[styles.tabButton, active && styles.activeTabButton]}>
+      <Text style={[styles.tabLabel, active && styles.activeTabLabel]}>{label}</Text>
+      {active && <View style={styles.tabIndicator} />}
+    </Pressable>
+  );
+};
 
 export default function PersonDetailScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const route = useRoute<RouteProps>();
   const insets = useSafeAreaInsets();
-  const { getToken } = useAuth();
+  const { getAuthToken } = useClerkToken();
+  const { colors, spacing, typography } = theme;
 
   const { personId } = route.params;
-  const [person, setPerson] = useState<Person | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [actionLoading, setActionLoading] = useState<"like" | "dislike" | null>(null);
+  const [activeTab, setActiveTab] = useState<'Experience' | 'Education' | 'Skills' | 'Contact'>('Experience');
+  const [isListSheetVisible, setIsListSheetVisible] = useState(false);
 
-  useEffect(() => {
-    loadPersonDetail();
-  }, [personId]);
+  const statusMutation = useEntityStatusMutation();
 
-  const loadPersonDetail = async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const token = await getToken();
-      if (!token) {
-        throw new Error("Authentication required");
-      }
-
-      const data = await fetchPersonDetail(token, personId);
-      setPerson(data);
-    } catch (err: any) {
-      setError(err.message || "Failed to load person details");
-      console.error("Load person detail error:", err);
-    } finally {
-      setIsLoading(false);
+  const { data: person, isLoading, error, refetch } = useQuery({
+    queryKey: ['person', personId],
+    queryFn: async () => {
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
+      const data = await specterPublicAPI.people.getById(personId, token);
+      
+      // Mark as viewed
+      statusMutation.mutate({ id: personId, type: 'people', status: 'viewed' });
+      
+      return data;
     }
-  };
-
-  const handleLike = async () => {
-    if (!person || actionLoading) return;
-
-    setActionLoading("like");
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-
-    try {
-      const token = await getToken();
-      if (!token) throw new Error("Authentication required");
-
-      await likePerson(token, person.id);
-      setPerson({
-        ...person,
-        entity_status: { status: "liked", updated_at: new Date().toISOString() },
-      });
-    } catch (err: any) {
-      console.error("Like error:", err);
-    } finally {
-      setActionLoading(null);
-    }
-  };
-
-  const handleDislike = async () => {
-    if (!person || actionLoading) return;
-
-    setActionLoading("dislike");
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-
-    try {
-      const token = await getToken();
-      if (!token) throw new Error("Authentication required");
-
-      await dislikePerson(token, person.id);
-      setPerson({
-        ...person,
-        entity_status: { status: "disliked", updated_at: new Date().toISOString() },
-      });
-    } catch (err: any) {
-      console.error("Dislike error:", err);
-    } finally {
-      setActionLoading(null);
-    }
-  };
-
-  const openUrl = (url: string) => {
-    Linking.openURL(url).catch(() => {});
-  };
+  });
 
   if (isLoading) {
     return (
       <View style={[styles.container, styles.centered]}>
-        <ActivityIndicator size="large" color={colors.brand.green} />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -122,542 +79,666 @@ export default function PersonDetailScreen() {
   if (error || !person) {
     return (
       <View style={[styles.container, styles.centered]}>
-        <Text style={styles.errorText}>{error || "Person not found"}</Text>
-        <Pressable style={styles.retryButton} onPress={loadPersonDetail}>
-          <Text style={styles.retryButtonText}>Retry</Text>
-        </Pressable>
+        <Ionicons name="alert-circle" size={48} color={colors.destructive} />
+        <Text style={styles.errorText}>{(error as Error)?.message || "Person not found"}</Text>
+        <GlassButton label="Retry" onPress={() => refetch()} style={{ marginTop: 20 }} />
       </View>
     );
   }
 
-  const name = getFullName(person);
-  const currentJob = getCurrentJob(person.experience || []);
-  const highlights = person.people_highlights || [];
-  const location = person.location || person.region || "";
-  const isLiked = person.entity_status?.status === "liked";
-  const isDisliked = person.entity_status?.status === "disliked";
+  const name = person.full_name || `${person.first_name || ''} ${person.last_name || ''}`.trim() || 'Unknown';
+  const currentExp = person.experience?.[0];
+  const hasEmail = !!(person as any).email;
+  const hasPhone = !!(person as any).phone;
+  const educationLevel = (person as any).education_level;
+  const avgTenure = (person as any).avg_tenure;
+  const currentTenure = (person as any).current_tenure;
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
-        <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color={colors.text.primary} />
-        </Pressable>
-        <View style={styles.headerActions}>
-          <Pressable style={styles.headerBtn}>
-            <Ionicons name="share-outline" size={22} color={colors.text.secondary} />
-          </Pressable>
-          <Pressable style={styles.headerBtn}>
-            <Ionicons name="bookmark-outline" size={22} color={colors.text.secondary} />
-          </Pressable>
+      {/* Hero Section */}
+      <View style={styles.hero}>
+        <LinearGradient
+          colors={[colors.sidebar.bg, colors.primary + '40', colors.background]}
+          style={StyleSheet.absoluteFill}
+        />
+        <View style={[styles.navHeader, { paddingTop: insets.top }]}>
+          <GlassButton icon="arrow-back" onPress={() => navigation.goBack()} />
+          <View style={styles.headerActions}>
+            <GlassButton icon="share-outline" />
+            <GlassButton icon="ellipsis-horizontal" />
+          </View>
         </View>
+
+        <Animated.View entering={FadeInUp.delay(200)} style={styles.heroContent}>
+          <Avatar src={person.profile_image_url} fallback={name} size={100} style={styles.heroAvatar} />
+          <View style={styles.nameContainer}>
+            <Text style={styles.name}>{name}</Text>
+            <View style={styles.contactIndicators}>
+              {hasEmail && <Ionicons name="mail" size={16} color={colors.primary} />}
+              {hasPhone && <Ionicons name="call" size={16} color={colors.primary} />}
+            </View>
+          </View>
+          <Text style={styles.tagline}>{person.tagline || (currentExp ? `${currentExp.title} @ ${currentExp.company_name}` : 'No title available')}</Text>
+          <View style={styles.heroMeta}>
+            <Text style={styles.metaText}>📍 {person.region || person.location || 'Global'}</Text>
+            {person.seniority && <Badge variant="secondary" style={styles.seniorityBadge}>
+              <Text style={styles.badgeText}>{person.seniority}</Text>
+            </Badge>}
+            {currentExp?.is_unicorn && <Text style={styles.emoji}>🦄</Text>}
+          </View>
+
+          <View style={styles.statsRow}>
+            <View style={styles.statItem}>
+              <Text style={styles.statValue}>{person.followers_count?.toLocaleString() || '0'}</Text>
+              <Text style={styles.statLabel}>Followers</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.statItem}>
+              <Text style={styles.statValue}>{person.connections_count?.toLocaleString() || '0'}</Text>
+              <Text style={styles.statLabel}>Connections</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.statItem}>
+              <Text style={styles.statValue}>{person.years_of_experience || '0'}yr</Text>
+              <Text style={styles.statLabel}>Experience</Text>
+            </View>
+          </View>
+
+          {/* Extra Metrics Bar */}
+          <View style={styles.extraMetrics}>
+            {avgTenure && (
+              <View style={styles.metricItem}>
+                <Text style={styles.metricLabel}>Avg. Tenure</Text>
+                <Text style={styles.metricValue}>{avgTenure} mo</Text>
+              </View>
+            )}
+            {currentTenure && (
+              <View style={styles.metricItem}>
+                <Text style={styles.metricLabel}>Current</Text>
+                <Text style={styles.metricValue}>{currentTenure} mo</Text>
+              </View>
+            )}
+            {educationLevel && (
+              <View style={styles.metricItem}>
+                <Text style={styles.metricLabel}>Education</Text>
+                <Text style={styles.metricValue} numberOfLines={1}>{educationLevel}</Text>
+              </View>
+            )}
+          </View>
+
+          <View style={styles.heroHighlights}>
+            {person.people_highlights?.slice(0, 3).map((h, i) => (
+              <Badge key={i} variant="outline" style={styles.highlightBadge}>
+                <Text style={styles.highlightBadgeText}>{h.replace(/_/g, ' ').toUpperCase()}</Text>
+              </Badge>
+            ))}
+          </View>
+        </Animated.View>
       </View>
 
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Profile card */}
-        <View style={styles.card}>
-          {/* Avatar + Name */}
-          <View style={styles.profileHeader}>
-            <View style={styles.avatarContainer}>
-              {person.profile_image_url ? (
-                <Image
-                  source={{ uri: person.profile_image_url }}
-                  style={styles.avatar}
-                  contentFit="cover"
-                />
-              ) : (
-                <View style={styles.avatarPlaceholder}>
-                  <Text style={styles.avatarText}>
-                    {(person.first_name?.[0] || "") + (person.last_name?.[0] || "")}
-                  </Text>
-                </View>
-              )}
-              {/* Status badge */}
-              {isLiked && (
-                <View style={[styles.statusBadge, styles.statusLiked]}>
-                  <Ionicons name="heart" size={12} color={colors.text.inverse} />
-                </View>
-              )}
-            </View>
+      {/* Tabs */}
+      <View style={styles.tabsContainer}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabsScroll}>
+          {(['Experience', 'Education', 'Skills', 'Contact'] as const).map(tab => (
+            <TabButton 
+              key={tab} 
+              label={tab} 
+              active={activeTab === tab} 
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                setActiveTab(tab);
+              }} 
+            />
+          ))}
+        </ScrollView>
+      </View>
 
-            <View style={styles.profileInfo}>
-              <Text style={styles.name}>{name}</Text>
-              {currentJob && (
-                <Text style={styles.title}>
-                  {currentJob.title} at {currentJob.company_name}
-                </Text>
-              )}
-              {location && (
-                <View style={styles.locationRow}>
-                  <Ionicons name="location-outline" size={14} color={colors.text.tertiary} />
-                  <Text style={styles.locationText}>{location}</Text>
-                </View>
-              )}
-            </View>
-          </View>
-
-          {/* Tagline */}
-          {person.tagline && (
-            <Text style={styles.tagline}>{person.tagline}</Text>
-          )}
-
-          {/* Highlights */}
-          {highlights.length > 0 && (
-            <View style={styles.highlightsRow}>
-              {highlights.slice(0, 4).map((highlight, idx) => (
-                <View
-                  key={idx}
-                  style={[
-                    styles.highlightBadge,
-                    { backgroundColor: getHighlightColor(highlight) + "20" },
-                  ]}
-                >
-                  <View
-                    style={[styles.highlightDot, { backgroundColor: getHighlightColor(highlight) }]}
-                  />
-                  <Text style={[styles.highlightText, { color: getHighlightColor(highlight) }]}>
-                    {formatHighlight(highlight)}
-                  </Text>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        <Animated.View entering={FadeIn.duration(400)}>
+          {activeTab === 'Experience' && (
+            <View style={styles.tabContent}>
+              <Text style={styles.sectionTitle}>Experience Timeline</Text>
+              {person.experience?.map((exp, i) => (
+                <View key={i} style={styles.timelineItem}>
+                  <View style={styles.timelineLine}>
+                    <View style={styles.timelineDot} />
+                    {i < person.experience.length - 1 && <View style={styles.timelineConnector} />}
+                  </View>
+                  <GlassCard style={styles.experienceCard}>
+                    <View style={styles.expHeader}>
+                      <Avatar src={(exp as any).logo_url} fallback={exp.company_name} size={40} style={styles.companyLogo} />
+                      <View style={styles.expTitleInfo}>
+                        <Text style={styles.expTitle}>{exp.title}</Text>
+                        <Text style={styles.expCompany}>{exp.company_name}</Text>
+                      </View>
+                    </View>
+                    <Text style={styles.expDate}>
+                      {exp.start_date ? new Date(exp.start_date).getFullYear() : '?'} - {exp.is_current ? 'Present' : (exp.end_date ? new Date(exp.end_date).getFullYear() : '?')}
+                    </Text>
+                    
+                    <View style={styles.expMeta}>
+                      {exp.industry && <Badge variant="secondary" style={styles.expBadge}><Text style={styles.expBadgeText}>{exp.industry}</Text></Badge>}
+                      {exp.company_size && <Badge variant="secondary" style={styles.expBadge}><Text style={styles.expBadgeText}>{exp.company_size}</Text></Badge>}
+                    </View>
+                  </GlassCard>
                 </View>
               ))}
             </View>
           )}
 
-          {/* Action buttons */}
-          <View style={styles.actionRow}>
-            <Pressable
-              style={[styles.actionBtn, styles.dislikeBtn, isDisliked && styles.actionBtnActive]}
-              onPress={handleDislike}
-              disabled={actionLoading !== null}
-            >
-              {actionLoading === "dislike" ? (
-                <ActivityIndicator size="small" color={colors.error} />
-              ) : (
-                <>
-                  <Ionicons name="close" size={22} color={colors.error} />
-                  <Text style={[styles.actionBtnText, { color: colors.error }]}>Pass</Text>
-                </>
-              )}
-            </Pressable>
-            <Pressable
-              style={[styles.actionBtn, styles.likeBtn, isLiked && styles.actionBtnActive]}
-              onPress={handleLike}
-              disabled={actionLoading !== null}
-            >
-              {actionLoading === "like" ? (
-                <ActivityIndicator size="small" color={colors.brand.green} />
-              ) : (
-                <>
-                  <Ionicons name={isLiked ? "heart" : "heart-outline"} size={22} color={colors.brand.green} />
-                  <Text style={[styles.actionBtnText, { color: colors.brand.green }]}>
-                    {isLiked ? "Liked" : "Like"}
+          {activeTab === 'Education' && (
+            <View style={styles.tabContent}>
+              <Text style={styles.sectionTitle}>Education</Text>
+              {person.education?.map((edu, i) => (
+                <GlassCard key={i} style={styles.educationCard}>
+                  <View style={styles.eduHeader}>
+                    <Ionicons name="school" size={32} color={colors.primary} />
+                    <View style={styles.eduTitleInfo}>
+                      <Text style={styles.eduSchool}>{edu.school_name}</Text>
+                      <Text style={styles.eduDegree}>{edu.degree} in {edu.field_of_study}</Text>
+                    </View>
+                  </View>
+                  <Text style={styles.eduDate}>
+                    {edu.start_date ? new Date(edu.start_date).getFullYear() : '?'} - {edu.end_date ? new Date(edu.end_date).getFullYear() : '?'}
                   </Text>
-                </>
-              )}
-            </Pressable>
-          </View>
-        </View>
+                </GlassCard>
+              )) || <Text style={styles.emptyText}>No education listed.</Text>}
+            </View>
+          )}
 
-        {/* Info card */}
-        <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Details</Text>
-          <View style={styles.infoGrid}>
-            <View style={styles.infoItem}>
-              <Ionicons name="briefcase-outline" size={18} color={colors.text.tertiary} />
-              <Text style={styles.infoLabel}>Seniority</Text>
-              <Text style={styles.infoValue}>{person.seniority || "N/A"}</Text>
+          {activeTab === 'Skills' && (
+            <View style={styles.tabContent}>
+              <Text style={styles.sectionTitle}>Skills & Expertise</Text>
+              <View style={styles.skillsGrid}>
+                {(person as any).top_skills?.map((skill: string, i: number) => (
+                  <GlassCard key={i} style={styles.skillCard}>
+                    <Text style={styles.skillName}>{skill}</Text>
+                  </GlassCard>
+                )) || <Text style={styles.emptyText}>No skills listed.</Text>}
+              </View>
             </View>
-            <View style={styles.infoItem}>
-              <Ionicons name="time-outline" size={18} color={colors.text.tertiary} />
-              <Text style={styles.infoLabel}>Experience</Text>
-              <Text style={styles.infoValue}>
-                {person.years_of_experience ? `${person.years_of_experience} years` : "N/A"}
-              </Text>
-            </View>
-            <View style={styles.infoItem}>
-              <Ionicons name="school-outline" size={18} color={colors.text.tertiary} />
-              <Text style={styles.infoLabel}>Education</Text>
-              <Text style={styles.infoValue}>{person.education_level || "N/A"}</Text>
-            </View>
-            <View style={styles.infoItem}>
-              <Ionicons name="book-outline" size={18} color={colors.text.tertiary} />
-              <Text style={styles.infoLabel}>Field</Text>
-              <Text style={styles.infoValue}>{person.field_of_study || "N/A"}</Text>
-            </View>
-          </View>
-        </View>
+          )}
 
-        {/* Experience card */}
-        {person.experience && person.experience.length > 0 && (
-          <View style={styles.card}>
-            <Text style={styles.sectionTitle}>Experience</Text>
-            <View style={styles.experienceList}>
-              {person.experience.slice(0, 5).map((exp, idx) => (
-                <View key={idx} style={styles.experienceItem}>
-                  <View style={styles.experienceHeader}>
-                    <View style={styles.expIconContainer}>
-                      <Ionicons
-                        name={exp.is_current ? "business" : "business-outline"}
-                        size={18}
-                        color={exp.is_current ? colors.brand.green : colors.text.tertiary}
-                      />
-                    </View>
-                    <View style={styles.experienceInfo}>
-                      <Text style={styles.expTitle}>{exp.title}</Text>
-                      <Text style={styles.expCompany}>{exp.company_name}</Text>
-                      {(exp.start_date || exp.end_date) && (
-                        <Text style={styles.expDates}>
-                          {exp.start_date || "?"} - {exp.is_current ? "Present" : exp.end_date || "?"}
-                        </Text>
-                      )}
-                    </View>
-                    {exp.is_current && (
-                      <View style={styles.currentBadge}>
-                        <Text style={styles.currentBadgeText}>Current</Text>
-                      </View>
-                    )}
+          {activeTab === 'Contact' && (
+            <View style={styles.tabContent}>
+              <Text style={styles.sectionTitle}>Get in Touch</Text>
+              <GlassCard style={styles.contactCard}>
+                <View style={styles.contactItem}>
+                  <Ionicons name="mail-outline" size={24} color={colors.primary} />
+                  <View>
+                    <Text style={styles.contactLabel}>Email Address</Text>
+                    <Text style={styles.contactValue}>{(person as any).email || 'Available on request'}</Text>
+                  </View>
+                  {(person as any).email && (
+                    <GlassButton 
+                      icon="copy-outline" 
+                      style={styles.copyBtn} 
+                      onPress={() => {}} 
+                    />
+                  )}
+                </View>
+                <View style={styles.contactDivider} />
+                <View style={styles.contactItem}>
+                  <Ionicons name="call-outline" size={24} color={colors.primary} />
+                  <View>
+                    <Text style={styles.contactLabel}>Phone Number</Text>
+                    <Text style={styles.contactValue}>{(person as any).phone || 'Not provided'}</Text>
                   </View>
                 </View>
-              ))}
+              </GlassCard>
+
+              <View style={styles.socialGrid}>
+                {person.linkedin_url && (
+                  <GlassCard style={styles.socialCard} onPress={() => Linking.openURL(person.linkedin_url!)}>
+                    <Ionicons name="logo-linkedin" size={24} color="#0077b5" />
+                    <Text style={styles.socialText}>LinkedIn</Text>
+                  </GlassCard>
+                )}
+                {(person as any).twitter_url && (
+                  <GlassCard style={styles.socialCard} onPress={() => Linking.openURL((person as any).twitter_url)}>
+                    <Ionicons name="logo-twitter" size={24} color="#1DA1F2" />
+                    <Text style={styles.socialText}>Twitter</Text>
+                  </GlassCard>
+                )}
+                {(person as any).github_url && (
+                  <GlassCard style={styles.socialCard} onPress={() => Linking.openURL((person as any).github_url)}>
+                    <Ionicons name="logo-github" size={24} color={colors.text.primary} />
+                    <Text style={styles.socialText}>GitHub</Text>
+                  </GlassCard>
+                )}
+              </View>
             </View>
-          </View>
-        )}
-
-        {/* Social links */}
-        <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Links</Text>
-          <View style={styles.linksRow}>
-            {person.linkedin_url && (
-              <Pressable
-                style={styles.linkBtn}
-                onPress={() => openUrl(person.linkedin_url || "")}
-              >
-                <Ionicons name="logo-linkedin" size={18} color="#0077B5" />
-                <Text style={styles.linkText}>LinkedIn</Text>
-              </Pressable>
-            )}
-            {person.twitter_url && (
-              <Pressable
-                style={styles.linkBtn}
-                onPress={() => openUrl(person.twitter_url || "")}
-              >
-                <Ionicons name="logo-twitter" size={18} color="#1DA1F2" />
-                <Text style={styles.linkText}>Twitter</Text>
-              </Pressable>
-            )}
-            {person.github_url && (
-              <Pressable
-                style={styles.linkBtn}
-                onPress={() => openUrl(person.github_url || "")}
-              >
-                <Ionicons name="logo-github" size={18} color={colors.text.primary} />
-                <Text style={styles.linkText}>GitHub</Text>
-              </Pressable>
-            )}
-            {!person.linkedin_url && !person.twitter_url && !person.github_url && (
-              <Text style={styles.noLinksText}>No social links available</Text>
-            )}
-          </View>
-        </View>
-
-        <View style={{ height: 40 }} />
+          )}
+        </Animated.View>
+        <View style={{ height: 120 }} />
       </ScrollView>
+
+      {/* Floating Action Bar */}
+      <View style={[styles.floatingActions, { paddingBottom: insets.bottom + 10 }]}>
+        <GlassButton 
+          icon="close" 
+          variant="destructive" 
+          style={styles.mainAction} 
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            statusMutation.mutate({ id: personId, type: 'people', status: 'disliked' });
+            navigation.goBack();
+          }}
+        />
+        <GlassButton 
+          label="Add to List" 
+          icon="add" 
+          style={styles.listAction} 
+          onPress={() => setIsListSheetVisible(true)}
+        />
+        <GlassButton 
+          icon="heart" 
+          variant="primary" 
+          style={styles.mainAction} 
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+            statusMutation.mutate({ id: personId, type: 'people', status: 'liked' });
+          }}
+        />
+      </View>
+
+      <AddToListSheet
+        visible={isListSheetVisible}
+        onClose={() => setIsListSheetVisible(false)}
+        entityId={personId}
+        entityType="person"
+        entityName={name}
+      />
     </View>
   );
-}
-
-function formatHighlight(highlight: string): string {
-  return highlight
-    .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.content.bgSecondary,
+    backgroundColor: theme.colors.background,
   },
   centered: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-    backgroundColor: colors.content.bg,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.content.border,
+  hero: {
+    paddingBottom: 24,
+    width: '100%',
+    paddingHorizontal: 20,
   },
-  backButton: {
-    padding: 8,
-    marginLeft: -8,
-  },
-  headerActions: {
-    flexDirection: "row",
-    gap: 8,
-  },
-  headerBtn: {
-    padding: 8,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    padding: 16,
-    gap: 12,
-  },
-  card: {
-    backgroundColor: colors.card.bg,
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: colors.card.border,
-  },
-  profileHeader: {
-    flexDirection: "row",
-    marginBottom: 14,
-  },
-  avatarContainer: {
-    marginRight: 14,
-    position: "relative",
-  },
-  avatar: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: colors.content.bgSecondary,
-  },
-  avatarPlaceholder: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: colors.brand.blue,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  avatarText: {
-    color: colors.text.inverse,
-    fontSize: 22,
-    fontWeight: "600",
-  },
-  statusBadge: {
-    position: "absolute",
-    bottom: -2,
-    right: -2,
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 2,
-    borderColor: colors.card.bg,
-  },
-  statusLiked: {
-    backgroundColor: colors.brand.green,
-  },
-  profileInfo: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  name: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: colors.text.primary,
-    marginBottom: 4,
-  },
-  title: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    marginBottom: 4,
-  },
-  locationRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-  },
-  locationText: {
-    fontSize: 13,
-    color: colors.text.tertiary,
-  },
-  tagline: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    lineHeight: 20,
-    marginBottom: 14,
-  },
-  highlightsRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
+  navHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    zIndex: 10,
     marginBottom: 16,
   },
-  highlightBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 6,
+  headerActions: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  heroContent: {
+    alignItems: 'center',
+  },
+  heroAvatar: {
+    borderWidth: 4,
+    borderColor: 'rgba(255,255,255,0.3)',
+    borderRadius: 50,
+  },
+  nameContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 16,
+  },
+  name: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: theme.colors.text.primary,
+  },
+  contactIndicators: {
+    flexDirection: 'row',
     gap: 6,
   },
-  highlightDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
+  tagline: {
+    fontSize: 16,
+    color: theme.colors.text.secondary,
+    textAlign: 'center',
+    marginTop: 4,
+    paddingHorizontal: 20,
+    lineHeight: 22,
   },
-  highlightText: {
-    fontSize: 12,
-    fontWeight: "600",
-  },
-  actionRow: {
-    flexDirection: "row",
+  heroMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 12,
+    marginTop: 12,
   },
-  actionBtn: {
+  metaText: {
+    fontSize: 14,
+    color: theme.colors.text.tertiary,
+    fontWeight: '600',
+  },
+  seniorityBadge: {
+    height: 24,
+    paddingHorizontal: 8,
+  },
+  badgeText: {
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  emoji: {
+    fontSize: 18,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 20,
+    padding: 16,
+    marginTop: 24,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+  },
+  statItem: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    borderRadius: 10,
+    alignItems: 'center',
+    gap: 2,
+  },
+  statValue: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: theme.colors.text.primary,
+  },
+  statLabel: {
+    fontSize: 10,
+    color: theme.colors.text.tertiary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  statDivider: {
+    width: 1,
+    height: '60%',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    alignSelf: 'center',
+  },
+  heroHighlights: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
     gap: 8,
+    marginTop: 20,
   },
-  actionBtnActive: {
-    borderWidth: 2,
+  extraMetrics: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 16,
+    gap: 20,
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 16,
   },
-  dislikeBtn: {
-    backgroundColor: colors.tag.red.bg,
+  metricItem: {
+    alignItems: 'center',
   },
-  likeBtn: {
-    backgroundColor: colors.tag.green.bg,
+  metricLabel: {
+    fontSize: 9,
+    color: theme.colors.text.tertiary,
+    textTransform: 'uppercase',
+    fontWeight: '700',
   },
-  actionBtnText: {
+  metricValue: {
+    fontSize: 12,
+    color: theme.colors.text.primary,
+    fontWeight: '700',
+    marginTop: 2,
+  },
+  highlightBadge: {
+    borderColor: 'rgba(255,255,255,0.1)',
+  },
+  highlightBadgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+  },
+  tabsContainer: {
+    backgroundColor: theme.colors.background,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.05)',
+  },
+  tabsScroll: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    gap: 28,
+  },
+  tabButton: {
+    paddingVertical: 8,
+    position: 'relative',
+  },
+  activeTabButton: {},
+  tabLabel: {
     fontSize: 15,
-    fontWeight: "600",
+    fontWeight: '700',
+    color: theme.colors.text.tertiary,
+  },
+  activeTabLabel: {
+    color: theme.colors.primary,
+  },
+  tabIndicator: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    backgroundColor: theme.colors.primary,
+    borderRadius: 2,
+  },
+  content: {
+    flex: 1,
+  },
+  tabContent: {
+    padding: 20,
   },
   sectionTitle: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: colors.text.primary,
-    marginBottom: 12,
+    fontSize: 20,
+    fontWeight: '800',
+    color: theme.colors.text.primary,
+    marginBottom: 20,
   },
-  infoGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
+  timelineItem: {
+    flexDirection: 'row',
+    gap: 16,
   },
-  infoItem: {
-    width: "47%",
-    backgroundColor: colors.content.bgSecondary,
-    borderRadius: 10,
-    padding: 12,
-    gap: 4,
+  timelineLine: {
+    width: 20,
+    alignItems: 'center',
   },
-  infoLabel: {
-    fontSize: 11,
-    color: colors.text.tertiary,
-    marginTop: 4,
+  timelineDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: theme.colors.primary,
+    borderWidth: 2,
+    borderColor: theme.colors.background,
+    zIndex: 1,
   },
-  infoValue: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: colors.text.primary,
+  timelineConnector: {
+    width: 2,
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    marginVertical: -2,
   },
-  experienceList: {
+  experienceCard: {
+    flex: 1,
+    marginBottom: 24,
+    padding: 16,
+    borderRadius: 20,
+  },
+  expHeader: {
+    flexDirection: 'row',
     gap: 12,
   },
-  experienceItem: {
-    borderBottomWidth: 1,
-    borderBottomColor: colors.content.border,
-    paddingBottom: 12,
-  },
-  experienceHeader: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-  },
-  expIconContainer: {
-    width: 36,
-    height: 36,
+  companyLogo: {
     borderRadius: 8,
-    backgroundColor: colors.content.bgSecondary,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 12,
   },
-  experienceInfo: {
+  expTitleInfo: {
     flex: 1,
   },
   expTitle: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: colors.text.primary,
-    marginBottom: 2,
+    fontSize: 16,
+    fontWeight: '700',
+    color: theme.colors.text.primary,
   },
   expCompany: {
-    fontSize: 13,
-    color: colors.text.secondary,
-    marginBottom: 2,
+    fontSize: 14,
+    color: theme.colors.text.secondary,
   },
-  expDates: {
+  expDate: {
     fontSize: 12,
-    color: colors.text.tertiary,
+    color: theme.colors.text.tertiary,
+    marginTop: 8,
+    fontWeight: '600',
   },
-  currentBadge: {
-    backgroundColor: colors.brand.green + "20",
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 4,
+  expMeta: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginTop: 12,
   },
-  currentBadgeText: {
-    fontSize: 10,
-    fontWeight: "600",
-    color: colors.brand.green,
+  expBadge: {
+    height: 20,
+    paddingHorizontal: 6,
   },
-  linksRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+  expBadgeText: {
+    fontSize: 9,
+    fontWeight: '700',
+  },
+  educationCard: {
+    marginBottom: 16,
+    padding: 16,
+    borderRadius: 20,
+  },
+  eduHeader: {
+    flexDirection: 'row',
+    gap: 16,
+    alignItems: 'center',
+  },
+  eduTitleInfo: {
+    flex: 1,
+  },
+  eduSchool: {
+    fontSize: 17,
+    fontWeight: '800',
+    color: theme.colors.text.primary,
+  },
+  eduDegree: {
+    fontSize: 14,
+    color: theme.colors.text.secondary,
+    marginTop: 2,
+  },
+  eduDate: {
+    fontSize: 12,
+    color: theme.colors.text.tertiary,
+    marginTop: 12,
+    fontWeight: '600',
+  },
+  skillsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 10,
   },
-  linkBtn: {
-    flexDirection: "row",
-    alignItems: "center",
+  skillCard: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 16,
+    marginVertical: 0,
+  },
+  skillName: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: theme.colors.text.primary,
+  },
+  contactCard: {
+    borderRadius: 24,
+    padding: 0,
+    overflow: 'hidden',
+  },
+  contactItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+    padding: 20,
+  },
+  contactLabel: {
+    fontSize: 11,
+    color: theme.colors.text.tertiary,
+    textTransform: 'uppercase',
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  contactValue: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: theme.colors.text.primary,
+    marginTop: 2,
+  },
+  copyBtn: {
+    marginLeft: 'auto',
+    width: 36,
+    height: 36,
+  },
+  contactDivider: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+  },
+  socialGrid: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 20,
+  },
+  socialCard: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 20,
     gap: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    backgroundColor: colors.content.bgSecondary,
-    borderRadius: 8,
   },
-  linkText: {
-    fontSize: 13,
-    color: colors.text.secondary,
+  socialText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: theme.colors.text.secondary,
   },
-  noLinksText: {
-    fontSize: 13,
-    color: colors.text.tertiary,
-    fontStyle: "italic",
+  floatingActions: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'center',
+  },
+  mainAction: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+  },
+  listAction: {
+    flex: 1,
+    height: 60,
+    borderRadius: 30,
   },
   errorText: {
     fontSize: 16,
-    color: colors.error,
-    marginBottom: 16,
+    color: theme.colors.text.secondary,
+    marginTop: 12,
+    textAlign: 'center',
+    paddingHorizontal: 40,
   },
-  retryButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: colors.brand.green,
-    borderRadius: 8,
-  },
-  retryButtonText: {
+  emptyText: {
     fontSize: 14,
-    fontWeight: "600",
-    color: colors.text.inverse,
+    color: theme.colors.text.tertiary,
+    textAlign: 'center',
+    marginTop: 20,
   },
 });

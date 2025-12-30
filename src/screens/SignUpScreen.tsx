@@ -1,336 +1,45 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  ActivityIndicator,
-  Keyboard,
-} from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import React from "react";
+import { View, Text, Pressable, StyleSheet, Linking, Platform } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { useSignUp } from "@clerk/clerk-expo";
+import { colors } from "../theme/colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-type AuthStackParamList = {
-  Welcome: undefined;
-  SignIn: undefined;
-  SignUp: undefined;
-};
+const CONTACT_URL = "https://www.tryspecter.com/contact";
 
-type SignUpScreenProps = {
-  navigation: NativeStackNavigationProp<AuthStackParamList, "SignUp">;
-};
-
-export default function SignUpScreen({ navigation }: SignUpScreenProps) {
+export default function SignUpScreen() {
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const { signUp, setActive, isLoaded } = useSignUp();
-  
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [pendingVerification, setPendingVerification] = useState(false);
-  const [verificationCode, setVerificationCode] = useState("");
 
-  const handleSignUp = async () => {
-    if (!isLoaded) return;
-
-    if (!email.trim() || !password.trim()) {
-      setErrorMessage("Please enter both email and password");
-      return;
-    }
-
-    if (password.length < 8) {
-      setErrorMessage("Password must be at least 8 characters");
-      return;
-    }
-
-    Keyboard.dismiss();
-    setIsLoading(true);
-    setErrorMessage("");
-
-    try {
-      await signUp.create({
-        emailAddress: email.trim(),
-        password,
-        firstName: firstName.trim() || undefined,
-        lastName: lastName.trim() || undefined,
-      });
-
-      // Send email verification code
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-
-      setPendingVerification(true);
-    } catch (error: any) {
-      const errorMsg =
-        error.errors?.[0]?.longMessage ||
-        error.errors?.[0]?.message ||
-        error.message ||
-        "Failed to create account. Please try again.";
-      setErrorMessage(errorMsg);
-      console.error("Sign up error:", error);
-    } finally {
-      setIsLoading(false);
-    }
+  const openContact = async () => {
+    await Linking.openURL(CONTACT_URL);
   };
-
-  const handleVerifyCode = async () => {
-    if (!isLoaded) return;
-
-    if (!verificationCode.trim()) {
-      setErrorMessage("Please enter the verification code");
-      return;
-    }
-
-    Keyboard.dismiss();
-    setIsLoading(true);
-    setErrorMessage("");
-
-    try {
-      const signUpAttempt = await signUp.attemptEmailAddressVerification({
-        code: verificationCode.trim(),
-      });
-
-      if (signUpAttempt.status === "complete") {
-        await setActive({ session: signUpAttempt.createdSessionId });
-        // Navigation handled by App.tsx auth state
-      } else {
-        setErrorMessage("Verification incomplete. Please check the code and try again.");
-        console.error("Verification incomplete:", JSON.stringify(signUpAttempt, null, 2));
-      }
-    } catch (error: any) {
-      const errorMsg =
-        error.errors?.[0]?.longMessage ||
-        error.errors?.[0]?.message ||
-        error.message ||
-        "Invalid verification code. Please try again.";
-      setErrorMessage(errorMsg);
-      console.error("Verification error:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  if (pendingVerification) {
-    return (
-      <View style={[styles.container, { paddingTop: insets.top }]}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.keyboardView}
-        >
-          <ScrollView
-            contentContainerStyle={styles.scrollContent}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-          >
-            {/* Header */}
-            <View style={styles.header}>
-              <Pressable
-                onPress={() => setPendingVerification(false)}
-                style={styles.backButton}
-              >
-                <Ionicons name="arrow-back" size={24} color="#1a365d" />
-              </Pressable>
-
-              <Text style={styles.title}>Verify your email</Text>
-              <Text style={styles.subtitle}>
-                We sent a verification code to {email}
-              </Text>
-            </View>
-
-            {/* Verification Form */}
-            <View style={styles.form}>
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Verification Code</Text>
-                <TextInput
-                  value={verificationCode}
-                  onChangeText={(text) => {
-                    setVerificationCode(text);
-                    setErrorMessage("");
-                  }}
-                  placeholder="Enter 6-digit code"
-                  placeholderTextColor="#94a3b8"
-                  keyboardType="number-pad"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  maxLength={6}
-                  returnKeyType="go"
-                  onSubmitEditing={handleVerifyCode}
-                  style={styles.input}
-                />
-              </View>
-
-              {errorMessage ? (
-                <View style={styles.errorContainer}>
-                  <Text style={styles.errorText}>{errorMessage}</Text>
-                </View>
-              ) : null}
-
-              <Pressable
-                onPress={handleVerifyCode}
-                disabled={isLoading || !isLoaded}
-                style={({ pressed }) => [
-                  styles.signUpButton,
-                  (pressed || isLoading || !isLoaded) && styles.buttonPressed,
-                ]}
-              >
-                {isLoading ? (
-                  <ActivityIndicator color="white" />
-                ) : (
-                  <Text style={styles.signUpButtonText}>Verify Email</Text>
-                )}
-              </Pressable>
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </View>
-    );
-  }
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.keyboardView}
-      >
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Header */}
-          <View style={styles.header}>
-            <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
-              <Ionicons name="arrow-back" size={24} color="#1a365d" />
-            </Pressable>
+      <View style={styles.header}>
+        <Text style={styles.title}>Create an account</Text>
+        <Text style={styles.subtitle}>
+          New sign-ups are handled via our contact form.
+        </Text>
+      </View>
 
-            <Text style={styles.title}>Create account</Text>
-            <Text style={styles.subtitle}>Join Specter to get started</Text>
-          </View>
+      <Pressable onPress={openContact} style={styles.primaryBtn}>
+        <Ionicons name="open-outline" size={18} color="#fff" />
+        <Text style={styles.primaryBtnText}>Go to contact form</Text>
+      </Pressable>
 
-          {/* Form */}
-          <View style={styles.form}>
-            {/* First Name Input */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>First Name (Optional)</Text>
-              <TextInput
-                value={firstName}
-                onChangeText={(text) => {
-                  setFirstName(text);
-                  setErrorMessage("");
-                }}
-                placeholder="John"
-                placeholderTextColor="#94a3b8"
-                autoCapitalize="words"
-                autoCorrect={false}
-                returnKeyType="next"
-                style={styles.input}
-              />
-            </View>
+      <Text style={styles.hint}>
+        If you already have an account, sign in from the previous screen.
+      </Text>
 
-            {/* Last Name Input */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Last Name (Optional)</Text>
-              <TextInput
-                value={lastName}
-                onChangeText={(text) => {
-                  setLastName(text);
-                  setErrorMessage("");
-                }}
-                placeholder="Doe"
-                placeholderTextColor="#94a3b8"
-                autoCapitalize="words"
-                autoCorrect={false}
-                returnKeyType="next"
-                style={styles.input}
-              />
-            </View>
+      <Pressable onPress={() => navigation.goBack()} style={styles.secondaryBtn}>
+        <Text style={styles.secondaryBtnText}>Back to sign in</Text>
+      </Pressable>
 
-            {/* Email Input */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Email</Text>
-              <TextInput
-                value={email}
-                onChangeText={(text) => {
-                  setEmail(text);
-                  setErrorMessage("");
-                }}
-                placeholder="you@example.com"
-                placeholderTextColor="#94a3b8"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-                returnKeyType="next"
-                style={styles.input}
-              />
-            </View>
-
-            {/* Password Input */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Password</Text>
-              <View style={styles.passwordContainer}>
-                <TextInput
-                  value={password}
-                  onChangeText={(text) => {
-                    setPassword(text);
-                    setErrorMessage("");
-                  }}
-                  placeholder="At least 8 characters"
-                  placeholderTextColor="#94a3b8"
-                  secureTextEntry={!showPassword}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  returnKeyType="go"
-                  onSubmitEditing={handleSignUp}
-                  style={styles.passwordInput}
-                />
-                <Pressable onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
-                  <Ionicons name={showPassword ? "eye-off" : "eye"} size={22} color="#64748b" />
-                </Pressable>
-              </View>
-            </View>
-
-            {/* Error Message */}
-            {errorMessage ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>{errorMessage}</Text>
-              </View>
-            ) : null}
-
-            {/* Sign Up Button */}
-            <Pressable
-              onPress={handleSignUp}
-              disabled={isLoading || !isLoaded}
-              style={({ pressed }) => [
-                styles.signUpButton,
-                (pressed || isLoading || !isLoaded) && styles.buttonPressed,
-              ]}
-            >
-              {isLoading ? (
-                <ActivityIndicator color="white" />
-              ) : (
-                <Text style={styles.signUpButtonText}>Create Account</Text>
-              )}
-            </Pressable>
-
-            {/* Sign In Link */}
-            <View style={styles.footer}>
-              <Text style={styles.footerText}>Already have an account? </Text>
-              <Pressable onPress={() => navigation.navigate("SignIn")}>
-                <Text style={styles.linkText}>Sign In</Text>
-              </Pressable>
-            </View>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+      {Platform.OS === "web" && (
+        <Text style={styles.smallPrint}>{CONTACT_URL}</Text>
+      )}
     </View>
   );
 }
@@ -338,121 +47,63 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-  },
-  keyboardView: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 40,
-  },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 32,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#f7fafc",
-    alignItems: "center",
+    backgroundColor: colors.background,
+    paddingHorizontal: 20,
     justifyContent: "center",
   },
+  header: {
+    marginBottom: 20,
+  },
   title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "#1a365d",
-    marginTop: 24,
+    fontSize: 28,
+    fontWeight: "800",
+    color: colors.text.primary,
     marginBottom: 8,
   },
   subtitle: {
-    fontSize: 16,
-    color: "#64748b",
-  },
-  form: {
-    paddingHorizontal: 24,
-  },
-  inputContainer: {
-    marginBottom: 16,
-  },
-  label: {
     fontSize: 14,
-    fontWeight: "500",
-    color: "#334155",
-    marginBottom: 8,
+    color: colors.text.secondary,
+    lineHeight: 20,
   },
-  input: {
-    backgroundColor: "#f7fafc",
-    borderWidth: 1,
-    borderColor: "#e2e8f0",
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    fontSize: 16,
-    color: "#1e293b",
-  },
-  passwordContainer: {
-    position: "relative",
-  },
-  passwordInput: {
-    backgroundColor: "#f7fafc",
-    borderWidth: 1,
-    borderColor: "#e2e8f0",
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    paddingRight: 48,
-    fontSize: 16,
-    color: "#1e293b",
-  },
-  eyeButton: {
-    position: "absolute",
-    right: 16,
-    top: 16,
-  },
-  errorContainer: {
-    backgroundColor: "#fef2f2",
-    borderWidth: 1,
-    borderColor: "#fecaca",
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
-  },
-  errorText: {
-    color: "#dc2626",
-    fontSize: 14,
-  },
-  signUpButton: {
-    backgroundColor: "#1a365d",
-    borderRadius: 12,
-    paddingVertical: 16,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 16,
-    minHeight: 56,
-  },
-  signUpButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  buttonPressed: {
-    opacity: 0.7,
-  },
-  footer: {
+  primaryBtn: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 8,
+    gap: 10,
+    backgroundColor: colors.primary,
+    paddingVertical: 14,
+    borderRadius: 12,
   },
-  footerText: {
-    fontSize: 16,
-    color: "#64748b",
+  primaryBtnText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "700",
   },
-  linkText: {
-    fontSize: 16,
+  hint: {
+    marginTop: 16,
+    color: colors.text.tertiary,
+    fontSize: 12,
+    lineHeight: 18,
+  },
+  secondaryBtn: {
+    marginTop: 12,
+    alignItems: "center",
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.card.bg,
+  },
+  secondaryBtnText: {
+    color: colors.text.primary,
+    fontSize: 14,
     fontWeight: "600",
-    color: "#1a365d",
+  },
+  smallPrint: {
+    marginTop: 12,
+    color: colors.text.tertiary,
+    fontSize: 11,
+    textAlign: "center",
   },
 });
+

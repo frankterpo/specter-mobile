@@ -1,9 +1,12 @@
-import React from "react";
+import React, { memo } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../theme/colors";
 import { Company } from "../../api/specter";
+import { Card } from "./shadcn/Card";
+import { Badge } from "./shadcn/Badge";
+import { Button } from "./shadcn/Button";
 
 interface CompanyCardProps {
   company: Company;
@@ -13,7 +16,7 @@ interface CompanyCardProps {
   onAddToList?: () => void;
 }
 
-export default function CompanyCard({
+function CompanyCard({
   company,
   onPress,
   onLike,
@@ -24,9 +27,9 @@ export default function CompanyCard({
   const industry = company.industries?.[0] || "";
   const funding = company.funding?.total_funding_usd;
   const employees = company.employee_count || company.employee_count_range;
+  const logo = company.logo_url;
   
-  // Get status from entity_status if available
-  const status = (company as any).entity_status?.status as string | undefined;
+  const status = (company as any).entity_status?.status;
 
   const formatFunding = (amount?: number) => {
     if (!amount) return null;
@@ -36,194 +39,222 @@ export default function CompanyCard({
     return `$${amount}`;
   };
 
-  const getStatusColor = () => {
-    switch (status) {
-      case "liked": return colors.status.liked;
-      case "disliked": return colors.status.disliked;
-      case "viewed": return colors.status.viewed;
-      default: return null;
-    }
-  };
-
-  const statusColor = getStatusColor();
-
   return (
-    <Pressable
-      style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
-      onPress={onPress}
-    >
-      {/* Logo */}
-      <View style={styles.logoContainer}>
-        {company.logo_url ? (
-          <Image
-            source={{ uri: company.logo_url }}
-            style={styles.logo}
-            contentFit="contain"
-          />
-        ) : (
-          <View style={styles.logoPlaceholder}>
-            <Text style={styles.logoText}>{name.charAt(0)}</Text>
+    <Card onPress={onPress} style={styles.card}>
+      <View style={styles.content}>
+        {/* Logo */}
+        <View style={styles.logoWrapper}>
+          {logo ? (
+            <Image
+              source={{
+                uri: logo,
+                // Enable caching for better performance
+                cacheKey: `company-logo-${logo.split('/').pop()}`,
+              }}
+              style={styles.logo}
+              contentFit="contain"
+              // Enable disk caching
+              cachePolicy="disk"
+              // Smooth transition for loading
+              transition={200}
+            />
+          ) : (
+            <View style={[styles.logo, styles.logoPlaceholder]}>
+              <Text style={styles.logoLetter}>{name.charAt(0)}</Text>
+            </View>
+          )}
+          {status && (
+            <View style={[
+              styles.statusBadge, 
+              status === "liked" ? styles.statusLiked : 
+              status === "disliked" ? styles.statusDisliked : styles.statusViewed
+            ]}>
+              <Ionicons 
+                name={status === "liked" ? "heart" : status === "disliked" ? "close" : "eye"} 
+                size={10} 
+                color="#FFF" 
+              />
+            </View>
+          )}
+        </View>
+
+        {/* Info */}
+        <View style={styles.info}>
+          <View style={styles.topRow}>
+            <Text style={styles.name} numberOfLines={1}>{name}</Text>
+            {company.operating_status === "Active" ? (
+              <View style={styles.activeDot} />
+            ) : null}
           </View>
-        )}
-        {statusColor && <View style={[styles.statusDot, { backgroundColor: statusColor }]} />}
-      </View>
+          
+          <Text style={styles.industry} numberOfLines={1}>
+            {industry || "Technology"}
+          </Text>
 
-      {/* Info */}
-      <View style={styles.info}>
-        <View style={styles.nameRow}>
-          <Text style={styles.name} numberOfLines={1}>{name}</Text>
-          {industry && (
-            <>
-              <Text style={styles.separator}>•</Text>
-              <Text style={styles.industry} numberOfLines={1}>{industry}</Text>
-            </>
-          )}
+          <View style={styles.metrics}>
+            {funding ? (
+              <View style={styles.metricItem}>
+                <Ionicons name="cash-outline" size={12} color={colors.text.tertiary} />
+                <Text style={styles.metricText}>{formatFunding(funding)}</Text>
+              </View>
+            ) : null}
+            {employees ? (
+              <View style={styles.metricItem}>
+                <Ionicons name="people-outline" size={12} color={colors.text.tertiary} />
+                <Text style={styles.metricText}>
+                  {typeof employees === "number" ? employees.toLocaleString() : employees}
+                </Text>
+              </View>
+            ) : null}
+          </View>
         </View>
-        <View style={styles.metricsRow}>
-          {funding && (
-            <Text style={styles.metric}>{formatFunding(funding)}</Text>
-          )}
-          {funding && employees && <Text style={styles.metricSep}>|</Text>}
-          {employees && (
-            <Text style={styles.metric}>
-              {typeof employees === "number" ? `${employees} emp` : employees}
-            </Text>
-          )}
-          {!funding && !employees && company.founded_year && (
-            <Text style={styles.metric}>Est. {company.founded_year}</Text>
-          )}
-        </View>
-      </View>
 
-      {/* Actions */}
-      <View style={styles.actions}>
-        <Pressable
-          style={[styles.actionBtn, status === "disliked" && styles.actionActive]}
-          onPress={onDislike}
-          hitSlop={6}
-        >
-          <Ionicons
-            name="close"
-            size={18}
-            color={status === "disliked" ? colors.error : colors.text.tertiary}
+        {/* Action Buttons */}
+        <View style={styles.actions}>
+          <Button
+            variant="ghost"
+            size="icon"
+            icon="add"
+            onPress={onAddToList}
+            style={styles.actionButton}
           />
-        </Pressable>
-        <Pressable
-          style={[styles.actionBtn, status === "liked" && styles.actionActive]}
-          onPress={onLike}
-          hitSlop={6}
-        >
-          <Ionicons
-            name="heart"
-            size={16}
-            color={status === "liked" ? colors.brand.green : colors.text.tertiary}
+          <Button
+            variant="ghost"
+            size="icon"
+            icon="chevron-forward"
+            style={styles.actionButton}
           />
-        </Pressable>
-        <Pressable style={styles.actionBtn} onPress={onAddToList} hitSlop={6}>
-          <Ionicons name="add" size={18} color={colors.text.tertiary} />
-        </Pressable>
+        </View>
       </View>
-    </Pressable>
+      
+      {/* Highlights */}
+      {company.highlights && company.highlights.length > 0 && (
+        <View style={styles.highlights}>
+          {company.highlights.slice(0, 2).map((h, i) => (
+            <Badge key={i} variant="secondary" size="sm" style={styles.highlightChip}>
+              <Text style={styles.highlightText} numberOfLines={1}>{h.replace(/_/g, " ")}</Text>
+            </Badge>
+          ))}
+        </View>
+      )}
+    </Card>
   );
 }
 
+export default memo(CompanyCard);
+
 const styles = StyleSheet.create({
   card: {
+    borderRadius: 8,
+    padding: 24,
+    gap: 12,
+  },
+  content: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: colors.card.bg,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.content.borderLight,
   },
-  cardPressed: {
-    backgroundColor: colors.content.bgSecondary,
-  },
-  logoContainer: {
+  logoWrapper: {
     position: "relative",
-    marginRight: 10,
   },
   logo: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
+    width: 48,
+    height: 48,
+    borderRadius: 12,
     backgroundColor: colors.content.bgSecondary,
+    borderWidth: 1,
+    borderColor: colors.content.borderLight,
   },
   logoPlaceholder: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
-    backgroundColor: colors.brand.blue,
+    backgroundColor: colors.primary + "15",
     alignItems: "center",
     justifyContent: "center",
   },
-  logoText: {
-    color: colors.text.inverse,
-    fontSize: 16,
-    fontWeight: "600",
+  logoLetter: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: colors.primary,
   },
-  statusDot: {
+  statusBadge: {
     position: "absolute",
     bottom: -2,
     right: -2,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
     borderWidth: 2,
-    borderColor: colors.card.bg,
+    borderColor: "#FFF",
+    alignItems: "center",
+    justifyContent: "center",
   },
+  statusLiked: { backgroundColor: colors.success },
+  statusDisliked: { backgroundColor: colors.error },
+  statusViewed: { backgroundColor: colors.primary },
   info: {
     flex: 1,
-    marginRight: 8,
+    marginLeft: 12,
   },
-  nameRow: {
+  topRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 2,
+    gap: 6,
   },
   name: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: "600",
     color: colors.text.primary,
-    flexShrink: 1,
   },
-  separator: {
-    fontSize: 12,
-    color: colors.text.tertiary,
-    marginHorizontal: 6,
+  activeDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors.success,
   },
   industry: {
-    fontSize: 12,
+    fontSize: 13,
     color: colors.text.secondary,
-    flexShrink: 1,
+    marginTop: 2,
+    fontWeight: "500",
   },
-  metricsRow: {
+  metrics: {
+    flexDirection: "row",
+    marginTop: 6,
+    gap: 12,
+  },
+  metricItem: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 4,
   },
-  metric: {
+  metricText: {
     fontSize: 12,
     color: colors.text.tertiary,
-  },
-  metricSep: {
-    fontSize: 12,
-    color: colors.text.muted,
-    marginHorizontal: 6,
+    fontWeight: "600",
   },
   actions: {
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
   },
-  actionBtn: {
+  actionButton: {
     width: 32,
     height: 32,
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
   },
-  actionActive: {
-    backgroundColor: colors.content.bgTertiary,
+  highlights: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginTop: 4,
+    gap: 6,
+    borderTopWidth: 1,
+    borderTopColor: colors.content.borderLight,
+    paddingTop: 12,
+  },
+  highlightChip: {
+    maxWidth: "48%",
+  },
+  highlightText: {
+    fontSize: 11,
+    color: colors.text.secondary,
+    fontWeight: "600",
+    textTransform: "capitalize",
   },
 });

@@ -1,0 +1,2845 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": {
+    "page": 0,
+    "items": [
+      {
+        "id": "inv_9eb8496a579270b753955764",
+        "domain": "ycombinator.com",
+        "logoUrl": "https://specter-company-logo.s3.amazonaws.com/ycombinator.com.png",
+        "name": "Y Combinator",
+        "HQRegion": "North America",
+        "HQLocation": "Mountain View, California, United States, North America",
+        "rank": 1,
+        "types": [
+          "accelerator"
+        ],
+        "crunchbaseUrl": "crunchbase.com/organization/y-combinator",
+        "linkedinUrl": "linkedin.com/company/y-combinator",
+        "twitterUrl": "x.com/ycombinator",
+        "nInvestments": 8007,
+        "nLeadInvestments": 3272,
+        "nExits": 697,
+        "nFunds": 4,
+        "InvestorHighlights": [
+          {
+            "highlight": "high_investment_activity",
+            "isNew": false
+          },
+          {
+            "highlight": "lead_investor_spotlight",
+            "isNew": false
+          },
+          {
+            "highlight": "recent_investment",
+            "isNew": false
+          }
+        ],
+        "funds": [
+          {
+            "name": "Y Combinator Continuity Affiliates Fund I",
+            "announced_on": "2016-03-25",
+            "raised_amount_usd": "N/A"
+          },
+          {
+            "name": "Y COMBINATOR CONTINUITY FUND I, L.P",
+            "announced_on": "2015-07-15",
+            "raised_amount_usd": "700000000"
+          },
+          {
+            "name": "Y COMBINATOR FUND II",
+            "announced_on": "2010-04-06",
+            "raised_amount_usd": "N/A"
+          },
+          {
+            "name": "Y COMBINATOR FUND I",
+            "announced_on": "2009-05-01",
+            "raised_amount_usd": "N/A"
+          }
+        ],
+        "regionDistribution": [
+          {
+            "region": "North America",
+            "count": 4918
+          },
+          {
+            "region": "Asia",
+            "count": 432
+          },
+          {
+            "region": "Europe",
+            "count": 417
+          },
+          {
+            "region": "South America",
+            "count": 123
+          },
+          {
+            "region": "Africa",
+            "count": 88
+          },
+          {
+            "region": "Oceania",
+            "count": 19
+          }
+        ],
+        "stagesDistribution": [
+          {
+            "investment_type": "Seed",
+            "count": 3641
+          },
+          {
+            "investment_type": "Pre Seed",
+            "count": 3149
+          },
+          {
+            "investment_type": "Series A",
+            "count": 512
+          },
+          {
+            "investment_type": "Series Unknown",
+            "count": 207
+          },
+          {
+            "investment_type": "Series B",
+            "count": 183
+          },
+          {
+            "investment_type": "Series C",
+            "count": 61
+          },
+          {
+            "investment_type": "Series D",
+            "count": 28
+          },
+          {
+            "investment_type": "Angel",
+            "count": 25
+          },
+          {
+            "investment_type": "Grant",
+            "count": 22
+          },
+          {
+            "investment_type": "Convertible Note",
+            "count": 14
+          },
+          {
+            "investment_type": "Undisclosed",
+            "count": 13
+          },
+          {
+            "investment_type": "Non Equity Assistance",
+            "count": 9
+          },
+          {
+            "investment_type": "Series F",
+            "count": 8
+          },
+          {
+            "investment_type": "Series E",
+            "count": 6
+          },
+          {
+            "investment_type": "Series G",
+            "count": 5
+          },
+          {
+            "investment_type": "Debt Financing",
+            "count": 3
+          },
+          {
+            "investment_type": "Corporate Round",
+            "count": 2
+          },
+          {
+            "investment_type": "Private Equity",
+            "count": 2
+          },
+          {
+            "investment_type": "Secondary Market",
+            "count": 1
+          },
+          {
+            "investment_type": "Initial Coin Offering",
+            "count": 1
+          }
+        ],
+        "industryDistribution": [
+          {
+            "industry": "Information Technology",
+            "count": 3009
+          },
+          {
+            "industry": "Software",
+            "count": 2931
+          },
+          {
+            "industry": "Finance",
+            "count": 1056
+          },
+          {
+            "industry": "Data and Analytics",
+            "count": 1028
+          },
+          {
+            "industry": "Mobile, Platforms, and Apps",
+            "count": 625
+          },
+          {
+            "industry": "Health",
+            "count": 603
+          },
+          {
+            "industry": "DeepTech",
+            "count": 538
+          },
+          {
+            "industry": "Commerce and Shopping",
+            "count": 532
+          },
+          {
+            "industry": "Hardware",
+            "count": 367
+          },
+          {
+            "industry": "Transportation",
+            "count": 336
+          },
+          {
+            "industry": "Media",
+            "count": 318
+          },
+          {
+            "industry": "Administrative Services",
+            "count": 316
+          },
+          {
+            "industry": "Biotechnology",
+            "count": 311
+          },
+          {
+            "industry": "Manufacturing",
+            "count": 293
+          },
+          {
+            "industry": "Internet Services",
+            "count": 283
+          },
+          {
+            "industry": "Education",
+            "count": 268
+          },
+          {
+            "industry": "Sales and Marketing",
+            "count": 265
+          },
+          {
+            "industry": "Lending and Investments",
+            "count": 260
+          },
+          {
+            "industry": "Professional Services",
+            "count": 252
+          },
+          {
+            "industry": "HR and Recruiting",
+            "count": 249
+          },
+          {
+            "industry": "Consumer Products",
+            "count": 233
+          },
+          {
+            "industry": "Advertising",
+            "count": 216
+          },
+          {
+            "industry": "Real Estate",
+            "count": 190
+          },
+          {
+            "industry": "Community and Lifestyle",
+            "count": 184
+          },
+          {
+            "industry": "Food",
+            "count": 172
+          },
+          {
+            "industry": "Security",
+            "count": 148
+          },
+          {
+            "industry": "Blockchain and Crypto",
+            "count": 136
+          },
+          {
+            "industry": "Content and Publishing",
+            "count": 125
+          },
+          {
+            "industry": "Gaming",
+            "count": 116
+          },
+          {
+            "industry": "Sports",
+            "count": 109
+          },
+          {
+            "industry": "Energy",
+            "count": 98
+          },
+          {
+            "industry": "Design",
+            "count": 96
+          },
+          {
+            "industry": "Construction",
+            "count": 84
+          },
+          {
+            "industry": "Telecommunication",
+            "count": 84
+          },
+          {
+            "industry": "Sustainability",
+            "count": 83
+          },
+          {
+            "industry": "Travel and Tourism",
+            "count": 80
+          },
+          {
+            "industry": "Legal",
+            "count": 67
+          },
+          {
+            "industry": "Government and Military",
+            "count": 66
+          },
+          {
+            "industry": "Clothing and Apparel",
+            "count": 65
+          },
+          {
+            "industry": "Agriculture and Farming",
+            "count": 59
+          },
+          {
+            "industry": "Music",
+            "count": 59
+          },
+          {
+            "industry": "Events",
+            "count": 45
+          }
+        ],
+        "UserEntityStatus": [
+          {
+            "userId": "user_2jatqygwQlk8dRBMt1EPvTO7Snz",
+            "status": "viewed",
+            "updatedAt": "2025-04-09T01:51:02.621Z",
+            "user": {
+              "id": 2504,
+              "first_name": "Suryansh",
+              "last_name": "Verma",
+              "avatar": "https://images.clerk.dev/uploaded/img_2xyQuW8xlxV45NyWPxsloK5z2Ut"
+            }
+          },
+          {
+            "userId": "user_2opmi0sjbNp4YGaUO8tWl1Pu9pE",
+            "status": "viewed",
+            "updatedAt": "2025-04-07T16:25:24.118Z",
+            "user": {
+              "id": 2971,
+              "first_name": "David",
+              "last_name": "Looby",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2tGyppY0pX1dqLGUSI7vvTi9LxP",
+            "status": "viewed",
+            "updatedAt": "2025-04-08T10:13:14.946Z",
+            "user": {
+              "id": 3560,
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2Ap3t6QUhDoKLJ1tbHXFToUvsGy",
+            "status": "viewed",
+            "updatedAt": "2025-04-03T12:02:51.639Z",
+            "user": {
+              "id": 520,
+              "first_name": "Aditya",
+              "last_name": "Chopra",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "userId": "user_28hSN7d6yzZg0n05m6TZdKgQdCh",
+            "status": "viewed",
+            "updatedAt": "2025-04-03T15:20:36.934Z",
+            "user": {
+              "id": 71,
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "userId": "user_2gjJluevIIxNwNt7aVJchqoYVF7",
+            "status": "viewed",
+            "updatedAt": "2025-04-18T13:39:17.829Z",
+            "user": {
+              "id": 2274,
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "userId": "user_27mx2U73SiEB3v6BaTxqgGWjwyf",
+            "status": "viewed",
+            "updatedAt": "2025-04-16T20:00:16.631Z",
+            "user": {
+              "id": 72,
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "userId": "user_2Ai2TIx4ESEWYNcWnR79n7khxxk",
+            "status": "viewed",
+            "updatedAt": "2025-05-23T13:21:45.411Z",
+            "user": {
+              "id": 518,
+              "first_name": "Bhavik",
+              "last_name": "Jain",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Ai2kSeLS0elNUfFyCV2kIx8StS.jpeg"
+            }
+          },
+          {
+            "userId": "user_2Ai2NbZTMlxDi2SSI9M8xNShTOu",
+            "status": "viewed",
+            "updatedAt": "2025-09-29T17:08:40.087Z",
+            "user": {
+              "id": 517,
+              "first_name": "Alejandro",
+              "last_name": "Morales",
+              "avatar": "https://images.clerk.dev/uploaded/img_2MSVJ7LsJtZMkJ4dj2U3ZbcZsfY.jpeg"
+            }
+          },
+          {
+            "userId": "user_2AgrawmohLAHd8AOmUbCq52xnuS",
+            "status": "viewed",
+            "updatedAt": "2025-10-03T10:19:00.654Z",
+            "user": {
+              "id": 516,
+              "first_name": "Arun",
+              "last_name": "Baburaj",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Ai5FNNuSwydNzSZiDxH9j1uOyP.jpeg"
+            }
+          },
+          {
+            "userId": "user_2x2yZHncjAq8KNlKlF7upNokdui",
+            "status": "viewed",
+            "updatedAt": "2025-10-07T09:01:00.469Z",
+            "user": {
+              "id": 4221,
+              "first_name": "Sanchit",
+              "last_name": "Jaikumar",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2x7q5YgEFJaHNkucQHeicdmGGpS",
+            "status": "viewed",
+            "updatedAt": "2025-08-09T11:21:16.479Z",
+            "user": {
+              "id": 4237,
+              "first_name": "Saichandar",
+              "last_name": "Patro",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2M90Z5KlzVgpgGJHdPm4tqiLi5Q",
+            "status": "liked",
+            "updatedAt": "2025-08-29T10:38:31.906Z",
+            "user": {
+              "id": 1078,
+              "first_name": "Leonardo",
+              "last_name": "Teixeira",
+              "avatar": "https://images.clerk.dev/uploaded/img_2UwJITh0kd03jUGJNza3LMHBMZK.jpeg"
+            }
+          },
+          {
+            "userId": "user_2xV0Aum49lralggoJX4h9OBP1Dh",
+            "status": "viewed",
+            "updatedAt": "2025-08-22T10:56:29.337Z",
+            "user": {
+              "id": 4293,
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          },
+          {
+            "userId": "user_2opzPn16PyRp14B1Xia5GCBn1kz",
+            "status": "viewed",
+            "updatedAt": "2025-09-16T12:40:21.075Z",
+            "user": {
+              "id": 2972,
+              "first_name": "Henry",
+              "last_name": "Barnett",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2BTdH3yJshxoCcFIUW8PnMp4AJJ",
+            "status": "liked",
+            "updatedAt": "2025-12-27T23:42:47.480Z",
+            "user": {
+              "id": 533,
+              "first_name": "Francisco",
+              "last_name": "Terpolilli",
+              "avatar": "https://images.clerk.dev/uploaded/img_2E5BIJhegmvwsHlLHdYfN2NPpum.png"
+            }
+          },
+          {
+            "userId": "user_2o482PIz6crkXAVuBc2Bk8s1mcF",
+            "status": "viewed",
+            "updatedAt": "2025-06-12T15:02:53.913Z",
+            "user": {
+              "id": 2906,
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2jc0tEFW1shN1DMif1o9LxHNwX2",
+            "status": "viewed",
+            "updatedAt": "2025-10-03T10:07:17.732Z",
+            "user": {
+              "id": 2510,
+              "first_name": "Rohit Singh ",
+              "last_name": "Chauhan",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "userId": "user_2opva2jahltnNL8xOK7vArM0IBg",
+            "status": "viewed",
+            "updatedAt": "2025-09-15T16:36:15.069Z",
+            "user": {
+              "id": 4196,
+              "first_name": "Henry",
+              "last_name": "Barnett",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2zGc4EKLEp4m6f0sWrcW1D1UEjk",
+            "status": "viewed",
+            "updatedAt": "2025-09-19T12:57:14.645Z",
+            "user": {
+              "id": 4848,
+              "first_name": null,
+              "last_name": null,
+              "avatar": null
+            }
+          }
+        ],
+        "lists": [
+          {
+            "list": {
+              "name": "Favourites"
+            }
+          }
+        ],
+        "Company": {
+          "orgId": "92e53444-8858-467a-907d-ae2ec4ab0e2e",
+          "domain": "ycombinator.com"
+        },
+        "PersonInvestor": null,
+        "entityStatus": {
+          "status": "liked",
+          "updated_at": "Sat Dec 27 2025 23:42:47 GMT+0000 (Coordinated Universal Time)"
+        },
+        "teamEntityStatuses": [
+          {
+            "status": "viewed",
+            "updated_at": "Wed Apr 09 2025 01:51:02 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2504,
+              "first_name": "Suryansh",
+              "last_name": "Verma",
+              "avatar": "https://images.clerk.dev/uploaded/img_2xyQuW8xlxV45NyWPxsloK5z2Ut"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Mon Apr 07 2025 16:25:24 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2971,
+              "first_name": "David",
+              "last_name": "Looby",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Tue Apr 08 2025 10:13:14 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 3560,
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Thu Apr 03 2025 12:02:51 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 520,
+              "first_name": "Aditya",
+              "last_name": "Chopra",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Thu Apr 03 2025 15:20:36 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 71,
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Fri Apr 18 2025 13:39:17 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2274,
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Wed Apr 16 2025 20:00:16 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 72,
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Fri May 23 2025 13:21:45 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 518,
+              "first_name": "Bhavik",
+              "last_name": "Jain",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Ai2kSeLS0elNUfFyCV2kIx8StS.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Mon Sep 29 2025 17:08:40 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 517,
+              "first_name": "Alejandro",
+              "last_name": "Morales",
+              "avatar": "https://images.clerk.dev/uploaded/img_2MSVJ7LsJtZMkJ4dj2U3ZbcZsfY.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Fri Oct 03 2025 10:19:00 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 516,
+              "first_name": "Arun",
+              "last_name": "Baburaj",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Ai5FNNuSwydNzSZiDxH9j1uOyP.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Tue Oct 07 2025 09:01:00 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4221,
+              "first_name": "Sanchit",
+              "last_name": "Jaikumar",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Sat Aug 09 2025 11:21:16 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4237,
+              "first_name": "Saichandar",
+              "last_name": "Patro",
+              "avatar": null
+            }
+          },
+          {
+            "status": "liked",
+            "updated_at": "Fri Aug 29 2025 10:38:31 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 1078,
+              "first_name": "Leonardo",
+              "last_name": "Teixeira",
+              "avatar": "https://images.clerk.dev/uploaded/img_2UwJITh0kd03jUGJNza3LMHBMZK.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Fri Aug 22 2025 10:56:29 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4293,
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Tue Sep 16 2025 12:40:21 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2972,
+              "first_name": "Henry",
+              "last_name": "Barnett",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Thu Jun 12 2025 15:02:53 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2906,
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Fri Oct 03 2025 10:07:17 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2510,
+              "first_name": "Rohit Singh ",
+              "last_name": "Chauhan",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Mon Sep 15 2025 16:36:15 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4196,
+              "first_name": "Henry",
+              "last_name": "Barnett",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Fri Sep 19 2025 12:57:14 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4848,
+              "first_name": null,
+              "last_name": null,
+              "avatar": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "inv_7de7416dfbfb39045f700177",
+        "domain": null,
+        "logoUrl": null,
+        "name": "Techstars",
+        "HQRegion": "North America",
+        "HQLocation": "New City, New York, United States, North America",
+        "rank": 2,
+        "types": [
+          "accelerator",
+          "venture_capital"
+        ],
+        "crunchbaseUrl": null,
+        "linkedinUrl": null,
+        "twitterUrl": null,
+        "nInvestments": 6434,
+        "nLeadInvestments": 3321,
+        "nExits": 579,
+        "nFunds": 10,
+        "InvestorHighlights": [
+          {
+            "highlight": "high_investment_activity",
+            "isNew": false
+          },
+          {
+            "highlight": "lead_investor_spotlight",
+            "isNew": false
+          },
+          {
+            "highlight": "recent_investment",
+            "isNew": false
+          }
+        ],
+        "funds": [
+          {
+            "name": "Techstars Accelerator Fund",
+            "announced_on": "2023-06-28",
+            "raised_amount_usd": "150000000"
+          },
+          {
+            "name": "Techstars Rising Stars Fund",
+            "announced_on": "2022-01-01",
+            "raised_amount_usd": "N/A"
+          },
+          {
+            "name": "Rise Growth Investment",
+            "announced_on": "2019-01-23",
+            "raised_amount_usd": "N/A"
+          },
+          {
+            "name": "Techstars Music",
+            "announced_on": "2018-06-03",
+            "raised_amount_usd": "N/A"
+          },
+          {
+            "name": "Fund I",
+            "announced_on": "2017-10-23",
+            "raised_amount_usd": "6700000"
+          },
+          {
+            "name": "Techstars Chicago 2017 LLC",
+            "announced_on": "2017-06-01",
+            "raised_amount_usd": "3200000"
+          },
+          {
+            "name": "BARCLAYS BANK PLC /ENG/",
+            "announced_on": "2013-02-08",
+            "raised_amount_usd": "N/A"
+          },
+          {
+            "name": "Techstars Seattle 2013 Fund",
+            "announced_on": "2013-01-15",
+            "raised_amount_usd": "N/A"
+          },
+          {
+            "name": "TechStars Seattle 2010",
+            "announced_on": "2010-03-29",
+            "raised_amount_usd": "452500"
+          },
+          {
+            "name": "BARCLAYS GLOBAL INVESTORS UK HOLDINGS LTD",
+            "announced_on": "2009-12-22",
+            "raised_amount_usd": "N/A"
+          }
+        ],
+        "regionDistribution": [
+          {
+            "region": "North America",
+            "count": 3493
+          },
+          {
+            "region": "Europe",
+            "count": 812
+          },
+          {
+            "region": "Asia",
+            "count": 345
+          },
+          {
+            "region": "Africa",
+            "count": 91
+          },
+          {
+            "region": "Oceania",
+            "count": 55
+          },
+          {
+            "region": "South America",
+            "count": 41
+          }
+        ],
+        "stagesDistribution": [
+          {
+            "investment_type": "Pre Seed",
+            "count": 3344
+          },
+          {
+            "investment_type": "Seed",
+            "count": 2092
+          },
+          {
+            "investment_type": "Series A",
+            "count": 370
+          },
+          {
+            "investment_type": "Convertible Note",
+            "count": 181
+          },
+          {
+            "investment_type": "Series Unknown",
+            "count": 141
+          },
+          {
+            "investment_type": "Non Equity Assistance",
+            "count": 93
+          },
+          {
+            "investment_type": "Undisclosed",
+            "count": 41
+          },
+          {
+            "investment_type": "Series B",
+            "count": 41
+          },
+          {
+            "investment_type": "Angel",
+            "count": 38
+          },
+          {
+            "investment_type": "Grant",
+            "count": 14
+          },
+          {
+            "investment_type": "Debt Financing",
+            "count": 12
+          },
+          {
+            "investment_type": "Series C",
+            "count": 7
+          },
+          {
+            "investment_type": "Initial Coin Offering",
+            "count": 4
+          },
+          {
+            "investment_type": "Series D",
+            "count": 1
+          },
+          {
+            "investment_type": "Private Equity",
+            "count": 1
+          }
+        ],
+        "industryDistribution": [
+          {
+            "industry": "Information Technology",
+            "count": 1928
+          },
+          {
+            "industry": "Software",
+            "count": 1763
+          },
+          {
+            "industry": "Finance",
+            "count": 754
+          },
+          {
+            "industry": "Data and Analytics",
+            "count": 726
+          },
+          {
+            "industry": "Health",
+            "count": 536
+          },
+          {
+            "industry": "Commerce and Shopping",
+            "count": 529
+          },
+          {
+            "industry": "Mobile, Platforms, and Apps",
+            "count": 505
+          },
+          {
+            "industry": "Media",
+            "count": 385
+          },
+          {
+            "industry": "Hardware",
+            "count": 378
+          },
+          {
+            "industry": "Consumer Products",
+            "count": 352
+          },
+          {
+            "industry": "Manufacturing",
+            "count": 352
+          },
+          {
+            "industry": "Education",
+            "count": 325
+          },
+          {
+            "industry": "Transportation",
+            "count": 312
+          },
+          {
+            "industry": "Sales and Marketing",
+            "count": 307
+          },
+          {
+            "industry": "DeepTech",
+            "count": 301
+          },
+          {
+            "industry": "Administrative Services",
+            "count": 290
+          },
+          {
+            "industry": "Advertising",
+            "count": 280
+          },
+          {
+            "industry": "Sports",
+            "count": 246
+          },
+          {
+            "industry": "Internet Services",
+            "count": 232
+          },
+          {
+            "industry": "Professional Services",
+            "count": 228
+          },
+          {
+            "industry": "Community and Lifestyle",
+            "count": 216
+          },
+          {
+            "industry": "HR and Recruiting",
+            "count": 215
+          },
+          {
+            "industry": "Sustainability",
+            "count": 195
+          },
+          {
+            "industry": "Lending and Investments",
+            "count": 173
+          },
+          {
+            "industry": "Energy",
+            "count": 169
+          },
+          {
+            "industry": "Real Estate",
+            "count": 164
+          },
+          {
+            "industry": "Gaming",
+            "count": 147
+          },
+          {
+            "industry": "Blockchain and Crypto",
+            "count": 147
+          },
+          {
+            "industry": "Food",
+            "count": 146
+          },
+          {
+            "industry": "Travel and Tourism",
+            "count": 120
+          },
+          {
+            "industry": "Content and Publishing",
+            "count": 115
+          },
+          {
+            "industry": "Biotechnology",
+            "count": 107
+          },
+          {
+            "industry": "Agriculture and Farming",
+            "count": 103
+          },
+          {
+            "industry": "Clothing and Apparel",
+            "count": 99
+          },
+          {
+            "industry": "Design",
+            "count": 98
+          },
+          {
+            "industry": "Security",
+            "count": 97
+          },
+          {
+            "industry": "Music",
+            "count": 96
+          },
+          {
+            "industry": "Events",
+            "count": 69
+          },
+          {
+            "industry": "Construction",
+            "count": 63
+          },
+          {
+            "industry": "Telecommunication",
+            "count": 63
+          },
+          {
+            "industry": "Government and Military",
+            "count": 51
+          },
+          {
+            "industry": "Legal",
+            "count": 49
+          }
+        ],
+        "UserEntityStatus": [
+          {
+            "userId": "user_2M90Z5KlzVgpgGJHdPm4tqiLi5Q",
+            "status": "viewed",
+            "updatedAt": "2025-04-15T08:57:38.463Z",
+            "user": {
+              "id": 1078,
+              "first_name": "Leonardo",
+              "last_name": "Teixeira",
+              "avatar": "https://images.clerk.dev/uploaded/img_2UwJITh0kd03jUGJNza3LMHBMZK.jpeg"
+            }
+          },
+          {
+            "userId": "user_28hSN7d6yzZg0n05m6TZdKgQdCh",
+            "status": "viewed",
+            "updatedAt": "2025-04-17T09:01:46.083Z",
+            "user": {
+              "id": 71,
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "userId": "user_2tGyppY0pX1dqLGUSI7vvTi9LxP",
+            "status": "viewed",
+            "updatedAt": "2025-04-17T14:13:16.900Z",
+            "user": {
+              "id": 3560,
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2gjJluevIIxNwNt7aVJchqoYVF7",
+            "status": "viewed",
+            "updatedAt": "2025-04-22T12:36:15.025Z",
+            "user": {
+              "id": 2274,
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "userId": "user_27mx2U73SiEB3v6BaTxqgGWjwyf",
+            "status": "viewed",
+            "updatedAt": "2025-05-09T13:46:27.801Z",
+            "user": {
+              "id": 72,
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "userId": "user_2xV0Aum49lralggoJX4h9OBP1Dh",
+            "status": "viewed",
+            "updatedAt": "2025-08-22T10:56:29.750Z",
+            "user": {
+              "id": 4293,
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          },
+          {
+            "userId": "user_2BTdH3yJshxoCcFIUW8PnMp4AJJ",
+            "status": "viewed",
+            "updatedAt": "2025-11-12T18:37:29.454Z",
+            "user": {
+              "id": 533,
+              "first_name": "Francisco",
+              "last_name": "Terpolilli",
+              "avatar": "https://images.clerk.dev/uploaded/img_2E5BIJhegmvwsHlLHdYfN2NPpum.png"
+            }
+          },
+          {
+            "userId": "user_2o482PIz6crkXAVuBc2Bk8s1mcF",
+            "status": "viewed",
+            "updatedAt": "2025-11-28T11:03:42.118Z",
+            "user": {
+              "id": 2906,
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2zGc4EKLEp4m6f0sWrcW1D1UEjk",
+            "status": "viewed",
+            "updatedAt": "2025-11-26T15:21:28.473Z",
+            "user": {
+              "id": 4848,
+              "first_name": null,
+              "last_name": null,
+              "avatar": null
+            }
+          }
+        ],
+        "lists": [],
+        "Company": null,
+        "PersonInvestor": null,
+        "entityStatus": {
+          "status": "viewed",
+          "updated_at": "Wed Nov 12 2025 18:37:29 GMT+0000 (Coordinated Universal Time)"
+        },
+        "teamEntityStatuses": [
+          {
+            "status": "viewed",
+            "updated_at": "Tue Apr 15 2025 08:57:38 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 1078,
+              "first_name": "Leonardo",
+              "last_name": "Teixeira",
+              "avatar": "https://images.clerk.dev/uploaded/img_2UwJITh0kd03jUGJNza3LMHBMZK.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Thu Apr 17 2025 09:01:46 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 71,
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Thu Apr 17 2025 14:13:16 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 3560,
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Tue Apr 22 2025 12:36:15 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2274,
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Fri May 09 2025 13:46:27 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 72,
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Fri Aug 22 2025 10:56:29 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4293,
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Fri Nov 28 2025 11:03:42 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2906,
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Wed Nov 26 2025 15:21:28 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4848,
+              "first_name": null,
+              "last_name": null,
+              "avatar": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "inv_90c5da83ba17f4e0b1eb3c64",
+        "domain": null,
+        "logoUrl": null,
+        "name": "National Science Foundation",
+        "HQRegion": "North America",
+        "HQLocation": "Alexandria, Virginia, United States, North America",
+        "rank": 3,
+        "types": [
+          "entrepreneurship_program",
+          "government_office"
+        ],
+        "crunchbaseUrl": null,
+        "linkedinUrl": null,
+        "twitterUrl": null,
+        "nInvestments": 4598,
+        "nLeadInvestments": 4384,
+        "nExits": 249,
+        "nFunds": 1,
+        "InvestorHighlights": [
+          {
+            "highlight": "high_investment_activity",
+            "isNew": false
+          },
+          {
+            "highlight": "lead_investor_spotlight",
+            "isNew": false
+          },
+          {
+            "highlight": "recent_investment",
+            "isNew": true
+          }
+        ],
+        "funds": [
+          {
+            "name": "National Science Foundation Fund I: STEM",
+            "announced_on": "2016-06-22",
+            "raised_amount_usd": "1500000"
+          }
+        ],
+        "regionDistribution": [
+          {
+            "region": "North America",
+            "count": 3026
+          },
+          {
+            "region": "Europe",
+            "count": 9
+          },
+          {
+            "region": "Asia",
+            "count": 3
+          },
+          {
+            "region": "Africa",
+            "count": 2
+          },
+          {
+            "region": "South America",
+            "count": 1
+          }
+        ],
+        "stagesDistribution": [
+          {
+            "investment_type": "Grant",
+            "count": 4447
+          },
+          {
+            "investment_type": "Seed",
+            "count": 30
+          },
+          {
+            "investment_type": "Pre Seed",
+            "count": 11
+          },
+          {
+            "investment_type": "Non Equity Assistance",
+            "count": 6
+          },
+          {
+            "investment_type": "Angel",
+            "count": 3
+          },
+          {
+            "investment_type": "Series B",
+            "count": 3
+          },
+          {
+            "investment_type": "Series Unknown",
+            "count": 2
+          },
+          {
+            "investment_type": "Corporate Round",
+            "count": 1
+          },
+          {
+            "investment_type": "Convertible Note",
+            "count": 1
+          },
+          {
+            "investment_type": "Series A",
+            "count": 1
+          }
+        ],
+        "industryDistribution": [
+          {
+            "industry": "DeepTech",
+            "count": 1259
+          },
+          {
+            "industry": "Manufacturing",
+            "count": 983
+          },
+          {
+            "industry": "Biotechnology",
+            "count": 814
+          },
+          {
+            "industry": "Hardware",
+            "count": 732
+          },
+          {
+            "industry": "Health",
+            "count": 596
+          },
+          {
+            "industry": "Information Technology",
+            "count": 482
+          },
+          {
+            "industry": "Software",
+            "count": 445
+          },
+          {
+            "industry": "Education",
+            "count": 438
+          },
+          {
+            "industry": "Data and Analytics",
+            "count": 338
+          },
+          {
+            "industry": "Consumer Products",
+            "count": 312
+          },
+          {
+            "industry": "Energy",
+            "count": 306
+          },
+          {
+            "industry": "Sustainability",
+            "count": 262
+          },
+          {
+            "industry": "Agriculture and Farming",
+            "count": 154
+          },
+          {
+            "industry": "Professional Services",
+            "count": 118
+          },
+          {
+            "industry": "Transportation",
+            "count": 106
+          },
+          {
+            "industry": "Community and Lifestyle",
+            "count": 83
+          },
+          {
+            "industry": "Design",
+            "count": 72
+          },
+          {
+            "industry": "Mobile, Platforms, and Apps",
+            "count": 55
+          },
+          {
+            "industry": "Media",
+            "count": 53
+          },
+          {
+            "industry": "Construction",
+            "count": 53
+          },
+          {
+            "industry": "Telecommunication",
+            "count": 50
+          },
+          {
+            "industry": "Internet Services",
+            "count": 50
+          },
+          {
+            "industry": "Security",
+            "count": 49
+          },
+          {
+            "industry": "Government and Military",
+            "count": 46
+          },
+          {
+            "industry": "Administrative Services",
+            "count": 44
+          },
+          {
+            "industry": "Real Estate",
+            "count": 44
+          },
+          {
+            "industry": "Gaming",
+            "count": 39
+          },
+          {
+            "industry": "Sports",
+            "count": 35
+          },
+          {
+            "industry": "Finance",
+            "count": 33
+          },
+          {
+            "industry": "Food",
+            "count": 32
+          },
+          {
+            "industry": "Content and Publishing",
+            "count": 29
+          },
+          {
+            "industry": "Commerce and Shopping",
+            "count": 28
+          },
+          {
+            "industry": "HR and Recruiting",
+            "count": 24
+          },
+          {
+            "industry": "Sales and Marketing",
+            "count": 19
+          },
+          {
+            "industry": "Blockchain and Crypto",
+            "count": 17
+          },
+          {
+            "industry": "Clothing and Apparel",
+            "count": 16
+          },
+          {
+            "industry": "Advertising",
+            "count": 12
+          },
+          {
+            "industry": "Lending and Investments",
+            "count": 11
+          },
+          {
+            "industry": "Travel and Tourism",
+            "count": 7
+          },
+          {
+            "industry": "Music",
+            "count": 6
+          },
+          {
+            "industry": "Legal",
+            "count": 5
+          },
+          {
+            "industry": "Events",
+            "count": 2
+          }
+        ],
+        "UserEntityStatus": [
+          {
+            "userId": "user_28hSN7d6yzZg0n05m6TZdKgQdCh",
+            "status": "viewed",
+            "updatedAt": "2025-04-18T11:21:56.660Z",
+            "user": {
+              "id": 71,
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "userId": "user_2M90Z5KlzVgpgGJHdPm4tqiLi5Q",
+            "status": "viewed",
+            "updatedAt": "2025-04-14T18:58:55.136Z",
+            "user": {
+              "id": 1078,
+              "first_name": "Leonardo",
+              "last_name": "Teixeira",
+              "avatar": "https://images.clerk.dev/uploaded/img_2UwJITh0kd03jUGJNza3LMHBMZK.jpeg"
+            }
+          },
+          {
+            "userId": "user_2o482PIz6crkXAVuBc2Bk8s1mcF",
+            "status": "viewed",
+            "updatedAt": "2025-04-23T10:33:33.656Z",
+            "user": {
+              "id": 2906,
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2gjJluevIIxNwNt7aVJchqoYVF7",
+            "status": "viewed",
+            "updatedAt": "2025-04-23T10:46:55.543Z",
+            "user": {
+              "id": 2274,
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "userId": "user_27mx2U73SiEB3v6BaTxqgGWjwyf",
+            "status": "viewed",
+            "updatedAt": "2025-05-09T13:47:18.597Z",
+            "user": {
+              "id": 72,
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "userId": "user_2Ai2NbZTMlxDi2SSI9M8xNShTOu",
+            "status": "viewed",
+            "updatedAt": "2025-08-11T13:14:27.322Z",
+            "user": {
+              "id": 517,
+              "first_name": "Alejandro",
+              "last_name": "Morales",
+              "avatar": "https://images.clerk.dev/uploaded/img_2MSVJ7LsJtZMkJ4dj2U3ZbcZsfY.jpeg"
+            }
+          },
+          {
+            "userId": "user_2tGyppY0pX1dqLGUSI7vvTi9LxP",
+            "status": "viewed",
+            "updatedAt": "2025-10-20T14:11:54.420Z",
+            "user": {
+              "id": 3560,
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2xV0Aum49lralggoJX4h9OBP1Dh",
+            "status": "viewed",
+            "updatedAt": "2025-08-22T10:56:30.319Z",
+            "user": {
+              "id": 4293,
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          },
+          {
+            "userId": "user_2BTdH3yJshxoCcFIUW8PnMp4AJJ",
+            "status": "viewed",
+            "updatedAt": "2025-11-12T18:37:30.033Z",
+            "user": {
+              "id": 533,
+              "first_name": "Francisco",
+              "last_name": "Terpolilli",
+              "avatar": "https://images.clerk.dev/uploaded/img_2E5BIJhegmvwsHlLHdYfN2NPpum.png"
+            }
+          },
+          {
+            "userId": "user_2zGc4EKLEp4m6f0sWrcW1D1UEjk",
+            "status": "viewed",
+            "updatedAt": "2025-12-08T14:43:09.531Z",
+            "user": {
+              "id": 4848,
+              "first_name": null,
+              "last_name": null,
+              "avatar": null
+            }
+          }
+        ],
+        "lists": [],
+        "Company": null,
+        "PersonInvestor": null,
+        "entityStatus": {
+          "status": "viewed",
+          "updated_at": "Wed Nov 12 2025 18:37:30 GMT+0000 (Coordinated Universal Time)"
+        },
+        "teamEntityStatuses": [
+          {
+            "status": "viewed",
+            "updated_at": "Fri Apr 18 2025 11:21:56 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 71,
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Mon Apr 14 2025 18:58:55 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 1078,
+              "first_name": "Leonardo",
+              "last_name": "Teixeira",
+              "avatar": "https://images.clerk.dev/uploaded/img_2UwJITh0kd03jUGJNza3LMHBMZK.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Wed Apr 23 2025 10:33:33 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2906,
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Wed Apr 23 2025 10:46:55 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2274,
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Fri May 09 2025 13:47:18 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 72,
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Mon Aug 11 2025 13:14:27 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 517,
+              "first_name": "Alejandro",
+              "last_name": "Morales",
+              "avatar": "https://images.clerk.dev/uploaded/img_2MSVJ7LsJtZMkJ4dj2U3ZbcZsfY.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Mon Oct 20 2025 14:11:54 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 3560,
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Fri Aug 22 2025 10:56:30 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4293,
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Mon Dec 08 2025 14:43:09 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4848,
+              "first_name": null,
+              "last_name": null,
+              "avatar": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "inv_7fb1cbfa5cf171152320f2b4",
+        "domain": "nea.com",
+        "logoUrl": "https://specter-company-logo.s3.amazonaws.com/nea.com.png",
+        "name": "New Enterprise Associates",
+        "HQRegion": "North America",
+        "HQLocation": "Menlo Park, California, United States, North America",
+        "rank": 4,
+        "types": [
+          "venture_capital"
+        ],
+        "crunchbaseUrl": "crunchbase.com/organization/new-enterprise-associates",
+        "linkedinUrl": "linkedin.com/company/new-enterprise-associates",
+        "twitterUrl": "x.com/nea",
+        "nInvestments": 2312,
+        "nLeadInvestments": 820,
+        "nExits": 599,
+        "nFunds": 16,
+        "InvestorHighlights": [
+          {
+            "highlight": "high_exit_ratio",
+            "isNew": false
+          },
+          {
+            "highlight": "high_investment_activity",
+            "isNew": false
+          },
+          {
+            "highlight": "lead_investor_spotlight",
+            "isNew": false
+          },
+          {
+            "highlight": "recent_investment",
+            "isNew": false
+          }
+        ],
+        "funds": [
+          {
+            "name": "NEA Secondary Opportunity Fund",
+            "announced_on": "2024-07-03",
+            "raised_amount_usd": "468000000"
+          },
+          {
+            "name": "NEA Special Purpose Fund",
+            "announced_on": "2024-06-21",
+            "raised_amount_usd": "78000000"
+          },
+          {
+            "name": "NEA 18",
+            "announced_on": "2023-01-26",
+            "raised_amount_usd": "3100000000"
+          },
+          {
+            "name": "NEA 18 VGE",
+            "announced_on": "2023-01-26",
+            "raised_amount_usd": "3100000000"
+          },
+          {
+            "name": "NEA 18 LP",
+            "announced_on": "2022-05-24",
+            "raised_amount_usd": "2845331500"
+          },
+          {
+            "name": "NEA 18 Venture Growth Equity",
+            "announced_on": "2022-05-24",
+            "raised_amount_usd": "2300000000"
+          },
+          {
+            "name": "NEA 17 LP",
+            "announced_on": "2020-03-11",
+            "raised_amount_usd": "3600000000"
+          },
+          {
+            "name": "NEA BH SPV",
+            "announced_on": "2019-12-19",
+            "raised_amount_usd": "129300000"
+          },
+          {
+            "name": "NEA 16 LP",
+            "announced_on": "2017-06-19",
+            "raised_amount_usd": "3300000000"
+          },
+          {
+            "name": "NEA 15, LP",
+            "announced_on": "2015-04-15",
+            "raised_amount_usd": "2800000000"
+          },
+          {
+            "name": "NEA The opportunity fund",
+            "announced_on": "2015-04-15",
+            "raised_amount_usd": "350000000"
+          },
+          {
+            "name": "NEA 14, LP",
+            "announced_on": "2012-01-01",
+            "raised_amount_usd": "2600000000"
+          },
+          {
+            "name": "NEA 13, LP",
+            "announced_on": "2010-01-06",
+            "raised_amount_usd": "1000000000"
+          },
+          {
+            "name": "NEA - IndoUS Ventures LLC",
+            "announced_on": "2006-12-08",
+            "raised_amount_usd": "N/A"
+          },
+          {
+            "name": "NEA 12, LP",
+            "announced_on": "2006-05-22",
+            "raised_amount_usd": "N/A"
+          },
+          {
+            "name": "New Enterprise Associates 11 LP",
+            "announced_on": "2003-12-30",
+            "raised_amount_usd": "1000000000"
+          }
+        ],
+        "regionDistribution": [
+          {
+            "region": "North America",
+            "count": 1038
+          },
+          {
+            "region": "Asia",
+            "count": 66
+          },
+          {
+            "region": "Europe",
+            "count": 54
+          },
+          {
+            "region": "South America",
+            "count": 2
+          },
+          {
+            "region": "Africa",
+            "count": 2
+          },
+          {
+            "region": "Oceania",
+            "count": 1
+          }
+        ],
+        "stagesDistribution": [
+          {
+            "investment_type": "Series B",
+            "count": 473
+          },
+          {
+            "investment_type": "Series A",
+            "count": 469
+          },
+          {
+            "investment_type": "Series Unknown",
+            "count": 332
+          },
+          {
+            "investment_type": "Series C",
+            "count": 313
+          },
+          {
+            "investment_type": "Seed",
+            "count": 239
+          },
+          {
+            "investment_type": "Series D",
+            "count": 163
+          },
+          {
+            "investment_type": "Post Ipo Equity",
+            "count": 77
+          },
+          {
+            "investment_type": "Series E",
+            "count": 76
+          },
+          {
+            "investment_type": "Series F",
+            "count": 34
+          },
+          {
+            "investment_type": "Debt Financing",
+            "count": 15
+          },
+          {
+            "investment_type": "Private Equity",
+            "count": 12
+          },
+          {
+            "investment_type": "Series G",
+            "count": 12
+          },
+          {
+            "investment_type": "Pre Seed",
+            "count": 9
+          },
+          {
+            "investment_type": "Convertible Note",
+            "count": 7
+          },
+          {
+            "investment_type": "Post Ipo Debt",
+            "count": 2
+          },
+          {
+            "investment_type": "Series H",
+            "count": 1
+          },
+          {
+            "investment_type": "Angel",
+            "count": 1
+          },
+          {
+            "investment_type": "Corporate Round",
+            "count": 1
+          },
+          {
+            "investment_type": "Secondary Market",
+            "count": 1
+          }
+        ],
+        "industryDistribution": [
+          {
+            "industry": "Information Technology",
+            "count": 421
+          },
+          {
+            "industry": "Software",
+            "count": 369
+          },
+          {
+            "industry": "DeepTech",
+            "count": 269
+          },
+          {
+            "industry": "Biotechnology",
+            "count": 226
+          },
+          {
+            "industry": "Hardware",
+            "count": 206
+          },
+          {
+            "industry": "Health",
+            "count": 203
+          },
+          {
+            "industry": "Data and Analytics",
+            "count": 158
+          },
+          {
+            "industry": "Manufacturing",
+            "count": 154
+          },
+          {
+            "industry": "Commerce and Shopping",
+            "count": 100
+          },
+          {
+            "industry": "Consumer Products",
+            "count": 96
+          },
+          {
+            "industry": "Mobile, Platforms, and Apps",
+            "count": 89
+          },
+          {
+            "industry": "Finance",
+            "count": 85
+          },
+          {
+            "industry": "Internet Services",
+            "count": 80
+          },
+          {
+            "industry": "Media",
+            "count": 74
+          },
+          {
+            "industry": "Sales and Marketing",
+            "count": 62
+          },
+          {
+            "industry": "Advertising",
+            "count": 60
+          },
+          {
+            "industry": "Telecommunication",
+            "count": 59
+          },
+          {
+            "industry": "Professional Services",
+            "count": 41
+          },
+          {
+            "industry": "Security",
+            "count": 40
+          },
+          {
+            "industry": "Education",
+            "count": 37
+          },
+          {
+            "industry": "Transportation",
+            "count": 36
+          },
+          {
+            "industry": "Administrative Services",
+            "count": 35
+          },
+          {
+            "industry": "Energy",
+            "count": 34
+          },
+          {
+            "industry": "Content and Publishing",
+            "count": 32
+          },
+          {
+            "industry": "Sustainability",
+            "count": 26
+          },
+          {
+            "industry": "Community and Lifestyle",
+            "count": 26
+          },
+          {
+            "industry": "Clothing and Apparel",
+            "count": 25
+          },
+          {
+            "industry": "HR and Recruiting",
+            "count": 24
+          },
+          {
+            "industry": "Gaming",
+            "count": 21
+          },
+          {
+            "industry": "Design",
+            "count": 18
+          },
+          {
+            "industry": "Lending and Investments",
+            "count": 18
+          },
+          {
+            "industry": "Travel and Tourism",
+            "count": 17
+          },
+          {
+            "industry": "Sports",
+            "count": 14
+          },
+          {
+            "industry": "Blockchain and Crypto",
+            "count": 12
+          },
+          {
+            "industry": "Real Estate",
+            "count": 12
+          },
+          {
+            "industry": "Music",
+            "count": 11
+          },
+          {
+            "industry": "Construction",
+            "count": 10
+          },
+          {
+            "industry": "Legal",
+            "count": 10
+          },
+          {
+            "industry": "Government and Military",
+            "count": 8
+          },
+          {
+            "industry": "Food",
+            "count": 7
+          },
+          {
+            "industry": "Events",
+            "count": 6
+          },
+          {
+            "industry": "Agriculture and Farming",
+            "count": 5
+          }
+        ],
+        "UserEntityStatus": [
+          {
+            "userId": "user_28hSN7d6yzZg0n05m6TZdKgQdCh",
+            "status": "viewed",
+            "updatedAt": "2025-04-02T15:51:57.284Z",
+            "user": {
+              "id": 71,
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "userId": "user_2M90Z5KlzVgpgGJHdPm4tqiLi5Q",
+            "status": "viewed",
+            "updatedAt": "2025-04-14T16:08:51.028Z",
+            "user": {
+              "id": 1078,
+              "first_name": "Leonardo",
+              "last_name": "Teixeira",
+              "avatar": "https://images.clerk.dev/uploaded/img_2UwJITh0kd03jUGJNza3LMHBMZK.jpeg"
+            }
+          },
+          {
+            "userId": "user_2gjJluevIIxNwNt7aVJchqoYVF7",
+            "status": "viewed",
+            "updatedAt": "2025-04-22T14:16:54.428Z",
+            "user": {
+              "id": 2274,
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "userId": "user_27mx2U73SiEB3v6BaTxqgGWjwyf",
+            "status": "viewed",
+            "updatedAt": "2025-04-22T16:17:45.844Z",
+            "user": {
+              "id": 72,
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "userId": "user_2Ai2NbZTMlxDi2SSI9M8xNShTOu",
+            "status": "viewed",
+            "updatedAt": "2025-08-11T13:14:32.213Z",
+            "user": {
+              "id": 517,
+              "first_name": "Alejandro",
+              "last_name": "Morales",
+              "avatar": "https://images.clerk.dev/uploaded/img_2MSVJ7LsJtZMkJ4dj2U3ZbcZsfY.jpeg"
+            }
+          },
+          {
+            "userId": "user_2zGc4EKLEp4m6f0sWrcW1D1UEjk",
+            "status": "viewed",
+            "updatedAt": "2025-12-08T13:22:59.889Z",
+            "user": {
+              "id": 4848,
+              "first_name": null,
+              "last_name": null,
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2tGyppY0pX1dqLGUSI7vvTi9LxP",
+            "status": "viewed",
+            "updatedAt": "2025-06-25T14:47:06.681Z",
+            "user": {
+              "id": 3560,
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2xV0Aum49lralggoJX4h9OBP1Dh",
+            "status": "viewed",
+            "updatedAt": "2025-08-22T10:56:31.485Z",
+            "user": {
+              "id": 4293,
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          },
+          {
+            "userId": "user_2BTdH3yJshxoCcFIUW8PnMp4AJJ",
+            "status": "disliked",
+            "updatedAt": "2025-11-12T17:42:21.361Z",
+            "user": {
+              "id": 533,
+              "first_name": "Francisco",
+              "last_name": "Terpolilli",
+              "avatar": "https://images.clerk.dev/uploaded/img_2E5BIJhegmvwsHlLHdYfN2NPpum.png"
+            }
+          },
+          {
+            "userId": "user_2zJUoEChehwl4l4wf67AYfqy0Dl",
+            "status": "viewed",
+            "updatedAt": "2025-12-09T10:13:21.652Z",
+            "user": {
+              "id": 4622,
+              "first_name": "Aliaksandr",
+              "last_name": "Yakushau",
+              "avatar": null
+            }
+          }
+        ],
+        "lists": [],
+        "Company": {
+          "orgId": "aa659e48-cd88-4c0d-9b39-4389dc77455b",
+          "domain": "nea.com"
+        },
+        "PersonInvestor": null,
+        "entityStatus": {
+          "status": "disliked",
+          "updated_at": "Wed Nov 12 2025 17:42:21 GMT+0000 (Coordinated Universal Time)"
+        },
+        "teamEntityStatuses": [
+          {
+            "status": "viewed",
+            "updated_at": "Wed Apr 02 2025 15:51:57 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 71,
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Mon Apr 14 2025 16:08:51 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 1078,
+              "first_name": "Leonardo",
+              "last_name": "Teixeira",
+              "avatar": "https://images.clerk.dev/uploaded/img_2UwJITh0kd03jUGJNza3LMHBMZK.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Tue Apr 22 2025 14:16:54 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2274,
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Tue Apr 22 2025 16:17:45 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 72,
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Mon Aug 11 2025 13:14:32 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 517,
+              "first_name": "Alejandro",
+              "last_name": "Morales",
+              "avatar": "https://images.clerk.dev/uploaded/img_2MSVJ7LsJtZMkJ4dj2U3ZbcZsfY.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Mon Dec 08 2025 13:22:59 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4848,
+              "first_name": null,
+              "last_name": null,
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Wed Jun 25 2025 14:47:06 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 3560,
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Fri Aug 22 2025 10:56:31 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4293,
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Tue Dec 09 2025 10:13:21 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4622,
+              "first_name": "Aliaksandr",
+              "last_name": "Yakushau",
+              "avatar": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "inv_97218675b981f2f205da84ea",
+        "domain": "sofinnova.com",
+        "logoUrl": "https://specter-company-logo.s3.amazonaws.com/sofinnova.com.jpeg",
+        "name": "Sofinnova Investments",
+        "HQRegion": "North America",
+        "HQLocation": "Menlo Park, California, United States, North America",
+        "rank": 5,
+        "types": [
+          "venture_capital"
+        ],
+        "crunchbaseUrl": "crunchbase.com/organization/sofinnova-ventures",
+        "linkedinUrl": "linkedin.com/company/sofinnova-ventures",
+        "twitterUrl": "x.com/sofinnova",
+        "nInvestments": 308,
+        "nLeadInvestments": 78,
+        "nExits": 119,
+        "nFunds": 4,
+        "InvestorHighlights": [
+          {
+            "highlight": "high_exit_ratio",
+            "isNew": false
+          },
+          {
+            "highlight": "lead_investor_spotlight",
+            "isNew": false
+          },
+          {
+            "highlight": "recent_investment",
+            "isNew": true
+          }
+        ],
+        "funds": [
+          {
+            "name": "Sofinnova Venture Partners X, L.P.",
+            "announced_on": "2016-10-17",
+            "raised_amount_usd": "650000000"
+          },
+          {
+            "name": "Sofinnova Venture Partners IX, L.P.",
+            "announced_on": "2014-07-23",
+            "raised_amount_usd": "500000000"
+          },
+          {
+            "name": "Sofinnova Venture Partners VIII, L.P.",
+            "announced_on": "2011-10-17",
+            "raised_amount_usd": "440000000"
+          },
+          {
+            "name": "Sofinnova Venture Partners VI LP",
+            "announced_on": "2003-11-07",
+            "raised_amount_usd": "220000000"
+          }
+        ],
+        "regionDistribution": [
+          {
+            "region": "North America",
+            "count": 138
+          },
+          {
+            "region": "Europe",
+            "count": 33
+          },
+          {
+            "region": "Asia",
+            "count": 1
+          }
+        ],
+        "stagesDistribution": [
+          {
+            "investment_type": "Series B",
+            "count": 76
+          },
+          {
+            "investment_type": "Series A",
+            "count": 68
+          },
+          {
+            "investment_type": "Series Unknown",
+            "count": 62
+          },
+          {
+            "investment_type": "Series C",
+            "count": 43
+          },
+          {
+            "investment_type": "Series D",
+            "count": 25
+          },
+          {
+            "investment_type": "Post Ipo Equity",
+            "count": 11
+          },
+          {
+            "investment_type": "Series E",
+            "count": 7
+          },
+          {
+            "investment_type": "Seed",
+            "count": 3
+          },
+          {
+            "investment_type": "Series F",
+            "count": 2
+          },
+          {
+            "investment_type": "Debt Financing",
+            "count": 1
+          },
+          {
+            "investment_type": "Private Equity",
+            "count": 1
+          }
+        ],
+        "industryDistribution": [
+          {
+            "industry": "DeepTech",
+            "count": 134
+          },
+          {
+            "industry": "Biotechnology",
+            "count": 133
+          },
+          {
+            "industry": "Health",
+            "count": 57
+          },
+          {
+            "industry": "Manufacturing",
+            "count": 29
+          },
+          {
+            "industry": "Hardware",
+            "count": 16
+          },
+          {
+            "industry": "Software",
+            "count": 15
+          },
+          {
+            "industry": "Information Technology",
+            "count": 14
+          },
+          {
+            "industry": "Consumer Products",
+            "count": 10
+          },
+          {
+            "industry": "Telecommunication",
+            "count": 7
+          },
+          {
+            "industry": "Media",
+            "count": 7
+          },
+          {
+            "industry": "Internet Services",
+            "count": 6
+          },
+          {
+            "industry": "Data and Analytics",
+            "count": 5
+          },
+          {
+            "industry": "Mobile, Platforms, and Apps",
+            "count": 4
+          },
+          {
+            "industry": "Administrative Services",
+            "count": 4
+          },
+          {
+            "industry": "Community and Lifestyle",
+            "count": 4
+          },
+          {
+            "industry": "Security",
+            "count": 3
+          },
+          {
+            "industry": "Education",
+            "count": 3
+          },
+          {
+            "industry": "Advertising",
+            "count": 3
+          },
+          {
+            "industry": "Energy",
+            "count": 2
+          },
+          {
+            "industry": "Professional Services",
+            "count": 2
+          },
+          {
+            "industry": "Transportation",
+            "count": 2
+          },
+          {
+            "industry": "Sustainability",
+            "count": 2
+          },
+          {
+            "industry": "Clothing and Apparel",
+            "count": 1
+          },
+          {
+            "industry": "Sales and Marketing",
+            "count": 1
+          },
+          {
+            "industry": "Design",
+            "count": 1
+          },
+          {
+            "industry": "Music",
+            "count": 1
+          },
+          {
+            "industry": "Commerce and Shopping",
+            "count": 1
+          },
+          {
+            "industry": "Food",
+            "count": 1
+          }
+        ],
+        "UserEntityStatus": [
+          {
+            "userId": "user_2gjJluevIIxNwNt7aVJchqoYVF7",
+            "status": "viewed",
+            "updatedAt": "2025-04-24T15:19:27.117Z",
+            "user": {
+              "id": 2274,
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "userId": "user_2jatqygwQlk8dRBMt1EPvTO7Snz",
+            "status": "viewed",
+            "updatedAt": "2025-05-11T11:57:10.802Z",
+            "user": {
+              "id": 2504,
+              "first_name": "Suryansh",
+              "last_name": "Verma",
+              "avatar": "https://images.clerk.dev/uploaded/img_2xyQuW8xlxV45NyWPxsloK5z2Ut"
+            }
+          },
+          {
+            "userId": "user_2o482PIz6crkXAVuBc2Bk8s1mcF",
+            "status": "viewed",
+            "updatedAt": "2025-06-18T15:34:52.580Z",
+            "user": {
+              "id": 2906,
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_28hSN7d6yzZg0n05m6TZdKgQdCh",
+            "status": "viewed",
+            "updatedAt": "2025-07-23T16:01:21.362Z",
+            "user": {
+              "id": 71,
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "userId": "user_2Ai2NbZTMlxDi2SSI9M8xNShTOu",
+            "status": "viewed",
+            "updatedAt": "2025-08-11T13:14:33.625Z",
+            "user": {
+              "id": 517,
+              "first_name": "Alejandro",
+              "last_name": "Morales",
+              "avatar": "https://images.clerk.dev/uploaded/img_2MSVJ7LsJtZMkJ4dj2U3ZbcZsfY.jpeg"
+            }
+          },
+          {
+            "userId": "user_2jc0tEFW1shN1DMif1o9LxHNwX2",
+            "status": "viewed",
+            "updatedAt": "2025-08-12T12:11:13.908Z",
+            "user": {
+              "id": 2510,
+              "first_name": "Rohit Singh ",
+              "last_name": "Chauhan",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "userId": "user_2xV0Aum49lralggoJX4h9OBP1Dh",
+            "status": "viewed",
+            "updatedAt": "2025-08-22T10:56:31.829Z",
+            "user": {
+              "id": 4293,
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          },
+          {
+            "userId": "user_2BTdH3yJshxoCcFIUW8PnMp4AJJ",
+            "status": "viewed",
+            "updatedAt": "2025-11-12T18:37:31.387Z",
+            "user": {
+              "id": 533,
+              "first_name": "Francisco",
+              "last_name": "Terpolilli",
+              "avatar": "https://images.clerk.dev/uploaded/img_2E5BIJhegmvwsHlLHdYfN2NPpum.png"
+            }
+          },
+          {
+            "userId": "user_2tGyppY0pX1dqLGUSI7vvTi9LxP",
+            "status": "viewed",
+            "updatedAt": "2025-07-17T14:54:52.682Z",
+            "user": {
+              "id": 3560,
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "userId": "user_2x7q5YgEFJaHNkucQHeicdmGGpS",
+            "status": "viewed",
+            "updatedAt": "2025-09-11T17:03:17.083Z",
+            "user": {
+              "id": 4237,
+              "first_name": "Saichandar",
+              "last_name": "Patro",
+              "avatar": null
+            }
+          }
+        ],
+        "lists": [],
+        "Company": {
+          "orgId": "48ebf075-a76b-4e22-a131-8a5e4fbddef4",
+          "domain": "sofinnova.com"
+        },
+        "PersonInvestor": null,
+        "entityStatus": {
+          "status": "viewed",
+          "updated_at": "Wed Nov 12 2025 18:37:31 GMT+0000 (Coordinated Universal Time)"
+        },
+        "teamEntityStatuses": [
+          {
+            "status": "viewed",
+            "updated_at": "Thu Apr 24 2025 15:19:27 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2274,
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Sun May 11 2025 11:57:10 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2504,
+              "first_name": "Suryansh",
+              "last_name": "Verma",
+              "avatar": "https://images.clerk.dev/uploaded/img_2xyQuW8xlxV45NyWPxsloK5z2Ut"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Wed Jun 18 2025 15:34:52 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2906,
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Wed Jul 23 2025 16:01:21 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 71,
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Mon Aug 11 2025 13:14:33 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 517,
+              "first_name": "Alejandro",
+              "last_name": "Morales",
+              "avatar": "https://images.clerk.dev/uploaded/img_2MSVJ7LsJtZMkJ4dj2U3ZbcZsfY.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Tue Aug 12 2025 12:11:13 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 2510,
+              "first_name": "Rohit Singh ",
+              "last_name": "Chauhan",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Fri Aug 22 2025 10:56:31 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4293,
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Thu Jul 17 2025 14:54:52 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 3560,
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "Thu Sep 11 2025 17:03:17 GMT+0000 (Coordinated Universal Time)",
+            "user": {
+              "id": 4237,
+              "first_name": "Saichandar",
+              "last_name": "Patro",
+              "avatar": null
+            }
+          }
+        ]
+      }
+    ],
+    "affinity": {},
+    "filters": [],
+    "sort": {}
+  }
+}

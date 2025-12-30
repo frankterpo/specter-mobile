@@ -1,0 +1,9 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": {
+    "companies": 878,
+    "people": 54930,
+    "investors": 59
+  }
+}

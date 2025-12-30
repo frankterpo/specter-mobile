@@ -1,0 +1,3955 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": {
+    "page": 0,
+    "items": [
+      {
+        "first_name": "Dave",
+        "last_name": "H.",
+        "full_name": "Dave H.",
+        "linkedin_url": "https://www.linkedin.com/in/dave-h-25981a1",
+        "twitter_url": null,
+        "github_url": null,
+        "cb_url": null,
+        "about": ">25 years in the Pharma, CRO and tech(bio) sectors as a medicinal chemist and executive manager.  Significant experience across Discovery and early Development of small molecules.  Therapeutic area expertise within Neuroscience & pain.  Leveraging the power of generative design with cutting edge automation.  Application of multimodal data types to contemporary drug discovery.  iPSCs in drug discovery and protein degradation therapeutic modalities.\n\nEducated at Cambridge University and the University of Manchester (PhD) followed by post-doctoral research at The University of Texas (Austin).",
+        "tagline": "Chief Scientific Officer of Recursion",
+        "location": "London, England, United Kingdom, Europe",
+        "region": "Europe",
+        "email": null,
+        "followers_count": 3454,
+        "connections_count": 3127,
+        "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_7359cfcdca7b9bfdea6c4e6d.jpg",
+        "education_level": "Doctoral Degree",
+        "years_of_experience": 25,
+        "seniority": "Executive Level",
+        "avg_tenure": 61,
+        "current_tenure": 13,
+        "experience": [
+          {
+            "specter_company_id": "63eb90bd1e6a68488a041a96",
+            "title": "Chief Scientific Officer",
+            "domain": "recursion.com",
+            "end_date": null,
+            "job_order": 6,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Biotechnology",
+              "DeepTech"
+            ],
+            "is_current": true,
+            "start_date": "2024-11-01T00:00:00",
+            "description": null,
+            "hq_location": "Salt Lake City, Utah, United States, North America",
+            "company_name": "Recursion",
+            "employment_type": "Full-time",
+            "company_linkedin_url": "linkedin.com/company/recursion-pharmaceuticals",
+            "founded_year": 2013,
+            "growth_stage": "exit",
+            "employee_count": 777,
+            "company_size": "501-1000",
+            "web_visits": 86582,
+            "total_funding_amount": 865376000,
+            "last_funding_amount": 200000000,
+            "last_funding_date": "2024-06-26T00:00:00",
+            "last_funding_type": "Post Ipo Equity",
+            "highlights": [
+              "headcount_3mo_dip",
+              "headcount_6mo_decline",
+              "headcount_12mo_scale_up",
+              "web_traffic_6mo_momentum",
+              "web_traffic_12mo_scale_up",
+              "social_followers_3mo_surge",
+              "social_followers_6mo_momentum",
+              "social_followers_12mo_scale_up",
+              "recent_news",
+              "no_recent_funding",
+              "top_tier_investors"
+            ],
+            "status": "ipo",
+            "is_unicorn": true,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "606f15b86a1d5452784f2ca9",
+            "title": "Interim Chief Executive Officer",
+            "domain": "exscientia.com",
+            "end_date": "2024-11-01T00:00:00",
+            "job_order": 5,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Biotechnology",
+              "DeepTech"
+            ],
+            "is_current": false,
+            "start_date": "2024-02-01T00:00:00",
+            "description": null,
+            "hq_location": "Oxford, England, United Kingdom, Europe",
+            "company_name": "Exscientia",
+            "employment_type": "Full-time",
+            "company_linkedin_url": "linkedin.com/company/ex-scientia",
+            "founded_year": 2012,
+            "growth_stage": "exit",
+            "employee_count": 61,
+            "company_size": "51-200",
+            "web_visits": 9789,
+            "total_funding_amount": 376671987,
+            "last_funding_amount": 2300000,
+            "last_funding_date": "2023-12-05T00:00:00",
+            "last_funding_type": "Grant",
+            "highlights": [
+              "headcount_3mo_dip",
+              "headcount_6mo_decline",
+              "headcount_12mo_downturn",
+              "top_tier_investors",
+              "no_recent_funding"
+            ],
+            "status": "closed",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "606f15b86a1d5452784f2ca9",
+            "title": "Chief Scientific Officer",
+            "domain": "exscientia.com",
+            "end_date": "2024-11-01T00:00:00",
+            "job_order": 4,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Biotechnology",
+              "DeepTech"
+            ],
+            "is_current": false,
+            "start_date": "2020-01-01T00:00:00",
+            "description": "Head of Discovery Operations",
+            "hq_location": "Oxford, England, United Kingdom, Europe",
+            "company_name": "Exscientia",
+            "employment_type": "Full-time",
+            "company_linkedin_url": "linkedin.com/company/ex-scientia",
+            "founded_year": 2012,
+            "growth_stage": "exit",
+            "employee_count": 61,
+            "company_size": "51-200",
+            "web_visits": 9789,
+            "total_funding_amount": 376671987,
+            "last_funding_amount": 2300000,
+            "last_funding_date": "2023-12-05T00:00:00",
+            "last_funding_type": "Grant",
+            "highlights": [
+              "headcount_3mo_dip",
+              "headcount_6mo_decline",
+              "headcount_12mo_downturn",
+              "top_tier_investors",
+              "no_recent_funding"
+            ],
+            "status": "closed",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3b65e8ab6348f63cd9e6a9",
+            "title": "Executive Vice President Alliance Management",
+            "domain": "evotec.com",
+            "end_date": "2019-12-01T00:00:00",
+            "job_order": 3,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Biotechnology",
+              "DeepTech"
+            ],
+            "is_current": false,
+            "start_date": "2016-04-01T00:00:00",
+            "description": "Creation and leadership of a dedicated network of Alliance and Project Managers supporting all Evotec's major collaborations.\nOperational and strategic leadership of Evotec's human iPSC-based drug discovery efforts and protein homeostasis platform",
+            "hq_location": "Hamburg, Hamburg, Germany, Europe",
+            "company_name": "Evotec",
+            "employment_type": "Full-time",
+            "company_linkedin_url": "linkedin.com/company/evotec",
+            "founded_year": 1993,
+            "growth_stage": "exit",
+            "employee_count": 4184,
+            "company_size": "1001-5000",
+            "web_visits": 89456,
+            "total_funding_amount": 746736691,
+            "last_funding_amount": 2500000,
+            "last_funding_date": "2025-05-07T00:00:00",
+            "last_funding_type": "Grant",
+            "highlights": [
+              "headcount_3mo_dip",
+              "headcount_6mo_decline",
+              "headcount_12mo_downturn",
+              "web_traffic_3mo_dip",
+              "web_traffic_6mo_momentum",
+              "social_followers_6mo_momentum",
+              "top_tier_investors",
+              "recent_funding"
+            ],
+            "status": "ipo",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3b65e8ab6348f63cd9e6a9",
+            "title": "Executive Vice President Chemistry",
+            "domain": "evotec.com",
+            "end_date": "2016-04-01T00:00:00",
+            "job_order": 2,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Biotechnology",
+              "DeepTech"
+            ],
+            "is_current": false,
+            "start_date": "2005-09-01T00:00:00",
+            "description": "Operational and strategic leadership of medicinal chemistry, computational chemistry, ADME and cheminformatics (EU and Indian sites)",
+            "hq_location": "Hamburg, Hamburg, Germany, Europe",
+            "company_name": "Evotec",
+            "employment_type": "Full-time",
+            "company_linkedin_url": "linkedin.com/company/evotec",
+            "founded_year": 1993,
+            "growth_stage": "exit",
+            "employee_count": 4184,
+            "company_size": "1001-5000",
+            "web_visits": 89456,
+            "total_funding_amount": 746736691,
+            "last_funding_amount": 2500000,
+            "last_funding_date": "2025-05-07T00:00:00",
+            "last_funding_type": "Grant",
+            "highlights": [
+              "headcount_3mo_dip",
+              "headcount_6mo_decline",
+              "headcount_12mo_downturn",
+              "web_traffic_3mo_dip",
+              "web_traffic_6mo_momentum",
+              "social_followers_6mo_momentum",
+              "top_tier_investors",
+              "recent_funding"
+            ],
+            "status": "ipo",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3ba31200c8f4c9668ddf8a",
+            "title": "Research Fellow",
+            "domain": "merck.com",
+            "end_date": "2005-07-01T00:00:00",
+            "job_order": 1,
+            "departments": [
+              "Product & Research"
+            ],
+            "industries": [
+              "Biotechnology",
+              "DeepTech",
+              "Health",
+              "Manufacturing"
+            ],
+            "is_current": false,
+            "start_date": "2000-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Rahway, New Jersey, United States, North America",
+            "company_name": "Merck",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/merck",
+            "founded_year": 1891,
+            "growth_stage": "exit",
+            "employee_count": 44344,
+            "company_size": "10001+",
+            "web_visits": 901577,
+            "total_funding_amount": 5586000,
+            "last_funding_amount": 586000,
+            "last_funding_date": "2018-11-25T00:00:00",
+            "last_funding_type": "Post Ipo Equity",
+            "highlights": [
+              "web_traffic_3mo_surge",
+              "app_downloads_3mo_surge",
+              "app_downloads_6mo_momentum",
+              "app_downloads_12mo_downturn",
+              "social_followers_3mo_surge",
+              "social_followers_6mo_momentum",
+              "recent_news",
+              "media_spotlight",
+              "no_recent_funding"
+            ],
+            "status": "ipo",
+            "is_unicorn": false,
+            "is_fortune_500": true,
+            "hot_companies": null
+          }
+        ],
+        "education": [
+          {
+            "grade": null,
+            "degree": "BA",
+            "end_date": null,
+            "logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQGLqHVOwtQeUQ/company-logo_200_200/company-logo_200_200/0/1663833279033/university_of_cambridge_logo?e=2147483647&v=beta&t=EUwVLcyuX24KeU_KNgKUWv_3UxVSEUo8fRaTOouStTE",
+            "school_id": 4522,
+            "activities": null,
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": null,
+            "description": "BA (Natural Sciences)",
+            "school_name": "University of Cambridge",
+            "university_id": 108896,
+            "field_of_study": "Natural Sciences",
+            "school_linkedin_url": "linkedin.com/school/university-of-cambridge",
+            "top_university": null
+          },
+          {
+            "grade": null,
+            "degree": "Post Doc",
+            "end_date": null,
+            "logo_url": "https://media.licdn.com/dms/image/v2/C560BAQEREeDg1PACXA/company-logo_200_200/company-logo_200_200/0/1630670868977/theuniversityoftexasataustin__logo?e=2147483647&v=beta&t=wo0fOv9TIEdhkbzO043gvWCdV2J1whhL88FpE4qYalA",
+            "school_id": 3162,
+            "activities": [
+              "Research Fellow",
+              "Dept of Chemistry"
+            ],
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": null,
+            "description": "Post-doctoral fellow working with Professor Philip Magnus",
+            "school_name": "The University of Texas at Austin",
+            "university_id": 16,
+            "field_of_study": "Synthetic Organic Chemistry",
+            "school_linkedin_url": "linkedin.com/school/theuniversityoftexasataustin-",
+            "top_university": null
+          },
+          {
+            "grade": null,
+            "degree": "PhD",
+            "end_date": null,
+            "logo_url": "https://media.licdn.com/dms/image/v2/C560BAQEYpS-SHXO1Mg/company-logo_200_200/company-logo_200_200/0/1631386008712?e=2147483647&v=beta&t=Nwuem7LLWnHInmWrJ_uN5d1bIoyADZ6w_SvxaGXmZLM",
+            "school_id": 166652,
+            "activities": [
+              "PhD (Organic Chemistry)"
+            ],
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": null,
+            "description": "MSc and PhD (organic chemistry)",
+            "school_name": "The University of Manchester",
+            "university_id": 108898,
+            "field_of_study": "Synthetic Organic Chemistry",
+            "school_linkedin_url": "linkedin.com/school/university-of-manchester",
+            "top_university": null
+          }
+        ],
+        "languages": [],
+        "skills": [
+          {
+            "name": "ADME",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Biotechnology",
+            "endorsements_count": 16,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "C Level Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Chemistry",
+            "endorsements_count": 17,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Clinical Development",
+            "endorsements_count": 12,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "DMPK",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Drug Design",
+            "endorsements_count": 16,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Drug Development",
+            "endorsements_count": 11,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Drug Discovery",
+            "endorsements_count": 30,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "GPCRs",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Heterocyclic Chemistry",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "In Vitro",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Life Sciences",
+            "endorsements_count": 5,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Medicinal Chemistry",
+            "endorsements_count": 42,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Organic Chemistry",
+            "endorsements_count": 29,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Organic Synthesis",
+            "endorsements_count": 8,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Pharmaceutical Industry",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "R&D",
+            "endorsements_count": 7,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Research and Development (R&D)",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          }
+        ],
+        "people_highlights": [
+          "fortune_500_experience",
+          "major_tech_experience",
+          "prior_exit",
+          "prior_ipo",
+          "prior_vc_backed_experience",
+          "prior_vc_backed_founder",
+          "strong_academic_background",
+          "top_university",
+          "vc_backed_founder"
+        ],
+        "talent_ids": [],
+        "stratintelligence_ids": [],
+        "entity_status": null,
+        "entity_team_status": [],
+        "person_role": "Operator",
+        "lists": [],
+        "investor_id": null,
+        "specter_person_id": "per_7359cfcdca7b9bfdea6c4e6d",
+        "id": "per_7359cfcdca7b9bfdea6c4e6d",
+        "investorId": null,
+        "entityStatus": null,
+        "teamEntityStatuses": []
+      },
+      {
+        "first_name": "Eduardo",
+        "last_name": "Fonseca",
+        "full_name": "Eduardo Fonseca",
+        "linkedin_url": "https://www.linkedin.com/in/eduardobf",
+        "twitter_url": null,
+        "github_url": null,
+        "cb_url": "https://www.crunchbase.com/person/eduardo-fonseca",
+        "about": "A private pilot with instrument rating, Eduardo combines his love for aviation with over 25 years of entrepreneurial success in the tech industry. As former CTO at GoodRx, advisor to numerous startups, and a successful consultant, he's adept at leveraging technology for growth. His deep Machine Learning expertise since 2015 positions him to lead Aboard AI at the exciting intersection of aviation and artificial intelligence.",
+        "tagline": "Entrepreneur, Advisor, Board Member. Pilot.",
+        "location": "Washington, District of Columbia, United States, North America",
+        "region": "North America",
+        "email": null,
+        "followers_count": 3141,
+        "connections_count": 3099,
+        "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_66bf44201487cc58af85bdda.jpg",
+        "education_level": "Bachelor's Degree",
+        "years_of_experience": 31,
+        "seniority": "Executive Level",
+        "avg_tenure": 32,
+        "current_tenure": 119,
+        "experience": [
+          {
+            "specter_company_id": "6926f4b5129a9d423f1d6a45",
+            "title": "Co-Founder and CEO",
+            "domain": "aboardai.com",
+            "end_date": null,
+            "job_order": 32,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "DeepTech",
+              "Transportation"
+            ],
+            "is_current": true,
+            "start_date": "2022-01-01T00:00:00",
+            "description": "We're transforming the way pilots fly by harnessing the power of real-time intelligence on every aircraft. Our innovative technology processes sensor and avionics data locally, delivering cloud-grade insights without relying on internet connectivity.\n\n• Real-time flight insights: Voice-based alerts for sharper decision-making and reduced workload\n• Predictive maintenance: Early detection of mechanical issues, computed onboard\n• Scalable ML models: Trained on your own flight telemetry, adaptable to any mission, executed locally\n\nOur Mission: To revolutionize aviation safety through universal access to real-time intelligence.\n\nJoin us in revolutionizing aviation safety. Want a live demo or explore a partnership? Let's connect and take the first step towards safer skies.",
+            "hq_location": "Gaithersburg, Maryland, United States, North America",
+            "company_name": "Aboard AI, Inc.",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/aboard-ai",
+            "founded_year": null,
+            "growth_stage": "no_funding",
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "no_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "624b2675e4e2dbb8bd125480",
+            "title": "Technical Advisor",
+            "domain": "basisset.com",
+            "end_date": null,
+            "job_order": 31,
+            "departments": [
+              "Engineering"
+            ],
+            "industries": [
+              "Finance",
+              "Lending and Investments",
+              "Professional Services"
+            ],
+            "is_current": true,
+            "start_date": "2020-01-01T00:00:00",
+            "description": "Responsible for Due Diligence, Internal Code Reviews and mentorship for the portfolio companies.",
+            "hq_location": "Menlo Park, California, United States, North America",
+            "company_name": "Basis Set Ventures",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/basis-set",
+            "founded_year": 2017,
+            "growth_stage": "no_funding",
+            "employee_count": 26,
+            "company_size": "11-50",
+            "web_visits": 7123,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "headcount_3mo_surge",
+              "no_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": null,
+            "title": "Board Member",
+            "domain": null,
+            "end_date": null,
+            "job_order": 30,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": null,
+            "is_current": true,
+            "start_date": "2024-01-01T00:00:00",
+            "description": "Providing a future in Aviation for Long Island Bahamas Students",
+            "hq_location": null,
+            "company_name": "Long Island Young Aviators Club",
+            "employment_type": null,
+            "company_linkedin_url": null,
+            "founded_year": null,
+            "growth_stage": null,
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": null,
+            "status": null,
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "682e08c2195cd46a9cc47cb3",
+            "title": "Board Member",
+            "domain": "vaginalbiomescience.com",
+            "end_date": null,
+            "job_order": 29,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Biotechnology",
+              "DeepTech"
+            ],
+            "is_current": true,
+            "start_date": "2024-01-01T00:00:00",
+            "description": "Vaginal Biome Science was founded to further the research and development of novel \ninnovative approaches to women's health care.",
+            "hq_location": "Portland, Oregon, United States, North America",
+            "company_name": "Vaginal Biome Science",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/vaginal-biome-science",
+            "founded_year": 2021,
+            "growth_stage": "seed",
+            "employee_count": 6,
+            "company_size": "1-10",
+            "web_visits": 163,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": "2025-03-25T00:00:00",
+            "last_funding_type": "Non Equity Assistance",
+            "highlights": [
+              "no_recent_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5edf30dd82c67200733e4c33",
+            "title": "Mentor",
+            "domain": "mucker.com",
+            "end_date": null,
+            "job_order": 28,
+            "departments": [
+              "Other"
+            ],
+            "industries": [
+              "Finance",
+              "Lending and Investments"
+            ],
+            "is_current": true,
+            "start_date": "2019-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Los Angeles, California, United States, North America",
+            "company_name": "Mucker Capital",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/mucker",
+            "founded_year": 2011,
+            "growth_stage": "early",
+            "employee_count": 70,
+            "company_size": "51-200",
+            "web_visits": 23876,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "headcount_3mo_dip",
+              "no_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8f19040ca7b0c6f041dc",
+            "title": "Strategic Advisor",
+            "domain": "aivahealth.com",
+            "end_date": null,
+            "job_order": 27,
+            "departments": [
+              "Strategy & Corporate Development"
+            ],
+            "industries": [
+              "Health",
+              "Mobile, Platforms, and Apps"
+            ],
+            "is_current": true,
+            "start_date": "2016-01-01T00:00:00",
+            "description": "Founding Team member, Advisor to the CEO.",
+            "hq_location": "Los Angeles, California, United States, North America",
+            "company_name": "Aiva Health",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/aiva-health",
+            "founded_year": 2016,
+            "growth_stage": "seed",
+            "employee_count": 21,
+            "company_size": "11-50",
+            "web_visits": 11697,
+            "total_funding_amount": 250000,
+            "last_funding_amount": null,
+            "last_funding_date": "2018-09-27T00:00:00",
+            "last_funding_type": "Series Unknown",
+            "highlights": [
+              "headcount_3mo_surge",
+              "web_traffic_6mo_momentum",
+              "web_traffic_12mo_scale_up",
+              "no_recent_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3ba43e00c8f4c9668fa6b0",
+            "title": "Senior Member",
+            "domain": "ieee.org",
+            "end_date": null,
+            "job_order": 26,
+            "departments": [
+              "Other"
+            ],
+            "industries": [
+              "Community and Lifestyle",
+              "Government and Military"
+            ],
+            "is_current": true,
+            "start_date": "2020-01-01T00:00:00",
+            "description": null,
+            "hq_location": "New York City, New York, United States, North America",
+            "company_name": "IEEE",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/ieee",
+            "founded_year": 1884,
+            "growth_stage": "late",
+            "employee_count": 14099,
+            "company_size": "10001+",
+            "web_visits": 14408997,
+            "total_funding_amount": 1200000,
+            "last_funding_amount": 1200000,
+            "last_funding_date": "2017-12-18T00:00:00",
+            "last_funding_type": "Grant",
+            "highlights": [
+              "headcount_12mo_scale_up",
+              "web_traffic_3mo_surge",
+              "app_downloads_6mo_momentum",
+              "app_downloads_12mo_scale_up",
+              "social_followers_3mo_surge",
+              "social_followers_6mo_momentum",
+              "social_followers_12mo_scale_up",
+              "no_recent_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": null,
+            "title": "Co-Chief Executive Officer",
+            "domain": "widepanorama.com",
+            "end_date": null,
+            "job_order": 25,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": null,
+            "is_current": true,
+            "start_date": "2023-01-01T00:00:00",
+            "description": null,
+            "hq_location": null,
+            "company_name": "Wide Panorama",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/widepanorama",
+            "founded_year": null,
+            "growth_stage": null,
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": null,
+            "status": null,
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8f4a040ca7b0c6f1485e",
+            "title": "Strategic Advisor",
+            "domain": "benefix.us",
+            "end_date": "2025-01-01T00:00:00",
+            "job_order": 24,
+            "departments": [
+              "Strategy & Corporate Development"
+            ],
+            "industries": [
+              "Finance"
+            ],
+            "is_current": false,
+            "start_date": "2021-01-01T00:00:00",
+            "description": "Advising the CEO on Product Development.",
+            "hq_location": "Lancaster, Pennsylvania, United States, North America",
+            "company_name": "Benefix",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/getbenefix",
+            "founded_year": 2017,
+            "growth_stage": "seed",
+            "employee_count": 38,
+            "company_size": "11-50",
+            "web_visits": 9453,
+            "total_funding_amount": 9645518,
+            "last_funding_amount": 6415518,
+            "last_funding_date": "2020-08-21T00:00:00",
+            "last_funding_type": "Series Unknown",
+            "highlights": [
+              "no_recent_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "615ab65bfb22921ca30c34d7",
+            "title": "Strategic Advisor - Technology, Product Development and Market Fit",
+            "domain": "microgendx.com",
+            "end_date": "2024-01-01T00:00:00",
+            "job_order": 23,
+            "departments": [
+              "Product & Research"
+            ],
+            "industries": [
+              "Biotechnology",
+              "DeepTech"
+            ],
+            "is_current": false,
+            "start_date": "2022-01-01T00:00:00",
+            "description": "Advising the C-suite on Product Development, Data and Analytics.",
+            "hq_location": "Lubbock, Texas, United States, North America",
+            "company_name": "MicroGenDX",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/microgendx",
+            "founded_year": 2008,
+            "growth_stage": "growing",
+            "employee_count": 98,
+            "company_size": "51-200",
+            "web_visits": 81664,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "web_traffic_6mo_momentum",
+              "product_reviews_3mo_surge",
+              "no_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "6411d185abe7c1e313b62bfc",
+            "title": "Strategic Advisor - Product & Technology",
+            "domain": "denim.us",
+            "end_date": "2023-01-01T00:00:00",
+            "job_order": 22,
+            "departments": [
+              "Product & Research"
+            ],
+            "industries": [
+              "HR and Recruiting",
+              "Information Technology",
+              "Software"
+            ],
+            "is_current": false,
+            "start_date": "2022-01-01T00:00:00",
+            "description": "Advising the CEO on Product Development and hiring.",
+            "hq_location": "Washington, District of Columbia, United States, North America",
+            "company_name": "Denim",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/denim-us",
+            "founded_year": 2022,
+            "growth_stage": "no_funding",
+            "employee_count": 6,
+            "company_size": "1-10",
+            "web_visits": 127,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "no_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": null,
+            "title": "Strategic Advisor - Product & Technology",
+            "domain": null,
+            "end_date": "2023-01-01T00:00:00",
+            "job_order": 21,
+            "departments": [
+              "Product & Research"
+            ],
+            "industries": null,
+            "is_current": false,
+            "start_date": "2022-01-01T00:00:00",
+            "description": null,
+            "hq_location": null,
+            "company_name": "Momentum Mining USA",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/momentum-mining-usa",
+            "founded_year": null,
+            "growth_stage": null,
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": null,
+            "status": null,
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8f19040ca7b0c6f034b0",
+            "title": "Chief Technology Officer",
+            "domain": "25madison.com",
+            "end_date": "2023-01-01T00:00:00",
+            "job_order": 20,
+            "departments": [
+              "Senior Leadership",
+              "Engineering"
+            ],
+            "industries": [
+              "Finance",
+              "Lending and Investments",
+              "Mobile, Platforms, and Apps",
+              "Software"
+            ],
+            "is_current": false,
+            "start_date": "2022-01-01T00:00:00",
+            "description": "Kickstarted several startups internally that were handed off to EIRs. Built the first internal technical reference platform for new startups. Provided mentorship to the portfolio companies.",
+            "hq_location": "New York City, New York, United States, North America",
+            "company_name": "25madison",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/25madison",
+            "founded_year": 2018,
+            "growth_stage": "early",
+            "employee_count": 86,
+            "company_size": "51-200",
+            "web_visits": 10274,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "headcount_12mo_scale_up",
+              "no_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8f19040ca7b0c6f034b0",
+            "title": "Senior Advisor - Product & Technology",
+            "domain": "25madison.com",
+            "end_date": "2023-01-01T00:00:00",
+            "job_order": 19,
+            "departments": [
+              "Product & Research"
+            ],
+            "industries": [
+              "Finance",
+              "Lending and Investments",
+              "Mobile, Platforms, and Apps",
+              "Software"
+            ],
+            "is_current": false,
+            "start_date": "2022-01-01T00:00:00",
+            "description": "Transitioned to an advisory role following cost cutting measures inside the company. Continued to advise and mentor portfolio companies. ",
+            "hq_location": "New York City, New York, United States, North America",
+            "company_name": "25madison",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/25madison",
+            "founded_year": 2018,
+            "growth_stage": "early",
+            "employee_count": 86,
+            "company_size": "51-200",
+            "web_visits": 10274,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "headcount_12mo_scale_up",
+              "no_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "615aca92fb22921ca31d9152",
+            "title": "Investor",
+            "domain": "lingohealth.io",
+            "end_date": "2022-01-01T00:00:00",
+            "job_order": 18,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Health",
+              "Sports"
+            ],
+            "is_current": false,
+            "start_date": "2021-01-01T00:00:00",
+            "description": "Our mission is to build better care for our families. Language & cultural barriers make life more difficult for millions of Americans. We want to redefine how immigrant patients engage in care.",
+            "hq_location": "San Francisco, California, United States, North America",
+            "company_name": "LingoHealth",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/lingohealth",
+            "founded_year": 2021,
+            "growth_stage": "seed",
+            "employee_count": 0,
+            "company_size": "1-10",
+            "web_visits": 0,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": "2021-08-12T00:00:00",
+            "last_funding_type": "Seed",
+            "highlights": [
+              "top_tier_investors",
+              "no_recent_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": null,
+            "title": "Strategic Advisor - Product, Technology and Market Fit",
+            "domain": null,
+            "end_date": "2022-01-01T00:00:00",
+            "job_order": 17,
+            "departments": [
+              "Product & Research"
+            ],
+            "industries": null,
+            "is_current": false,
+            "start_date": "2020-01-01T00:00:00",
+            "description": "Advisor to the CEO on Product Development, Hiring and Market positioning.",
+            "hq_location": null,
+            "company_name": "Banting",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/banting-co",
+            "founded_year": null,
+            "growth_stage": null,
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": null,
+            "status": null,
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5f5f3642a2734681cecc4d3e",
+            "title": "Chief Technology Officer",
+            "domain": "helloharbor.com",
+            "end_date": "2022-01-01T00:00:00",
+            "job_order": 16,
+            "departments": [
+              "Senior Leadership",
+              "Engineering"
+            ],
+            "industries": [
+              "Government and Military",
+              "Media"
+            ],
+            "is_current": false,
+            "start_date": "2020-01-01T00:00:00",
+            "description": "** Acquired by Citizen **\n\n- Hired a lean team of senior Engineers to build harbor.\n- Helped build harbor for iOS - App was featured by Apple as \"App of the Day\".\n- Used outsourced workforce to keep costs under control while expanding the product offering.\n- Led the technical side of the acquisition talks and handed off control to the new team managing harbor.",
+            "hq_location": "Los Angeles, California, United States, North America",
+            "company_name": "harbor",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/helloharbor",
+            "founded_year": 2019,
+            "growth_stage": "exit",
+            "employee_count": 14,
+            "company_size": "11-50",
+            "web_visits": 0,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": "2020-08-27T00:00:00",
+            "last_funding_type": "Seed",
+            "highlights": [
+              "no_recent_funding"
+            ],
+            "status": "closed",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "6041c6ea4ddab8d8bf081474",
+            "title": "Chief Technology Officer",
+            "domain": "griddy.com",
+            "end_date": "2020-01-01T00:00:00",
+            "job_order": 15,
+            "departments": [
+              "Senior Leadership",
+              "Engineering"
+            ],
+            "industries": [
+              "Energy",
+              "Sustainability"
+            ],
+            "is_current": false,
+            "start_date": "2020-01-01T00:00:00",
+            "description": "** Acquired by Dwell Energy **\n\n- Completely reorganized the Product and Engineering teams - the focus was on a customer-friendly experience, helping manage energy consumption in Texas.\n- Led the technical diligence M&A talks with several parties.",
+            "hq_location": "Houston, Texas, United States, North America",
+            "company_name": "Griddy Energy",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/griddy",
+            "founded_year": 2016,
+            "growth_stage": "no_funding",
+            "employee_count": 9,
+            "company_size": "1-10",
+            "web_visits": 0,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "no_funding"
+            ],
+            "status": "closed",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8f73040ca7b0c6f1d1e4",
+            "title": "Advisor",
+            "domain": "stick.ai",
+            "end_date": "2020-01-01T00:00:00",
+            "job_order": 14,
+            "departments": [
+              "Other"
+            ],
+            "industries": [
+              "Information Technology",
+              "Software"
+            ],
+            "is_current": false,
+            "start_date": "2019-01-01T00:00:00",
+            "description": "** Acquired by Google **\n\nAdvisor to the CEO on Product Development, Hiring and Market positioning.",
+            "hq_location": "Los Angeles, California, United States, North America",
+            "company_name": "Stick",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/stick-blot-inc-",
+            "founded_year": 2016,
+            "growth_stage": "seed",
+            "employee_count": 4,
+            "company_size": "1-10",
+            "web_visits": 330,
+            "total_funding_amount": 1000000,
+            "last_funding_amount": 1000000,
+            "last_funding_date": "2018-06-25T00:00:00",
+            "last_funding_type": "Seed",
+            "highlights": [
+              "no_recent_funding"
+            ],
+            "status": "closed",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3ba4cc00c8f4c96690c025",
+            "title": "Chief Technology Officer",
+            "domain": "goodrx.com",
+            "end_date": "2020-01-01T00:00:00",
+            "job_order": 13,
+            "departments": [
+              "Senior Leadership",
+              "Engineering"
+            ],
+            "industries": [
+              "Health"
+            ],
+            "is_current": false,
+            "start_date": "2018-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Santa Monica, California, United States, North America",
+            "company_name": "GoodRx",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/goodrx",
+            "founded_year": 2011,
+            "growth_stage": "exit",
+            "employee_count": 1126,
+            "company_size": "1001-5000",
+            "web_visits": 20158949,
+            "total_funding_amount": 910300000,
+            "last_funding_amount": 100000000,
+            "last_funding_date": "2020-09-13T00:00:00",
+            "last_funding_type": "Private Equity",
+            "highlights": [
+              "web_traffic_3mo_dip",
+              "social_followers_6mo_momentum",
+              "social_followers_12mo_scale_up",
+              "top_tier_investors",
+              "no_recent_funding"
+            ],
+            "status": "ipo",
+            "is_unicorn": true,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3ba4cc00c8f4c96690c025",
+            "title": "Vice President, Engineering",
+            "domain": "goodrx.com",
+            "end_date": "2018-01-01T00:00:00",
+            "job_order": 12,
+            "departments": [
+              "Engineering"
+            ],
+            "industries": [
+              "Health"
+            ],
+            "is_current": false,
+            "start_date": "2016-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Santa Monica, California, United States, North America",
+            "company_name": "GoodRx",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/goodrx",
+            "founded_year": 2011,
+            "growth_stage": "exit",
+            "employee_count": 1126,
+            "company_size": "1001-5000",
+            "web_visits": 20158949,
+            "total_funding_amount": 910300000,
+            "last_funding_amount": 100000000,
+            "last_funding_date": "2020-09-13T00:00:00",
+            "last_funding_type": "Private Equity",
+            "highlights": [
+              "web_traffic_3mo_dip",
+              "social_followers_6mo_momentum",
+              "social_followers_12mo_scale_up",
+              "top_tier_investors",
+              "no_recent_funding"
+            ],
+            "status": "ipo",
+            "is_unicorn": true,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3bbc4900c8f4c96698bdd7",
+            "title": "Member",
+            "domain": "lactoforum.org",
+            "end_date": "2020-01-01T00:00:00",
+            "job_order": 11,
+            "departments": [
+              "Other"
+            ],
+            "industries": [
+              "Community and Lifestyle",
+              "Information Technology"
+            ],
+            "is_current": false,
+            "start_date": "2016-01-01T00:00:00",
+            "description": null,
+            "hq_location": "El Segundo, California, United States, North America",
+            "company_name": "LA CTO Forum",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/la-cto-forum",
+            "founded_year": 1999,
+            "growth_stage": "late",
+            "employee_count": 109,
+            "company_size": "51-200",
+            "web_visits": 220,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "no_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8fa1040ca7b0c6f2cc83",
+            "title": "Co-Founder",
+            "domain": "bitpoem.co",
+            "end_date": "2020-01-01T00:00:00",
+            "job_order": 10,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Information Technology",
+              "Mobile, Platforms, and Apps",
+              "Software"
+            ],
+            "is_current": false,
+            "start_date": "2014-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Santa Monica, California, United States, North America",
+            "company_name": "Bitpoem Inc.",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/bitpoem-inc-",
+            "founded_year": 2014,
+            "growth_stage": "no_funding",
+            "employee_count": 0,
+            "company_size": "1-10",
+            "web_visits": 0,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "no_funding"
+            ],
+            "status": "closed",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8f1c040ca7b0c6f07ad8",
+            "title": "Vice President, Engineering & Product",
+            "domain": "cargomatic.com",
+            "end_date": "2016-01-01T00:00:00",
+            "job_order": 9,
+            "departments": [
+              "Engineering"
+            ],
+            "industries": [
+              "Transportation"
+            ],
+            "is_current": false,
+            "start_date": "2015-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Long Beach, California, United States, North America",
+            "company_name": "Cargomatic, Inc.",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/cargomatic",
+            "founded_year": 2013,
+            "growth_stage": "growing",
+            "employee_count": 266,
+            "company_size": "201-500",
+            "web_visits": 3786,
+            "total_funding_amount": 55826990,
+            "last_funding_amount": null,
+            "last_funding_date": "2022-06-08T00:00:00",
+            "last_funding_type": "Series Unknown",
+            "highlights": [
+              "headcount_3mo_dip",
+              "no_recent_funding",
+              "top_tier_investors"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": null,
+            "title": "Consultant",
+            "domain": null,
+            "end_date": "2016-01-01T00:00:00",
+            "job_order": 8,
+            "departments": [
+              "Other"
+            ],
+            "industries": null,
+            "is_current": false,
+            "start_date": "2005-01-01T00:00:00",
+            "description": null,
+            "hq_location": null,
+            "company_name": "Self Employed",
+            "employment_type": null,
+            "company_linkedin_url": null,
+            "founded_year": null,
+            "growth_stage": null,
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": null,
+            "status": null,
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8f47040ca7b0c6f1043a",
+            "title": "Chief Technology Officer",
+            "domain": "playlist.com",
+            "end_date": "2015-01-01T00:00:00",
+            "job_order": 7,
+            "departments": [
+              "Senior Leadership",
+              "Engineering"
+            ],
+            "industries": [
+              "Data and Analytics",
+              "Sports"
+            ],
+            "is_current": false,
+            "start_date": "2015-01-01T00:00:00",
+            "description": null,
+            "hq_location": "San Francisco, California, United States, North America",
+            "company_name": "Playlist",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/playlistmedia",
+            "founded_year": 2013,
+            "growth_stage": "seed",
+            "employee_count": 26,
+            "company_size": "11-50",
+            "web_visits": 64935,
+            "total_funding_amount": 5515032,
+            "last_funding_amount": 5000000,
+            "last_funding_date": "2019-03-16T00:00:00",
+            "last_funding_type": "Series Unknown",
+            "highlights": [
+              "headcount_12mo_scale_up",
+              "web_traffic_6mo_momentum",
+              "web_traffic_12mo_scale_up",
+              "no_recent_funding"
+            ],
+            "status": "closed",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3bc1db00c8f4c966aa1ab0",
+            "title": "Principal Architect, Mobile Clients",
+            "domain": "tigerconnect.com",
+            "end_date": "2015-01-01T00:00:00",
+            "job_order": 6,
+            "departments": [
+              "Engineering"
+            ],
+            "industries": [
+              "Health"
+            ],
+            "is_current": false,
+            "start_date": "2014-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Santa Monica, California, United States, North America",
+            "company_name": "TigerConnect",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/tigerconnect",
+            "founded_year": 2010,
+            "growth_stage": "exit",
+            "employee_count": 322,
+            "company_size": "201-500",
+            "web_visits": 234635,
+            "total_funding_amount": 433900000,
+            "last_funding_amount": 300000000,
+            "last_funding_date": "2022-01-11T00:00:00",
+            "last_funding_type": "Private Equity",
+            "highlights": [
+              "web_traffic_3mo_dip",
+              "web_traffic_12mo_downturn",
+              "app_downloads_12mo_downturn",
+              "no_recent_funding",
+              "top_tier_investors"
+            ],
+            "status": "acquired",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": null,
+            "title": "iOS/Android Software Engineer",
+            "domain": null,
+            "end_date": "2014-01-01T00:00:00",
+            "job_order": 5,
+            "departments": [
+              "Engineering"
+            ],
+            "industries": null,
+            "is_current": false,
+            "start_date": "2013-01-01T00:00:00",
+            "description": "Developed Kifi for iOS.",
+            "hq_location": null,
+            "company_name": "Kifi (acquired by Google)",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/kifi",
+            "founded_year": null,
+            "growth_stage": null,
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": null,
+            "status": null,
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": null,
+            "title": "Lead Mobile Engineer",
+            "domain": null,
+            "end_date": "2013-01-01T00:00:00",
+            "job_order": 4,
+            "departments": [
+              "Engineering"
+            ],
+            "industries": null,
+            "is_current": false,
+            "start_date": "2012-01-01T00:00:00",
+            "description": null,
+            "hq_location": null,
+            "company_name": "Stealth Startup",
+            "employment_type": null,
+            "company_linkedin_url": null,
+            "founded_year": null,
+            "growth_stage": null,
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": null,
+            "status": null,
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": null,
+            "title": "Chief Technology Officer and Co-Founder",
+            "domain": null,
+            "end_date": "2013-01-01T00:00:00",
+            "job_order": 3,
+            "departments": [
+              "Senior Leadership",
+              "Engineering"
+            ],
+            "industries": null,
+            "is_current": false,
+            "start_date": "2004-01-01T00:00:00",
+            "description": null,
+            "hq_location": null,
+            "company_name": "A&D Tecnologia",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/a&d-tecnologia",
+            "founded_year": null,
+            "growth_stage": null,
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": null,
+            "status": null,
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3bc06800c8f4c966a4c541",
+            "title": "TEDx Licensee",
+            "domain": "ted.com",
+            "end_date": "2012-01-01T00:00:00",
+            "job_order": 2,
+            "departments": [
+              "Other"
+            ],
+            "industries": [
+              "Community and Lifestyle",
+              "Events",
+              "Government and Military",
+              "Media"
+            ],
+            "is_current": false,
+            "start_date": "2010-01-01T00:00:00",
+            "description": null,
+            "hq_location": "New York City, New York, United States, North America",
+            "company_name": "TED Conferences",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/ted-conferences",
+            "founded_year": 1984,
+            "growth_stage": "late",
+            "employee_count": 13730,
+            "company_size": "10001+",
+            "web_visits": 6122686,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "headcount_3mo_dip",
+              "web_traffic_3mo_surge",
+              "app_downloads_12mo_scale_up",
+              "app_reviews_12mo_scale_up",
+              "no_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": null,
+            "title": "Co-Founder",
+            "domain": null,
+            "end_date": "2002-01-01T00:00:00",
+            "job_order": 1,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": null,
+            "is_current": false,
+            "start_date": "1994-01-01T00:00:00",
+            "description": null,
+            "hq_location": null,
+            "company_name": "FutureNet Network",
+            "employment_type": null,
+            "company_linkedin_url": null,
+            "founded_year": null,
+            "growth_stage": null,
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": null,
+            "status": null,
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          }
+        ],
+        "education": [
+          {
+            "grade": null,
+            "degree": "Bachelor's degree",
+            "end_date": "2004-01-01",
+            "logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQEHmi_8MB8beg/company-logo_200_200/company-logo_200_200/0/1630641939592/pontificia_universidade_catolica_do_parana_logo?e=2147483647&v=beta&t=8Q0ksDXgtA_SNPUcCmwHUMlcQVTLaR7SOfUktXsPig4",
+            "school_id": 15091585,
+            "activities": null,
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": "1999-01-01",
+            "description": null,
+            "school_name": "Pontifícia Universidade Católica do Paraná",
+            "university_id": 612,
+            "field_of_study": "Computer Science",
+            "school_linkedin_url": "linkedin.com/school/pucproficial",
+            "top_university": null
+          },
+          {
+            "grade": null,
+            "degree": "Bachelor of Business Administration - BBA",
+            "end_date": "2004-01-01",
+            "logo_url": "https://media.licdn.com/dms/image/v2/C4D0BAQE2-L3YXf4aIg/company-logo_200_200/company-logo_200_200/0/1678303756329/fae_centro_universitario_logo?e=2147483647&v=beta&t=O5FESTxRhsU50uuDGSnSHsGuqSEEWb8m0BW1AZYL1ZU",
+            "school_id": 15140533,
+            "activities": null,
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": "2000-01-01",
+            "description": null,
+            "school_name": "FAE Centro Universitário",
+            "university_id": 4300,
+            "field_of_study": "Business Administration and Management, General",
+            "school_linkedin_url": "linkedin.com/school/fae-centro-universitario",
+            "top_university": null
+          }
+        ],
+        "languages": [
+          {
+            "name": "English",
+            "proficiency": "Native Or Bilingual Proficiency"
+          },
+          {
+            "name": "Portuguese",
+            "proficiency": "Native Or Bilingual Proficiency"
+          },
+          {
+            "name": "Italian",
+            "proficiency": "Limited Working Proficiency"
+          }
+        ],
+        "skills": [
+          {
+            "name": "Agile Methodologies",
+            "endorsements_count": 14,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Android",
+            "endorsements_count": 32,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Android Development",
+            "endorsements_count": 8,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "C++",
+            "endorsements_count": 8,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Cloud Computing",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Cocoa",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Cross-functional Team Leadership",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Databases",
+            "endorsements_count": 5,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Deep Learning",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Entrepreneurship",
+            "endorsements_count": 9,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Food",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Git",
+            "endorsements_count": 7,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Go",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Graph Databases",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Image Analysis",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Image Processing",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Image Segmentation",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "JSON",
+            "endorsements_count": 5,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Java",
+            "endorsements_count": 27,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "JavaScript",
+            "endorsements_count": 16,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Leadership",
+            "endorsements_count": 12,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Linux",
+            "endorsements_count": 33,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Mobile Applications",
+            "endorsements_count": 55,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "MySQL",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "OS X",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Object Oriented Design",
+            "endorsements_count": 8,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Objective-C",
+            "endorsements_count": 44,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "PostgreSQL",
+            "endorsements_count": 9,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Product Management",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Programming",
+            "endorsements_count": 8,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Project Management",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Python",
+            "endorsements_count": 22,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Scalability",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Scrum",
+            "endorsements_count": 9,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Software Design",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Software Development",
+            "endorsements_count": 10,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Software Development Life Cycle (SDLC)",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Software Project Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Start-ups",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Strategic Thinking",
+            "endorsements_count": 7,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Strategy",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Swift",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "User Experience",
+            "endorsements_count": 10,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "User Interface",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "User Interface Design",
+            "endorsements_count": 7,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Web Development",
+            "endorsements_count": 16,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Xcode",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "iOS",
+            "endorsements_count": 20,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "iOS development",
+            "endorsements_count": 10,
+            "passed_skill_assessment": false
+          }
+        ],
+        "people_highlights": [
+          "major_tech_experience",
+          "prior_exit",
+          "prior_ipo",
+          "prior_vc_backed_experience",
+          "prior_vc_backed_founder",
+          "serial_founder",
+          "strong_technical_background",
+          "vc_backed_experience",
+          "vc_backed_founder"
+        ],
+        "talent_ids": [],
+        "stratintelligence_ids": [],
+        "entity_status": null,
+        "entity_team_status": [],
+        "person_role": "Founder",
+        "lists": [],
+        "investor_id": null,
+        "specter_person_id": "per_66bf44201487cc58af85bdda",
+        "id": "per_66bf44201487cc58af85bdda",
+        "investorId": null,
+        "entityStatus": null,
+        "teamEntityStatuses": []
+      },
+      {
+        "first_name": "Valerie",
+        "last_name": "R. Coffman",
+        "full_name": "Valerie R. Coffman",
+        "linkedin_url": "https://www.linkedin.com/in/valeriecoffman",
+        "twitter_url": null,
+        "github_url": null,
+        "cb_url": "https://www.crunchbase.com/person/valerie-r-coffman",
+        "about": "I jumpstart technology in new companies.  Areas of expertise include technology strategy, data science, software architecture, and managing software teams.",
+        "tagline": "Building the future of social media with AI and crypto. Former CTO of $XMTR and YC Alum (W18).",
+        "location": "Reno, Nevada, United States, North America",
+        "region": "North America",
+        "email": null,
+        "followers_count": 1567,
+        "connections_count": 1434,
+        "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_bb158fb4bd40aba6fc8b28f2.jpg",
+        "education_level": "Master's Degree",
+        "years_of_experience": 19,
+        "seniority": "Executive Level",
+        "avg_tenure": 55,
+        "current_tenure": 14,
+        "experience": [
+          {
+            "specter_company_id": "652dfa4d48a2fc3af439b4ef",
+            "title": "Staff Software Engineer",
+            "domain": "neynar.com",
+            "end_date": null,
+            "job_order": 5,
+            "departments": [
+              "Engineering"
+            ],
+            "industries": [
+              "Blockchain and Crypto",
+              "Information Technology",
+              "Software"
+            ],
+            "is_current": true,
+            "start_date": "2024-10-01T00:00:00",
+            "description": "Building infrastructure for the Farcaster protocol. I specialize in algorithms, spam filtering (Neynar score), AI, and search.",
+            "hq_location": "Wilmington, Delaware, United States, North America",
+            "company_name": "Neynar",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/neynar",
+            "founded_year": 2023,
+            "growth_stage": "early",
+            "employee_count": 10,
+            "company_size": "1-10",
+            "web_visits": 11574,
+            "total_funding_amount": 11000000,
+            "last_funding_amount": 11000000,
+            "last_funding_date": "2024-05-30T00:00:00",
+            "last_funding_type": "Series A",
+            "highlights": [
+              "headcount_12mo_scale_up",
+              "web_traffic_6mo_decline",
+              "no_recent_funding",
+              "top_tier_investors"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8f1f040ca7b0c6f0c9b8",
+            "title": "CTO and Co-Founder",
+            "domain": "swayable.com",
+            "end_date": "2024-07-01T00:00:00",
+            "job_order": 4,
+            "departments": [
+              "Senior Leadership",
+              "Engineering"
+            ],
+            "industries": [
+              "Advertising",
+              "Data and Analytics",
+              "Information Technology",
+              "Sales and Marketing"
+            ],
+            "is_current": false,
+            "start_date": "2018-01-01T00:00:00",
+            "description": "Swayable (YC W18) is a causal AI data science platform that measures people's opinions and predicts which messages will change them most effectively.",
+            "hq_location": "San Francisco, California, United States, North America",
+            "company_name": "Swayable",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/swayable",
+            "founded_year": 2017,
+            "growth_stage": "seed",
+            "employee_count": 48,
+            "company_size": "11-50",
+            "web_visits": 10467,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": "2019-05-01T00:00:00",
+            "last_funding_type": "Seed",
+            "highlights": [
+              "no_recent_funding",
+              "top_tier_investors"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3bc3ca00c8f4c966b0f3b8",
+            "title": "Chief Technology Officer and Chief Science Officer",
+            "domain": "xometry.com",
+            "end_date": "2018-01-01T00:00:00",
+            "job_order": 3,
+            "departments": [
+              "Senior Leadership",
+              "Engineering"
+            ],
+            "industries": [
+              "Information Technology",
+              "Manufacturing",
+              "Software"
+            ],
+            "is_current": false,
+            "start_date": "2014-08-01T00:00:00",
+            "description": "Xometry is an on-demand marketplace for custom manufacturing. It began trading on the NASDAQ as $XMTR in June of 2021.\n\nAs CTO (Aug 2014 - Feb 2017), I built the software team from scratch. As a team, we created a system that instantly quotes the price of manufacturing a custom part based on an uploaded CAD file and automatically places the job with a nationwide network of manufacturing partners. \n\nAs CSO (Feb 2017 - Jan 2018) I invented a patented method for pricing work in a two-sided marketplace that optimizes business outcomes based on machine learning predictions of customer win rates and supply-side acceptance rates.",
+            "hq_location": "Gaithersburg, Maryland, United States, North America",
+            "company_name": "Xometry",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/xometry",
+            "founded_year": 2013,
+            "growth_stage": "exit",
+            "employee_count": 1225,
+            "company_size": "1001-5000",
+            "web_visits": 743248,
+            "total_funding_amount": 447200000,
+            "last_funding_amount": 250000000,
+            "last_funding_date": "2025-06-10T00:00:00",
+            "last_funding_type": "Post Ipo Debt",
+            "highlights": [
+              "headcount_3mo_surge",
+              "headcount_6mo_momentum",
+              "headcount_12mo_scale_up",
+              "social_followers_3mo_surge",
+              "social_followers_6mo_momentum",
+              "social_followers_12mo_scale_up",
+              "top_tier_investors",
+              "recent_funding"
+            ],
+            "status": "ipo",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": null,
+            "title": "Founder",
+            "domain": null,
+            "end_date": "2014-08-01T00:00:00",
+            "job_order": 2,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": null,
+            "is_current": false,
+            "start_date": "2011-01-01T00:00:00",
+            "description": "I developed natural language processing and inference algorithms to extract ingredient, dish, diet, and holiday information from any recipe webpage. The result: Feastie has recipe data from the widest variety of food blogs and recipe sites available anywhere on the web.",
+            "hq_location": null,
+            "company_name": "Feastie Inc.",
+            "employment_type": null,
+            "company_linkedin_url": null,
+            "founded_year": null,
+            "growth_stage": null,
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": null,
+            "status": null,
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3bbd5500c8f4c9669bd6a7",
+            "title": "Postdoc and Physicist",
+            "domain": "nist.gov",
+            "end_date": "2011-07-01T00:00:00",
+            "job_order": 1,
+            "departments": [
+              "Other"
+            ],
+            "industries": [
+              "Biotechnology",
+              "Education",
+              "Government and Military"
+            ],
+            "is_current": false,
+            "start_date": "2006-10-01T00:00:00",
+            "description": "Wrote software for materials science research using image-based mesh generation methods to enable finite-element simulations of complex microstructure geometries.",
+            "hq_location": "Gaithersburg, Maryland, United States, North America",
+            "company_name": "NIST",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/nist",
+            "founded_year": 1901,
+            "growth_stage": "late",
+            "employee_count": 4904,
+            "company_size": "1001-5000",
+            "web_visits": 3884093,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": "2023-01-17T00:00:00",
+            "last_funding_type": "Grant",
+            "highlights": [
+              "web_traffic_3mo_surge",
+              "web_traffic_6mo_momentum",
+              "social_followers_6mo_momentum",
+              "social_followers_12mo_scale_up",
+              "no_recent_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          }
+        ],
+        "education": [
+          {
+            "grade": null,
+            "degree": "M.S.,PhD",
+            "end_date": null,
+            "logo_url": "https://media.licdn.com/dms/image/v2/C560BAQE8SOXGRyv7LA/company-logo_200_200/company-logo_200_200/0/1631339899678?e=2147483647&v=beta&t=SRc2aDlhTMFKhINTY9dN1EdgZZacxkPYtrI1T40Rd3w",
+            "school_id": 3523,
+            "activities": [
+              "American Physical Society"
+            ],
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": null,
+            "description": "Dissertation titled \"Macroscopic effects of atomic scale defects in crystals: Grain boundary fracture and brittle-ductile transitions\". Published in Physical Review B and Modelling and Simulation in Materials Engineering.",
+            "school_name": "Cornell University",
+            "university_id": 108895,
+            "field_of_study": "Theoretical Condensed Matter Physics",
+            "school_linkedin_url": "linkedin.com/school/cornell-university",
+            "top_university": null
+          },
+          {
+            "grade": null,
+            "degree": "Certificate",
+            "end_date": null,
+            "logo_url": "https://media.licdn.com/dms/image/v2/C560BAQF16FI5X7rmnA/company-logo_200_200/company-logo_200_200/0/1630565969198/johns_hopkins_university_carey_business_school_logo?e=2147483647&v=beta&t=GFMnFnGHbMpJn9erFdKnAf-E3FxXVZDADRaOF47hLMc",
+            "school_id": 368576,
+            "activities": null,
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": null,
+            "description": null,
+            "school_name": "The Johns Hopkins University - Carey Business School",
+            "university_id": 5168,
+            "field_of_study": "Technology Entrepreneurship",
+            "school_linkedin_url": "linkedin.com/school/jhucarey",
+            "top_university": null
+          },
+          {
+            "grade": null,
+            "degree": "B.S.",
+            "end_date": null,
+            "logo_url": null,
+            "school_id": null,
+            "activities": null,
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": null,
+            "description": null,
+            "school_name": "Johns Hopkins University",
+            "university_id": null,
+            "field_of_study": "Physics",
+            "school_linkedin_url": null,
+            "top_university": null
+          }
+        ],
+        "languages": [],
+        "skills": [
+          {
+            "name": "2048",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "API",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "APIs",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Advanced Common Sense",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Amazon Web Services (AWS)",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Analytics",
+            "endorsements_count": 6,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Artificial Intelligence",
+            "endorsements_count": 7,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Big Data",
+            "endorsements_count": 13,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "CSS",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Cartoons",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Cloud Computing",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Data Mining",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Data Science",
+            "endorsements_count": 12,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Data Visualization",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Flask",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "HTML",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Hashtags",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "JavaScript",
+            "endorsements_count": 7,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Linux",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Lisp",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Machine Learning",
+            "endorsements_count": 44,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Materials Science",
+            "endorsements_count": 5,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Mathematical Modeling",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Matlab",
+            "endorsements_count": 7,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Memes",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Mobile Applications",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Modeling",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "NLTK",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Natural Language Processing",
+            "endorsements_count": 5,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Optimization",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "PHP",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Physics",
+            "endorsements_count": 28,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Python",
+            "endorsements_count": 48,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Quoting Movies",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "SQL",
+            "endorsements_count": 13,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Science",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Scientific Computing",
+            "endorsements_count": 19,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Search Engine Technology",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Simulations",
+            "endorsements_count": 31,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Social Media Measurement",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Software Development",
+            "endorsements_count": 11,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Start-ups",
+            "endorsements_count": 11,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Statistics",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "VTK",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "XML",
+            "endorsements_count": 6,
+            "passed_skill_assessment": false
+          }
+        ],
+        "people_highlights": [
+          "prior_exit",
+          "prior_ipo",
+          "prior_vc_backed_experience",
+          "prior_vc_backed_founder",
+          "serial_founder",
+          "strong_academic_background",
+          "strong_technical_background",
+          "top_university",
+          "vc_backed_experience"
+        ],
+        "talent_ids": [],
+        "stratintelligence_ids": [],
+        "entity_status": {
+          "status": "liked",
+          "updated_at": "2025-12-27T13:41:19.657596Z"
+        },
+        "entity_team_status": [],
+        "person_role": "Operator",
+        "lists": [],
+        "investor_id": null,
+        "specter_person_id": "per_bb158fb4bd40aba6fc8b28f2",
+        "id": "per_bb158fb4bd40aba6fc8b28f2",
+        "investorId": null,
+        "entityStatus": {
+          "status": "liked",
+          "updated_at": "2025-12-27T13:41:19.657596Z"
+        },
+        "teamEntityStatuses": []
+      },
+      {
+        "first_name": "Stanislas",
+        "last_name": "Polu",
+        "full_name": "Stanislas Polu",
+        "linkedin_url": "https://www.linkedin.com/in/spolu",
+        "twitter_url": null,
+        "github_url": null,
+        "cb_url": "https://www.crunchbase.com/person/stanislas-polu",
+        "about": "github: https://github.com/spolu \nhomepage: https://spolu.now.sh",
+        "tagline": "Software Engineer & Co-Founder, Dust",
+        "location": "Paris, Île-de-France, France, Europe",
+        "region": "Europe",
+        "email": null,
+        "followers_count": 6332,
+        "connections_count": 4020,
+        "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_f9c09f68012f553e93a0a013.jpg",
+        "education_level": "Master's Degree",
+        "years_of_experience": 21,
+        "seniority": "Executive Level",
+        "avg_tenure": 25,
+        "current_tenure": 39,
+        "experience": [
+          {
+            "specter_company_id": "637cda29aab093538e2de3e1",
+            "title": "Software Engineer & Co-Founder",
+            "domain": "dust.tt",
+            "end_date": null,
+            "job_order": 8,
+            "departments": [
+              "Senior Leadership",
+              "Engineering"
+            ],
+            "industries": [
+              "Information Technology",
+              "Software"
+            ],
+            "is_current": true,
+            "start_date": "2022-09-01T00:00:00",
+            "description": null,
+            "hq_location": "Paris, Île-de-France, France, Europe",
+            "company_name": "Dust",
+            "employment_type": "Permanent",
+            "company_linkedin_url": "linkedin.com/company/dust-tt",
+            "founded_year": 2022,
+            "growth_stage": "growing",
+            "employee_count": 94,
+            "company_size": "51-200",
+            "web_visits": 302961,
+            "total_funding_amount": 21540176,
+            "last_funding_amount": 16061402,
+            "last_funding_date": "2024-06-27T00:00:00",
+            "last_funding_type": "Series A",
+            "highlights": [
+              "headcount_3mo_surge",
+              "headcount_6mo_momentum",
+              "headcount_12mo_scale_up",
+              "web_traffic_6mo_momentum",
+              "web_traffic_12mo_scale_up",
+              "social_followers_3mo_surge",
+              "social_followers_6mo_momentum",
+              "social_followers_12mo_scale_up",
+              "recent_news",
+              "media_spotlight",
+              "no_recent_funding",
+              "top_tier_investors"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3bc07300c8f4c966a4f552",
+            "title": "Research Engineer",
+            "domain": "openai.com",
+            "end_date": "2022-09-01T00:00:00",
+            "job_order": 7,
+            "departments": [
+              "Engineering"
+            ],
+            "industries": [
+              "Data and Analytics",
+              "DeepTech",
+              "Education"
+            ],
+            "is_current": false,
+            "start_date": "2019-09-01T00:00:00",
+            "description": null,
+            "hq_location": "San Francisco, California, United States, North America",
+            "company_name": "OpenAI",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/openai",
+            "founded_year": 2015,
+            "growth_stage": "late",
+            "employee_count": 8666,
+            "company_size": "5001-10000",
+            "web_visits": 373811605,
+            "total_funding_amount": 79000120000,
+            "last_funding_amount": 1000000000,
+            "last_funding_date": "2025-12-11T00:00:00",
+            "last_funding_type": "Corporate Round",
+            "highlights": [
+              "headcount_3mo_surge",
+              "headcount_6mo_momentum",
+              "headcount_12mo_scale_up",
+              "web_traffic_3mo_dip",
+              "web_traffic_6mo_decline",
+              "product_reviews_3mo_surge",
+              "product_reviews_6mo_momentum",
+              "product_reviews_12mo_scale_up",
+              "social_followers_3mo_surge",
+              "social_followers_6mo_momentum",
+              "social_followers_12mo_scale_up",
+              "recent_news",
+              "media_spotlight",
+              "top_tier_investors",
+              "recent_funding",
+              "raised_last_month"
+            ],
+            "status": "active",
+            "is_unicorn": true,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3bc2b700c8f4c966ad2bbd",
+            "title": "Software Engineer",
+            "domain": "stripe.com",
+            "end_date": "2019-07-01T00:00:00",
+            "job_order": 6,
+            "departments": [
+              "Engineering"
+            ],
+            "industries": [
+              "Finance"
+            ],
+            "is_current": false,
+            "start_date": "2015-02-01T00:00:00",
+            "description": null,
+            "hq_location": "South San Francisco, California, United States, North America",
+            "company_name": "Stripe",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/stripe",
+            "founded_year": 2010,
+            "growth_stage": "late",
+            "employee_count": 12590,
+            "company_size": "10001+",
+            "web_visits": 94590134,
+            "total_funding_amount": 9440247725,
+            "last_funding_amount": null,
+            "last_funding_date": "2025-02-27T00:00:00",
+            "last_funding_type": "Secondary Market",
+            "highlights": [
+              "headcount_12mo_scale_up",
+              "web_traffic_6mo_momentum",
+              "web_traffic_12mo_scale_up",
+              "product_reviews_3mo_surge",
+              "product_reviews_6mo_momentum",
+              "product_reviews_12mo_scale_up",
+              "social_followers_3mo_surge",
+              "social_followers_6mo_momentum",
+              "social_followers_12mo_scale_up",
+              "app_reviews_3mo_surge",
+              "app_reviews_6mo_momentum",
+              "app_reviews_12mo_scale_up",
+              "recent_news",
+              "media_spotlight",
+              "top_tier_investors",
+              "no_recent_funding"
+            ],
+            "status": "active",
+            "is_unicorn": true,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3bc1c900c8f4c966a9e62b",
+            "title": "Software Engineer & Co-Founder",
+            "domain": "totems.co",
+            "end_date": "2015-02-01T00:00:00",
+            "job_order": 5,
+            "departments": [
+              "Senior Leadership",
+              "Engineering"
+            ],
+            "industries": [
+              "Advertising",
+              "Content and Publishing",
+              "Data and Analytics",
+              "Sales and Marketing"
+            ],
+            "is_current": false,
+            "start_date": "2010-08-01T00:00:00",
+            "description": null,
+            "hq_location": "Ketchikan, Alaska, United States, North America",
+            "company_name": "TOTEMS | Data Analytics",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/totems-instagram-marketing-suite",
+            "founded_year": 2012,
+            "growth_stage": "exit",
+            "employee_count": 2,
+            "company_size": "1-10",
+            "web_visits": 0,
+            "total_funding_amount": 1069670,
+            "last_funding_amount": 1000000,
+            "last_funding_date": "2012-11-29T00:00:00",
+            "last_funding_type": "Seed",
+            "highlights": [
+              "top_tier_investors",
+              "no_recent_funding"
+            ],
+            "status": "closed",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3b8f7b137e998b5ae55426",
+            "title": "Software Engineer",
+            "domain": "oracle.com",
+            "end_date": "2010-06-01T00:00:00",
+            "job_order": 4,
+            "departments": [
+              "Engineering"
+            ],
+            "industries": [
+              "Data and Analytics",
+              "Information Technology"
+            ],
+            "is_current": false,
+            "start_date": "2009-07-01T00:00:00",
+            "description": null,
+            "hq_location": "Austin, Texas, United States, North America",
+            "company_name": "Oracle",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/oracle",
+            "founded_year": 1999,
+            "growth_stage": "exit",
+            "employee_count": 197885,
+            "company_size": "10001+",
+            "web_visits": 22339191,
+            "total_funding_amount": 25750000000,
+            "last_funding_amount": 18000000000,
+            "last_funding_date": "2025-09-24T00:00:00",
+            "last_funding_type": "Post Ipo Debt",
+            "highlights": [
+              "web_traffic_3mo_surge",
+              "web_traffic_6mo_momentum",
+              "product_reviews_6mo_momentum",
+              "product_reviews_12mo_scale_up",
+              "social_followers_3mo_surge",
+              "social_followers_6mo_momentum",
+              "recent_news",
+              "media_spotlight",
+              "top_tier_investors",
+              "recent_funding"
+            ],
+            "status": "ipo",
+            "is_unicorn": false,
+            "is_fortune_500": true,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e6afb206e2d0842bf48218a",
+            "title": "Software Engineer Intern",
+            "domain": "apple.com",
+            "end_date": "2008-09-01T00:00:00",
+            "job_order": 3,
+            "departments": [
+              "Engineering"
+            ],
+            "industries": [
+              "Hardware",
+              "Manufacturing",
+              "Mobile, Platforms, and Apps",
+              "Software"
+            ],
+            "is_current": false,
+            "start_date": "2008-06-01T00:00:00",
+            "description": null,
+            "hq_location": "Cupertino, California, United States, North America",
+            "company_name": "Apple",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/apple",
+            "founded_year": 1976,
+            "growth_stage": "exit",
+            "employee_count": 166800,
+            "company_size": "10001+",
+            "web_visits": 530116917,
+            "total_funding_amount": 5670539030,
+            "last_funding_amount": 4500000000,
+            "last_funding_date": "2025-05-05T00:00:00",
+            "last_funding_type": "Post Ipo Debt",
+            "highlights": [
+              "web_traffic_3mo_surge",
+              "web_traffic_6mo_momentum",
+              "product_reviews_3mo_surge",
+              "product_reviews_6mo_momentum",
+              "product_reviews_12mo_scale_up",
+              "recent_news",
+              "media_spotlight",
+              "top_tier_investors",
+              "recent_funding"
+            ],
+            "status": "ipo",
+            "is_unicorn": false,
+            "is_fortune_500": true,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3b9ef6137e998b5aee5941",
+            "title": "Software Engineer Intern",
+            "domain": "3ds.com",
+            "end_date": "2007-08-01T00:00:00",
+            "job_order": 2,
+            "departments": [
+              "Engineering"
+            ],
+            "industries": [
+              "DeepTech",
+              "Information Technology",
+              "Mobile, Platforms, and Apps",
+              "Software"
+            ],
+            "is_current": false,
+            "start_date": "2007-04-01T00:00:00",
+            "description": null,
+            "hq_location": "Vélizy-Villacoublay, Île-de-France, France, Europe",
+            "company_name": "Exalead",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/dassaultsystemes",
+            "founded_year": 1981,
+            "growth_stage": "exit",
+            "employee_count": 24012,
+            "company_size": "10001+",
+            "web_visits": 3896324,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "headcount_3mo_dip",
+              "headcount_6mo_decline",
+              "web_traffic_3mo_surge",
+              "web_traffic_6mo_momentum",
+              "product_reviews_12mo_scale_up",
+              "social_followers_3mo_surge",
+              "social_followers_6mo_momentum",
+              "social_followers_12mo_scale_up",
+              "recent_news",
+              "no_funding"
+            ],
+            "status": "ipo",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": null,
+            "title": "Software Engineer & Co-Founder",
+            "domain": null,
+            "end_date": "2005-01-01T00:00:00",
+            "job_order": 1,
+            "departments": [
+              "Senior Leadership",
+              "Engineering"
+            ],
+            "industries": null,
+            "is_current": false,
+            "start_date": "2004-01-01T00:00:00",
+            "description": null,
+            "hq_location": null,
+            "company_name": "Kleonet",
+            "employment_type": null,
+            "company_linkedin_url": null,
+            "founded_year": null,
+            "growth_stage": null,
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": null,
+            "status": null,
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          }
+        ],
+        "education": [
+          {
+            "grade": null,
+            "degree": "Master's",
+            "end_date": "2009-01-01",
+            "logo_url": "https://media.licdn.com/dms/image/v2/C560BAQHr9suxyJBXMw/company-logo_200_200/company-logo_200_200/0/1635534378870/stanford_university_logo?e=2147483647&v=beta&t=55JDWFIA4f3n7FQKzj8r30sZxnPCNTuIQ74B1-xLBPI",
+            "school_id": 1792,
+            "activities": null,
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": "2007-01-01",
+            "description": "Specialization in Systems",
+            "school_name": "Stanford University",
+            "university_id": 108884,
+            "field_of_study": "Computer Science",
+            "school_linkedin_url": "linkedin.com/school/stanford-university",
+            "top_university": null
+          },
+          {
+            "grade": null,
+            "degree": "BS",
+            "end_date": "2007-01-01",
+            "logo_url": "https://media.licdn.com/dms/image/v2/C4D0BAQFVles59ko4gg/company-logo_200_200/company-logo_200_200/0/1631303602527?e=2147483647&v=beta&t=CBQ7GFAY8S05w4pzhfzn7THcVThQ91E6g4Ym5kl_Foo",
+            "school_id": 14034,
+            "activities": null,
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": "2004-01-01",
+            "description": "3rd year specialized in Computer Science",
+            "school_name": "École Polytechnique",
+            "university_id": 921,
+            "field_of_study": "Computer Science",
+            "school_linkedin_url": "linkedin.com/school/ecole-polytechnique",
+            "top_university": null
+          },
+          {
+            "grade": null,
+            "degree": "SURF",
+            "end_date": "2006-01-01",
+            "logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQGUO9Kvy1lfEA/company-logo_200_200/company-logo_200_200/0/1630626191299/purdue_university_logo?e=2147483647&v=beta&t=kozbJuNdAF7jxF5iRTOpZ1isG08_Jjj241Nhuc9RMUI",
+            "school_id": 3846,
+            "activities": null,
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": "2006-01-01",
+            "description": "Summer Undergraduate Research Fellowship with Pr. Mikhail Atallah",
+            "school_name": "Purdue University",
+            "university_id": 18,
+            "field_of_study": "Computer Science",
+            "school_linkedin_url": "linkedin.com/school/purdue-university",
+            "top_university": null
+          }
+        ],
+        "languages": [
+          {
+            "name": "French",
+            "proficiency": "Native Or Bilingual Proficiency"
+          },
+          {
+            "name": "English",
+            "proficiency": "Full Professional Proficiency"
+          }
+        ],
+        "skills": [
+          {
+            "name": "Algorithms",
+            "endorsements_count": 9,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "C",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "C++",
+            "endorsements_count": 12,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Cloud Computing",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Computer Science",
+            "endorsements_count": 11,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Distributed Systems",
+            "endorsements_count": 30,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Git",
+            "endorsements_count": 5,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "HTML",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "JSON",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Java",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "JavaScript",
+            "endorsements_count": 11,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Linux",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Mobile Applications",
+            "endorsements_count": 5,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Mobile Technology",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "MongoDB",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Nginx",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Node.js",
+            "endorsements_count": 7,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "NodeJS",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "OAuth",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Objective-C",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Open Source",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Operating Systems",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "REST",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Scalability",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Software Development",
+            "endorsements_count": 14,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Software Engineering",
+            "endorsements_count": 52,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Unix",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Web Development",
+            "endorsements_count": 25,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "jQuery",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          }
+        ],
+        "people_highlights": [
+          "fortune_500_experience",
+          "major_tech_experience",
+          "prior_exit",
+          "prior_vc_backed_experience",
+          "prior_vc_backed_founder",
+          "serial_founder",
+          "strong_technical_background",
+          "top_university",
+          "vc_backed_founder"
+        ],
+        "talent_ids": [
+          "5187c702-644d-4ccc-a1a1-056fa19fc0a1",
+          "16f087a5-05de-420b-823d-866df2844057"
+        ],
+        "stratintelligence_ids": [],
+        "entity_status": {
+          "status": "liked",
+          "updated_at": "2025-12-27T13:41:27.894819Z"
+        },
+        "entity_team_status": [],
+        "person_role": "Founder",
+        "lists": [],
+        "investor_id": "inv_7e02cfd5806ea49e49931d5c",
+        "specter_person_id": "per_f9c09f68012f553e93a0a013",
+        "id": "per_f9c09f68012f553e93a0a013",
+        "investorId": "inv_7e02cfd5806ea49e49931d5c",
+        "entityStatus": {
+          "status": "liked",
+          "updated_at": "2025-12-27T13:41:27.894819Z"
+        },
+        "teamEntityStatuses": []
+      },
+      {
+        "first_name": "Marianne",
+        "last_name": "Wu",
+        "full_name": "Marianne Wu",
+        "linkedin_url": "https://www.linkedin.com/in/mariannewu",
+        "twitter_url": null,
+        "github_url": null,
+        "cb_url": "https://www.crunchbase.com/person/marianne-wu",
+        "about": "I am a technologist, operator, and investor.  I am good at connecting dots and like delivering great products informed by macro trends and customer needs.\n\nI am passionate about new technologies and business models and their potential to transform industry and help the climate.  I am particularly interested in the intersection of digital and physical and how to make things that happen in the real world more customer-centric, data-driven, and sustainable.  \n\nI am an experienced venture investor, start-up executive, and management consultant and have spent my career bringing new technologies to market.  I have focused on start-ups but have also built a deep understanding of large companies and incumbents and how start-ups can work with or work around them.   I am looking to work with great entrepreneurs to help build great companies and a better future.",
+        "tagline": "Board Member | Investor | former President, GE Ventures",
+        "location": "Palo Alto, California, United States, North America",
+        "region": "North America",
+        "email": null,
+        "followers_count": 2595,
+        "connections_count": 2038,
+        "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_1b59f79206c8f6d905e81201.jpg",
+        "education_level": "Doctoral Degree",
+        "years_of_experience": 28,
+        "seniority": "Executive Level",
+        "avg_tenure": 39,
+        "current_tenure": 83,
+        "experience": [
+          {
+            "specter_company_id": "5e3b9242137e998b5ae9f6c8",
+            "title": "Venture Partner",
+            "domain": "congruentvc.com",
+            "end_date": null,
+            "job_order": 15,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Finance",
+              "Lending and Investments"
+            ],
+            "is_current": true,
+            "start_date": "2022-01-01T00:00:00",
+            "description": null,
+            "hq_location": "San Francisco, California, United States, North America",
+            "company_name": "Congruent Ventures",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/congruent-ventures",
+            "founded_year": 2017,
+            "growth_stage": "no_funding",
+            "employee_count": 16,
+            "company_size": "11-50",
+            "web_visits": 10544,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "no_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3bbd0900c8f4c9669b1f84",
+            "title": "Board Observer",
+            "domain": "latentai.com",
+            "end_date": null,
+            "job_order": 14,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Data and Analytics",
+              "DeepTech",
+              "Information Technology",
+              "Software"
+            ],
+            "is_current": true,
+            "start_date": "2020-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Princeton, New Jersey, United States, North America",
+            "company_name": "Latent AI, Inc.",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/latent-ai-inc",
+            "founded_year": 2018,
+            "growth_stage": "early",
+            "employee_count": 53,
+            "company_size": "51-200",
+            "web_visits": 10110,
+            "total_funding_amount": 22500000,
+            "last_funding_amount": null,
+            "last_funding_date": "2025-08-18T00:00:00",
+            "last_funding_type": "Corporate Round",
+            "highlights": [
+              "recent_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8f1c040ca7b0c6f07a04",
+            "title": "Board Member",
+            "domain": "fictiv.com",
+            "end_date": null,
+            "job_order": 13,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Hardware",
+              "Manufacturing"
+            ],
+            "is_current": true,
+            "start_date": "2020-01-01T00:00:00",
+            "description": null,
+            "hq_location": "San Francisco, California, United States, North America",
+            "company_name": "Fictiv",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/fictiv",
+            "founded_year": 2013,
+            "growth_stage": "exit",
+            "employee_count": 388,
+            "company_size": "201-500",
+            "web_visits": 158287,
+            "total_funding_amount": 192600000,
+            "last_funding_amount": 100000000,
+            "last_funding_date": "2022-05-05T00:00:00",
+            "last_funding_type": "Series E",
+            "highlights": [
+              "social_followers_3mo_surge",
+              "no_recent_funding",
+              "top_tier_investors"
+            ],
+            "status": "acquired",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8f1b040ca7b0c6f07239",
+            "title": "Board Member",
+            "domain": "everactive.com",
+            "end_date": null,
+            "job_order": 12,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Hardware",
+              "Information Technology",
+              "Internet Services",
+              "Telecommunication"
+            ],
+            "is_current": true,
+            "start_date": "2020-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Santa Clara, California, United States, North America",
+            "company_name": "Everactive",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/everactive",
+            "founded_year": 2012,
+            "growth_stage": "late",
+            "employee_count": 33,
+            "company_size": "11-50",
+            "web_visits": 1187,
+            "total_funding_amount": 143658727,
+            "last_funding_amount": 10924638,
+            "last_funding_date": "2024-09-10T00:00:00",
+            "last_funding_type": "Series Unknown",
+            "highlights": [
+              "top_tier_investors",
+              "no_recent_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8f1c040ca7b0c6f08212",
+            "title": "Advisor",
+            "domain": "getnexar.com",
+            "end_date": null,
+            "job_order": 11,
+            "departments": [
+              "Other"
+            ],
+            "industries": [
+              "Information Technology"
+            ],
+            "is_current": true,
+            "start_date": "2020-01-01T00:00:00",
+            "description": null,
+            "hq_location": "New York City, New York, United States, North America",
+            "company_name": "Nexar Inc.",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/nexar-inc-",
+            "founded_year": 2015,
+            "growth_stage": "growing",
+            "employee_count": 129,
+            "company_size": "51-200",
+            "web_visits": 107388,
+            "total_funding_amount": 149500000,
+            "last_funding_amount": 53000000,
+            "last_funding_date": "2021-11-17T00:00:00",
+            "last_funding_type": "Series D",
+            "highlights": [
+              "headcount_3mo_dip",
+              "app_downloads_12mo_scale_up",
+              "app_reviews_6mo_momentum",
+              "top_tier_investors",
+              "no_recent_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8f9d040ca7b0c6f25680",
+            "title": "Board Observer",
+            "domain": "tamr.com",
+            "end_date": null,
+            "job_order": 10,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Data and Analytics",
+              "Information Technology",
+              "Software"
+            ],
+            "is_current": true,
+            "start_date": "2020-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Cambridge, Massachusetts, United States, North America",
+            "company_name": "Tamr",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/tamrinc",
+            "founded_year": 2013,
+            "growth_stage": "growing",
+            "employee_count": 121,
+            "company_size": "51-200",
+            "web_visits": 16825,
+            "total_funding_amount": 69200000,
+            "last_funding_amount": null,
+            "last_funding_date": "2023-07-12T00:00:00",
+            "last_funding_type": "Series Unknown",
+            "highlights": [
+              "no_recent_funding",
+              "top_tier_investors"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3a8f1b040ca7b0c6f06aab",
+            "title": "Board Member",
+            "domain": "menlomicro.com",
+            "end_date": null,
+            "job_order": 9,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Consumer Products",
+              "DeepTech",
+              "Hardware",
+              "Manufacturing"
+            ],
+            "is_current": true,
+            "start_date": "2019-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Irvine, California, United States, North America",
+            "company_name": "Menlo Micro",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/menlo-micro",
+            "founded_year": 2016,
+            "growth_stage": "growing",
+            "employee_count": 82,
+            "company_size": "51-200",
+            "web_visits": 6889,
+            "total_funding_amount": 227500000,
+            "last_funding_amount": 150000000,
+            "last_funding_date": "2022-03-09T00:00:00",
+            "last_funding_type": "Series C",
+            "highlights": [
+              "headcount_3mo_dip",
+              "recent_news",
+              "media_spotlight",
+              "no_recent_funding",
+              "top_tier_investors"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5fc742cfbf7e53924dedca63",
+            "title": "Venture Partner, Standard Investments",
+            "domain": "40northventures.com",
+            "end_date": null,
+            "job_order": 8,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Finance",
+              "Lending and Investments"
+            ],
+            "is_current": true,
+            "start_date": "2021-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Campbell, California, United States, North America",
+            "company_name": "Standard Investments",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/standardinvestments",
+            "founded_year": 2009,
+            "growth_stage": "no_funding",
+            "employee_count": 38,
+            "company_size": "11-50",
+            "web_visits": 0,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "no_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5fc742cfbf7e53924dedca63",
+            "title": "Managing Director, 40 North Ventures",
+            "domain": "40northventures.com",
+            "end_date": "2021-01-01T00:00:00",
+            "job_order": 7,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Finance",
+              "Lending and Investments"
+            ],
+            "is_current": false,
+            "start_date": "2019-01-01T00:00:00",
+            "description": "Launched 40 North Ventures and built initial investment thesis and portfolio.  Representative portfolio - Desktop Metal (NYSE: DM), Stem (NYSE: STEM), Proterra (NASDAQ: PTRA), Volta (NYSE: VLTA), Enbala (NYSE: GNRC), Aras, Carbon, Catalant",
+            "hq_location": "Campbell, California, United States, North America",
+            "company_name": "40 North Ventures",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/standardinvestments",
+            "founded_year": 2009,
+            "growth_stage": "no_funding",
+            "employee_count": 38,
+            "company_size": "11-50",
+            "web_visits": 0,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "no_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3bc29700c8f4c966acc739",
+            "title": "Board Observer",
+            "domain": "stem.com",
+            "end_date": "2020-01-01T00:00:00",
+            "job_order": 6,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Energy",
+              "Information Technology",
+              "Software",
+              "Sustainability"
+            ],
+            "is_current": false,
+            "start_date": "2018-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Millbrae, California, United States, North America",
+            "company_name": "Stem, Inc.",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/stem-inc",
+            "founded_year": 2009,
+            "growth_stage": "exit",
+            "employee_count": 396,
+            "company_size": "201-500",
+            "web_visits": 77105,
+            "total_funding_amount": 737639772,
+            "last_funding_amount": 155000000,
+            "last_funding_date": "2025-06-30T00:00:00",
+            "last_funding_type": "Post Ipo Debt",
+            "highlights": [
+              "headcount_3mo_dip",
+              "headcount_6mo_decline",
+              "headcount_12mo_downturn",
+              "web_traffic_6mo_momentum",
+              "recent_funding",
+              "top_tier_investors"
+            ],
+            "status": "ipo",
+            "is_unicorn": true,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3bbc0400c8f4c96697dda4",
+            "title": "President",
+            "domain": "geventures.com",
+            "end_date": "2019-01-01T00:00:00",
+            "job_order": 5,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Finance",
+              "Lending and Investments"
+            ],
+            "is_current": false,
+            "start_date": "2014-01-01T00:00:00",
+            "description": "Led investing team and managed $1B portfolio across Industrial, Healthcare, Enterprise, and Digital.   Investing thesis focused on digital disruption of traditional industries - vertical solutions and key technology enablers.  Representative portfolio - Xometry (NASDQ: XMTR), Stem (NYSE: STEM), SolarEdge (NASDAQ: SEDG), Sonnen (NYSE: RDS), Sensity (NYSE: VZ), Bit Stew (NYSE: GE), Labcyte (NYSE: BEC),  RigUp, ServiceMax, Trilliant, TTTech, Evidation Health.  Strategic advisor to GE Businesses.  Extensive network of GE Executives and alumni",
+            "hq_location": "Menlo Park, California, United States, North America",
+            "company_name": "GE Ventures",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/ge_ventures",
+            "founded_year": 2013,
+            "growth_stage": "no_funding",
+            "employee_count": null,
+            "company_size": "10001+",
+            "web_visits": 0,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": [
+              "no_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3bbc9100c8f4c96699bda3",
+            "title": "Partner",
+            "domain": "mdv.com",
+            "end_date": "2013-01-01T00:00:00",
+            "job_order": 4,
+            "departments": [
+              "Senior Leadership"
+            ],
+            "industries": [
+              "Finance",
+              "Lending and Investments"
+            ],
+            "is_current": false,
+            "start_date": "2005-01-01T00:00:00",
+            "description": "Investing partner focused on IT and Industrial.  Portfolio included Sensity (acquired by Verizon), Catilin (acquired by Albemarle), Xicato, Splice, Pluribus Networks, Honest Buildings, Genomatica.",
+            "hq_location": "San Mateo, California, United States, North America",
+            "company_name": "Mohr Davidow Ventures",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/mdv",
+            "founded_year": 1983,
+            "growth_stage": "late",
+            "employee_count": 15,
+            "company_size": "11-50",
+            "web_visits": 3793,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": "2005-03-31T00:00:00",
+            "last_funding_type": "Undisclosed",
+            "highlights": [
+              "no_recent_funding"
+            ],
+            "status": "active",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": null,
+            "title": "Advisor",
+            "domain": null,
+            "end_date": "2004-01-01T00:00:00",
+            "job_order": 3,
+            "departments": [
+              "Other"
+            ],
+            "industries": null,
+            "is_current": false,
+            "start_date": "2003-01-01T00:00:00",
+            "description": null,
+            "hq_location": null,
+            "company_name": "various start-ups",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/various-start-ups",
+            "founded_year": null,
+            "growth_stage": null,
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": null,
+            "status": null,
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": null,
+            "title": "Vice President, Product Marketing",
+            "domain": null,
+            "end_date": "2002-01-01T00:00:00",
+            "job_order": 2,
+            "departments": [
+              "BD & Marketing"
+            ],
+            "industries": null,
+            "is_current": false,
+            "start_date": "1999-01-01T00:00:00",
+            "description": null,
+            "hq_location": null,
+            "company_name": "ONI Systems",
+            "employment_type": null,
+            "company_linkedin_url": null,
+            "founded_year": null,
+            "growth_stage": null,
+            "employee_count": null,
+            "company_size": null,
+            "web_visits": null,
+            "total_funding_amount": null,
+            "last_funding_amount": null,
+            "last_funding_date": null,
+            "last_funding_type": null,
+            "highlights": null,
+            "status": null,
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          },
+          {
+            "specter_company_id": "5e3bbfb900c8f4c966a2d4ff",
+            "title": "Consultant",
+            "domain": "numetrics.com",
+            "end_date": "1999-01-01T00:00:00",
+            "job_order": 1,
+            "departments": [
+              "Other"
+            ],
+            "industries": [
+              "Professional Services",
+              "Software"
+            ],
+            "is_current": false,
+            "start_date": "1997-01-01T00:00:00",
+            "description": null,
+            "hq_location": "Cupertino, California, United States, North America",
+            "company_name": "McKinsey & Company",
+            "employment_type": null,
+            "company_linkedin_url": "linkedin.com/company/mckinsey",
+            "founded_year": 2000,
+            "growth_stage": "exit",
+            "employee_count": 36972,
+            "company_size": "10001+",
+            "web_visits": 0,
+            "total_funding_amount": 1200000,
+            "last_funding_amount": 1200000,
+            "last_funding_date": "2000-10-13T00:00:00",
+            "last_funding_type": "Series Unknown",
+            "highlights": [
+              "headcount_3mo_dip",
+              "headcount_6mo_decline",
+              "social_followers_3mo_surge",
+              "social_followers_6mo_momentum",
+              "social_followers_12mo_scale_up",
+              "no_recent_funding"
+            ],
+            "status": "closed",
+            "is_unicorn": false,
+            "is_fortune_500": false,
+            "hot_companies": null
+          }
+        ],
+        "education": [
+          {
+            "grade": null,
+            "degree": "Doctor of Philosophy (Ph.D.)",
+            "end_date": null,
+            "logo_url": "https://media.licdn.com/dms/image/v2/C560BAQHr9suxyJBXMw/company-logo_200_200/company-logo_200_200/0/1635534378870/stanford_university_logo?e=2147483647&v=beta&t=55JDWFIA4f3n7FQKzj8r30sZxnPCNTuIQ74B1-xLBPI",
+            "school_id": 1792,
+            "activities": null,
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": null,
+            "description": null,
+            "school_name": "Stanford University",
+            "university_id": 108884,
+            "field_of_study": "Electrical Engineering",
+            "school_linkedin_url": "linkedin.com/school/stanford-university",
+            "top_university": null
+          },
+          {
+            "grade": null,
+            "degree": "Master of Science (M.S.)",
+            "end_date": null,
+            "logo_url": "https://media.licdn.com/dms/image/v2/C560BAQHr9suxyJBXMw/company-logo_200_200/company-logo_200_200/0/1635534378870/stanford_university_logo?e=2147483647&v=beta&t=55JDWFIA4f3n7FQKzj8r30sZxnPCNTuIQ74B1-xLBPI",
+            "school_id": 1792,
+            "activities": null,
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": null,
+            "description": null,
+            "school_name": "Stanford University",
+            "university_id": 108884,
+            "field_of_study": "Electrical Engineering",
+            "school_linkedin_url": "linkedin.com/school/stanford-university",
+            "top_university": null
+          },
+          {
+            "grade": null,
+            "degree": "Bachelor of Applied Science (B.A.Sc.)",
+            "end_date": null,
+            "logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQH415qlDBkj8Q/company-logo_200_200/company-logo_200_200/0/1630608877834/universityofbc_logo?e=2147483647&v=beta&t=dkF7ZV4vqCXO2ZCbJIHU27GWz5qQWsF7mNPs1V01Yjo",
+            "school_id": 4373,
+            "activities": null,
+            "created_at": "2025-12-27T01:46:03",
+            "is_current": false,
+            "start_date": null,
+            "description": null,
+            "school_name": "The University of British Columbia / UBC",
+            "university_id": 108886,
+            "field_of_study": "Engineering Physics/Applied Physics",
+            "school_linkedin_url": "linkedin.com/school/universityofbc",
+            "top_university": null
+          }
+        ],
+        "languages": [],
+        "skills": [
+          {
+            "name": "Business Development",
+            "endorsements_count": 13,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Business Strategy",
+            "endorsements_count": 23,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Cleantech",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Cloud Computing",
+            "endorsements_count": 5,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Consulting",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Entrepreneurship",
+            "endorsements_count": 34,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Marketing Strategy",
+            "endorsements_count": 5,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Mergers & Acquisitions",
+            "endorsements_count": 5,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Networking",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "New Business Development",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Product Development",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Product Management",
+            "endorsements_count": 8,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "SaaS",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Start-ups",
+            "endorsements_count": 26,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Strategic Partnerships",
+            "endorsements_count": 40,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Strategic Planning",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Team Building",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Venture Capital",
+            "endorsements_count": 24,
+            "passed_skill_assessment": false
+          }
+        ],
+        "people_highlights": [
+          "major_tech_experience",
+          "prior_exit",
+          "prior_ipo",
+          "prior_vc_backed_experience",
+          "prior_vc_backed_founder",
+          "strong_academic_background",
+          "top_university",
+          "vc_backed_experience",
+          "vc_backed_founder"
+        ],
+        "talent_ids": [],
+        "stratintelligence_ids": [],
+        "entity_status": null,
+        "entity_team_status": [],
+        "person_role": "Investor",
+        "lists": [],
+        "investor_id": "inv_2344c84541fd577097329450",
+        "specter_person_id": "per_1b59f79206c8f6d905e81201",
+        "id": "per_1b59f79206c8f6d905e81201",
+        "investorId": "inv_2344c84541fd577097329450",
+        "entityStatus": null,
+        "teamEntityStatuses": []
+      }
+    ],
+    "affinity": {},
+    "filters": [],
+    "sort": {}
+  }
+}

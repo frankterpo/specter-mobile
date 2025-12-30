@@ -1,0 +1,378 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": [
+    {
+      "id": "6949554b5c7c1f7de9e36736",
+      "domain": "appleblossomschef.com",
+      "name": "Apple Blossoms Culinary Services",
+      "logo_url": "https://logo.clearbit.com/appleblossomschef.com",
+      "short_description": "Bay Area Family & Private Chef | Handcrafted Meals & In-Home Cooking | Special Diets | Daily & Weekly Meal Prep",
+      "hqLocation": "San Jose, California, United States, North America",
+      "hqRegion": "North America",
+      "employeeCount": 1,
+      "growthStage": "no_funding",
+      "linkedinUrl": "linkedin.com/company/apple-blossoms-chef"
+    },
+    {
+      "id": "69326a1455dc3a5821d25493",
+      "domain": "mrsgreenapple.com",
+      "name": "Mrs. GREEN APPLE",
+      "logo_url": "https://logo.clearbit.com/mrsgreenapple.com",
+      "growthStage": "no_funding",
+      "twitterUrl": "twitter.com/aoringohuzin",
+      "facebookUrl": "facebook.com/mrs.greenappleofficial"
+    },
+    {
+      "id": "69495543c85d267de9bf714f",
+      "domain": "bigappledecon.com",
+      "name": "Big Apple Decon",
+      "logo_url": "https://logo.clearbit.com/bigappledecon.com",
+      "short_description": "Big Apple Decon offers Decontamination and Remediation Services for NYS Licensed Cannabis Facilities.",
+      "employeeCount": 1,
+      "growthStage": "no_funding",
+      "linkedinUrl": "linkedin.com/company/big-apple-decon"
+    },
+    {
+      "id": "69438d91f365b06a8c219467",
+      "domain": "applehomes.ca",
+      "name": "Apple Home Builders",
+      "logo_url": "https://logo.clearbit.com/applehomes.ca",
+      "growthStage": "no_funding",
+      "facebookUrl": "facebook.com/applehomebuilders"
+    },
+    {
+      "id": "69326a13159e2d5821678fe1",
+      "domain": "shopappleblvd.com",
+      "name": "Apple Blvd Boutique",
+      "logo_url": "https://logo.clearbit.com/shopappleblvd.com",
+      "growthStage": "no_funding",
+      "facebookUrl": "facebook.com/appleblvd"
+    },
+    {
+      "id": "694e1994182e0f2b9e11fe1c",
+      "domain": "cosmiccrisp.com",
+      "name": "Cosmic Crisp® Apple",
+      "logo_url": "https://logo.clearbit.com/cosmiccrisp.com",
+      "growthStage": "late",
+      "linkedinUrl": "linkedin.com/company/cosmic-crisp",
+      "twitterUrl": "twitter.com/thecosmiccrisp",
+      "facebookUrl": "facebook.com/cosmiccrisp"
+    },
+    {
+      "id": "69495530ed30fa7de9b5f239",
+      "domain": "tawatidigital.com",
+      "name": "Tawari Digital Limited : Apple Premium Service Provider",
+      "logo_url": "https://logo.clearbit.com/tawatidigital.com",
+      "short_description": "Apple Premium reseller | Apple Premium service provider",
+      "hqLocation": "Nairobi, Nairobi County, Kenya, Africa",
+      "hqRegion": "Africa",
+      "employeeCount": 7,
+      "growthStage": "no_funding",
+      "linkedinUrl": "linkedin.com/company/justapple"
+    },
+    {
+      "id": "6949554b999d0f7de9bec6d5",
+      "domain": "applelanegroup.com",
+      "name": "APPLE LANE GROUP LLC",
+      "logo_url": "https://logo.clearbit.com/applelanegroup.com",
+      "hqLocation": "Lancaster, Massachusetts, United States, North America",
+      "hqRegion": "North America",
+      "employeeCount": 0,
+      "growthStage": "no_funding",
+      "linkedinUrl": "linkedin.com/company/apple-lane-group-llc"
+    },
+    {
+      "id": "5e6afb206e2d0842bf48218a",
+      "domain": "apple.com",
+      "name": "Apple",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/apple.com.png",
+      "short_description": "Apple designs and sells innovative consumer electronics and software.",
+      "hqLocation": "Cupertino, California, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 5670539030,
+      "lastFundingType": "Post Ipo Debt",
+      "employeeCount": 166800,
+      "growthStage": "exit",
+      "linkedinUrl": "linkedin.com/company/apple",
+      "twitterUrl": "x.com/apple",
+      "facebookUrl": "facebook.com/apple",
+      "g2_data": [
+        {
+          "g2_link": "https://www.g2.com/products/apple-business-essentials/reviews",
+          "g2_product_name": "Apple Business Essentials",
+          "g2_reviews": 5,
+          "g2_rating": 4.6
+        }
+      ],
+      "trustpilot_data": {
+        "trustpilot_url": "https://www.trustpilot.com/review/www.apple.com",
+        "trustpilot_rating": 1.7,
+        "trustpilot_review_count": 11088
+      }
+    },
+    {
+      "id": "6576fbfcf5c870dd55a49f1f",
+      "domain": "apple.com",
+      "name": "Nothing Real",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/apple.com.png",
+      "short_description": "Apple is a technology company that designs and sells consumer electronics and software.",
+      "hqLocation": "Cupertino, California, United States, North America",
+      "hqRegion": "North America",
+      "employeeCount": 166800,
+      "growthStage": "exit",
+      "linkedinUrl": "linkedin.com/company/apple",
+      "g2_data": [
+        {
+          "g2_link": "https://www.g2.com/products/apple-business-essentials/reviews",
+          "g2_product_name": "Apple Business Essentials",
+          "g2_reviews": 5,
+          "g2_rating": 4.6
+        }
+      ],
+      "trustpilot_data": {
+        "trustpilot_url": "https://www.trustpilot.com/review/www.apple.com",
+        "trustpilot_rating": 1.7,
+        "trustpilot_review_count": 11088
+      }
+    },
+    {
+      "id": "5e3a8fc8040ca7b0c6f37c44",
+      "domain": "appleandeve.com",
+      "name": "Apple & Eve",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/appleandeve.com.jpeg",
+      "short_description": "Apple & Eve offers 100% fruit juice products including organic and branded juice lines.",
+      "hqLocation": "Washington Mills, New York, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 10000000,
+      "lastFundingType": "Private Equity",
+      "employeeCount": 74,
+      "growthStage": "exit",
+      "linkedinUrl": "linkedin.com/company/apple-&-eve"
+    },
+    {
+      "id": "61fcf62662adc22ead7476e1",
+      "domain": "mrapple.com",
+      "name": "Mr Apple",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/mrapple.com.jpeg",
+      "short_description": "Mr Apple grows, packs, and exports apples from New Zealand, focusing on quality and taste.",
+      "hqLocation": "Whakatu, Hawke's Bay Region, New Zealand, Oceania",
+      "hqRegion": "Oceania",
+      "totalFundingAmount": 6045,
+      "lastFundingType": "Grant",
+      "employeeCount": 218,
+      "growthStage": "late",
+      "linkedinUrl": "linkedin.com/company/mr-apple-new-zealand-ltd",
+      "twitterUrl": "x.com/mrapplenz",
+      "facebookUrl": "facebook.com/mrapplenz"
+    },
+    {
+      "id": "68593dc233e8714f63b4438f",
+      "domain": "appleisports.com",
+      "name": "Apple iSports",
+      "logo_url": "https://logo.clearbit.com/appleisports.com",
+      "short_description": "Apple iSports provides invisible infrastructure technology for the future of sports and entertainment.",
+      "hqLocation": "Irvine, California, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 26374900,
+      "lastFundingType": "Post Ipo Equity",
+      "employeeCount": 9,
+      "growthStage": "exit",
+      "linkedinUrl": "linkedin.com/company/appleisports"
+    },
+    {
+      "id": "66712af6ae5ef5304943b5e4",
+      "domain": "apple.co",
+      "name": "Bliss AI",
+      "logo_url": "https://logo.clearbit.com/apple.co",
+      "short_description": "Apple offers innovative hardware, software, and services, including iPhones, Macs, and Apple Music.",
+      "hqLocation": "London, England, United Kingdom, Europe",
+      "hqRegion": "Europe",
+      "employeeCount": 2,
+      "growthStage": "no_funding",
+      "linkedinUrl": "linkedin.com/company/blisswellness",
+      "androidAllPublisherURLs": [
+        "https://play.google.com/store/apps/developer?id=Redd+Studios+Apps"
+      ]
+    },
+    {
+      "id": "5e3a8f1a040ca7b0c6f055b3",
+      "domain": "applevacations.com",
+      "name": "Apple Vacations",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/applevacations.com.jpeg",
+      "short_description": "Apple Vacations provides quality vacation experiences with great service and value for over 40 years.",
+      "employeeCount": 581,
+      "growthStage": "late",
+      "linkedinUrl": "linkedin.com/company/apple-vacations",
+      "twitterUrl": "x.com/applevacations",
+      "facebookUrl": "facebook.com/applevacations",
+      "trustpilot_data": {
+        "trustpilot_url": "https://www.trustpilot.com/review/www.applevacations.com",
+        "trustpilot_rating": 1.4,
+        "trustpilot_review_count": 51
+      }
+    },
+    {
+      "id": "6810e3939e621061d0fb1bcc",
+      "domain": "appleseedsnwa.org",
+      "name": "Apple Seeds",
+      "logo_url": "https://logo.clearbit.com/appleseedsnwa.org",
+      "short_description": "Apple Seeds inspires healthy living through garden-based education.",
+      "hqLocation": "Fayetteville, Arkansas, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 20000,
+      "lastFundingType": "Grant",
+      "employeeCount": 22,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/apple-seeds-inc.",
+      "facebookUrl": "facebook.com/appleseedsinc"
+    },
+    {
+      "id": "618103ecee1af0b5ab8a3676",
+      "domain": "appleexpress.com",
+      "name": "Apple Express",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/appleexpress.com.jpeg",
+      "short_description": "Apple Express offers same day and last mile courier and logistics solutions.",
+      "hqLocation": "Mississauga, Ontario, Canada, North America",
+      "hqRegion": "North America",
+      "employeeCount": 285,
+      "growthStage": "late",
+      "linkedinUrl": "linkedin.com/company/apple-express-courier-ltd.",
+      "twitterUrl": "x.com/appleexpressltd",
+      "facebookUrl": "facebook.com/appleexpresscourier",
+      "trustpilot_data": {
+        "trustpilot_url": "https://www.trustpilot.com/review/appleexpress.com",
+        "trustpilot_rating": 1.7,
+        "trustpilot_review_count": 42
+      }
+    },
+    {
+      "id": "65aea284d13cb48f0dd5d53b",
+      "domain": "gurgencler.com.tr",
+      "name": "Apple Gürgençler",
+      "logo_url": "https://logo.clearbit.com/gurgencler.com.tr",
+      "short_description": "Gürgençler offers Apple products and accessories through an authorized online E-Store.",
+      "hqLocation": "Erdemli, Mersin, Turkey, Asia",
+      "hqRegion": "Asia",
+      "employeeCount": 312,
+      "growthStage": "growing",
+      "linkedinUrl": "linkedin.com/company/applegurgencler",
+      "twitterUrl": "x.com/applegurgencler",
+      "facebookUrl": "facebook.com/applegurgencler"
+    },
+    {
+      "id": "5e3a8fc8040ca7b0c6f37963",
+      "domain": "appleseedsplay.com",
+      "name": "Apple Seeds",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/appleseedsplay.com.jpeg",
+      "short_description": "Apple Seeds operates play spaces for families with children newborn to five.",
+      "hqLocation": "New York City, New York, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 350000,
+      "lastFundingType": "Series Unknown",
+      "employeeCount": 39,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/apple-seeds",
+      "twitterUrl": "x.com/appleseedsnyc",
+      "facebookUrl": "facebook.com/appleseedsplay"
+    },
+    {
+      "id": "65f831f5a6f89ba553523924",
+      "domain": "troyestore.com",
+      "name": "Troy Apple",
+      "logo_url": "https://logo.clearbit.com/troyestore.com",
+      "short_description": "Troyestore sells a variety of Apple products like MacBooks, iPads, and iPhones, with financing and delivery services.",
+      "hqLocation": "Istanbul, Istanbul, Turkey, Asia",
+      "hqRegion": "Asia",
+      "employeeCount": 176,
+      "growthStage": "late",
+      "linkedinUrl": "linkedin.com/company/troyapplepremiumpartner",
+      "twitterUrl": "x.com/troyapple",
+      "facebookUrl": "facebook.com/troyapple"
+    },
+    {
+      "id": "664cb61665704e714e28291c",
+      "domain": "ativadorgratis.art",
+      "name": "Apple",
+      "logo_url": "https://logo.clearbit.com/ativadorgratis.art",
+      "short_description": "Apple is a diverse collective reimagining innovation to enhance lives and promote inclusion.",
+      "hqLocation": "Cupertino, California, United States, North America",
+      "hqRegion": "North America",
+      "employeeCount": 166800,
+      "growthStage": "late",
+      "linkedinUrl": "linkedin.com/company/apple",
+      "g2_data": [
+        {
+          "g2_link": "https://www.g2.com/products/apple-business-essentials/reviews",
+          "g2_product_name": "Apple Business Essentials",
+          "g2_reviews": 4,
+          "g2_rating": 4.6
+        }
+      ]
+    },
+    {
+      "id": "68a6ebaf9268fb3ecbd2eb05",
+      "domain": "appletree.agency",
+      "name": "APPLE TREE",
+      "logo_url": "https://logo.clearbit.com/appletree.agency",
+      "short_description": "Apple Tree is a strategic communication agency that boosts brand relevance and business results.",
+      "hqLocation": "Barcelona, Catalonia, Spain, Europe",
+      "hqRegion": "Europe",
+      "employeeCount": 1379,
+      "growthStage": "late",
+      "linkedinUrl": "linkedin.com/company/apple-tree-communications",
+      "twitterUrl": "x.com/appletreeagency",
+      "facebookUrl": "facebook.com/appletreeagency"
+    },
+    {
+      "id": "6363798caab093538e0c8f7e",
+      "domain": "applecinemas.com",
+      "name": "Apple Cinemas",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/applecinemas.com.jpeg",
+      "short_description": "Apple Cinemas is an independently owned movie theater chain operating 5 locations in Connecticut and Massachusetts.",
+      "hqLocation": "Cambridge, Massachusetts, United States, North America",
+      "hqRegion": "North America",
+      "employeeCount": 76,
+      "growthStage": "early",
+      "linkedinUrl": "linkedin.com/company/apple-cinemas",
+      "twitterUrl": "x.com/applecinemas",
+      "facebookUrl": "facebook.com/applecinemassimsbury"
+    },
+    {
+      "id": "6881e6608163db23f3b33b52",
+      "domain": "appleroof.com",
+      "name": "Apple Roofing",
+      "logo_url": "https://logo.clearbit.com/appleroof.com",
+      "short_description": "Kansas roofing company",
+      "hqLocation": "Blue Springs, Missouri, United States, North America",
+      "hqRegion": "North America",
+      "employeeCount": 237,
+      "growthStage": "growing",
+      "linkedinUrl": "linkedin.com/company/apple-roofing-llc",
+      "facebookUrl": "facebook.com/appleroofing"
+    },
+    {
+      "id": "5fc74277bf7e53924deb1966",
+      "domain": "apple.com",
+      "name": "Antis",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/apple.com.png",
+      "short_description": "Apple creates innovative technology products and services.",
+      "hqLocation": "Cupertino, California, United States, North America",
+      "hqRegion": "North America",
+      "growthStage": "no_funding",
+      "g2_data": [
+        {
+          "g2_link": "https://www.g2.com/products/apple-business-essentials/reviews",
+          "g2_product_name": "Apple Business Essentials",
+          "g2_reviews": 5,
+          "g2_rating": 4.6
+        }
+      ],
+      "trustpilot_data": {
+        "trustpilot_url": "https://www.trustpilot.com/review/www.apple.com",
+        "trustpilot_rating": 1.7,
+        "trustpilot_review_count": 11088
+      }
+    }
+  ]
+}

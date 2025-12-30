@@ -9,6 +9,7 @@ import {
   Switch,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { colors } from "../theme/colors";
 
 export interface FilterOptions {
   // General
@@ -28,6 +29,10 @@ export interface FilterOptions {
   companySize?: string[];
   companyGrowthStage?: string[];
   
+  // Revenue
+  minRevenue?: number;
+  minGrowthRate?: number;
+
   // Education
   educationLevel?: string[];
   fieldOfStudy?: string[];
@@ -48,7 +53,7 @@ interface FilterModalProps {
   currentFilters: FilterOptions;
 }
 
-type FilterSection = "general" | "experience" | "companies" | "education" | "social";
+type FilterSection = "general" | "experience" | "companies" | "revenue" | "education" | "social";
 
 // Filter Options (matching backend format)
 const SENIORITY_OPTIONS = [
@@ -104,6 +109,20 @@ const GROWTH_STAGE_OPTIONS = [
   { label: "Series B", value: "series_b" },
   { label: "Series C+", value: "series_c_plus" },
   { label: "Public", value: "public" },
+];
+
+const REVENUE_RANGE_OPTIONS = [
+  { label: "$0 - $1M", value: 1000000 },
+  { label: "$1M - $10M", value: 10000000 },
+  { label: "$10M - $50M", value: 50000000 },
+  { label: "$50M+", value: 100000000 },
+];
+
+const GROWTH_RATE_OPTIONS = [
+  { label: "10%+", value: 10 },
+  { label: "25%+", value: 25 },
+  { label: "50%+", value: 50 },
+  { label: "100%+", value: 100 },
 ];
 
 const EDUCATION_LEVEL_OPTIONS = [
@@ -220,6 +239,8 @@ export default function FilterModal({
     (filters.companyGrowthStage?.length || 0);
   const educationCount =
     (filters.educationLevel?.length || 0) + (filters.fieldOfStudy?.length || 0);
+  const revenueCount =
+    (filters.minRevenue ? 1 : 0) + (filters.minGrowthRate ? 1 : 0);
   const socialCount =
     (filters.hasLinkedIn ? 1 : 0) +
     (filters.hasTwitter ? 1 : 0) +
@@ -408,6 +429,63 @@ export default function FilterModal({
                             styles.optionChipText,
                             filters.companyGrowthStage?.includes(option.value) &&
                               styles.optionChipTextActive,
+                          ]}
+                        >
+                          {option.label}
+                        </Text>
+                      </Pressable>
+                    ))}
+                  </View>
+                </View>
+              </>
+            )}
+
+            {/* Revenue Section */}
+            {renderAccordionSection(
+              "revenue",
+              "Revenue & Growth",
+              revenueCount,
+              <>
+                <View style={styles.filterGroup}>
+                  <Text style={styles.filterLabel}>Min Revenue</Text>
+                  <View style={styles.optionsGrid}>
+                    {REVENUE_RANGE_OPTIONS.map((option) => (
+                      <Pressable
+                        key={option.value}
+                        onPress={() => setFilters({ ...filters, minRevenue: filters.minRevenue === option.value ? undefined : option.value })}
+                        style={[
+                          styles.optionChip,
+                          filters.minRevenue === option.value && styles.optionChipActive,
+                        ]}
+                      >
+                        <Text
+                          style={[
+                            styles.optionChipText,
+                            filters.minRevenue === option.value && styles.optionChipTextActive,
+                          ]}
+                        >
+                          {option.label}
+                        </Text>
+                      </Pressable>
+                    ))}
+                  </View>
+                </View>
+                <View style={styles.filterGroup}>
+                  <Text style={styles.filterLabel}>Min Growth Rate</Text>
+                  <View style={styles.optionsGrid}>
+                    {GROWTH_RATE_OPTIONS.map((option) => (
+                      <Pressable
+                        key={option.value}
+                        onPress={() => setFilters({ ...filters, minGrowthRate: filters.minGrowthRate === option.value ? undefined : option.value })}
+                        style={[
+                          styles.optionChip,
+                          filters.minGrowthRate === option.value && styles.optionChipActive,
+                        ]}
+                      >
+                        <Text
+                          style={[
+                            styles.optionChipText,
+                            filters.minGrowthRate === option.value && styles.optionChipTextActive,
                           ]}
                         >
                           {option.label}

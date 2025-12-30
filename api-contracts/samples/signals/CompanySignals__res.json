@@ -1,0 +1,893 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": {
+    "page": 0,
+    "items": [
+      {
+        "id": "5e3a8fa3040ca7b0c6f300af",
+        "addedToList": false,
+        "rank": 1,
+        "prev_month_rank": 83177,
+        "name": "1mind",
+        "domain": "1mind.com",
+        "logoUrl": "https://specter-company-logo.s3.amazonaws.com/1mind.com.jpeg",
+        "industry": [
+          "Health"
+        ],
+        "hqRegion": "North America",
+        "descriptionShort": "1Mind is a social discovery app to find like-minded friends.",
+        "linkedinUrl": "linkedin.com/company/1mindai",
+        "twitterUrl": "x.com/1mind",
+        "instagramUrl": null,
+        "facebookUrl": null,
+        "androidAllPublisherURLs": [
+          "https://play.google.com/store/apps/developer?id=Mindsoft2"
+        ],
+        "iosAllPublisherURLs": null,
+        "foundedYear": 2024,
+        "growthStage": "early",
+        "operatingStatus": "active",
+        "totalFundingAmount": 40000000,
+        "lastFundingAmount": 30000000,
+        "lastFundingDate": "2025-11-10T00:00:00.000Z",
+        "lastFundingType": "Series A",
+        "awards": null,
+        "highlights": [
+          "headcount_3mo_surge",
+          "headcount_6mo_momentum",
+          "headcount_12mo_scale_up",
+          "web_traffic_6mo_momentum",
+          "social_followers_3mo_surge",
+          "social_followers_6mo_momentum",
+          "social_followers_12mo_scale_up",
+          "recent_news",
+          "media_spotlight",
+          "top_tier_investors",
+          "recent_funding"
+        ],
+        "newHighlights": [
+          "headcount_3mo_surge",
+          "headcount_6mo_momentum",
+          "headcount_12mo_scale_up",
+          "web_traffic_6mo_momentum",
+          "social_followers_3mo_surge",
+          "social_followers_6mo_momentum",
+          "social_followers_12mo_scale_up",
+          "recent_news",
+          "media_spotlight"
+        ],
+        "hot_companies": null,
+        "b2x": "b2b",
+        "integrationInfo": {
+          "integrationUpdatedAt": "2025-12-28T00:11:40.892505+00:00",
+          "integrationUserName": "Jan Hoekman"
+        },
+        "entityStatus": {
+          "status": "liked",
+          "updated_at": "2025-12-27T00:31:25.258+00:00"
+        },
+        "teamEntityStatuses": [
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-04T14:47:56.019813+00:00",
+            "user": {
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_29IKZ5zxZirsPcvbQQRWvSkhupf.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-04T16:49:26.865862+00:00",
+            "user": {
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2wb9TW8Y9wIDyNL4gbr1XoUTZCi"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-11T17:37:07.257043+00:00",
+            "user": {
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-03T11:27:20.679062+00:00",
+            "user": {
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-07T04:47:49.895307+00:00",
+            "user": {
+              "first_name": "Arun",
+              "last_name": "Baburaj",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Ai5FNNuSwydNzSZiDxH9j1uOyP.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-01T16:21:43.047852+00:00",
+            "user": {
+              "first_name": "Alejandro",
+              "last_name": "Morales",
+              "avatar": "https://images.clerk.dev/uploaded/img_2MSVJ7LsJtZMkJ4dj2U3ZbcZsfY.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-01T06:50:25.867755+00:00",
+            "user": {
+              "first_name": "Aditya",
+              "last_name": "Chopra",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-11-12T16:32:44.755991+00:00",
+            "user": {
+              "first_name": "Raza",
+              "last_name": "Zaidi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-02T07:29:38.57039+00:00",
+            "user": {
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-02T09:52:37.839066+00:00",
+            "user": {
+              "first_name": "Suryansh",
+              "last_name": "Verma",
+              "avatar": "https://images.clerk.dev/uploaded/img_2xyQuW8xlxV45NyWPxsloK5z2Ut"
+            }
+          },
+          {
+            "status": "liked",
+            "updated_at": "2025-12-18T12:15:21.267+00:00",
+            "user": {
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-04T15:24:56.637043+00:00",
+            "user": {
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-04T12:09:16.941355+00:00",
+            "user": {
+              "first_name": "Henry",
+              "last_name": "Barnett",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-01T03:51:43.720461+00:00",
+            "user": {
+              "first_name": "Henry",
+              "last_name": "Barnett",
+              "avatar": null
+            }
+          },
+          {
+            "status": "liked",
+            "updated_at": "2025-12-01T11:37:57.613+00:00",
+            "user": {
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-10T10:37:11.904+00:00",
+            "user": {
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-03T09:38:40.215514+00:00",
+            "user": {
+              "first_name": null,
+              "last_name": null,
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-09T09:35:15.322873+00:00",
+            "user": {
+              "first_name": "Aliaksandr",
+              "last_name": "Yakushau",
+              "avatar": null
+            }
+          }
+        ],
+        "employeeCount": 47,
+        "webVisits": 15740,
+        "employee3moGrowthPct": 683.3333333333333,
+        "webVisits3moGrowthPct": 31.71548117154812
+      },
+      {
+        "id": "5e3a7f110aa7a3270a54b6a1",
+        "addedToList": false,
+        "rank": 2,
+        "prev_month_rank": 342,
+        "name": "Duel",
+        "domain": "duel.tech",
+        "logoUrl": "https://specter-company-logo.s3.amazonaws.com/duel.tech.jpeg",
+        "industry": [
+          "Advertising",
+          "Information Technology",
+          "Sales and Marketing",
+          "Software"
+        ],
+        "hqRegion": "Europe",
+        "descriptionShort": "Duel is a Brand Advocacy Platform for consumer retail brands.",
+        "linkedinUrl": "linkedin.com/company/dueltech",
+        "twitterUrl": "x.com/duel",
+        "instagramUrl": null,
+        "facebookUrl": null,
+        "androidAllPublisherURLs": null,
+        "iosAllPublisherURLs": null,
+        "foundedYear": 2015,
+        "growthStage": "early",
+        "operatingStatus": "active",
+        "totalFundingAmount": 21302662,
+        "lastFundingAmount": 16000000,
+        "lastFundingDate": "2025-09-23T00:00:00.000Z",
+        "lastFundingType": "Series A",
+        "awards": [
+          {
+            "award_name": "Deloitte Technology Fast 50",
+            "award_details": "UK | Rank 43",
+            "award_year": 2024,
+            "award_org": "Deloitte",
+            "award_link": "https://www.deloitte.co.uk/fast50/winners/2024/",
+            "logo_url": "https://specter-company-logo.s3.amazonaws.com/deloitte.com.jpeg"
+          }
+        ],
+        "highlights": [
+          "headcount_3mo_surge",
+          "headcount_6mo_momentum",
+          "headcount_12mo_scale_up",
+          "web_traffic_3mo_surge",
+          "web_traffic_6mo_momentum",
+          "web_traffic_12mo_scale_up",
+          "social_followers_3mo_surge",
+          "social_followers_6mo_momentum",
+          "social_followers_12mo_scale_up",
+          "recent_funding",
+          "top_tier_investors"
+        ],
+        "newHighlights": [
+          "web_traffic_3mo_surge",
+          "web_traffic_6mo_momentum",
+          "web_traffic_12mo_scale_up"
+        ],
+        "hot_companies": {
+          "domain": "duel.tech",
+          "all_signal_ids": [
+            "1dee4198-6dc0-43b6-90dc-818ddddb6448"
+          ],
+          "number_of_signals": 1,
+          "signal_count_past_30_days": 0,
+          "signal_count_past_90_days": 0,
+          "signal_count_past_180_days": 0,
+          "signal_count_past_360_days": 0,
+          "signal_count_past_720_days": 0
+        },
+        "b2x": "b2b_b2c",
+        "integrationInfo": {
+          "integrationUpdatedAt": "2025-12-28T00:11:52.78248+00:00",
+          "integrationUserName": "Marco Squarci"
+        },
+        "entityStatus": null,
+        "teamEntityStatuses": [
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-15T10:19:09.211972+00:00",
+            "user": {
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2wb9TW8Y9wIDyNL4gbr1XoUTZCi"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-22T10:55:19.783675+00:00",
+            "user": {
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-01T15:41:00.458304+00:00",
+            "user": {
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-09T16:41:52.763451+00:00",
+            "user": {
+              "first_name": "Alejandro",
+              "last_name": "Morales",
+              "avatar": "https://images.clerk.dev/uploaded/img_2MSVJ7LsJtZMkJ4dj2U3ZbcZsfY.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-11-21T16:19:08.318526+00:00",
+            "user": {
+              "first_name": "Aditya",
+              "last_name": "Chopra",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-08T13:15:48.002007+00:00",
+            "user": {
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "disliked",
+            "updated_at": "2025-12-12T23:48:23.558+00:00",
+            "user": {
+              "first_name": "Suryansh",
+              "last_name": "Verma",
+              "avatar": "https://images.clerk.dev/uploaded/img_2xyQuW8xlxV45NyWPxsloK5z2Ut"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-01T14:53:59.153607+00:00",
+            "user": {
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-04T15:25:00.101895+00:00",
+            "user": {
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-03T11:02:34.594466+00:00",
+            "user": {
+              "first_name": "Henry",
+              "last_name": "Barnett",
+              "avatar": null
+            }
+          },
+          {
+            "status": "disliked",
+            "updated_at": "2025-12-01T11:37:58.591032+00:00",
+            "user": {
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-10T10:37:12.631+00:00",
+            "user": {
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          }
+        ],
+        "employeeCount": 84,
+        "webVisits": 53320,
+        "employee3moGrowthPct": 15.06849315068493,
+        "webVisits3moGrowthPct": 108.4278007974357
+      },
+      {
+        "id": "606f21e76a1d5452787082b3",
+        "addedToList": true,
+        "rank": 3,
+        "prev_month_rank": 14340,
+        "name": "Blissway",
+        "domain": "blissway.com",
+        "logoUrl": "https://specter-company-logo.s3.amazonaws.com/blissway.com.jpg",
+        "industry": [
+          "Government and Military",
+          "Hardware",
+          "Software",
+          "Transportation"
+        ],
+        "hqRegion": "North America",
+        "descriptionShort": "Blissway revolutionizes toll collection with Wireless Autonomous Lane Enforcers and cloud data analytics.",
+        "linkedinUrl": "linkedin.com/company/blisswayco",
+        "twitterUrl": null,
+        "instagramUrl": null,
+        "facebookUrl": null,
+        "androidAllPublisherURLs": null,
+        "iosAllPublisherURLs": null,
+        "foundedYear": 2019,
+        "growthStage": "seed",
+        "operatingStatus": "active",
+        "totalFundingAmount": null,
+        "lastFundingAmount": null,
+        "lastFundingDate": "2024-12-01T00:00:00.000Z",
+        "lastFundingType": "Series Unknown",
+        "awards": null,
+        "highlights": [
+          "headcount_3mo_surge",
+          "web_traffic_3mo_surge",
+          "web_traffic_6mo_momentum",
+          "web_traffic_12mo_scale_up",
+          "social_followers_3mo_surge",
+          "social_followers_6mo_momentum",
+          "social_followers_12mo_scale_up",
+          "top_tier_investors",
+          "no_recent_funding"
+        ],
+        "newHighlights": [
+          "headcount_3mo_surge",
+          "web_traffic_3mo_surge",
+          "web_traffic_6mo_momentum",
+          "web_traffic_12mo_scale_up",
+          "social_followers_3mo_surge",
+          "social_followers_6mo_momentum",
+          "social_followers_12mo_scale_up"
+        ],
+        "hot_companies": null,
+        "b2x": "b2b",
+        "integrationInfo": {
+          "integrationUpdatedAt": "2025-12-28T00:11:55.8+00:00",
+          "integrationUserName": "Barney Kelly-Wyatt"
+        },
+        "entityStatus": null,
+        "teamEntityStatuses": [
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-03T11:27:22.968442+00:00",
+            "user": {
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-09T16:42:00.553949+00:00",
+            "user": {
+              "first_name": "Alejandro",
+              "last_name": "Morales",
+              "avatar": "https://images.clerk.dev/uploaded/img_2MSVJ7LsJtZMkJ4dj2U3ZbcZsfY.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-12T13:25:07.200518+00:00",
+            "user": {
+              "first_name": "Aditya",
+              "last_name": "Chopra",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-02T07:30:52.887668+00:00",
+            "user": {
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "liked",
+            "updated_at": "2025-12-02T13:25:33.973+00:00",
+            "user": {
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-04T15:25:01.151473+00:00",
+            "user": {
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-03T11:02:35.996088+00:00",
+            "user": {
+              "first_name": "Henry",
+              "last_name": "Barnett",
+              "avatar": null
+            }
+          },
+          {
+            "status": "liked",
+            "updated_at": "2025-12-01T11:37:59.726627+00:00",
+            "user": {
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-10T10:37:13.312+00:00",
+            "user": {
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          }
+        ],
+        "employeeCount": 30,
+        "webVisits": 28505,
+        "employee3moGrowthPct": 15.38461538461537,
+        "webVisits3moGrowthPct": 5566.99801192843
+      },
+      {
+        "id": "66a0d18ba76b172c7bdf2f39",
+        "addedToList": false,
+        "rank": 4,
+        "prev_month_rank": 1340,
+        "name": "TATO",
+        "domain": "tato.co",
+        "logoUrl": "https://logo.clearbit.com/tato.co",
+        "industry": [
+          "Data and Analytics",
+          "Information Technology",
+          "Software"
+        ],
+        "hqRegion": "North America",
+        "descriptionShort": "Tato uses AI to help manage large IT projects on time and on budget.",
+        "linkedinUrl": "linkedin.com/company/tato-solutions",
+        "twitterUrl": null,
+        "instagramUrl": null,
+        "facebookUrl": "facebook.com/tatosolutions",
+        "androidAllPublisherURLs": null,
+        "iosAllPublisherURLs": null,
+        "foundedYear": 2023,
+        "growthStage": "seed",
+        "operatingStatus": "active",
+        "totalFundingAmount": 5000000,
+        "lastFundingAmount": 5000000,
+        "lastFundingDate": "2025-09-22T00:00:00.000Z",
+        "lastFundingType": "Seed",
+        "awards": null,
+        "highlights": [
+          "headcount_3mo_surge",
+          "headcount_6mo_momentum",
+          "headcount_12mo_scale_up",
+          "web_traffic_3mo_surge",
+          "web_traffic_6mo_momentum",
+          "web_traffic_12mo_scale_up",
+          "social_followers_3mo_surge",
+          "social_followers_6mo_momentum",
+          "social_followers_12mo_scale_up",
+          "recent_funding",
+          "top_tier_investors"
+        ],
+        "newHighlights": [
+          "web_traffic_3mo_surge",
+          "web_traffic_6mo_momentum",
+          "web_traffic_12mo_scale_up",
+          "social_followers_3mo_surge",
+          "social_followers_6mo_momentum",
+          "social_followers_12mo_scale_up"
+        ],
+        "hot_companies": {
+          "domain": "tato.co",
+          "all_signal_ids": [
+            "2a341cea-8382-44d3-a695-2e992c63041f",
+            "c8a39a69-a249-4ce8-ae7d-160eeda5955b"
+          ],
+          "number_of_signals": 2,
+          "signal_count_past_30_days": 0,
+          "signal_count_past_90_days": 0,
+          "signal_count_past_180_days": 0,
+          "signal_count_past_360_days": 0,
+          "signal_count_past_720_days": 2
+        },
+        "b2x": "b2b",
+        "integrationInfo": null,
+        "entityStatus": null,
+        "teamEntityStatuses": [
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-17T15:37:41.535281+00:00",
+            "user": {
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2wb9TW8Y9wIDyNL4gbr1XoUTZCi"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-22T10:58:33.854765+00:00",
+            "user": {
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-03T11:27:23.600038+00:00",
+            "user": {
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-12T13:25:02.535374+00:00",
+            "user": {
+              "first_name": "Aditya",
+              "last_name": "Chopra",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-15T11:45:56.313241+00:00",
+            "user": {
+              "first_name": "Raza",
+              "last_name": "Zaidi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-16T12:50:11.221001+00:00",
+            "user": {
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-02T00:00:50.833389+00:00",
+            "user": {
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-04T15:25:01.931687+00:00",
+            "user": {
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-18T18:47:18.806094+00:00",
+            "user": {
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-03T10:25:50.481825+00:00",
+            "user": {
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          }
+        ],
+        "employeeCount": 16,
+        "webVisits": 20134,
+        "employee3moGrowthPct": 45.45454545454546,
+        "webVisits3moGrowthPct": 395.4232283464567
+      },
+      {
+        "id": "6270ff5b4b7ad6a07cbf01d2",
+        "addedToList": false,
+        "rank": 5,
+        "prev_month_rank": 812,
+        "name": "Cybrid",
+        "domain": "cybrid.xyz",
+        "logoUrl": "https://specter-company-logo.s3.amazonaws.com/cybrid.xyz.jpeg",
+        "industry": [
+          "Blockchain and Crypto",
+          "Finance"
+        ],
+        "hqRegion": "North America",
+        "descriptionShort": "Cybrid offers a payment API and SDK infrastructure for seamless global B2B and B2C embedded finance.",
+        "linkedinUrl": "linkedin.com/company/cybridapp",
+        "twitterUrl": "x.com/cybrid_xyz",
+        "instagramUrl": null,
+        "facebookUrl": null,
+        "androidAllPublisherURLs": null,
+        "iosAllPublisherURLs": null,
+        "foundedYear": 2021,
+        "growthStage": "early",
+        "operatingStatus": "active",
+        "totalFundingAmount": 13018880,
+        "lastFundingAmount": 10000000,
+        "lastFundingDate": "2025-10-22T00:00:00.000Z",
+        "lastFundingType": "Series A",
+        "awards": null,
+        "highlights": [
+          "headcount_3mo_surge",
+          "headcount_6mo_momentum",
+          "web_traffic_3mo_surge",
+          "web_traffic_6mo_momentum",
+          "web_traffic_12mo_scale_up",
+          "social_followers_3mo_surge",
+          "social_followers_6mo_momentum",
+          "social_followers_12mo_scale_up",
+          "recent_funding",
+          "top_tier_investors"
+        ],
+        "newHighlights": [
+          "web_traffic_3mo_surge",
+          "web_traffic_6mo_momentum",
+          "web_traffic_12mo_scale_up",
+          "social_followers_3mo_surge",
+          "social_followers_6mo_momentum",
+          "social_followers_12mo_scale_up"
+        ],
+        "hot_companies": {
+          "domain": "cybrid.xyz",
+          "all_signal_ids": [
+            "3791907a-e265-435e-a310-71cfe2e8ad48"
+          ],
+          "number_of_signals": 1,
+          "signal_count_past_30_days": 0,
+          "signal_count_past_90_days": 0,
+          "signal_count_past_180_days": 0,
+          "signal_count_past_360_days": 0,
+          "signal_count_past_720_days": 0
+        },
+        "b2x": "b2b_b2c",
+        "integrationInfo": null,
+        "entityStatus": null,
+        "teamEntityStatuses": [
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-22T10:58:35.44832+00:00",
+            "user": {
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-03T11:27:25.393921+00:00",
+            "user": {
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-12T13:24:58.503195+00:00",
+            "user": {
+              "first_name": "Aditya",
+              "last_name": "Chopra",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-22T14:08:42.104898+00:00",
+            "user": {
+              "first_name": "Alberto",
+              "last_name": "Benroubi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-22T09:14:22.932035+00:00",
+            "user": {
+              "first_name": "Suryansh",
+              "last_name": "Verma",
+              "avatar": "https://images.clerk.dev/uploaded/img_2xyQuW8xlxV45NyWPxsloK5z2Ut"
+            }
+          },
+          {
+            "status": "liked",
+            "updated_at": "2025-12-02T13:25:24.723+00:00",
+            "user": {
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-04T15:25:08.281913+00:00",
+            "user": {
+              "first_name": "Jan",
+              "last_name": "Hoekman",
+              "avatar": null
+            }
+          },
+          {
+            "status": "liked",
+            "updated_at": "2025-12-01T11:38:04.345+00:00",
+            "user": {
+              "first_name": "Philipp",
+              "last_name": "Berhoerster",
+              "avatar": null
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-22T15:05:47.822825+00:00",
+            "user": {
+              "first_name": "Barney",
+              "last_name": "Kelly-Wyatt",
+              "avatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH"
+            }
+          }
+        ],
+        "employeeCount": 24,
+        "webVisits": 54823,
+        "employee3moGrowthPct": 41.1764705882353,
+        "webVisits3moGrowthPct": 137.4317886530966
+      }
+    ],
+    "affinity": {},
+    "filters": [],
+    "sort": {}
+  }
+}

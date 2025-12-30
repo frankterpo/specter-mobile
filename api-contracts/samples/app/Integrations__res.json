@@ -1,0 +1,85 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": {
+    "integrationsMeta": [
+      {
+        "clientId": "eaccd5c8-1b44-11ee-b5bf-5d0c16ea02db",
+        "integrationKey": "pipedrive",
+        "isSetup": true,
+        "config": {},
+        "companySyncFrequency": null,
+        "companySyncSource": null
+      },
+      {
+        "clientId": "eaccd5c8-1b44-11ee-b5bf-5d0c16ea02db",
+        "integrationKey": "affinity",
+        "isSetup": false,
+        "config": {},
+        "companySyncFrequency": "never",
+        "companySyncSource": null
+      },
+      {
+        "clientId": "eaccd5c8-1b44-11ee-b5bf-5d0c16ea02db",
+        "integrationKey": "attio",
+        "isSetup": true,
+        "config": {
+          "people": {
+            "listId": null,
+            "dataSource": "people",
+            "allowCreate": true,
+            "dataMatching": {
+              "specterField": "LinkedIn - URL",
+              "integrationField": "linkedin.value.$eq"
+            },
+            "fieldMapping": {
+              "linkedin": "LinkedIn - URL"
+            }
+          },
+          "talent": {
+            "listId": null,
+            "dataSource": "companies",
+            "allowCreate": true,
+            "dataMatching": {
+              "specterField": "LinkedIn - URL",
+              "integrationField": "linkedin.value.$eq"
+            },
+            "fieldMapping": {
+              "linkedin": "LinkedIn - URL"
+            }
+          },
+          "company": {
+            "listId": "a1797d1a-b4f6-4440-8da8-6acbc37045c0",
+            "dataSource": "companies",
+            "allowCreate": true,
+            "dataMatching": {
+              "specterField": "Domain",
+              "integrationField": "domains.domain.$eq"
+            },
+            "fieldMapping": {
+              "domains.[0]": "Domain"
+            }
+          },
+          "stratintel": {
+            "listId": null,
+            "dataSource": "companies",
+            "allowCreate": true,
+            "dataMatching": {
+              "specterField": "Website",
+              "integrationField": "domains.domain.$eq"
+            },
+            "fieldMapping": {
+              "domains.[0]": "Website"
+            }
+          }
+        },
+        "companySyncFrequency": "daily",
+        "companySyncSource": "{\"dataSource\":\"companies\"}"
+      }
+    ],
+    "affinity": false,
+    "hasAffinityStrategicList": false,
+    "hasAffinityTalentList": false,
+    "hasAffinityCompanyList": false
+  }
+}

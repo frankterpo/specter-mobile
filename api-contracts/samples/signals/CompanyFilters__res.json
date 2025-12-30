@@ -1,0 +1,9 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": {
+    "product": "company",
+    "queryId": 0,
+    "filters": null
+  }
+}

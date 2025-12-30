@@ -9,41 +9,71 @@ module.exports = {
   },
   theme: {
     extend: {
-      // Specter Brand Colors (from app.tryspecter.com)
+      // Specter Brand Colors (from cursor.com & tryspecter.com)
       colors: {
+        // Primary Brand - Blue (CTAs, active states, links)
+        primary: "#3b82f6",
+        "primary-light": "#60a5fa",
+        "primary-dark": "#2563eb",
+        "primary-foreground": "#ffffff",
+
         // Sidebar/Navigation - Dark Navy
         sidebar: {
-          DEFAULT: "#0f172a",
-          dark: "#0a0f1a",
-          light: "#1e293b",
+          bg: "#0f172a",
+          "bg-light": "#1e293b",
+          "bg-dark": "#0a0f1a",
           border: "#1e293b",
+          foreground: "#94a3b8",
+          "foreground-active": "#ffffff",
+          accent: "#1e293b",
         },
-        // Primary brand
-        specter: {
-          green: "#22c55e",
-          "green-light": "#4ade80",
-          "green-dark": "#16a34a",
-          blue: "#3b82f6",
-          "blue-light": "#60a5fa",
-          "blue-dark": "#2563eb",
-          purple: "#8b5cf6",
-          "purple-light": "#a78bfa",
-        },
-        // Content area
-        content: {
+
+        // Content Backgrounds
+        background: "#ffffff",
+        "background-secondary": "#f8fafc",
+        "background-tertiary": "#f1f5f9",
+
+        // Text Hierarchy
+        foreground: "#0f172a",
+        "foreground-secondary": "#64748b",
+        "foreground-muted": "#94a3b8",
+        "foreground-inverse": "#ffffff",
+
+        // Borders & Dividers
+        border: "#e2e8f0",
+        "border-light": "#f1f5f9",
+        input: "#e2e8f0",
+
+        // Cards
+        card: {
           bg: "#ffffff",
-          "bg-secondary": "#f8fafc",
+          foreground: "#0f172a",
           border: "#e2e8f0",
         },
-        // Text colors
-        text: {
-          primary: "#0f172a",
-          secondary: "#64748b",
-          tertiary: "#94a3b8",
-          inverse: "#ffffff",
-          muted: "#cbd5e1",
+
+        // Semantic Colors
+        destructive: "#ef4444",
+        "destructive-foreground": "#ffffff",
+        success: "#10b981",
+        warning: "#f59e0b",
+        info: "#3b82f6",
+
+        // Muted/Secondary
+        muted: {
+          bg: "#f1f5f9",
+          foreground: "#64748b",
         },
-        // Grayscale
+
+        // Popover/Dropdown
+        popover: {
+          bg: "#ffffff",
+          foreground: "#0f172a",
+        },
+
+        // White (for overlays, etc.)
+        white: "#ffffff",
+
+        // Grayscale Scale
         gray: {
           50: "#f8fafc",
           100: "#f1f5f9",
@@ -57,11 +87,7 @@ module.exports = {
           900: "#0f172a",
           950: "#020617",
         },
-        // Semantic colors
-        success: "#22c55e",
-        warning: "#f59e0b",
-        error: "#ef4444",
-        info: "#3b82f6",
+
         // Tag/Badge colors
         tag: {
           blue: "#dbeafe",
@@ -74,25 +100,32 @@ module.exports = {
           "orange-text": "#c2410c",
           yellow: "#fef3c7",
           "yellow-text": "#a16207",
+          red: "#fee2e2",
+          "red-text": "#b91c1c",
           gray: "#f1f5f9",
           "gray-text": "#475569",
+          cyan: "#cffafe",
+          "cyan-text": "#0e7490",
         },
+
         // Highlight colors for badges
         highlight: {
           fortune: "#3b82f6",
           vc: "#a855f7",
-          founder: "#22c55e",
+          founder: "#10b981",
           exit: "#f97316",
           ipo: "#eab308",
           unicorn: "#8b5cf6",
           yc: "#ff6600",
           series: "#06b6d4",
         },
-        // Card styles
-        card: {
-          bg: "#ffffff",
-          border: "#e2e8f0",
-          hover: "#f8fafc",
+
+        // Status colors
+        status: {
+          viewed: "#94a3b8",
+          liked: "#10b981",
+          disliked: "#ef4444",
+          new: "#3b82f6",
         },
       },
       // Typography

@@ -1,0 +1,1376 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": [
+    {
+      "id": "687f2e5ede7d1e706839da78",
+      "domain": "askdragonfly.com",
+      "name": "Dragonfly",
+      "logo_url": "https://logo.clearbit.com/askdragonfly.com",
+      "short_description": "Reshaping businesses in the age of AI, with access to the world's most comprehensive dataset on software and tools",
+      "hqLocation": "London, England, United Kingdom, Europe",
+      "hqRegion": "Europe",
+      "totalFundingAmount": 3430477,
+      "lastFundingType": "Pre Seed",
+      "employeeCount": 14,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/askdragonfly",
+      "entityStatus": {
+        "product_id": "687f2e5ede7d1e706839da78",
+        "product": "company",
+        "updated_at": "2025-10-07T15:45:58.240719Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "6180c7eaee1af0b5ab68f2e3",
+      "domain": "vabble.io",
+      "name": "Vabble",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/vabble.io.jpeg",
+      "short_description": "vabble provides a platform for exporters to convert invoices into cash, improving liquidity and supporting business growth.",
+      "hqLocation": "London, England, United Kingdom, Europe",
+      "hqRegion": "Europe",
+      "totalFundingAmount": 1462575,
+      "lastFundingType": "Pre Seed",
+      "employeeCount": 5,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/vabbleio",
+      "twitterUrl": "x.com/vabbleio",
+      "g2_data": [
+        {
+          "g2_link": "https://www.g2.com/products/vabble-io/reviews",
+          "g2_product_name": "vabble.io",
+          "g2_reviews": 2,
+          "g2_rating": 3.8
+        }
+      ],
+      "lists": [
+        {
+          "id": "211850dd-55c3-4dfd-b2e1-fa814d10c54a",
+          "name": "test1",
+          "type": "company"
+        },
+        {
+          "id": "4b1bbae8-666e-4050-ba14-59dd280379c8",
+          "name": "List1",
+          "type": "company"
+        },
+        {
+          "id": "d071bfa8-0c39-4a6a-b5be-9ad038695aca",
+          "name": "Hottest Startups - July 2025 (interest signals)",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "6180c7eaee1af0b5ab68f2e3",
+        "product": "company",
+        "updated_at": "2025-08-07T12:03:14.933020Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "62735f4f01ed25201372455f",
+      "domain": "voizeai.com",
+      "name": "voize",
+      "logo_url": "https://logo.clearbit.com/voizeai.com",
+      "short_description": "Voize is a digital voice assistant for senior care documentation, enabling hands-free voice input.",
+      "hqLocation": "Berlin, Berlin, Germany, Europe",
+      "hqRegion": "Europe",
+      "totalFundingAmount": 59372477,
+      "lastFundingType": "Series A",
+      "employeeCount": 68,
+      "growthStage": "early",
+      "linkedinUrl": "linkedin.com/company/voize-de",
+      "androidAllPublisherURLs": [
+        "https://play.google.com/store/apps/developer?id=voize+GmbH"
+      ],
+      "lists": [
+        {
+          "id": "0fb0a5d5-bd68-45f0-92ba-4ff402f203fa",
+          "name": "AI Scribes (a16z)",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "62735f4f01ed25201372455f",
+        "product": "company",
+        "updated_at": "2025-12-18T19:18:55.759049Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "68d1555c77f78737c56f3100",
+      "domain": "staer.ai",
+      "name": "Staer",
+      "logo_url": "https://logo.clearbit.com/staer.ai",
+      "short_description": "Staer provides physical AI for autonomous mobile robot fleets, enabling them to map, understand, plan, and improve.",
+      "employeeCount": 3,
+      "growthStage": "no_funding",
+      "linkedinUrl": "linkedin.com/company/staerai",
+      "lists": [
+        {
+          "id": "053bfda0-9d2d-4f5a-bd6c-2af142297308",
+          "name": "Specter Monitor #198 - Investors (interest signals)",
+          "type": "company"
+        },
+        {
+          "id": "8b3e39f0-21b8-4910-b4b9-d6fb03a96a5b",
+          "name": "Specter Monitor #208 - Investors (interest signals)",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "68d1555c77f78737c56f3100",
+        "product": "company",
+        "updated_at": "2025-12-17T14:29:14.373247Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "67fd98718ada0a17d5178769",
+      "domain": "tryfriendli.com",
+      "name": "friendli",
+      "logo_url": "https://logo.clearbit.com/tryfriendli.com",
+      "short_description": "friendli automates LinkedIn outreach and lead generation for revenue teams to book more meetings.",
+      "hqLocation": "Austin, Texas, United States, North America",
+      "hqRegion": "North America",
+      "employeeCount": 3,
+      "growthStage": "no_funding",
+      "linkedinUrl": "linkedin.com/company/tryfriendli",
+      "lists": [
+        {
+          "id": "5651d457-d39b-46d6-8956-e77406315af5",
+          "name": "Specter Monitor #208 - Revenues",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "67fd98718ada0a17d5178769",
+        "product": "company",
+        "updated_at": "2025-12-17T14:18:41.006001Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "6744a54d6837f04065b355fb",
+      "domain": "cuckoo.so",
+      "name": "Cuckoo",
+      "logo_url": "https://logo.clearbit.com/cuckoo.so",
+      "short_description": "Cuckoo is a real-time AI interpreter for global teams.",
+      "hqLocation": "San Francisco, California, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 2238503,
+      "lastFundingType": "Seed",
+      "employeeCount": 4,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/cuckoo-labs",
+      "twitterUrl": "x.com/cuckoohq",
+      "lists": [
+        {
+          "id": "de1aab53-36ba-4337-9655-ccdedbfbe680",
+          "name": "Specter Monitor #208 - Companies",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "6744a54d6837f04065b355fb",
+        "product": "company",
+        "updated_at": "2025-12-17T14:03:33.321883Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "63732cbeaab093538ec90ac3",
+      "domain": "namespace.so",
+      "name": "Namespace Labs",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/namespace.so.jpeg",
+      "short_description": "Namespace accelerates developer workflows with fast, scalable CI/CD compute and caching solutions.",
+      "hqLocation": "San Francisco, California, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 8500000,
+      "lastFundingType": "Seed",
+      "employeeCount": 6,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/namespace",
+      "twitterUrl": "x.com/namespacelabs",
+      "lists": [
+        {
+          "id": "8b3e39f0-21b8-4910-b4b9-d6fb03a96a5b",
+          "name": "Specter Monitor #208 - Investors (interest signals)",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "63732cbeaab093538ec90ac3",
+        "product": "company",
+        "updated_at": "2025-12-17T12:44:01.421845Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "5e3b8f5d137e998b5ae516e4",
+      "domain": "navi.com",
+      "name": "Navi Technologies",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/navi.com.jpeg",
+      "short_description": "Navi is a digital financial app offering UPI, loans, insurance, and investments.",
+      "hqLocation": "Bengaluru, Karnataka, India, Asia",
+      "hqRegion": "Asia",
+      "totalFundingAmount": 757706428,
+      "lastFundingType": "Debt Financing",
+      "employeeCount": 2879,
+      "growthStage": "late",
+      "linkedinUrl": "linkedin.com/company/go-navi",
+      "twitterUrl": "x.com/navifinance",
+      "instagramUrl": "instagram.com/naviappofficial",
+      "facebookUrl": "facebook.com/profile.php?id=104355854319257",
+      "androidAllPublisherURLs": [
+        "https://play.google.com/store/apps/developer?id=navi.com"
+      ],
+      "entityStatus": {
+        "product_id": "5e3b8f5d137e998b5ae516e4",
+        "product": "company",
+        "updated_at": "2025-12-11T11:46:21.654063Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "5e3a8fc9040ca7b0c6f3977b",
+      "domain": "attero.in",
+      "name": "Attero",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/attero.in.jpeg",
+      "short_description": "Attero recycles lithium-ion batteries and electronic waste through advanced engineering for material recovery.",
+      "hqLocation": "Noida, Uttar Pradesh, India, Asia",
+      "hqRegion": "Asia",
+      "totalFundingAmount": 28614390,
+      "lastFundingType": "Series C",
+      "employeeCount": 355,
+      "growthStage": "growing",
+      "linkedinUrl": "linkedin.com/company/attero-recycling-pvt-ltd",
+      "twitterUrl": "x.com/atteroindia",
+      "facebookUrl": "facebook.com/atteroindia",
+      "entityStatus": {
+        "product_id": "5e3a8fc9040ca7b0c6f3977b",
+        "product": "company",
+        "updated_at": "2025-12-11T10:31:30.747990Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "63d3bffb1e6a68488a584d8b",
+      "domain": "landeed.com",
+      "name": "Landeed",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/landeed.com.jpeg",
+      "short_description": "Landeed is India's fastest property title search engine for accessing and verifying property documents.",
+      "hqLocation": "Hyderābād, Telangana, India, Asia",
+      "hqRegion": "Asia",
+      "totalFundingAmount": 15755585,
+      "lastFundingType": "Series Unknown",
+      "employeeCount": 46,
+      "growthStage": "early",
+      "linkedinUrl": "linkedin.com/company/landeed",
+      "twitterUrl": "x.com/landeedinc",
+      "facebookUrl": "facebook.com/landeedind",
+      "iosAllPublisherURLs": [
+        "https://apps.apple.com/us/developer/id1600425052"
+      ],
+      "androidAllPublisherURLs": [
+        "https://play.google.com/store/apps/developer?id=Landeed"
+      ],
+      "lists": [
+        {
+          "id": "baeb3b80-dbf5-4f9b-81dd-b305fe6761f8",
+          "name": "11-02-2025 DDVC - growth",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "63d3bffb1e6a68488a584d8b",
+        "product": "company",
+        "updated_at": "2025-12-11T09:57:15.363596Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "per_9cdba0e1efad660a53a5d474",
+      "specter_person_id": "per_9cdba0e1efad660a53a5d474",
+      "person_id": 3338468,
+      "first_name": "Alex",
+      "last_name": "Cohen",
+      "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_9cdba0e1efad660a53a5d474.jpg",
+      "headline": "Voice and SMS AI for enterprise healthcare",
+      "location": "Austin, Texas, United States, North America",
+      "region": "North America",
+      "about": "Repeat founder with experience building consumer focused digital health and fintech products. Spent the last 3 years leading the consumer and growth product teams at Carbon Health. Currently building software and investing in startups through my fund while exploring what's next.",
+      "seniority": "Executive Level",
+      "linkedin_url": "https://www.linkedin.com/in/alexander-cohen",
+      "followers_count": 29202,
+      "connections_count": 4903,
+      "entityStatus": {
+        "product_id": "per_9cdba0e1efad660a53a5d474",
+        "product": "people",
+        "updated_at": "2025-12-10T16:27:09.733485Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "667d83edf61e8b5339f2abfc",
+      "domain": "hellopatient.com",
+      "name": "Hello Patient",
+      "logo_url": "https://logo.clearbit.com/hellopatient.com",
+      "short_description": "Hello Patient automates healthcare communication with AI assistant Mia.",
+      "hqLocation": "Austin, Texas, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 28800000,
+      "lastFundingType": "Series A",
+      "employeeCount": 26,
+      "growthStage": "early",
+      "linkedinUrl": "linkedin.com/company/hello-patient",
+      "twitterUrl": "x.com/hellopatient",
+      "lists": [
+        {
+          "id": "28e40907-9975-4b3d-baeb-cb4f9dc086bf",
+          "name": "10-10 - Data-Driven VC",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "667d83edf61e8b5339f2abfc",
+        "product": "company",
+        "updated_at": "2025-10-03T15:23:38.686221Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "67458bcc83ebed62679efc8d",
+      "domain": "theoai.ai",
+      "name": "Theo Ai",
+      "logo_url": "https://logo.clearbit.com/theoai.ai",
+      "short_description": "Theo Ai is creating the world's first legal prediction engine to forecast the outcome of legal disputes.",
+      "hqLocation": "Palo Alto, California, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 9800000,
+      "lastFundingType": "Seed",
+      "employeeCount": 15,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/theo-ai-inc",
+      "lists": [
+        {
+          "id": "ec88a914-8085-40b9-b258-bdc677857990",
+          "name": "Specter Monitor #207 - Companies",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "67458bcc83ebed62679efc8d",
+        "product": "company",
+        "updated_at": "2025-12-10T14:59:59.938552Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "63ec37c11e6a68488a299fdd",
+      "domain": "hirevire.com",
+      "name": "Hirevire",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/hirevire.com.jpeg",
+      "short_description": "Hirevire is a SaaS that helps human resources teams save time by interviewing candidates based on responses to screening questions.",
+      "hqLocation": "Mumbai, Maharashtra, India, Asia",
+      "hqRegion": "Asia",
+      "employeeCount": 4,
+      "growthStage": "no_funding",
+      "linkedinUrl": "linkedin.com/company/hirevire",
+      "g2_data": [
+        {
+          "g2_link": "https://www.g2.com/products/hirevire/reviews",
+          "g2_product_name": "Hirevire",
+          "g2_reviews": 26,
+          "g2_rating": 4.7
+        }
+      ],
+      "trustpilot_data": {
+        "trustpilot_url": "https://www.trustpilot.com/review/hirevire.com",
+        "trustpilot_rating": 4.6,
+        "trustpilot_review_count": 33
+      },
+      "lists": [
+        {
+          "id": "8dfe53da-c7a7-4169-8ff8-751c0c953473",
+          "name": "Specter Monitor #207 - Revenues",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "63ec37c11e6a68488a299fdd",
+        "product": "company",
+        "updated_at": "2025-12-10T14:57:22.990822Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "684aed84fcf701511ea0d5a4",
+      "domain": "deplaceai.com",
+      "name": "Deplace AI",
+      "logo_url": "https://logo.clearbit.com/deplaceai.com",
+      "hqLocation": "Paris, Île-de-France, France, Europe",
+      "hqRegion": "Europe",
+      "totalFundingAmount": 200000,
+      "lastFundingType": "Pre Seed",
+      "employeeCount": 3,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/deplace-ai",
+      "trustpilot_data": {
+        "trustpilot_url": "https://www.trustpilot.com/review/deplaceai.com",
+        "trustpilot_rating": 3.2,
+        "trustpilot_review_count": 1
+      },
+      "lists": [
+        {
+          "id": "fc54acc7-4339-4384-8d69-35051b465d73",
+          "name": "Specter Monitor #207 - Interest (interest signals)",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "684aed84fcf701511ea0d5a4",
+        "product": "company",
+        "updated_at": "2025-12-10T12:54:57.992957Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "per_e21d9f1b80f7a850aa3804ed",
+      "specter_person_id": "per_e21d9f1b80f7a850aa3804ed",
+      "person_id": 411150281,
+      "first_name": "Yoshi",
+      "last_name": "Nakamura",
+      "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_e21d9f1b80f7a850aa3804ed.jpg",
+      "headline": "Founder of NAKA Capital Partners",
+      "location": "New York City, New York, United States, North America",
+      "region": "North America",
+      "about": "NAKA Capital Partners is a firm focused on investing, owning, and operating high quality companies in consumer and technology. NAKA Capital approaches its opportunities with a strategic mindset focused on driving long-term value creation through partnerships with top flight management teams, actively supporting operational improvements, and alignment with growth prospects.  \n\nNAKA Media, a subsidiary of NCP, develops owned media properties for the financial services industry such as the Heard Around the Block interview series focused on the blockchain & cryptocurrency sector.\n\n“Empty your mind, be formless, shapeless like water. Now you put water in a cup, it becomes the cup; You put water into a bottle it becomes the bottle; You put it in a teapot it becomes the teapot. Now water can flow or it can crash. Be water, my friend.” ~Bruce Lee",
+      "seniority": "Executive Level",
+      "linkedin_url": "https://www.linkedin.com/in/yoshi-nakamura-bb3b6419",
+      "followers_count": 12982,
+      "connections_count": 11796,
+      "entityStatus": {
+        "product_id": "per_e21d9f1b80f7a850aa3804ed",
+        "product": "people",
+        "updated_at": "2025-12-09T13:37:25.273077Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "per_777a2a778b1d54820a9a1161",
+      "specter_person_id": "per_777a2a778b1d54820a9a1161",
+      "person_id": 209581,
+      "first_name": "Prithvir",
+      "last_name": "Jhaveri",
+      "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_777a2a778b1d54820a9a1161.jpg",
+      "headline": "Building something new",
+      "location": "San Francisco, California, United States, North America",
+      "region": "North America",
+      "about": "I'm most active on Twitter - @prithvir12\nLoch's website: https://loch.one/\nPersonal website: https://www.prithvirjhaveri.com/",
+      "seniority": "Executive Level",
+      "linkedin_url": "https://www.linkedin.com/in/prithvir-jhaveri-2542a9135",
+      "followers_count": 1925,
+      "connections_count": 1845,
+      "entityStatus": {
+        "product_id": "per_777a2a778b1d54820a9a1161",
+        "product": "people",
+        "updated_at": "2025-12-09T13:22:08.643412Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "per_77b434b6c7dcddcd101156bc",
+      "specter_person_id": "per_77b434b6c7dcddcd101156bc",
+      "person_id": 2936324,
+      "first_name": "Apoorv",
+      "last_name": "Shankar",
+      "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_77b434b6c7dcddcd101156bc.jpg",
+      "headline": "Building Project Mirage | Ex-VP Hardware, Ultrahuman | Consumer Hardware",
+      "location": "Bengaluru, Karnataka, India, Asia",
+      "region": "Asia",
+      "about": "I'm an Engineer turned Product Designer, with experience in building and scaling Consumer Hardware products.\n\nUltrahuman Home - a smart home device designed to help you understand how your home affects your health. \n\nUltrahuman Ring Air - The lightest health tracking wearable in the world. Setup our in house Manufacturing facility called \"Ultrafactory\" to build the rings out of Bangalore, India on 2022. Set up a manufacturing unit for the ring in Texas, US in Oct 2024.\n\nUltrahuman Ring R1 - Reddot Design Award 2022\n\nHandkey - an award winning key shaped tool with a sliding cover launched during the Covid 19 pandemic to avoid touching public surfaces with hands. \n-Featured on BBC\n\n Ring(LazyCo) - an AI remote control for the smartphone making day to day interactions 7x faster than phone touchscreens.\n-Featured on Techcrunch\n-Won awards and grants from Qualcomm, Alibaba, State Govt of Karnataka, Ministry of MSME, GoI",
+      "seniority": "Executive Level",
+      "linkedin_url": "https://www.linkedin.com/in/apoorvshankar",
+      "followers_count": 6741,
+      "connections_count": 6293,
+      "entityStatus": {
+        "product_id": "per_77b434b6c7dcddcd101156bc",
+        "product": "people",
+        "updated_at": "2025-12-09T12:57:08.065076Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "68dfda6dc429f234256b7772",
+      "domain": "thetradefox.com",
+      "name": "Tradefox",
+      "logo_url": "https://logo.clearbit.com/thetradefox.com",
+      "growthStage": "no_funding",
+      "twitterUrl": "x.com/tradefoxai",
+      "lists": [
+        {
+          "id": "519b34f7-2e8b-4d2a-9012-2c7d67fc8043",
+          "name": "Hottest Startups - November 2025 (interest signals)",
+          "type": "company"
+        },
+        {
+          "id": "5daa1af1-8ce7-4a01-beb2-6b133b2cad08",
+          "name": "Hottest Startups - October 2025 (interest signals)",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "68dfda6dc429f234256b7772",
+        "product": "company",
+        "updated_at": "2025-11-10T19:29:56.968336Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "66712af08c4eaa3049f1be86",
+      "domain": "aurelian.com",
+      "name": "Aurelian",
+      "logo_url": "https://logo.clearbit.com/aurelian.com",
+      "short_description": "Aurelian automates non-emergency police calls using advanced Voice AI technology.",
+      "hqLocation": "Houston, Texas, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 14500000,
+      "lastFundingType": "Series A",
+      "employeeCount": 26,
+      "growthStage": "early",
+      "linkedinUrl": "linkedin.com/company/aureliansystem",
+      "lists": [
+        {
+          "id": "7d8c82fb-c955-46d8-a225-3fad3c84a9d3",
+          "name": "12-02-2025 DDVC - growth",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "66712af08c4eaa3049f1be86",
+        "product": "company",
+        "updated_at": "2025-12-03T15:21:11.060634Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "6712549aebb4d536210a721e",
+      "domain": "covena.ai",
+      "name": "Covena",
+      "logo_url": "https://logo.clearbit.com/covena.ai",
+      "short_description": "AI solutions for leading SEA enterprises.",
+      "hqLocation": "Singapore, Singapore, Singapore, Asia",
+      "hqRegion": "Asia",
+      "lastFundingType": "Pre Seed",
+      "employeeCount": 14,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/covenaai",
+      "lists": [
+        {
+          "id": "0c31443f-d66a-4af8-842a-fa5fb4e5da6d",
+          "name": "12-02-2025 DDVC - early",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "6712549aebb4d536210a721e",
+        "product": "company",
+        "updated_at": "2025-12-02T19:48:41.686190Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "681cce17b35e3702fa258373",
+      "domain": "better-auth.com",
+      "name": "Better Auth",
+      "logo_url": "https://logo.clearbit.com/better-auth.com",
+      "short_description": "Better Auth is a comprehensive authentication library for TypeScript.",
+      "hqLocation": "Addis Ababa, Addis Ababa, Ethiopia, Africa",
+      "hqRegion": "Africa",
+      "totalFundingAmount": 5000000,
+      "lastFundingType": "Seed",
+      "employeeCount": 6,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/better-auth",
+      "twitterUrl": "x.com/better_auth",
+      "trustpilot_data": {
+        "trustpilot_url": "https://www.trustpilot.com/review/better-auth.com",
+        "trustpilot_rating": 3.7,
+        "trustpilot_review_count": 1
+      },
+      "lists": [
+        {
+          "id": "a8311b3e-bc91-45a2-a02f-e73922d6bd99",
+          "name": "Specter Monitor #206 - Companies",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "681cce17b35e3702fa258373",
+        "product": "company",
+        "updated_at": "2025-12-03T13:22:05.509141Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "62ab21e065e7929128400e5c",
+      "domain": "overtune.com",
+      "name": "Overtune",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/overtune.com.jpeg",
+      "short_description": "Overtune simplifies music creation with an intuitive beatmaker and royalty-free sound library for artists.",
+      "hqLocation": "Reykjavík, Capital Region, Iceland, Europe",
+      "hqRegion": "Europe",
+      "totalFundingAmount": 2000000,
+      "lastFundingType": "Seed",
+      "employeeCount": 19,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/overtune",
+      "twitterUrl": "x.com/overtune_app",
+      "iosAllPublisherURLs": [
+        "https://apps.apple.com/us/developer/id1581646558"
+      ],
+      "lists": [
+        {
+          "id": "c1fcdef1-dca2-493b-b54a-2e7976dc8f68",
+          "name": "Specter Monitor #205 - Interest (interest signals)",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "62ab21e065e7929128400e5c",
+        "product": "company",
+        "updated_at": "2025-11-26T13:28:59.076048Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "678e088431ad8251d448921b",
+      "domain": "voidzero.dev",
+      "name": "VoidZero",
+      "logo_url": "https://logo.clearbit.com/voidzero.dev",
+      "short_description": "VoidZero develops a unified high-performance JavaScript toolchain for web developers.",
+      "totalFundingAmount": 17100000,
+      "lastFundingType": "Series A",
+      "employeeCount": 7,
+      "growthStage": "early",
+      "linkedinUrl": "linkedin.com/company/voidzero",
+      "twitterUrl": "x.com/voidzerodev",
+      "lists": [
+        {
+          "id": "a8311b3e-bc91-45a2-a02f-e73922d6bd99",
+          "name": "Specter Monitor #206 - Companies",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "678e088431ad8251d448921b",
+        "product": "company",
+        "updated_at": "2025-11-04T14:33:31.307823Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "681cce1949853702fabf1d12",
+      "domain": "cua.ai",
+      "name": "Cua",
+      "logo_url": "https://logo.clearbit.com/cua.ai",
+      "short_description": "C/ua provides macOS and Linux containers for computer-use AI agents on Apple Silicon.",
+      "hqLocation": "San Francisco, California, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 500000,
+      "lastFundingType": "Pre Seed",
+      "employeeCount": 7,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/cua-ai",
+      "twitterUrl": "x.com/trycua",
+      "lists": [
+        {
+          "id": "0c31443f-d66a-4af8-842a-fa5fb4e5da6d",
+          "name": "12-02-2025 DDVC - early",
+          "type": "company"
+        },
+        {
+          "id": "a8311b3e-bc91-45a2-a02f-e73922d6bd99",
+          "name": "Specter Monitor #206 - Companies",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "681cce1949853702fabf1d12",
+        "product": "company",
+        "updated_at": "2025-12-03T10:57:48.232825Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "690d7a42d985d12887e569dc",
+      "domain": "galadyne.io",
+      "name": "Galadyne",
+      "logo_url": "https://logo.clearbit.com/galadyne.io",
+      "short_description": "Galadyne offers precision weapons built at scale.",
+      "hqLocation": "Austin, Texas, United States, North America",
+      "hqRegion": "North America",
+      "lastFundingType": "Pre Seed",
+      "employeeCount": 1,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/galadyne",
+      "twitterUrl": "x.com/_galadyne",
+      "lists": [
+        {
+          "id": "a719dda9-6601-45a6-9923-889310c57b4e",
+          "name": "Specter Monitor #206 - Interest (interest signals)",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "690d7a42d985d12887e569dc",
+        "product": "company",
+        "updated_at": "2025-12-03T10:56:42.361765Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "68ccf6d8e4606959cd5df998",
+      "domain": "ando.so",
+      "name": "Ando",
+      "logo_url": "https://logo.clearbit.com/ando.so",
+      "hqLocation": "San Francisco, California, United States, North America",
+      "hqRegion": "North America",
+      "employeeCount": 14,
+      "growthStage": "no_funding",
+      "linkedinUrl": "linkedin.com/company/andohq",
+      "twitterUrl": "x.com/andocorporation",
+      "lists": [
+        {
+          "id": "519b34f7-2e8b-4d2a-9012-2c7d67fc8043",
+          "name": "Hottest Startups - November 2025 (interest signals)",
+          "type": "company"
+        },
+        {
+          "id": "70f5c893-6b7b-4fab-9836-2fd9e024ccad",
+          "name": "Specter Monitor #196 - Investors (interest signals)",
+          "type": "company"
+        },
+        {
+          "id": "a719dda9-6601-45a6-9923-889310c57b4e",
+          "name": "Specter Monitor #206 - Interest (interest signals)",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "68ccf6d8e4606959cd5df998",
+        "product": "company",
+        "updated_at": "2025-09-24T15:08:06.358809Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "6712478a2c89ed13aae9a2bc",
+      "domain": "sphinxhq.com",
+      "name": "Sphinx",
+      "logo_url": "https://logo.clearbit.com/sphinxhq.com",
+      "short_description": "Perplexity for KYC/KYB",
+      "hqLocation": "San Francisco, California, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 500000,
+      "lastFundingType": "Seed",
+      "employeeCount": 6,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/sphinx-hq",
+      "twitterUrl": "x.com/sphinxdotai",
+      "entityStatus": {
+        "product_id": "6712478a2c89ed13aae9a2bc",
+        "product": "company",
+        "updated_at": "2025-11-28T01:34:12.314324Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "6895ee327480952be739dde8",
+      "domain": "sphinx.ai",
+      "name": "Sphinx",
+      "logo_url": "https://logo.clearbit.com/sphinx.ai",
+      "short_description": "Sphinx is a Jupyter-native AI copilot that gives data scientists AI superpowers, helping them go 10x faster from raw data to real impact.",
+      "hqLocation": "New York City, New York, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 9500000,
+      "lastFundingType": "Seed",
+      "employeeCount": 15,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/sphinx-ml",
+      "twitterUrl": "x.com/getsphinx",
+      "entityStatus": {
+        "product_id": "6895ee327480952be739dde8",
+        "product": "company",
+        "updated_at": "2025-11-28T01:34:02.617873Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "671f62a15dca2b3fa4e7e84d",
+      "domain": "reactwise.com",
+      "name": "ReactWise",
+      "logo_url": "https://logo.clearbit.com/reactwise.com",
+      "short_description": "ReactWise provides an AI Co-Pilot for optimizing chemical processes without coding.",
+      "hqLocation": "London, England, United Kingdom, Europe",
+      "hqRegion": "Europe",
+      "totalFundingAmount": 3552068,
+      "lastFundingType": "Grant",
+      "employeeCount": 8,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/reactwise",
+      "twitterUrl": "x.com/reactwise",
+      "lists": [
+        {
+          "id": "3329f6b6-d28e-4c61-8d23-a151b1416435",
+          "name": "Specter Monitor #205 - Companies",
+          "type": "company"
+        },
+        {
+          "id": "5f9b23aa-d0dd-431e-97ab-f6a3f4dac36d",
+          "name": "Forbes Top 50 AI",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "671f62a15dca2b3fa4e7e84d",
+        "product": "company",
+        "updated_at": "2025-11-26T12:05:10.931885Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "664b954ec89768017bcb53de",
+      "domain": "conveo.ai",
+      "name": "Conveo",
+      "logo_url": "https://logo.clearbit.com/conveo.ai",
+      "short_description": "Conveo is an AI-powered platform for automated video interviews and customer insights.",
+      "hqLocation": "Brussels, Brussels Capital, Belgium, Europe",
+      "hqRegion": "Europe",
+      "totalFundingAmount": 5800000,
+      "lastFundingType": "Seed",
+      "employeeCount": 14,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/conveo-ai",
+      "lists": [
+        {
+          "id": "3329f6b6-d28e-4c61-8d23-a151b1416435",
+          "name": "Specter Monitor #205 - Companies",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "664b954ec89768017bcb53de",
+        "product": "company",
+        "updated_at": "2025-11-26T12:04:48.855890Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "5fd2670a165cb213920c9366",
+      "domain": "basedash.com",
+      "name": "Basedash",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/basedash.com.png",
+      "short_description": "Basedash is an AI-native BI platform that creates dashboards and insights without SQL.",
+      "hqLocation": "Montréal, Quebec, Canada, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 4540000,
+      "lastFundingType": "Seed",
+      "employeeCount": 5,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/basedash",
+      "twitterUrl": "x.com/basedash",
+      "facebookUrl": "facebook.com/basedashhq",
+      "g2_data": [
+        {
+          "g2_link": "https://www.g2.com/products/basedash/reviews",
+          "g2_product_name": "Basedash",
+          "g2_reviews": 2,
+          "g2_rating": 5
+        }
+      ],
+      "trustpilot_data": {
+        "trustpilot_url": "https://www.trustpilot.com/review/basedash.com",
+        "trustpilot_rating": 0,
+        "trustpilot_review_count": 0
+      },
+      "lists": [
+        {
+          "id": "3329f6b6-d28e-4c61-8d23-a151b1416435",
+          "name": "Specter Monitor #205 - Companies",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "5fd2670a165cb213920c9366",
+        "product": "company",
+        "updated_at": "2025-11-26T12:04:33.653460Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "678528398b75cb5f8b8a8106",
+      "domain": "tera-ai.com",
+      "name": "Tera AI",
+      "logo_url": "https://logo.clearbit.com/tera-ai.com",
+      "short_description": "Tera AI is creating a software-only, platform-agnostic spatial reasoning AI that will allow any robot to use its camera to navigate.",
+      "hqLocation": "San Francisco, California, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 8000000,
+      "lastFundingType": "Seed",
+      "employeeCount": 12,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/foundation-model-startup",
+      "twitterUrl": "x.com/teraai_",
+      "lists": [
+        {
+          "id": "3329f6b6-d28e-4c61-8d23-a151b1416435",
+          "name": "Specter Monitor #205 - Companies",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "678528398b75cb5f8b8a8106",
+        "product": "company",
+        "updated_at": "2025-11-26T12:04:22.924696Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "66712aef26f9ac30494fb32b",
+      "domain": "stably.ai",
+      "name": "Stably AI",
+      "logo_url": "https://logo.clearbit.com/stably.ai",
+      "short_description": "Stably automates software testing with AI for product teams.",
+      "hqLocation": "San Francisco, California, United States, North America",
+      "hqRegion": "North America",
+      "lastFundingType": "Seed",
+      "employeeCount": 8,
+      "growthStage": "seed",
+      "linkedinUrl": "linkedin.com/company/stably-ai",
+      "lists": [
+        {
+          "id": "3329f6b6-d28e-4c61-8d23-a151b1416435",
+          "name": "Specter Monitor #205 - Companies",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "66712aef26f9ac30494fb32b",
+        "product": "company",
+        "updated_at": "2025-11-26T12:04:10.999922Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "68f9c4b23645896741d91f78",
+      "domain": "earendil.com",
+      "name": "Earendil",
+      "logo_url": "https://logo.clearbit.com/earendil.com",
+      "short_description": "Earendil crafts software and open protocols to strengthen human agency.",
+      "employeeCount": 1,
+      "growthStage": "no_funding",
+      "linkedinUrl": "linkedin.com/company/earendil-works",
+      "lists": [
+        {
+          "id": "c1fcdef1-dca2-493b-b54a-2e7976dc8f68",
+          "name": "Specter Monitor #205 - Interest (interest signals)",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "68f9c4b23645896741d91f78",
+        "product": "company",
+        "updated_at": "2025-11-25T13:11:50.578820Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "68496689c6bea8511ea12273",
+      "domain": "evallab.dev",
+      "name": "Eval",
+      "logo_url": "https://logo.clearbit.com/evallab.dev",
+      "hqLocation": "London, England, United Kingdom, Europe",
+      "hqRegion": "Europe",
+      "employeeCount": 4,
+      "growthStage": "no_funding",
+      "linkedinUrl": "linkedin.com/company/over-mind-ai",
+      "lists": [
+        {
+          "id": "c1fcdef1-dca2-493b-b54a-2e7976dc8f68",
+          "name": "Specter Monitor #205 - Interest (interest signals)",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "68496689c6bea8511ea12273",
+        "product": "company",
+        "updated_at": "2025-11-25T16:49:25.139767Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "5e3a8f49040ca7b0c6f13115",
+      "domain": "cursor.com",
+      "name": "Cursor",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/cursor.com.jpeg",
+      "short_description": "Cursor is an AI code editor that accelerates software development with intelligent autocomplete and natural language editing.",
+      "hqLocation": "San Francisco, California, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 3373400000,
+      "lastFundingType": "Series Unknown",
+      "employeeCount": 1395,
+      "growthStage": "late",
+      "linkedinUrl": "linkedin.com/company/anysphereinc",
+      "twitterUrl": "x.com/cursor_ai",
+      "g2_data": [
+        {
+          "g2_link": "https://www.g2.com/products/cursor/reviews",
+          "g2_product_name": "Cursor",
+          "g2_reviews": 10,
+          "g2_rating": 4.6
+        }
+      ],
+      "trustpilot_data": {
+        "trustpilot_url": "https://www.trustpilot.com/review/cursor.com",
+        "trustpilot_rating": 1.8,
+        "trustpilot_review_count": 87
+      },
+      "entityStatus": {
+        "product_id": "5e3a8f49040ca7b0c6f13115",
+        "product": "company",
+        "updated_at": "2025-11-12T17:00:58.910000Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "5e3a7f2b0aa7a3270a55f2a7",
+      "domain": "tryspecter.com",
+      "name": "Specter",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/tryspecter.com.jpeg",
+      "short_description": "Specter provides real-time insights and data for investment firms.",
+      "hqLocation": "London, England, United Kingdom, Europe",
+      "hqRegion": "Europe",
+      "employeeCount": 47,
+      "growthStage": "early",
+      "linkedinUrl": "linkedin.com/company/specterhq",
+      "twitterUrl": "x.com/specterhq",
+      "lists": [
+        {
+          "id": "adc2babc-c5b7-48a7-af1b-a7f69e10d8c8",
+          "name": "Specter Monitor #185 - Companies",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "5e3a7f2b0aa7a3270a55f2a7",
+        "product": "company",
+        "updated_at": "2025-09-01T15:27:02.717152Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "per_2e7b87fa59aba3c2abe13d1f",
+      "specter_person_id": "per_2e7b87fa59aba3c2abe13d1f",
+      "person_id": 64617296,
+      "first_name": "Artem",
+      "last_name": "Vere",
+      "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_2e7b87fa59aba3c2abe13d1f.jpg",
+      "headline": "Infrastructure & Blockchain",
+      "seniority": "Executive Level",
+      "linkedin_url": "https://linkedin.com/in/artem-vere-89b514189",
+      "followers_count": 528,
+      "connections_count": 500,
+      "entityStatus": {
+        "product_id": "per_2e7b87fa59aba3c2abe13d1f",
+        "product": "people",
+        "updated_at": "2025-11-21T17:14:22.533231Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "per_80f25e39391239dad458c397",
+      "specter_person_id": "per_80f25e39391239dad458c397",
+      "person_id": 184208,
+      "first_name": "Dominik",
+      "last_name": "Vacikar",
+      "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_80f25e39391239dad458c397.jpg",
+      "headline": "Co-Founder at Specter 👻 | prev. Byte Trading (acq.), Giant Ventures, Hummingbird Ventures",
+      "location": "London, England, United Kingdom, Europe",
+      "region": "Europe",
+      "seniority": "Executive Level",
+      "linkedin_url": "https://www.linkedin.com/in/dominikvacikar",
+      "followers_count": 8376,
+      "connections_count": 7589,
+      "lists": [
+        {
+          "id": "4e85db5f-9f8e-4de8-a097-eed72d77eae4",
+          "name": "Specter team",
+          "type": "talent"
+        },
+        {
+          "id": "77f5242a-16ea-4fae-8efc-e1664f8d4c57",
+          "name": "Specter Team 👻",
+          "type": "people"
+        },
+        {
+          "id": "9542c448-c239-4aac-bda9-999f11942cab",
+          "name": "australian_query",
+          "type": "talent"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "per_80f25e39391239dad458c397",
+        "product": "people",
+        "updated_at": "2025-09-03T08:14:21.614046Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "68b9b14e8059f859cdece160",
+      "domain": "lorelegendmyth.com",
+      "name": "Lore",
+      "logo_url": "https://logo.clearbit.com/lorelegendmyth.com",
+      "growthStage": "no_funding",
+      "twitterUrl": "x.com/loreobsessed",
+      "lists": [
+        {
+          "id": "a2625f24-d4f9-4b8b-b428-2ef13c52e5fb",
+          "name": "Specter Monitor #204 - Interest (interest signals)",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "68b9b14e8059f859cdece160",
+        "product": "company",
+        "updated_at": "2025-11-20T17:45:42.357878Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "687f24bd0582f3706844c8bd",
+      "domain": "yapify.ai",
+      "name": "Yapify",
+      "logo_url": "https://logo.clearbit.com/yapify.ai",
+      "short_description": "Yapify is a voice-powered email assistant that drafts polished emails in your unique style.",
+      "employeeCount": 2,
+      "growthStage": "no_funding",
+      "linkedinUrl": "linkedin.com/company/yapify",
+      "twitterUrl": "x.com/yapify_ai",
+      "entityStatus": {
+        "product_id": "687f24bd0582f3706844c8bd",
+        "product": "company",
+        "updated_at": "2025-11-12T16:13:21.195000Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "5e3a8f71040ca7b0c6f19b57",
+      "domain": "topazlabs.com",
+      "name": "Topaz Labs",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/topazlabs.com.jpeg",
+      "short_description": "Topaz Labs provides AI-powered software for photo and video enhancement, upscaling, and restoration.",
+      "hqLocation": "Dallas, Texas, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 200000,
+      "lastFundingType": "Grant",
+      "employeeCount": 77,
+      "growthStage": "early",
+      "linkedinUrl": "linkedin.com/company/topaz-labs",
+      "twitterUrl": "x.com/topazlabs",
+      "instagramUrl": "instagram.com/topazlabs",
+      "facebookUrl": "facebook.com/topazlabs",
+      "g2_data": [
+        {
+          "g2_link": "https://www.g2.com/products/topaz-labs/reviews",
+          "g2_product_name": "Topaz Labs",
+          "g2_reviews": 2,
+          "g2_rating": 4.5
+        }
+      ],
+      "trustpilot_data": {
+        "trustpilot_url": "https://www.trustpilot.com/review/www.topazlabs.com",
+        "trustpilot_rating": 4,
+        "trustpilot_review_count": 54655
+      },
+      "lists": [
+        {
+          "id": "778da17b-deb7-422e-9913-c1e0624c231e",
+          "name": "Specter Monitor #204 - Companies",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "5e3a8f71040ca7b0c6f19b57",
+        "product": "company",
+        "updated_at": "2025-11-19T13:56:52.158923Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "5e3b9344137e998b5aeb13e7",
+      "domain": "e8security.com",
+      "name": "E8 Security",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/e8security.com.jpeg",
+      "short_description": "E8 Security helps enterprises analyze and detect advanced attacks and malicious insider activities.",
+      "hqLocation": "Redwood City, California, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 21800000,
+      "lastFundingType": "Series B",
+      "employeeCount": 1,
+      "growthStage": "exit",
+      "linkedinUrl": "linkedin.com/company/e8-security",
+      "twitterUrl": "x.com/e8security",
+      "facebookUrl": "facebook.com/e8sec",
+      "entityStatus": {
+        "product_id": "5e3b9344137e998b5aeb13e7",
+        "product": "company",
+        "updated_at": "2025-11-19T11:40:41.062356Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "68363c2260b4e157c432b63e",
+      "domain": "aspora.com",
+      "name": "Aspora",
+      "logo_url": "https://logo.clearbit.com/aspora.com",
+      "short_description": "Aspora offers fast, secure money transfers to India at Google exchange rates.",
+      "hqLocation": "San Francisco, California, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 94300000,
+      "lastFundingType": "Series B",
+      "employeeCount": 134,
+      "growthStage": "growing",
+      "linkedinUrl": "linkedin.com/company/get-aspora",
+      "twitterUrl": "x.com/vance_app",
+      "facebookUrl": "facebook.com/vanceapp",
+      "trustpilot_data": {
+        "trustpilot_url": "https://www.trustpilot.com/review/aspora.com",
+        "trustpilot_rating": 4.4,
+        "trustpilot_review_count": 1106
+      },
+      "entityStatus": {
+        "product_id": "68363c2260b4e157c432b63e",
+        "product": "company",
+        "updated_at": "2025-11-18T13:48:25.569531Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "673c37e3749cfd4ac17b05cc",
+      "domain": "rcdrift.uk",
+      "name": "RC Drift",
+      "logo_url": "https://logo.clearbit.com/rcdrift.uk",
+      "short_description": "RC Drift UK is an online platform for RC drifting events, driver analytics, and community tools.",
+      "growthStage": "no_funding",
+      "facebookUrl": "facebook.com/rcdriftinguk",
+      "entityStatus": {
+        "product_id": "673c37e3749cfd4ac17b05cc",
+        "product": "company",
+        "updated_at": "2025-11-17T10:42:42.953304Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "6164434dc3c073075bd0f306",
+      "domain": "loveventures.co.uk",
+      "name": "Love Ventures",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/loveventures.co.uk.jpeg",
+      "short_description": "Love Ventures is an early-stage VC investing in FinTech, Future of Work, and ConsumerTech.",
+      "hqLocation": "London, England, United Kingdom, Europe",
+      "hqRegion": "Europe",
+      "employeeCount": 27,
+      "growthStage": "no_funding",
+      "linkedinUrl": "linkedin.com/company/love-ventures",
+      "twitterUrl": "x.com/loveventuresvc",
+      "entityStatus": {
+        "product_id": "6164434dc3c073075bd0f306",
+        "product": "company",
+        "updated_at": "2025-11-14T16:11:13.935112Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "67fd98834b159217d5b073d1",
+      "domain": "norwest.com",
+      "name": "Norwest",
+      "logo_url": "https://logo.clearbit.com/norwest.com",
+      "short_description": "Norwest is a renowned venture and growth equity investment firm.",
+      "hqLocation": "Menlo Park, California, United States, North America",
+      "hqRegion": "North America",
+      "employeeCount": 176,
+      "growthStage": "growing",
+      "linkedinUrl": "linkedin.com/company/norwest-industries-pvt-ltd",
+      "entityStatus": {
+        "product_id": "67fd98834b159217d5b073d1",
+        "product": "company",
+        "updated_at": "2025-11-14T09:37:23.649968Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "61d57beadb415a1b7f1376e3",
+      "domain": "blissim.fr",
+      "name": "Blissim",
+      "logo_url": "https://specter-company-logo.s3.amazonaws.com/blissim.fr.jpeg",
+      "short_description": "Blissim is a online retailer of products such as face wash, makeup, perfumes, serums, body, bath, hair, and skin care products.",
+      "hqLocation": "Paris, Île-de-France, France, Europe",
+      "hqRegion": "Europe",
+      "employeeCount": 91,
+      "growthStage": "early",
+      "linkedinUrl": "linkedin.com/company/blissim",
+      "facebookUrl": "facebook.com/blissimbeauty",
+      "trustpilot_data": {
+        "trustpilot_url": "https://www.trustpilot.com/review/blissim.fr",
+        "trustpilot_rating": 4.5,
+        "trustpilot_review_count": 13136
+      },
+      "entityStatus": {
+        "product_id": "61d57beadb415a1b7f1376e3",
+        "product": "company",
+        "updated_at": "2025-09-26T21:36:34.768399Z",
+        "status": "viewed"
+      }
+    },
+    {
+      "id": "686f81be14f01b706854e84f",
+      "domain": "onkernel.com",
+      "name": "Kernel",
+      "logo_url": "https://logo.clearbit.com/onkernel.com",
+      "short_description": "Kernel is a developer platform that provides Crazy Fast Browser Infrastructure for AI agents to use the internet.",
+      "hqLocation": "San Francisco, California, United States, North America",
+      "hqRegion": "North America",
+      "totalFundingAmount": 22600000,
+      "lastFundingType": "Series A",
+      "employeeCount": 9,
+      "growthStage": "early",
+      "linkedinUrl": "linkedin.com/company/onkernel",
+      "twitterUrl": "x.com/onkernel",
+      "lists": [
+        {
+          "id": "5747d666-f985-4140-a336-254b3fa7c381",
+          "name": "Specter Monitor #195 - Investors (interest signals)",
+          "type": "company"
+        },
+        {
+          "id": "96b1ae8f-d61e-45b2-9f29-5b56646a02bd",
+          "name": "Specter Monitor #203 - Interest (interest signals)",
+          "type": "company"
+        },
+        {
+          "id": "e4f29745-e660-420e-aed3-48f310fab5bd",
+          "name": "Hottest Startups - September 2025 (interest signals)",
+          "type": "company"
+        }
+      ],
+      "entityStatus": {
+        "product_id": "686f81be14f01b706854e84f",
+        "product": "company",
+        "updated_at": "2025-09-17T14:01:04.981212Z",
+        "status": "viewed"
+      }
+    }
+  ]
+}

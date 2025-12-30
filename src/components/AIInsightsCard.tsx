@@ -50,10 +50,10 @@ export function AIInsightsCard({
 
   const getScoreColor = () => {
     if (!score) return '#888899';
-    if (score >= 80) return '#22c55e';
-    if (score >= 60) return '#eab308';
-    if (score >= 40) return '#f97316';
-    return '#ef4444';
+    if (score >= 80) return colors.primary;
+    if (score >= 60) return colors.warning;
+    if (score >= 40) return "#f97316";
+    return colors.destructive;
   };
 
   if (isLoading) {

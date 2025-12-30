@@ -1,0 +1,95 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": [
+    {
+      "internal_person_id": 413181086,
+      "specter_person_id": "per_9a7e5f57f30111580e483847",
+      "full_name": "Ira Lehrman",
+      "title": "Chief Technology Officer",
+      "is_founder": false,
+      "departments": [
+        "Senior Leadership",
+        "Engineering"
+      ],
+      "seniority": "Executive Level"
+    },
+    {
+      "internal_person_id": 8972910,
+      "specter_person_id": "per_3a3e24bebf3b58133caf138f",
+      "full_name": "Robert Novembre",
+      "title": "Founder and CEO",
+      "is_founder": true,
+      "departments": [
+        "Senior Leadership"
+      ],
+      "seniority": "Executive Level"
+    },
+    {
+      "internal_person_id": 275639150,
+      "specter_person_id": "per_123c9fd3c4067b2e338fffdb",
+      "full_name": "Jean Alvergnas",
+      "title": "Director of Research",
+      "is_founder": false,
+      "departments": [
+        "Product & Research"
+      ],
+      "seniority": "Senior Level"
+    },
+    {
+      "internal_person_id": 336392929,
+      "specter_person_id": "per_6549ecb53b92f6f822f091a8",
+      "full_name": "Will Orozco",
+      "title": "Global Markets Credit Intern",
+      "is_founder": false,
+      "departments": [
+        "Finance"
+      ],
+      "seniority": "Entry Level"
+    },
+    {
+      "internal_person_id": 9582568,
+      "specter_person_id": "per_697e1b3b19bdb72f73b421d1",
+      "full_name": "Bernardo Baptista",
+      "title": "Senior Software Engineer",
+      "is_founder": false,
+      "departments": [
+        "Engineering"
+      ],
+      "seniority": "Senior Level"
+    },
+    {
+      "internal_person_id": 78229205,
+      "specter_person_id": "per_0db07906cda3724f98581a74",
+      "full_name": "Héldio Dimande, MBA",
+      "title": "Board Advisor | Bond Markets (Africa, UK, and Common Wealth)",
+      "is_founder": false,
+      "departments": [
+        "Finance"
+      ],
+      "seniority": "Executive Level"
+    },
+    {
+      "internal_person_id": 345642400,
+      "specter_person_id": "per_933e28691465560f7c91340b",
+      "full_name": "Meher Khan",
+      "title": "Intern",
+      "is_founder": false,
+      "departments": [
+        "Other"
+      ],
+      "seniority": "Entry Level"
+    },
+    {
+      "internal_person_id": 392213919,
+      "specter_person_id": "per_24651c18f544f34941b8421c",
+      "full_name": "Letícia M.",
+      "title": "Software Engineer",
+      "is_founder": false,
+      "departments": [
+        "Engineering"
+      ],
+      "seniority": "Mid Level"
+    }
+  ]
+}

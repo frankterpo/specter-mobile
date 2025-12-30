@@ -1,0 +1,83 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": {
+    "lists": [
+      {
+        "id": "7846c6e2-a3ed-4813-b50a-f99de4da4bb0",
+        "createdAt": "2025-12-16T16:56:09.080Z",
+        "modifiedAt": "2025-12-16T16:56:09.080Z",
+        "name": "Specter Monitor #208 - Talent (talent signals)",
+        "type": "people",
+        "userId": "user_2BTdH3yJshxoCcFIUW8PnMp4AJJ",
+        "isArchived": false,
+        "isPublic": true,
+        "isGlobalHub": false,
+        "isSharedAPI": false,
+        "newSignalsLastViewedAt": null,
+        "newFundingSignalsLastViewedAt": null,
+        "newGrowthSignalsLastViewedAt": null,
+        "newInvestmentsLastViewedAt": null,
+        "newAcquisitionsLastViewedAt": null,
+        "newInterestSignalsLastViewedAt": null
+      },
+      {
+        "id": "d1bb5697-10f3-4d96-9a10-bdfe47371937",
+        "createdAt": "2025-12-09T12:14:13.293Z",
+        "modifiedAt": "2025-12-09T12:14:13.293Z",
+        "name": "Specter Monitor #207 - Talent (talent signals)",
+        "type": "people",
+        "userId": "user_2BTdH3yJshxoCcFIUW8PnMp4AJJ",
+        "isArchived": false,
+        "isPublic": true,
+        "isGlobalHub": false,
+        "isSharedAPI": false,
+        "newSignalsLastViewedAt": null,
+        "newFundingSignalsLastViewedAt": null,
+        "newGrowthSignalsLastViewedAt": null,
+        "newInvestmentsLastViewedAt": null,
+        "newAcquisitionsLastViewedAt": null,
+        "newInterestSignalsLastViewedAt": null
+      },
+      {
+        "id": "c2350220-799e-4d4b-b7b9-936cebc5d626",
+        "createdAt": "2025-12-02T18:34:49.302Z",
+        "modifiedAt": "2025-12-02T18:34:49.302Z",
+        "name": "12-02-2025 DDVC (talent signals)",
+        "type": "people",
+        "userId": "user_2BTdH3yJshxoCcFIUW8PnMp4AJJ",
+        "isArchived": false,
+        "isPublic": false,
+        "isGlobalHub": false,
+        "isSharedAPI": false,
+        "newSignalsLastViewedAt": null,
+        "newFundingSignalsLastViewedAt": null,
+        "newGrowthSignalsLastViewedAt": null,
+        "newInvestmentsLastViewedAt": null,
+        "newAcquisitionsLastViewedAt": null,
+        "newInterestSignalsLastViewedAt": null
+      }
+    ],
+    "searches": [
+      {
+        "id": 6725,
+        "createdAt": "2025-06-11T14:46:36.493Z",
+        "modifiedAt": "2025-06-11T14:49:45.056Z",
+        "name": "Jan's MAX Alpha search lets f*in go",
+        "queryId": 11337,
+        "userId": "user_2o482PIz6crkXAVuBc2Bk8s1mcF",
+        "isPublic": true,
+        "isGlobalHub": false,
+        "isSharedAPI": false,
+        "sort": null,
+        "newCount": -1,
+        "fullCount": -1,
+        "newFundingHighlightsCount": null,
+        "newGrowthHighlightsCount": null,
+        "newInvestmentsCount": null,
+        "newAcquisitionsCount": null,
+        "newInterestSignalsCount": null
+      }
+    ]
+  }
+}

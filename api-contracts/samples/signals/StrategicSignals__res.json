@@ -1,0 +1,1470 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": {
+    "page": 0,
+    "items": [
+      {
+        "first_name": "Karina",
+        "last_name": "Valencia",
+        "full_name": "Karina Valencia",
+        "linkedin_url": "https://www.linkedin.com/in/karivalencia",
+        "twitter_url": null,
+        "github_url": null,
+        "cb_url": null,
+        "about": "The world is handing the keys of a Ferrari to every health marketing team on the planet. That Ferrari is Generative AI. It allows brands to move at 200mph. But without a seatbelt (trustworthy compliance) that speed creates a massive legal risk.\n\nWe are building that seatbelt.\n\nMy obsession with this problem started 15 years ago on the floor of Procter & Gamble, where I experience firsthand how \"Legal\" was the bottleneck to growth.\n\nI spent the next decade building the skillset to solve it: \n\nAt Palantir: I learned how to deploy data infrastructure into complex, critical environments.\nAt Citi: I managed a $2.8B P&L and navigated the regulatory chaos of Brexit as Chief of Staff to the UK CEO.\nAt Wheely: I led operations during \"wartime,\" relocating 23% of our workforce during the onset of the Russia-Ukraine war while reaching profitability.\n\nNow, I am combining that operational experience with the medical knowledge of my co-founder (Dr. Leonie Bode) to solve one of the biggest problems in the $600B Longevity Economy.\n\nWe are the department of \"Yes!\" We utilise proprietary AI to validate and localise their claims instantly, turning compliance from a bottleneck into a growth engine.\n\n3x Scale-Up Operator turned Founder. Competitive CrossFit Athlete. On a mission to bring truth to health commerce.",
+        "tagline": "Co-Founder at Stealth (HealthTech) | Ex-Palantir, Wheely, Citi ($2.8 B P&L)",
+        "location": "London, England, United Kingdom, Europe",
+        "region": "Europe",
+        "email": null,
+        "followers_count": 2736,
+        "connections_count": 2316,
+        "profile_image_url": null,
+        "education_level": "Master's Degree",
+        "years_of_experience": 18,
+        "seniority": "Executive Level",
+        "avg_tenure": 17,
+        "current_tenure": 13,
+        "languages": [
+          {
+            "name": "English",
+            "proficiency": "Native Or Bilingual Proficiency"
+          },
+          {
+            "name": "Spanish",
+            "proficiency": "Native Or Bilingual Proficiency"
+          },
+          {
+            "name": "French",
+            "proficiency": "Elementary Proficiency"
+          }
+        ],
+        "skills": [
+          {
+            "name": "Analytics",
+            "endorsements_count": 6,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Artificial Intelligence (AI)",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Brand Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Business Development",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Business Strategy",
+            "endorsements_count": 10,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Crisis Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Cross Cultural Management",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Cross-functional Team Leadership",
+            "endorsements_count": 7,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Data Analysis",
+            "endorsements_count": 8,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Executive Leadership",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Financial Analysis",
+            "endorsements_count": 5,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Go-to-Market Strategy",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Health Tech",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "International Business",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "International Expansion",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Key Performance Indicators",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Leadership",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Management",
+            "endorsements_count": 5,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Management Consulting",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Marketing Strategy",
+            "endorsements_count": 10,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Mentoring",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "New Market Expansion",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Operations Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "People Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "PnL Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Product Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Program Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Project Management",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Public Speaking",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Regulatory Compliance",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Strategic Planning",
+            "endorsements_count": 3,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Strategy",
+            "endorsements_count": 8,
+            "passed_skill_assessment": false
+          }
+        ],
+        "people_highlights": [
+          "fortune_500_experience",
+          "major_tech_experience",
+          "prior_exit",
+          "prior_ipo",
+          "prior_vc_backed_experience",
+          "prior_vc_backed_founder",
+          "serial_founder"
+        ],
+        "talent_ids": [
+          "3b7cabf8-019e-4ea0-ad96-4149f2912978",
+          "32fb9ae6-d5f4-4803-bdd6-944daac3f47d"
+        ],
+        "stratintelligence_ids": [
+          "06027631-b7e9-4368-a9c2-b18c3a126848"
+        ],
+        "entity_status": null,
+        "entity_team_status": [
+          {
+            "status": {
+              "status": "viewed",
+              "updated_at": "2025-12-22T09:24:31.982664Z"
+            },
+            "user": {
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "status": {
+              "status": "viewed",
+              "updated_at": "2025-12-22T05:14:40.254740Z"
+            },
+            "user": {
+              "first_name": "Raza",
+              "last_name": "Zaidi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": {
+              "status": "viewed",
+              "updated_at": "2025-12-27T01:22:54.430207Z"
+            },
+            "user": {
+              "first_name": "Suryansh",
+              "last_name": "Verma",
+              "avatar": "https://images.clerk.dev/uploaded/img_2xyQuW8xlxV45NyWPxsloK5z2Ut"
+            }
+          }
+        ],
+        "person_role": "Founder",
+        "lists": [],
+        "investor_id": null,
+        "specter_person_id": "per_9c6485f2474c8abb7674d5fc",
+        "id": "06027631-b7e9-4368-a9c2-b18c3a126848",
+        "investorId": null,
+        "entityStatus": null,
+        "teamEntityStatuses": [
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-22T09:24:31.982664Z",
+            "user": {
+              "first_name": "Dominik",
+              "last_name": "Vacikar",
+              "avatar": "https://images.clerk.dev/uploaded/img_2Bq9hlNHnNSaOjcojDaQkpInD4i.jpeg"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-22T05:14:40.254740Z",
+            "user": {
+              "first_name": "Raza",
+              "last_name": "Zaidi",
+              "avatar": "https://www.gravatar.com/avatar?d=mp"
+            }
+          },
+          {
+            "status": "viewed",
+            "updated_at": "2025-12-27T01:22:54.430207Z",
+            "user": {
+              "first_name": "Suryansh",
+              "last_name": "Verma",
+              "avatar": "https://images.clerk.dev/uploaded/img_2xyQuW8xlxV45NyWPxsloK5z2Ut"
+            }
+          }
+        ],
+        "SignalDate": "2025-12-26T00:00:00.000Z",
+        "SignalScore": 9,
+        "SourceType": [
+          "venture_capital"
+        ],
+        "SignalSource": "EQT Ventures",
+        "Screenshot": "https://specter-images.s3.eu-west-2.amazonaws.com/stratintel/li-Blank.jpeg",
+        "Website": "https://www.linkedin.com/in/karivalencia",
+        "CompanyDomain": null,
+        "Name": "Karina Valencia",
+        "Description": null,
+        "Tags": null,
+        "Founded": 2025,
+        "Investors": null,
+        "TotalFundingAmount": null,
+        "LastFundingDate": null,
+        "LastFundingAmount": null,
+        "HQLocation": "London, England, United Kingdom, Europe",
+        "HQRegion": "Europe",
+        "Logos": [
+          "https://specter-company-logo.s3.amazonaws.com/eqtventures.com.jpeg"
+        ],
+        "SignalType": "Talent",
+        "weekBatch": "2025-12-26T00:00:00.000Z",
+        "LinkedInURL": null,
+        "TwitterURL": null,
+        "IndustryOG": "DeepTech; Health; Information Technology",
+        "NumberOfSources": 1,
+        "growthStage": "pre_launch",
+        "personalDetail": null,
+        "StratintelMulti": {
+          "strategicId": "06027631-b7e9-4368-a9c2-b18c3a126848",
+          "allSignalIds": [
+            "06027631-b7e9-4368-a9c2-b18c3a126848"
+          ],
+          "numberOfSignals": 1,
+          "signalCountPast30d": 1,
+          "signalCountPast90d": 1,
+          "signalCountPast180d": 1,
+          "signalCountPast360d": 1,
+          "signalCountPast720d": 1
+        },
+        "StratintelSignalSources": [
+          {
+            "signalId": "06027631-b7e9-4368-a9c2-b18c3a126848",
+            "sourceName": "EQT Ventures",
+            "sourceId": "inv_585447d95e79d0f8b2943245",
+            "sourceType": "investor",
+            "sourcePriority": 1,
+            "investor": {
+              "id": "inv_585447d95e79d0f8b2943245",
+              "domain": "eqtventures.com",
+              "logoUrl": "https://specter-company-logo.s3.amazonaws.com/eqtventures.com.jpeg"
+            }
+          }
+        ],
+        "Company": null,
+        "PersonStrategicSignal": {
+          "person": {
+            "externalId": "per_9c6485f2474c8abb7674d5fc"
+          }
+        },
+        "interest_signal_id": "06027631-b7e9-4368-a9c2-b18c3a126848"
+      },
+      {
+        "first_name": "Alfonso",
+        "last_name": "Iovieno",
+        "full_name": "Alfonso Iovieno",
+        "linkedin_url": "https://www.linkedin.com/in/alfonso-iovieno",
+        "twitter_url": null,
+        "github_url": null,
+        "cb_url": "https://www.crunchbase.com/person/alfonso-iovieno",
+        "about": "Alfonso Iovieno is an experienced senior executive with 18 years of leadership in e-Commerce and Digital Payments, most recently shaping innovative product strategies for global leaders in financial services. Known for aligning product innovation with business goals and customer needs, Alfonso combines strategic vision with a people-first leadership philosophy built on trust, empowerment, and accountability. \n\nThroughout his career, Alfonso has held key roles at industry giants including Vodafone, VISA, J.P. Morgan Chase, and Citigroup, where he built and managed product portfolios that redefined customer experiences across North America, LATAM, and EMEA. His expertise spans product lifecycle management, business modeling, pricing, digital idenity authentication, and AI-driven analytics, making him a proven problem-solver who thrives at the intersection of technology and financial services.\n\nIn parallel, Alfonso has served as Founder & Strategic Advisor, driving initiatives at the edge of innovation. He has advised an Agentic AI startup building virtual shopping assistants for e-commerce, designed an Innovation Lab strategy to help Corporate Development teams commercialize emerging tech, and built the strategy, team, and funding roadmap for a compliance and cybersecurity startup focused on data strategy and GenAI integration. Across these ventures, he has guided founders from concept to go-to-market, delivering sustainable growth and long-term value.\n\nBeyond his corporate roles, Alfonso is an advocate for cross-cultural collaboration and knowledge-sharing within the digital ecosystem. He has actively engaged in mentoring and coaching emerging leaders, while also contributing to industry forums and innovation roundtables. Passionate about continuous learning and global connectivity, he values diversity, creativity, and the power of technology to enhance human experiences.\n\nWith dual citizenship (US and EU) and eligibility for a UK visa, Alfonso is well-positioned to contribute to global organizations at the forefront of digital innovation.",
+        "tagline": "Global Digital Payments & eCommerce Executive | Product Strategy & Transformation Leader | Driving\nInnovation Across Financial Services & Technology",
+        "location": "Milan, Lombardy, Italy, Europe",
+        "region": "Europe",
+        "email": null,
+        "followers_count": 9689,
+        "connections_count": 8973,
+        "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_f8e56eb160553c2abff693f9.jpg",
+        "education_level": "Master's Degree",
+        "years_of_experience": 18,
+        "seniority": "Executive Level",
+        "avg_tenure": 16,
+        "current_tenure": 23,
+        "languages": [
+          {
+            "name": "English",
+            "proficiency": "Native Or Bilingual Proficiency"
+          },
+          {
+            "name": "Italian",
+            "proficiency": "Native Or Bilingual Proficiency"
+          },
+          {
+            "name": "Spanish",
+            "proficiency": "Professional Working Proficiency"
+          },
+          {
+            "name": "Portuguese",
+            "proficiency": "Limited Working Proficiency"
+          }
+        ],
+        "skills": [
+          {
+            "name": "Analytical Skills",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Application Programming Interfaces (API)",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Artificial Intelligence (AI)",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Big Data",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Blockchain",
+            "endorsements_count": 18,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Business Acumen",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Business Transformation",
+            "endorsements_count": 6,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Change Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Cloud Applications",
+            "endorsements_count": 25,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Conflict Resolution",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Creativity and Innovation",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Cross-Cultural Communication Skills",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Cross-functional Collaborations",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Customer-Centric Focus",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Data-driven Decision Making",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Entrepreneurial Mindset",
+            "endorsements_count": 24,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Ethical Judgment",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "FinTech",
+            "endorsements_count": 22,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Financial Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Generative AI",
+            "endorsements_count": 27,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Global Perspective",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "IOT",
+            "endorsements_count": 18,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Influence and Persuasion",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Leadership and Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Machine Learning",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Market Research",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Money Movement",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Negotiation",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Networking",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Omni-Channel",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Operational Excellence",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Outsourcing",
+            "endorsements_count": 11,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Payments",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Problem Solving",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Process Optimization",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Product Management Expertise",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Productivity Improvement",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Risk Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Stakeholder Management",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Storytelling",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Strategic Partnerships",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Strategic Thinking",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Strategic Vision",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Team Building",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Technical Understanding",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Vendor Management",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "adaptability",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "digital",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          }
+        ],
+        "people_highlights": [
+          "fortune_500_experience",
+          "prior_vc_backed_experience",
+          "prior_vc_backed_founder"
+        ],
+        "talent_ids": [
+          "e3e188ed-f571-4bb2-ba15-42a47fb02d61"
+        ],
+        "stratintelligence_ids": [
+          "06451098-7a76-415f-add9-62ea91e82896"
+        ],
+        "entity_status": null,
+        "entity_team_status": [],
+        "person_role": "Founder",
+        "lists": [],
+        "investor_id": null,
+        "specter_person_id": "per_f8e56eb160553c2abff693f9",
+        "id": "06451098-7a76-415f-add9-62ea91e82896",
+        "investorId": null,
+        "entityStatus": null,
+        "teamEntityStatuses": [],
+        "SignalDate": "2025-12-26T00:00:00.000Z",
+        "SignalScore": 9,
+        "SourceType": [
+          "venture_capital"
+        ],
+        "SignalSource": "SoftBank Vision Fund",
+        "Screenshot": "https://specter-images.s3.eu-west-2.amazonaws.com/stratintel/li-alfonso_iovieno.jpg",
+        "Website": "https://www.linkedin.com/in/alfonso-iovieno",
+        "CompanyDomain": null,
+        "Name": "Alfonso Iovieno",
+        "Description": null,
+        "Tags": null,
+        "Founded": 2024,
+        "Investors": null,
+        "TotalFundingAmount": null,
+        "LastFundingDate": null,
+        "LastFundingAmount": null,
+        "HQLocation": "Milan, Lombardy, Italy, Europe",
+        "HQRegion": "Europe",
+        "Logos": [
+          "https://specter-company-logo.s3.amazonaws.com/visionfund.com.jpeg"
+        ],
+        "SignalType": "Talent",
+        "weekBatch": "2025-12-26T00:00:00.000Z",
+        "LinkedInURL": null,
+        "TwitterURL": null,
+        "IndustryOG": "DeepTech; Commerce and Shopping",
+        "NumberOfSources": 1,
+        "growthStage": "pre_launch",
+        "personalDetail": null,
+        "StratintelMulti": {
+          "strategicId": "06451098-7a76-415f-add9-62ea91e82896",
+          "allSignalIds": [
+            "06451098-7a76-415f-add9-62ea91e82896"
+          ],
+          "numberOfSignals": 1,
+          "signalCountPast30d": 1,
+          "signalCountPast90d": 1,
+          "signalCountPast180d": 1,
+          "signalCountPast360d": 1,
+          "signalCountPast720d": 1
+        },
+        "StratintelSignalSources": [
+          {
+            "signalId": "06451098-7a76-415f-add9-62ea91e82896",
+            "sourceName": "SoftBank Vision Fund",
+            "sourceId": "inv_92f828b07562034c4550884b",
+            "sourceType": "investor",
+            "sourcePriority": 1,
+            "investor": {
+              "id": "inv_92f828b07562034c4550884b",
+              "domain": "visionfund.com",
+              "logoUrl": "https://specter-company-logo.s3.amazonaws.com/visionfund.com.jpeg"
+            }
+          }
+        ],
+        "Company": null,
+        "PersonStrategicSignal": {
+          "person": {
+            "externalId": "per_f8e56eb160553c2abff693f9"
+          }
+        },
+        "interest_signal_id": "06451098-7a76-415f-add9-62ea91e82896"
+      },
+      {
+        "first_name": "Tyler",
+        "last_name": "Sosin",
+        "full_name": "Tyler Sosin",
+        "linkedin_url": "https://www.linkedin.com/in/tylersosin",
+        "twitter_url": null,
+        "github_url": null,
+        "cb_url": "https://www.crunchbase.com/person/tyler-sosin",
+        "about": null,
+        "tagline": "Launching something new; stay tuned",
+        "location": "New York City, New York, United States, North America",
+        "region": "North America",
+        "email": null,
+        "followers_count": 3273,
+        "connections_count": 2945,
+        "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_5440c96650f4406131f25495.jpg",
+        "education_level": "",
+        "years_of_experience": 17,
+        "seniority": "Executive Level",
+        "avg_tenure": 48,
+        "current_tenure": 23,
+        "languages": [],
+        "skills": [
+          {
+            "name": "Business Strategy",
+            "endorsements_count": 9,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Corporate Development",
+            "endorsements_count": 16,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Corporate Finance",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Due Diligence",
+            "endorsements_count": 14,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "E-commerce",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Entrepreneurship",
+            "endorsements_count": 10,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Financial Modeling",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Investments",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Mergers & Acquisitions",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Private Equity",
+            "endorsements_count": 21,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Strategy",
+            "endorsements_count": 2,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Valuation",
+            "endorsements_count": 4,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Venture Capital",
+            "endorsements_count": 40,
+            "passed_skill_assessment": false
+          }
+        ],
+        "people_highlights": [],
+        "talent_ids": [
+          "88798309-5b6c-490e-824a-0ba2ad854fb7"
+        ],
+        "stratintelligence_ids": [
+          "07400880-6340-4c2a-b4df-abb83e226e3e",
+          "aca30681-3d22-4730-b893-5b72da6a3b28"
+        ],
+        "entity_status": null,
+        "entity_team_status": [],
+        "person_role": "Founder",
+        "lists": [],
+        "investor_id": "inv_8e566b69c57fd5c738349299",
+        "specter_person_id": "per_5440c96650f4406131f25495",
+        "id": "07400880-6340-4c2a-b4df-abb83e226e3e",
+        "investorId": "inv_8e566b69c57fd5c738349299",
+        "entityStatus": null,
+        "teamEntityStatuses": [],
+        "SignalDate": "2025-12-26T00:00:00.000Z",
+        "SignalScore": 9,
+        "SourceType": [
+          "venture_capital"
+        ],
+        "SignalSource": "Chemistry, Mubadala Capital Ventures",
+        "Screenshot": "https://specter-images.s3.eu-west-2.amazonaws.com/stratintel/li-tyler_sosin.jpg",
+        "Website": "https://www.linkedin.com/in/tylersosin",
+        "CompanyDomain": null,
+        "Name": "Tyler Sosin",
+        "Description": null,
+        "Tags": null,
+        "Founded": null,
+        "Investors": null,
+        "TotalFundingAmount": null,
+        "LastFundingDate": null,
+        "LastFundingAmount": null,
+        "HQLocation": "New York City, New York, United States, North America",
+        "HQRegion": "North America",
+        "Logos": [
+          "https://specter-company-logo.s3.amazonaws.com/mubadala.com.jpeg",
+          " https://app.tryspecter.com/logo?domain=chemistry.vc"
+        ],
+        "SignalType": "Talent",
+        "weekBatch": "2025-12-26T00:00:00.000Z",
+        "LinkedInURL": null,
+        "TwitterURL": "https://x.com/tysosin",
+        "IndustryOG": null,
+        "NumberOfSources": 2,
+        "growthStage": "pre_launch",
+        "personalDetail": {
+          "email": "tysosin@gmail.com",
+          "twitterUrl": null,
+          "githubUrl": null,
+          "skills": [
+            "Venture Capital",
+            "Corporate Development",
+            "Private Equity",
+            "Due Diligence",
+            "Valuation",
+            "Entrepreneurship",
+            "Investments",
+            "Financial Modeling",
+            "Business Strategy",
+            "E-commerce",
+            "Corporate Finance",
+            "Mergers & Acquisitions",
+            "Strategy",
+            "Business Analysis",
+            "Mergers and Acquisitions",
+            "Change Management",
+            "Management",
+            "Leadership",
+            "Portfolio Management",
+            "E Commerce",
+            "Microsoft Excel",
+            "Finance",
+            "Project Management",
+            "Customer Service"
+          ],
+          "birthYear": 1986
+        },
+        "StratintelMulti": {
+          "strategicId": "07400880-6340-4c2a-b4df-abb83e226e3e",
+          "allSignalIds": [
+            "aca30681-3d22-4730-b893-5b72da6a3b28",
+            "07400880-6340-4c2a-b4df-abb83e226e3e"
+          ],
+          "numberOfSignals": 2,
+          "signalCountPast30d": 1,
+          "signalCountPast90d": 1,
+          "signalCountPast180d": 1,
+          "signalCountPast360d": 2,
+          "signalCountPast720d": 2
+        },
+        "StratintelSignalSources": [
+          {
+            "signalId": "07400880-6340-4c2a-b4df-abb83e226e3e",
+            "sourceName": "Chemistry",
+            "sourceId": "inv_46eb292b3236055f0ec67137",
+            "sourceType": "investor",
+            "sourcePriority": 1,
+            "investor": {
+              "id": "inv_46eb292b3236055f0ec67137",
+              "domain": "chemistry.vc",
+              "logoUrl": "https://logo.clearbit.com/chemistry.vc"
+            }
+          },
+          {
+            "signalId": "07400880-6340-4c2a-b4df-abb83e226e3e",
+            "sourceName": "Mubadala Capital Ventures",
+            "sourceId": "inv_eb6d5ffbe3e18eea11fdb4a9",
+            "sourceType": "investor",
+            "sourcePriority": 2,
+            "investor": {
+              "id": "inv_eb6d5ffbe3e18eea11fdb4a9",
+              "domain": "mubadala.com",
+              "logoUrl": "https://specter-company-logo.s3.amazonaws.com/mubadala.com.jpeg"
+            }
+          }
+        ],
+        "Company": null,
+        "PersonStrategicSignal": {
+          "person": {
+            "externalId": "per_5440c96650f4406131f25495"
+          }
+        },
+        "interest_signal_id": "07400880-6340-4c2a-b4df-abb83e226e3e"
+      },
+      {
+        "id": "07fe2368-58d0-484f-8f3e-280ede5cff04",
+        "specter_id": "67ddbcccf7c19249630c8f97",
+        "name": "Raspberry AI",
+        "domain": "raspberry.ai",
+        "rank": 1635,
+        "operatingStatus": "active",
+        "short_description": "Raspberry AI offers software that transforms fashion sketches into photorealistic images.",
+        "description": "Raspberry AI is a leading provider of generative AI design software for fashion brands and retailers. The platform enables companies to rapidly understand consumer demand and create unique designs in minutes, significantly improving speed-to-market and reducing sample costs. With features like photorealistic rendering, technical drawings, and lifestyle photography, Raspberry AI helps brands streamline their design processes and enhance collaboration. The company has gained traction with significant savings on sample costs and time, positioning itself as a key player in the fashion tech industry.",
+        "industry": [
+          "Design",
+          "Information Technology",
+          "Software"
+        ],
+        "subIndustry": [
+          "Artificial Intelligence (AI)",
+          "Fashion",
+          "Product Design",
+          "Software"
+        ],
+        "hqLocation": "New York City, New York, United States, North America",
+        "hqRegion": "North America",
+        "lastFundingDate": "2025-01-13",
+        "lastFundingType": "Series A",
+        "postMoneyValuation": null,
+        "fundingRoundsCount": 2,
+        "annualRevenueEstimate": null,
+        "investors": [
+          "Andreessen Horowitz",
+          "Correlation Ventures",
+          "Daughters Capital",
+          "Fernbrook Capital Management LLC",
+          "Gokul Rajaram",
+          "Greycroft",
+          "Ken Pilot",
+          "Khosla Ventures",
+          "MVP Ventures",
+          "Michael Mente"
+        ],
+        "investorsCount": 10,
+        "founders": [
+          {
+            "specter_person_id": "per_80116a743ab9cf568ad5b1d6",
+            "full_name": "Cheryl Liu",
+            "departments": [
+              "Senior Leadership"
+            ],
+            "title": "Founder, CEO",
+            "seniority": "Executive Level"
+          },
+          {
+            "specter_person_id": "per_e4cc96133f2f775166e528e6",
+            "full_name": "Olivia Liao",
+            "departments": [
+              "Senior Leadership"
+            ],
+            "title": "Co-Founder",
+            "seniority": "Executive Level"
+          }
+        ],
+        "foundersCount": 2,
+        "companySize": "51-200",
+        "employeeCount": 53,
+        "webVisits": 20776,
+        "webBounceRate": 45.48,
+        "webSessionDuration": 13,
+        "webPopularityRank": 1354603,
+        "linkedinFollowers": 10167,
+        "twitterFollowers": null,
+        "instagramFollowers": null,
+        "instagramFollowing": null,
+        "totalAppDownloads": null,
+        "iosWeightedRating": null,
+        "iosTotalNumberOfReviews": null,
+        "androidWeightedRating": null,
+        "androidTotalNumberOfReviews": null,
+        "g2_data": null,
+        "g2_rating_avg": null,
+        "g2_total_reviews": null,
+        "glassdoor_data": null,
+        "awards": null,
+        "awardsCount": null,
+        "trustpilot_data": {
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/tpd/screenshots/68027c868348542e05fb3942/198x149.png",
+          "name": "Raspberry",
+          "reviews": 0,
+          "rating": 0,
+          "trustpilot_url": "https://www.trustpilot.com/review/www.raspberry.ai",
+          "star_distribution": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+          }
+        },
+        "growth_metrics": {
+          "web_visits_1mo_ratio": 0.7833201372393771,
+          "web_visits_3mo_ratio": 1.142731422914031,
+          "web_visits_6mo_ratio": 1.0269896193771626,
+          "web_visits_12mo_ratio": null,
+          "web_visits_24mo_ratio": null,
+          "popularity_rank_1mo_diff": 215221,
+          "popularity_rank_3mo_diff": -117357,
+          "popularity_rank_6mo_diff": 73181,
+          "popularity_rank_12mo_diff": null,
+          "popularity_rank_24mo_diff": null,
+          "employee_count_1mo_ratio": 1.1521739130434783,
+          "employee_count_3mo_ratio": 1.358974358974359,
+          "employee_count_6mo_ratio": 1.65625,
+          "employee_count_12mo_ratio": null,
+          "employee_count_24mo_ratio": null,
+          "linkedin_followers_1mo_ratio": 1.0350198513692355,
+          "linkedin_followers_3mo_ratio": 1.1011588866024045,
+          "linkedin_followers_6mo_ratio": 1.891886862672125,
+          "linkedin_followers_12mo_ratio": null,
+          "linkedin_followers_24mo_ratio": null,
+          "twitter_followers_1mo_ratio": null,
+          "twitter_followers_3mo_ratio": null,
+          "twitter_followers_6mo_ratio": null,
+          "twitter_followers_12mo_ratio": null,
+          "twitter_followers_24mo_ratio": null,
+          "instagram_followers_1mo_ratio": null,
+          "instagram_followers_3mo_ratio": null,
+          "instagram_followers_6mo_ratio": null,
+          "instagram_followers_12mo_ratio": null,
+          "instagram_followers_24mo_ratio": null,
+          "itunes_reviews_1mo_ratio": null,
+          "itunes_reviews_3mo_ratio": null,
+          "itunes_reviews_6mo_ratio": null,
+          "itunes_reviews_12mo_ratio": null,
+          "itunes_reviews_24mo_ratio": null,
+          "googleplay_reviews_1mo_ratio": null,
+          "googleplay_reviews_3mo_ratio": null,
+          "googleplay_reviews_6mo_ratio": null,
+          "googleplay_reviews_12mo_ratio": null,
+          "googleplay_reviews_24mo_ratio": null,
+          "app_downloads_1mo_ratio": null,
+          "app_downloads_2mo_ratio": null,
+          "app_downloads_3mo_ratio": null,
+          "app_downloads_4mo_ratio": null,
+          "app_downloads_5mo_ratio": null,
+          "app_downloads_6mo_ratio": null,
+          "app_downloads_12mo_ratio": null,
+          "app_downloads_24mo_ratio": null,
+          "chrome_extensions_rating_1mo_diff": null,
+          "chrome_extensions_rating_2mo_diff": null,
+          "chrome_extensions_rating_3mo_diff": null,
+          "chrome_extensions_rating_4mo_diff": null,
+          "chrome_extensions_rating_6mo_diff": null,
+          "chrome_extensions_rating_5mo_diff": null,
+          "chrome_extensions_rating_12mo_diff": null,
+          "chrome_extensions_rating_24mo_diff": null,
+          "chrome_extensions_reviews_1mo_diff": null,
+          "chrome_extensions_reviews_2mo_diff": null,
+          "chrome_extensions_reviews_3mo_diff": null,
+          "chrome_extensions_reviews_4mo_diff": null,
+          "chrome_extensions_reviews_5mo_diff": null,
+          "chrome_extensions_reviews_6mo_diff": null,
+          "chrome_extensions_reviews_12mo_diff": null,
+          "chrome_extensions_reviews_24mo_diff": null,
+          "chrome_extensions_users_1mo_diff": null,
+          "chrome_extensions_users_2mo_diff": null,
+          "chrome_extensions_users_3mo_diff": null,
+          "chrome_extensions_users_4mo_diff": null,
+          "chrome_extensions_users_5mo_diff": null,
+          "chrome_extensions_users_6mo_diff": null,
+          "chrome_extensions_users_12mo_diff": null,
+          "chrome_extensions_users_24mo_diff": null,
+          "glassdoor_ratings_overall_3mo_diff": null,
+          "glassdoor_reviews_count_3mo_diff": null,
+          "g2_reviews_1mo_diff": null,
+          "g2_reviews_2mo_diff": null,
+          "g2_reviews_3mo_diff": null,
+          "g2_reviews_4mo_diff": null,
+          "g2_reviews_5mo_diff": null,
+          "g2_reviews_6mo_diff": null,
+          "g2_reviews_12mo_diff": null,
+          "g2_reviews_24mo_diff": null,
+          "g2_rating_1mo_diff": null,
+          "g2_rating_2mo_diff": null,
+          "g2_rating_3mo_diff": null,
+          "g2_rating_4mo_diff": null,
+          "g2_rating_5mo_diff": null,
+          "g2_rating_6mo_diff": null,
+          "g2_rating_12mo_diff": null,
+          "g2_rating_24mo_diff": null,
+          "trustpilot_reviews_1mo_diff": 0,
+          "trustpilot_reviews_2mo_diff": 0,
+          "trustpilot_reviews_3mo_diff": 0,
+          "trustpilot_reviews_4mo_diff": null,
+          "trustpilot_reviews_5mo_diff": null,
+          "trustpilot_reviews_6mo_diff": null,
+          "trustpilot_reviews_12mo_diff": null,
+          "trustpilot_reviews_24mo_diff": null,
+          "trustpilot_rating_1mo_diff": 0,
+          "trustpilot_rating_2mo_diff": 0,
+          "trustpilot_rating_3mo_diff": 0,
+          "trustpilot_rating_4mo_diff": null,
+          "trustpilot_rating_5mo_diff": null,
+          "trustpilot_rating_6mo_diff": null,
+          "trustpilot_rating_12mo_diff": null,
+          "trustpilot_rating_24mo_diff": null
+        },
+        "historical_metrics": null,
+        "semanticScore": 0,
+        "b2x": "b2b_b2c",
+        "hot_companies": {
+          "domain": "raspberry.ai",
+          "all_signal_ids": [
+            "e816a399-42d2-4d70-b5e0-7880838c2a04",
+            "df92a1be-8b2d-4a23-aaf6-f8bd73489d9c",
+            "07fe2368-58d0-484f-8f3e-280ede5cff04"
+          ],
+          "number_of_signals": 3,
+          "signal_count_past_30_days": 1,
+          "signal_count_past_90_days": 2,
+          "signal_count_past_180_days": 3,
+          "signal_count_past_360_days": 3,
+          "signal_count_past_720_days": 3
+        },
+        "highlights": [
+          "headcount_3mo_surge",
+          "headcount_6mo_momentum",
+          "social_followers_3mo_surge",
+          "social_followers_6mo_momentum",
+          "recent_news",
+          "top_tier_investors",
+          "no_recent_funding"
+        ],
+        "newHighlights": null,
+        "logoUrl": null,
+        "website": "https://www.raspberry.ai",
+        "linkedinUrl": "linkedin.com/company/raspberry-ai",
+        "twitterUrl": null,
+        "instagramUrl": null,
+        "facebookUrl": null,
+        "iosAllPublisherURLs": null,
+        "androidAllPublisherURLs": null,
+        "addedToList": false,
+        "integrationInfo": null,
+        "entityStatus": null,
+        "teamEntityStatuses": [
+          {
+            "status": "viewed",
+            "updated_at": "2025-11-10T17:42:09.279+00:00",
+            "user": {
+              "first_name": "Marco",
+              "last_name": "Squarci",
+              "avatar": "https://images.clerk.dev/uploaded/img_2zajtPKEEygvOfwHbOUjbk6M64m"
+            }
+          }
+        ],
+        "foundersWithProfiles": [
+          {
+            "specter_person_id": "per_80116a743ab9cf568ad5b1d6",
+            "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_80116a743ab9cf568ad5b1d6.jpg"
+          },
+          {
+            "specter_person_id": "per_e4cc96133f2f775166e528e6",
+            "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_e4cc96133f2f775166e528e6.jpg"
+          }
+        ],
+        "descriptionShort": "Raspberry AI offers software that transforms fashion sketches into photorealistic images.",
+        "investorsWithIds": [],
+        "chrome_extensions_data": null,
+        "certifications_mapped": null,
+        "traction": "30% savings on sample costs, 3 months time saved each year",
+        "tcp": "Fashion brands and retailers",
+        "SignalDate": "2025-12-26T00:00:00.000Z",
+        "SignalScore": 9,
+        "SourceType": [
+          "venture_capital"
+        ],
+        "SignalSource": "ICONIQ Capital",
+        "Screenshot": "https://specter-images.s3.eu-west-2.amazonaws.com/stratintel/raspberry-ai.png",
+        "Website": "http://raspberry.ai",
+        "CompanyDomain": "raspberry.ai",
+        "Name": "Raspberry AI",
+        "Description": "Raspberry AI offers software that utilizes generative AI to enhance fashion design and merchandising processes. The platform helps fashion brands quickly understand consumer demand and create appealing designs.",
+        "Tags": null,
+        "Founded": 2022,
+        "Investors": "Andreessen Horowitz, Correlation Ventures, Daniel Broukhim, Daughters Capital, Fernbrook Capital Management, Gokul Rajaram, Google for Startups, Greycroft Partners, Ken Pilot, Khosla Ventures, LA MAISON des startups LVMh, Marigay McKee, Michael Broukhim, Michael Mente, MVP Ventures, NVIDIA Inception Prorgam, William F. Detwiler, Yael Aflalo",
+        "TotalFundingAmount": 28500000,
+        "LastFundingDate": "2025-01-13T00:00:00.000Z",
+        "LastFundingAmount": 24000000,
+        "HQLocation": "New York City, New York, United States, North America",
+        "HQRegion": "North America",
+        "Logos": [
+          "https://app.tryspecter.com/logo?domain=iconiqcapital.com"
+        ],
+        "SignalType": "Company",
+        "weekBatch": "2025-12-26T00:00:00.000Z",
+        "LinkedInURL": "https://www.linkedin.com/company/raspberry-ai",
+        "TwitterURL": "https://x.com/raspberry__ai",
+        "IndustryOG": "Design; Information Technology; Software; DeepTech; Clothing and Apparel",
+        "NumberOfSources": 1,
+        "growthStage": "growing",
+        "personalDetail": null,
+        "StratintelMulti": {
+          "strategicId": "07fe2368-58d0-484f-8f3e-280ede5cff04",
+          "allSignalIds": [
+            "e816a399-42d2-4d70-b5e0-7880838c2a04",
+            "df92a1be-8b2d-4a23-aaf6-f8bd73489d9c",
+            "07fe2368-58d0-484f-8f3e-280ede5cff04"
+          ],
+          "numberOfSignals": 3,
+          "signalCountPast30d": 1,
+          "signalCountPast90d": 2,
+          "signalCountPast180d": 3,
+          "signalCountPast360d": 3,
+          "signalCountPast720d": 3
+        },
+        "StratintelSignalSources": [
+          {
+            "signalId": "07fe2368-58d0-484f-8f3e-280ede5cff04",
+            "sourceName": "ICONIQ Capital",
+            "sourceId": "inv_d3c1bae9c9fea48776adfc81",
+            "sourceType": "investor",
+            "sourcePriority": 1,
+            "investor": {
+              "id": "inv_d3c1bae9c9fea48776adfc81",
+              "domain": "iconiqcapital.com",
+              "logoUrl": "https://specter-company-logo.s3.amazonaws.com/iconiqcapital.com.png"
+            }
+          }
+        ],
+        "Company": {
+          "Company": {
+            "id": "67ddbcccf7c19249630c8f97",
+            "Domain": "raspberry.ai"
+          }
+        },
+        "PersonStrategicSignal": null,
+        "interest_signal_id": "07fe2368-58d0-484f-8f3e-280ede5cff04"
+      },
+      {
+        "first_name": "Andrew",
+        "last_name": "Spencer",
+        "full_name": "Andrew Spencer",
+        "linkedin_url": "https://www.linkedin.com/in/andrewjspencer",
+        "twitter_url": null,
+        "github_url": null,
+        "cb_url": "https://www.crunchbase.com/person/andrew-spencer-bc4c",
+        "about": null,
+        "tagline": "Founder",
+        "location": "San Francisco, California, United States, North America",
+        "region": "North America",
+        "email": null,
+        "followers_count": 2138,
+        "connections_count": 2015,
+        "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_5b25508d989dc748c459fc0e.jpg",
+        "education_level": "Bachelor's Degree",
+        "years_of_experience": 6,
+        "seniority": "Executive Level",
+        "avg_tenure": 20,
+        "current_tenure": 11,
+        "languages": [
+          {
+            "name": "English",
+            "proficiency": "Native Or Bilingual Proficiency"
+          }
+        ],
+        "skills": [
+          {
+            "name": "CSS",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Graphic Design",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "HTML5",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Java",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Leadership",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "PHP",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Python",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Software Development",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Software Testing",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Web Applications",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Web Design",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Web Development",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          },
+          {
+            "name": "Website Development",
+            "endorsements_count": null,
+            "passed_skill_assessment": false
+          }
+        ],
+        "people_highlights": [
+          "major_tech_experience",
+          "prior_exit",
+          "prior_ipo",
+          "prior_vc_backed_experience",
+          "prior_vc_backed_founder",
+          "serial_founder",
+          "top_university"
+        ],
+        "talent_ids": [
+          "77c577c2-5ad3-4a10-af27-f9e4a4086874"
+        ],
+        "stratintelligence_ids": [
+          "0d6c2d77-37a0-4419-adc9-3b6fab933672",
+          "d180de07-6e40-4917-9d7f-a4636ffeb117"
+        ],
+        "entity_status": null,
+        "entity_team_status": [],
+        "person_role": "Founder",
+        "lists": [],
+        "investor_id": null,
+        "specter_person_id": "per_5b25508d989dc748c459fc0e",
+        "id": "0d6c2d77-37a0-4419-adc9-3b6fab933672",
+        "investorId": null,
+        "entityStatus": null,
+        "teamEntityStatuses": [],
+        "SignalDate": "2025-12-26T00:00:00.000Z",
+        "SignalScore": 9,
+        "SourceType": [
+          "venture_capital"
+        ],
+        "SignalSource": "Conviction Partners",
+        "Screenshot": "https://specter-images.s3.eu-west-2.amazonaws.com/stratintel/li-andrew_spencer.jpg",
+        "Website": "https://www.linkedin.com/in/andrewjspencer",
+        "CompanyDomain": null,
+        "Name": "Andrew Spencer",
+        "Description": null,
+        "Tags": null,
+        "Founded": 2025,
+        "Investors": null,
+        "TotalFundingAmount": null,
+        "LastFundingDate": null,
+        "LastFundingAmount": null,
+        "HQLocation": "San Francisco, California, United States, North America",
+        "HQRegion": "North America",
+        "Logos": [
+          "https://specter-company-logo.s3.amazonaws.com/conviction.com.jpeg"
+        ],
+        "SignalType": "Talent",
+        "weekBatch": "2025-12-26T00:00:00.000Z",
+        "LinkedInURL": null,
+        "TwitterURL": null,
+        "IndustryOG": null,
+        "NumberOfSources": 1,
+        "growthStage": "pre_launch",
+        "personalDetail": {
+          "email": null,
+          "twitterUrl": null,
+          "githubUrl": null,
+          "skills": [],
+          "birthYear": 1996
+        },
+        "StratintelMulti": {
+          "strategicId": "0d6c2d77-37a0-4419-adc9-3b6fab933672",
+          "allSignalIds": [
+            "d180de07-6e40-4917-9d7f-a4636ffeb117",
+            "0d6c2d77-37a0-4419-adc9-3b6fab933672"
+          ],
+          "numberOfSignals": 2,
+          "signalCountPast30d": 1,
+          "signalCountPast90d": 2,
+          "signalCountPast180d": 2,
+          "signalCountPast360d": 2,
+          "signalCountPast720d": 2
+        },
+        "StratintelSignalSources": [
+          {
+            "signalId": "0d6c2d77-37a0-4419-adc9-3b6fab933672",
+            "sourceName": "Conviction Partners",
+            "sourceId": "inv_78cec8470fd41ff59d0521fe",
+            "sourceType": "investor",
+            "sourcePriority": 1,
+            "investor": {
+              "id": "inv_78cec8470fd41ff59d0521fe",
+              "domain": "conviction.com",
+              "logoUrl": "https://logo.clearbit.com/conviction.com"
+            }
+          }
+        ],
+        "Company": null,
+        "PersonStrategicSignal": {
+          "person": {
+            "externalId": "per_5b25508d989dc748c459fc0e"
+          }
+        },
+        "interest_signal_id": "0d6c2d77-37a0-4419-adc9-3b6fab933672"
+      }
+    ],
+    "affinity": {},
+    "filters": [],
+    "sort": {}
+  }
+}

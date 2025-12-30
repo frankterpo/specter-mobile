@@ -1,0 +1,15 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": {
+    "status": {
+      "isActive": false,
+      "isOnboardingComplete": false,
+      "settingsButtonsEnabled": true,
+      "settingsNetworkTrackingEnabled": false,
+      "lastUploadTime": null
+    },
+    "userConnectionsCount": 0,
+    "totalConnections": 0
+  }
+}

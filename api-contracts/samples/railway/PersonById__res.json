@@ -1,0 +1,477 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": {
+    "first_name": "Dave",
+    "last_name": "H.",
+    "full_name": "Dave H.",
+    "linkedin_url": "https://www.linkedin.com/in/dave-h-25981a1",
+    "linkedin_num_id": 5015013,
+    "linkedin_urn": "ACoAAABMheUB616Z_kCKoGCFmb7uHsTB85VbhBU",
+    "twitter_url": null,
+    "github_url": null,
+    "cb_url": null,
+    "about": ">25 years in the Pharma, CRO and tech(bio) sectors as a medicinal chemist and executive manager.  Significant experience across Discovery and early Development of small molecules.  Therapeutic area expertise within Neuroscience & pain.  Leveraging the power of generative design with cutting edge automation.  Application of multimodal data types to contemporary drug discovery.  iPSCs in drug discovery and protein degradation therapeutic modalities.\n\nEducated at Cambridge University and the University of Manchester (PhD) followed by post-doctoral research at The University of Texas (Austin).",
+    "tagline": "Chief Scientific Officer of Recursion",
+    "location": "London, England, United Kingdom, Europe",
+    "region": "Europe",
+    "email": null,
+    "followers_count": 3454,
+    "connections_count": 3127,
+    "profile_image_url": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_7359cfcdca7b9bfdea6c4e6d.jpg",
+    "rank": null,
+    "education_level": "Doctoral Degree",
+    "years_of_experience": 25,
+    "seniority": "Executive Level",
+    "avg_tenure": 61,
+    "current_tenure": 13,
+    "experience": [
+      {
+        "specter_company_id": "63eb90bd1e6a68488a041a96",
+        "title": "Chief Scientific Officer",
+        "domain": "recursion.com",
+        "end_date": null,
+        "job_order": 6,
+        "departments": [
+          "Senior Leadership"
+        ],
+        "industries": [
+          "Biotechnology",
+          "DeepTech"
+        ],
+        "is_current": true,
+        "start_date": "2024-11-01T00:00:00",
+        "description": null,
+        "hq_location": "Salt Lake City, Utah, United States, North America",
+        "company_name": "Recursion",
+        "employment_type": "Full-time",
+        "company_linkedin_url": "linkedin.com/company/recursion-pharmaceuticals",
+        "founded_year": 2013,
+        "growth_stage": "exit",
+        "employee_count": 777,
+        "company_size": "501-1000",
+        "web_visits": 86582,
+        "total_funding_amount": 865376000,
+        "last_funding_amount": 200000000,
+        "last_funding_date": "2024-06-26T00:00:00",
+        "last_funding_type": "Post Ipo Equity",
+        "highlights": [
+          "headcount_3mo_dip",
+          "headcount_6mo_decline",
+          "headcount_12mo_scale_up",
+          "web_traffic_6mo_momentum",
+          "web_traffic_12mo_scale_up",
+          "social_followers_3mo_surge",
+          "social_followers_6mo_momentum",
+          "social_followers_12mo_scale_up",
+          "recent_news",
+          "no_recent_funding",
+          "top_tier_investors"
+        ],
+        "status": "ipo",
+        "is_unicorn": true,
+        "is_fortune_500": false,
+        "hot_companies": null
+      },
+      {
+        "specter_company_id": "606f15b86a1d5452784f2ca9",
+        "title": "Interim Chief Executive Officer",
+        "domain": "exscientia.com",
+        "end_date": "2024-11-01T00:00:00",
+        "job_order": 5,
+        "departments": [
+          "Senior Leadership"
+        ],
+        "industries": [
+          "Biotechnology",
+          "DeepTech"
+        ],
+        "is_current": false,
+        "start_date": "2024-02-01T00:00:00",
+        "description": null,
+        "hq_location": "Oxford, England, United Kingdom, Europe",
+        "company_name": "Exscientia",
+        "employment_type": "Full-time",
+        "company_linkedin_url": "linkedin.com/company/ex-scientia",
+        "founded_year": 2012,
+        "growth_stage": "exit",
+        "employee_count": 61,
+        "company_size": "51-200",
+        "web_visits": 9789,
+        "total_funding_amount": 376671987,
+        "last_funding_amount": 2300000,
+        "last_funding_date": "2023-12-05T00:00:00",
+        "last_funding_type": "Grant",
+        "highlights": [
+          "headcount_3mo_dip",
+          "headcount_6mo_decline",
+          "headcount_12mo_downturn",
+          "top_tier_investors",
+          "no_recent_funding"
+        ],
+        "status": "closed",
+        "is_unicorn": false,
+        "is_fortune_500": false,
+        "hot_companies": null
+      },
+      {
+        "specter_company_id": "606f15b86a1d5452784f2ca9",
+        "title": "Chief Scientific Officer",
+        "domain": "exscientia.com",
+        "end_date": "2024-11-01T00:00:00",
+        "job_order": 4,
+        "departments": [
+          "Senior Leadership"
+        ],
+        "industries": [
+          "Biotechnology",
+          "DeepTech"
+        ],
+        "is_current": false,
+        "start_date": "2020-01-01T00:00:00",
+        "description": "Head of Discovery Operations",
+        "hq_location": "Oxford, England, United Kingdom, Europe",
+        "company_name": "Exscientia",
+        "employment_type": "Full-time",
+        "company_linkedin_url": "linkedin.com/company/ex-scientia",
+        "founded_year": 2012,
+        "growth_stage": "exit",
+        "employee_count": 61,
+        "company_size": "51-200",
+        "web_visits": 9789,
+        "total_funding_amount": 376671987,
+        "last_funding_amount": 2300000,
+        "last_funding_date": "2023-12-05T00:00:00",
+        "last_funding_type": "Grant",
+        "highlights": [
+          "headcount_3mo_dip",
+          "headcount_6mo_decline",
+          "headcount_12mo_downturn",
+          "top_tier_investors",
+          "no_recent_funding"
+        ],
+        "status": "closed",
+        "is_unicorn": false,
+        "is_fortune_500": false,
+        "hot_companies": null
+      },
+      {
+        "specter_company_id": "5e3b65e8ab6348f63cd9e6a9",
+        "title": "Executive Vice President Alliance Management",
+        "domain": "evotec.com",
+        "end_date": "2019-12-01T00:00:00",
+        "job_order": 3,
+        "departments": [
+          "Senior Leadership"
+        ],
+        "industries": [
+          "Biotechnology",
+          "DeepTech"
+        ],
+        "is_current": false,
+        "start_date": "2016-04-01T00:00:00",
+        "description": "Creation and leadership of a dedicated network of Alliance and Project Managers supporting all Evotec's major collaborations.\nOperational and strategic leadership of Evotec's human iPSC-based drug discovery efforts and protein homeostasis platform",
+        "hq_location": "Hamburg, Hamburg, Germany, Europe",
+        "company_name": "Evotec",
+        "employment_type": "Full-time",
+        "company_linkedin_url": "linkedin.com/company/evotec",
+        "founded_year": 1993,
+        "growth_stage": "exit",
+        "employee_count": 4184,
+        "company_size": "1001-5000",
+        "web_visits": 89456,
+        "total_funding_amount": 746736691,
+        "last_funding_amount": 2500000,
+        "last_funding_date": "2025-05-07T00:00:00",
+        "last_funding_type": "Grant",
+        "highlights": [
+          "headcount_3mo_dip",
+          "headcount_6mo_decline",
+          "headcount_12mo_downturn",
+          "web_traffic_3mo_dip",
+          "web_traffic_6mo_momentum",
+          "social_followers_6mo_momentum",
+          "top_tier_investors",
+          "recent_funding"
+        ],
+        "status": "ipo",
+        "is_unicorn": false,
+        "is_fortune_500": false,
+        "hot_companies": null
+      },
+      {
+        "specter_company_id": "5e3b65e8ab6348f63cd9e6a9",
+        "title": "Executive Vice President Chemistry",
+        "domain": "evotec.com",
+        "end_date": "2016-04-01T00:00:00",
+        "job_order": 2,
+        "departments": [
+          "Senior Leadership"
+        ],
+        "industries": [
+          "Biotechnology",
+          "DeepTech"
+        ],
+        "is_current": false,
+        "start_date": "2005-09-01T00:00:00",
+        "description": "Operational and strategic leadership of medicinal chemistry, computational chemistry, ADME and cheminformatics (EU and Indian sites)",
+        "hq_location": "Hamburg, Hamburg, Germany, Europe",
+        "company_name": "Evotec",
+        "employment_type": "Full-time",
+        "company_linkedin_url": "linkedin.com/company/evotec",
+        "founded_year": 1993,
+        "growth_stage": "exit",
+        "employee_count": 4184,
+        "company_size": "1001-5000",
+        "web_visits": 89456,
+        "total_funding_amount": 746736691,
+        "last_funding_amount": 2500000,
+        "last_funding_date": "2025-05-07T00:00:00",
+        "last_funding_type": "Grant",
+        "highlights": [
+          "headcount_3mo_dip",
+          "headcount_6mo_decline",
+          "headcount_12mo_downturn",
+          "web_traffic_3mo_dip",
+          "web_traffic_6mo_momentum",
+          "social_followers_6mo_momentum",
+          "top_tier_investors",
+          "recent_funding"
+        ],
+        "status": "ipo",
+        "is_unicorn": false,
+        "is_fortune_500": false,
+        "hot_companies": null
+      },
+      {
+        "specter_company_id": "5e3ba31200c8f4c9668ddf8a",
+        "title": "Research Fellow",
+        "domain": "merck.com",
+        "end_date": "2005-07-01T00:00:00",
+        "job_order": 1,
+        "departments": [
+          "Product & Research"
+        ],
+        "industries": [
+          "Biotechnology",
+          "DeepTech",
+          "Health",
+          "Manufacturing"
+        ],
+        "is_current": false,
+        "start_date": "2000-01-01T00:00:00",
+        "description": null,
+        "hq_location": "Rahway, New Jersey, United States, North America",
+        "company_name": "Merck",
+        "employment_type": null,
+        "company_linkedin_url": "linkedin.com/company/merck",
+        "founded_year": 1891,
+        "growth_stage": "exit",
+        "employee_count": 44344,
+        "company_size": "10001+",
+        "web_visits": 901577,
+        "total_funding_amount": 5586000,
+        "last_funding_amount": 586000,
+        "last_funding_date": "2018-11-25T00:00:00",
+        "last_funding_type": "Post Ipo Equity",
+        "highlights": [
+          "web_traffic_3mo_surge",
+          "app_downloads_3mo_surge",
+          "app_downloads_6mo_momentum",
+          "app_downloads_12mo_downturn",
+          "social_followers_3mo_surge",
+          "social_followers_6mo_momentum",
+          "recent_news",
+          "media_spotlight",
+          "no_recent_funding"
+        ],
+        "status": "ipo",
+        "is_unicorn": false,
+        "is_fortune_500": true,
+        "hot_companies": null
+      }
+    ],
+    "education": [
+      {
+        "grade": null,
+        "degree": "BA",
+        "end_date": null,
+        "logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQGLqHVOwtQeUQ/company-logo_200_200/company-logo_200_200/0/1663833279033/university_of_cambridge_logo?e=2147483647&v=beta&t=EUwVLcyuX24KeU_KNgKUWv_3UxVSEUo8fRaTOouStTE",
+        "school_id": 4522,
+        "activities": null,
+        "created_at": "2025-12-27T01:46:03",
+        "is_current": false,
+        "start_date": null,
+        "description": "BA (Natural Sciences)",
+        "school_name": "University of Cambridge",
+        "university_id": 108896,
+        "field_of_study": "Natural Sciences",
+        "school_linkedin_url": "linkedin.com/school/university-of-cambridge",
+        "top_university": null,
+        "location": "Cambridge, England, United Kingdom, Europe"
+      },
+      {
+        "grade": null,
+        "degree": "Post Doc",
+        "end_date": null,
+        "logo_url": "https://media.licdn.com/dms/image/v2/C560BAQEREeDg1PACXA/company-logo_200_200/company-logo_200_200/0/1630670868977/theuniversityoftexasataustin__logo?e=2147483647&v=beta&t=wo0fOv9TIEdhkbzO043gvWCdV2J1whhL88FpE4qYalA",
+        "school_id": 3162,
+        "activities": [
+          "Research Fellow",
+          "Dept of Chemistry"
+        ],
+        "created_at": "2025-12-27T01:46:03",
+        "is_current": false,
+        "start_date": null,
+        "description": "Post-doctoral fellow working with Professor Philip Magnus",
+        "school_name": "The University of Texas at Austin",
+        "university_id": 16,
+        "field_of_study": "Synthetic Organic Chemistry",
+        "school_linkedin_url": "linkedin.com/school/theuniversityoftexasataustin-",
+        "top_university": null,
+        "location": "Austin, Texas, United States, North America"
+      },
+      {
+        "grade": null,
+        "degree": "PhD",
+        "end_date": null,
+        "logo_url": "https://media.licdn.com/dms/image/v2/C560BAQEYpS-SHXO1Mg/company-logo_200_200/company-logo_200_200/0/1631386008712?e=2147483647&v=beta&t=Nwuem7LLWnHInmWrJ_uN5d1bIoyADZ6w_SvxaGXmZLM",
+        "school_id": 166652,
+        "activities": [
+          "PhD (Organic Chemistry)"
+        ],
+        "created_at": "2025-12-27T01:46:03",
+        "is_current": false,
+        "start_date": null,
+        "description": "MSc and PhD (organic chemistry)",
+        "school_name": "The University of Manchester",
+        "university_id": 108898,
+        "field_of_study": "Synthetic Organic Chemistry",
+        "school_linkedin_url": "linkedin.com/school/university-of-manchester",
+        "top_university": null,
+        "location": "Manchester, England, United Kingdom, Europe"
+      }
+    ],
+    "languages": [],
+    "skills": [
+      {
+        "name": "ADME",
+        "endorsements_count": 2,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "Biotechnology",
+        "endorsements_count": 16,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "C Level Management",
+        "endorsements_count": null,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "Chemistry",
+        "endorsements_count": 17,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "Clinical Development",
+        "endorsements_count": 12,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "DMPK",
+        "endorsements_count": 3,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "Drug Design",
+        "endorsements_count": 16,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "Drug Development",
+        "endorsements_count": 11,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "Drug Discovery",
+        "endorsements_count": 30,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "GPCRs",
+        "endorsements_count": 4,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "Heterocyclic Chemistry",
+        "endorsements_count": null,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "In Vitro",
+        "endorsements_count": 3,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "Life Sciences",
+        "endorsements_count": 5,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "Medicinal Chemistry",
+        "endorsements_count": 42,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "Organic Chemistry",
+        "endorsements_count": 29,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "Organic Synthesis",
+        "endorsements_count": 8,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "Pharmaceutical Industry",
+        "endorsements_count": 2,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "R&D",
+        "endorsements_count": 7,
+        "passed_skill_assessment": false
+      },
+      {
+        "name": "Research and Development (R&D)",
+        "endorsements_count": null,
+        "passed_skill_assessment": false
+      }
+    ],
+    "people_highlights": [
+      "fortune_500_experience",
+      "major_tech_experience",
+      "prior_exit",
+      "prior_ipo",
+      "prior_vc_backed_experience",
+      "prior_vc_backed_founder",
+      "strong_academic_background",
+      "top_university",
+      "vc_backed_founder"
+    ],
+    "talent_ids": [],
+    "stratintelligence_ids": [],
+    "entity_status": null,
+    "entity_team_status": [],
+    "connected_users": [],
+    "person_role": "Operator",
+    "lists": [],
+    "investor_id": null,
+    "last_updated": "2025-12-27 01:24:30",
+    "internal_person_id": 5811787,
+    "specter_person_id": "per_7359cfcdca7b9bfdea6c4e6d",
+    "id": "per_7359cfcdca7b9bfdea6c4e6d"
+  }
+}

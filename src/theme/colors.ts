@@ -1,56 +1,70 @@
 // Specter Design System - Colors
-// Extracted from app.tryspecter.com
+// Based on cursor.com and tryspecter.com main theme colors
 
 export const colors = {
-  // Sidebar/Navigation
+  // Primary Brand - Blue (CTAs, active states, links)
+  primary: "#3b82f6",           // Specter blue - main brand color (from tryspecter.com)
+  primaryLight: "#60a5fa",     // Lighter variant for hover states
+  primaryDark: "#2563eb",      // Darker variant for pressed states (cursor.com style)
+  primaryForeground: "#ffffff", // White text on blue
+
+  // Sidebar/Navigation - Dark Navy
   sidebar: {
-    bg: "#0f172a",
-    bgDark: "#0a0f1a",
-    bgLight: "#1e293b",
-    border: "#1e293b",
-    text: "#94a3b8",
-    textActive: "#ffffff",
-    accent: "#22c55e",
+    bg: "#0f172a",           // Main sidebar background
+    bgLight: "#1e293b",      // Lighter sidebar sections
+    bgDark: "#0a0f1a",       // Darkest sidebar variant
+    border: "#1e293b",     // Sidebar border color
+    foreground: "#94a3b8", // Sidebar text (muted)
+    foregroundActive: "#ffffff", // Active sidebar item text
+    accent: "#1e293b",     // Active sidebar item background
   },
 
-  // Primary brand colors
-  brand: {
-    green: "#22c55e",
-    greenLight: "#4ade80",
-    greenDark: "#16a34a",
-    blue: "#3b82f6",
-    blueLight: "#60a5fa",
-    blueDark: "#2563eb",
-    purple: "#8b5cf6",
-    purpleLight: "#a78bfa",
+  // Content Backgrounds
+  background: "#ffffff",        // Main app background
+  backgroundSecondary: "#f8fafc", // Secondary background (cards, sections)
+  backgroundTertiary: "#f1f5f9", // Tertiary background
+
+  // Text Hierarchy
+  foreground: "#0f172a",        // Primary text (dark navy)
+  foregroundSecondary: "#64748b", // Secondary text (slate-500)
+  foregroundMuted: "#94a3b8",   // Muted text (slate-400)
+  foregroundInverse: "#ffffff", // White text on dark backgrounds
+
+  // Borders & Dividers
+  border: "#e2e8f0",            // Main border color (slate-200)
+  borderLight: "#f1f5f9",      // Light border (slate-100)
+  input: "#e2e8f0",             // Input border (matches border)
+
+  // Cards
+  card: {
+    bg: "#ffffff",              // Card background
+    foreground: "#0f172a",     // Card text
+    border: "#e2e8f0",        // Card border
   },
 
-  // Content area
-  content: {
+  // Semantic Colors
+  destructive: "#ef4444",       // Error/destructive actions (red-500)
+  destructiveForeground: "#ffffff",
+  success: "#3b82f6",           // Replaced emerald with primary blue
+  warning: "#f59e0b",           // Warning (amber-500)
+  info: "#3b82f6",              // Info (blue-500 - matches primary)
+
+  // Muted/Secondary
+  muted: {
+    bg: "#f1f5f9",             // Muted background (slate-100)
+    foreground: "#64748b",   // Muted text (slate-500)
+  },
+
+  // Popover/Dropdown
+  popover: {
     bg: "#ffffff",
-    bgSecondary: "#f8fafc",
-    bgTertiary: "#f1f5f9",
-    border: "#e2e8f0",
-    borderLight: "#f1f5f9",
+    foreground: "#0f172a",
   },
 
-  // Text
-  text: {
-    primary: "#0f172a",
-    secondary: "#64748b",
-    tertiary: "#94a3b8",
-    inverse: "#ffffff",
-    muted: "#cbd5e1",
-    link: "#3b82f6",
-  },
+  // White (for overlays, etc.)
+  white: "#ffffff",
 
-  // Semantic
-  success: "#22c55e",
-  warning: "#f59e0b",
-  error: "#ef4444",
-  info: "#3b82f6",
-
-  // Grayscale
+  // Grayscale Scale (for reference)
   gray: {
     50: "#f8fafc",
     100: "#f1f5f9",
@@ -68,7 +82,7 @@ export const colors = {
   // Tags/Badges
   tag: {
     blue: { bg: "#dbeafe", text: "#1e40af" },
-    green: { bg: "#dcfce7", text: "#166534" },
+    green: { bg: "#dbeafe", text: "#1e40af" }, // Replaced with blue variant
     purple: { bg: "#f3e8ff", text: "#6b21a8" },
     orange: { bg: "#ffedd5", text: "#c2410c" },
     yellow: { bg: "#fef3c7", text: "#a16207" },
@@ -81,7 +95,7 @@ export const colors = {
   highlight: {
     fortune: "#3b82f6",
     vc: "#a855f7",
-    founder: "#22c55e",
+    founder: "#3b82f6",  // Replaced emerald with primary blue
     exit: "#f97316",
     ipo: "#eab308",
     unicorn: "#8b5cf6",
@@ -89,20 +103,40 @@ export const colors = {
     series: "#06b6d4",
   },
 
-  // Card styles
-  card: {
-    bg: "#ffffff",
-    bgHover: "#f8fafc",
-    border: "#e2e8f0",
-    shadow: "rgba(0, 0, 0, 0.08)",
-  },
-
   // Status colors
   status: {
     viewed: "#94a3b8",
-    liked: "#22c55e",
+    liked: "#3b82f6",  // Replaced emerald with primary blue
     disliked: "#ef4444",
     new: "#3b82f6",
+  },
+
+  // Semantic groupings for easier access
+  text: {
+    primary: "#0f172a", // matches foreground
+    secondary: "#64748b", // matches foregroundSecondary
+    tertiary: "#94a3b8", // matches foregroundMuted
+    inverse: "#ffffff", // matches foregroundInverse
+    muted: "#94a3b8",
+    link: "#3b82f6", // matches primary
+  },
+
+  content: {
+    bg: "#ffffff", // matches background
+    bgSecondary: "#f8fafc", // matches backgroundSecondary
+    bgTertiary: "#f1f5f9", // matches backgroundTertiary
+    border: "#e2e8f0", // matches border
+    borderLight: "#f1f5f9", // matches borderLight
+  },
+
+  // Backward compatibility aliases for components using colors.brand.*
+  brand: {
+    blue: "#3b82f6", // matches primary
+    blueLight: "#60a5fa", // matches primaryLight
+    blueDark: "#2563eb", // matches primaryDark
+    green: "#3b82f6", // Replaced with primary blue per "no green" rule
+    greenLight: "#60a5fa",
+    greenDark: "#2563eb",
   },
 } as const;
 
@@ -132,8 +166,32 @@ export function getHighlightColor(highlight: string): string {
   if (lower.includes("ipo")) return colors.highlight.ipo;
   if (lower.includes("yc") || lower.includes("combinator")) return colors.highlight.yc;
   if (lower.includes("series")) return colors.highlight.series;
-  return colors.brand.blue;
+  return colors.primary; // Use new primary color instead of brand.blue
 }
+
+// Backward compatibility aliases
+export const brand = {
+  blue: colors.primary,
+  blueLight: colors.primaryLight,
+  blueDark: colors.primaryDark,
+};
+
+export const text = {
+  primary: colors.foreground,
+  secondary: colors.foregroundSecondary,
+  tertiary: colors.foregroundMuted,
+  inverse: colors.foregroundInverse,
+  muted: colors.gray[400], // Approximate match
+  link: colors.primary,
+};
+
+export const content = {
+  bg: colors.background,
+  bgSecondary: colors.backgroundSecondary,
+  bgTertiary: colors.backgroundTertiary,
+  border: colors.border,
+  borderLight: colors.borderLight,
+};
 
 export default colors;
 

@@ -1,0 +1,10 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": {
+    "Product & Research": 1,
+    "Finance": 2,
+    "Senior Leadership": 2,
+    "Engineering": 3
+  }
+}

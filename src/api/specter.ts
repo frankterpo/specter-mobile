@@ -1,26 +1,29 @@
+import { Platform } from "react-native";
+import { getDevProxyOrigin } from "../utils/devProxy";
+
 // Specter API Service
 // Real API integration for VC people database
 
 // Detect if running on web (for CORS error handling)
-const isWeb = typeof window !== "undefined";
+const isWeb = Platform.OS === "web";
 
 // Base URLs - use local proxy for web development, direct URLs for mobile
-// To use proxy: 1) Run `npm run proxy` in terminal, 2) Refresh browser
-const PROXY_BASE = isWeb ? "http://localhost:3001/proxy" : "";
-const API_BASE_URL_RAW = "https://specter-api-staging.up.railway.app";
-const ENTITY_STATUS_BASE_URL_RAW = "https://app.staging.tryspecter.com/api/entity-status";
-const LISTS_BASE_URL_RAW = "https://app.staging.tryspecter.com/api/lists";
+// To use proxy: 1) Run `node server.js` in terminal, 2) Refresh browser
+const PROXY_BASE = isWeb ? `${getDevProxyOrigin()}/proxy` : "";
+// PRODUCTION API URLs
+const API_BASE_URL_RAW = "https://specter-api-prod.up.railway.app";
+const APP_API_RAW = "https://app.tryspecter.com/api";
 
 // Use proxy for web, direct URLs for mobile
 const API_BASE_URL = isWeb 
-  ? `${PROXY_BASE}/specter-api` 
+  ? `${PROXY_BASE}/railway` 
   : API_BASE_URL_RAW;
 const ENTITY_STATUS_BASE_URL = isWeb 
-  ? `${PROXY_BASE}/specter-app/api/entity-status` 
-  : ENTITY_STATUS_BASE_URL_RAW;
+  ? `${PROXY_BASE}/app/entity-status` 
+  : `${APP_API_RAW}/entity-status`;
 const LISTS_BASE_URL = isWeb 
-  ? `${PROXY_BASE}/specter-app/api/lists` 
-  : LISTS_BASE_URL_RAW;
+  ? `${PROXY_BASE}/app/lists` 
+  : `${APP_API_RAW}/lists`;
 
 // Timeout constants
 const API_TIMEOUT_MS = 15000; // 15 seconds
@@ -285,6 +288,7 @@ export async function createQuery(
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
+      ...(isWeb ? { mode: "cors", credentials: "omit" } : {}),
     });
 
     const response = await withTimeout(
@@ -421,8 +425,7 @@ export async function fetchPeople(
         "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify(body),
-      mode: "cors", // Explicitly request CORS
-      credentials: "omit", // Don't send cookies
+      ...(isWeb ? { mode: "cors", credentials: "omit" } : {}), // CORS only for web
     });
 
     const response = await withTimeout(
@@ -512,6 +515,7 @@ export async function fetchPersonDetail(
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+      ...(isWeb ? { mode: "cors", credentials: "omit" } : {}),
     });
 
     const response = await withTimeout(
@@ -570,6 +574,7 @@ export async function likePerson(
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(requestBody),
+      ...(isWeb ? { mode: "cors", credentials: "omit" } : {}),
     });
 
     const response = await withTimeout(
@@ -636,6 +641,7 @@ export async function dislikePerson(
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(requestBody),
+      ...(isWeb ? { mode: "cors", credentials: "omit" } : {}),
     });
 
     const response = await withTimeout(
@@ -702,6 +708,7 @@ export async function markAsViewed(
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(requestBody),
+      ...(isWeb ? { mode: "cors", credentials: "omit" } : {}),
     });
 
     const response = await withTimeout(
@@ -989,6 +996,7 @@ export async function fetchLists(token: string): Promise<List[]> {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+      ...(isWeb ? { mode: "cors", credentials: "omit" } : {}),
     });
 
     const response = await withTimeout(
@@ -1169,13 +1177,23 @@ export async function fetchCompanies(
       body.filters = params.filters;
     }
 
+    if (__DEV__) {
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+      console.log("📤 COMPANIES API REQUEST TO BACKEND:");
+      console.log("URL:", `${API_BASE_URL}/private/companies`);
+      console.log("Method: POST");
+      console.log("Body:", JSON.stringify(body, null, 2));
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    }
+
     const fetchPromise = fetch(`${API_BASE_URL}/private/companies`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify(body),
+      ...(isWeb ? { mode: "cors", credentials: "omit" } : {}), // CORS only for web
     });
 
     const response = await withTimeout(
@@ -1234,6 +1252,7 @@ export async function fetchCompanyDetail(
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+      ...(isWeb ? { mode: "cors", credentials: "omit" } : {}),
     });
 
     const response = await withTimeout(
@@ -1326,13 +1345,14 @@ export async function likeCompany(
   try {
     const requestBody = { status: "liked" };
 
-    const fetchPromise = fetch(`${ENTITY_STATUS_BASE_URL}/companies/${companyId}`, {
+    const fetchPromise = fetch(`${ENTITY_STATUS_BASE_URL}/company/${companyId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(requestBody),
+      ...(isWeb ? { mode: "cors", credentials: "omit" } : {}),
     });
 
     const response = await withTimeout(
@@ -1368,13 +1388,14 @@ export async function dislikeCompany(
   try {
     const requestBody = { status: "disliked" };
 
-    const fetchPromise = fetch(`${ENTITY_STATUS_BASE_URL}/companies/${companyId}`, {
+    const fetchPromise = fetch(`${ENTITY_STATUS_BASE_URL}/company/${companyId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(requestBody),
+      ...(isWeb ? { mode: "cors", credentials: "omit" } : {}),
     });
 
     const response = await withTimeout(

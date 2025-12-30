@@ -1,343 +1,193 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import {
   View,
   Text,
-  FlatList,
   ActivityIndicator,
   RefreshControl,
   StyleSheet,
-  TextInput,
+  Platform,
+  ScrollView,
   Pressable,
-  Keyboard,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useAuth } from "@clerk/clerk-expo";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
-import {
-  Person,
-  fetchPeople,
-  likePerson,
-  dislikePerson,
-  StatusFilters,
-  getFullName,
-} from "../api/specter";
+import { Person } from "../api/specter";
 import { PeopleStackParamList } from "../types/navigation";
-import PersonCard from "../components/ui/PersonCard";
+import PersonCardV2 from "../components/ui/cards/PersonCardV2";
+import { SkeletonPersonCard } from "../components/ui/skeleton/SkeletonCards";
 import AddToListSheet from "../components/AddToListSheet";
+import { GlassInput } from "../components/ui/glass/GlassInput";
+import { useSignals, useSignalCount } from "../hooks/useSignals";
+import { useLikeMutation } from "../hooks/useMutations";
+import { useDebounce } from "../hooks/useDebounce";
+import { FlashList } from "@shopify/flash-list";
+import { useClerkToken } from "../hooks/useClerkToken";
+import { useQuery } from "@tanstack/react-query";
+import { specterPublicAPI } from "../api/public-client";
+import { resolveSavedSearchProduct, resolveSavedSearchQueryId } from "../utils/savedSearches";
+import { Ionicons } from "@expo/vector-icons";
 
-type NavigationProp = NativeStackNavigationProp<PeopleStackParamList, "PeopleFeed">;
-
-type StatusFilter = "all" | "not_viewed" | "liked" | "disliked";
-
-const STATUS_FILTERS: { id: StatusFilter; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "not_viewed", label: "New" },
-  { id: "liked", label: "Liked" },
-  { id: "disliked", label: "Passed" },
-];
+type NavigationProp = NativeStackNavigationProp<PeopleStackParamList, "PeopleMain">;
 
 export default function PeopleFeedScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { getToken } = useAuth();
   const insets = useSafeAreaInsets();
-
-  const [people, setPeople] = useState<Person[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [total, setTotal] = useState<number | undefined>();
+  
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeFilter, setActiveFilter] = useState<StatusFilter>("all");
+  const debouncedSearch = useDebounce(searchQuery, 500);
   const [listSheetPerson, setListSheetPerson] = useState<Person | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const searchInputRef = useRef<TextInput>(null);
-  const peopleLengthRef = useRef(0);
+  const { getAuthToken } = useClerkToken();
 
-  const getStatusFilters = useCallback((): StatusFilters | undefined => {
-    if (activeFilter === "all") return undefined;
-    return { myStatus: activeFilter === "not_viewed" ? "not_viewed" : activeFilter };
-  }, [activeFilter]);
+  const filters = useMemo(() => ({
+    search: debouncedSearch || undefined,
+  }), [debouncedSearch]);
 
-  const loadPeople = useCallback(async (refresh = false) => {
-    try {
-      setError(null);
-      
-      if (__DEV__) {
-        console.log("🔄 [PeopleFeed] Starting loadPeople", { refresh, currentCount: peopleLengthRef.current });
-      }
-      
-      const token = await getToken();
-      if (!token) {
-        const errorMsg = "Authentication required. Please sign in again.";
-        console.error("❌ [PeopleFeed] No token:", errorMsg);
-        setError(errorMsg);
-        setIsLoading(false);
-        setIsRefreshing(false);
-        setIsLoadingMore(false);
-        return;
-      }
+  const {
+    data,
+    isLoading,
+    isRefreshing,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch,
+  } = useSignals('PEOPLE', filters);
 
-      if (__DEV__) {
-        console.log("✅ [PeopleFeed] Token obtained:", token.substring(0, 20) + "...");
-      }
+  const { data: countData } = useSignalCount('PEOPLE', filters);
+  const likeMutation = useLikeMutation();
 
-      const offset = refresh ? 0 : peopleLengthRef.current;
+  const { data: savedSearches } = useQuery({
+    queryKey: ["saved_searches"],
+    queryFn: async () => {
+      const token = await getAuthToken();
+      if (!token) return [];
+      return specterPublicAPI.searches.getAll(token);
+    },
+  });
 
-      const statusFilters = getStatusFilters();
-      
-      if (__DEV__) {
-        console.log("📤 [PeopleFeed] Calling fetchPeople", { limit: 30, offset, statusFilters });
-      }
-      
-      const response = await fetchPeople(token, {
-        limit: 30,
-        offset,
-        statusFilters,
-      });
+  const peopleSearches = useMemo(
+    () =>
+      (savedSearches || []).filter((search: any) => {
+        const product = resolveSavedSearchProduct(search);
+        return product === "people" || product === "talent";
+      }),
+    [savedSearches]
+  );
 
-      if (__DEV__) {
-        console.log("📥 [PeopleFeed] Response received:", {
-          itemsCount: response.items?.length || 0,
-          total: response.total,
-          hasMore: response.has_more,
-        });
-      }
-
-      if (refresh) {
-        setPeople(response.items);
-        peopleLengthRef.current = response.items.length;
-      } else {
-        setPeople((prev) => {
-          const updated = [...prev, ...response.items];
-          peopleLengthRef.current = updated.length;
-          return updated;
-        });
-      }
-
-      setTotal(response.total);
-      setHasMore(response.has_more ?? response.items.length === 30);
-    } catch (error: any) {
-      console.error("❌ [PeopleFeed] Failed to load people:", error);
-      console.error("❌ [PeopleFeed] Error details:", {
-        message: error?.message,
-        stack: error?.stack,
-        name: error?.name,
-      });
-      const errorMessage = error?.message || "Failed to load people. Please try again.";
-      setError(errorMessage);
-    } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
-      setIsLoadingMore(false);
-    }
-  }, [getToken, getStatusFilters]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    setPeople([]);
-    loadPeople(true);
-  }, [activeFilter, loadPeople]);
-
-  const handleRefresh = useCallback(() => {
-    setIsRefreshing(true);
-    loadPeople(true);
-  }, [loadPeople]);
-
-  const handleLoadMore = useCallback(() => {
-    if (!isLoadingMore && hasMore && !isLoading) {
-      setIsLoadingMore(true);
-      loadPeople(false);
-    }
-  }, [isLoadingMore, hasMore, isLoading, loadPeople]);
+  const people = useMemo(() => 
+    data?.pages.flatMap(page => page.items) || [], 
+  [data]);
 
   const handlePersonPress = useCallback((person: Person) => {
     navigation.navigate("PersonDetail", { personId: person.id });
   }, [navigation]);
 
-  const handleLike = useCallback(async (person: Person) => {
-    try {
-      const token = await getToken();
-      if (!token) return;
-      await likePerson(token, person.id);
-      // Update local state
-      setPeople((prev) =>
-        prev.map((p) =>
-          p.id === person.id
-            ? { ...p, entity_status: { ...p.entity_status, status: "liked" as const } }
-            : p
-        )
-      );
-    } catch (error) {
-      console.error("Failed to like person:", error);
-    }
-  }, [getToken]);
+  const handleLike = useCallback((id: string) => {
+    likeMutation.mutate({ id, type: 'people' });
+  }, [likeMutation]);
 
-  const handleDislike = useCallback(async (person: Person) => {
-    try {
-      const token = await getToken();
-      if (!token) return;
-      await dislikePerson(token, person.id);
-      // Update local state
-      setPeople((prev) =>
-        prev.map((p) =>
-          p.id === person.id
-            ? { ...p, entity_status: { ...p.entity_status, status: "disliked" as const } }
-            : p
-        )
-      );
-    } catch (error) {
-      console.error("Failed to dislike person:", error);
-    }
-  }, [getToken]);
+  const handleDislike = useCallback((id: string) => {
+    likeMutation.mutate({ id, type: 'people', status: 'disliked' });
+  }, [likeMutation]);
 
-  const handleAddToList = useCallback((person: Person) => {
-    setListSheetPerson(person);
-  }, []);
-
-  // Filter people by search query
-  const filteredPeople = people.filter((p) => {
-    if (!searchQuery) return true;
-    const name = (p.full_name || `${p.first_name} ${p.last_name}`).toLowerCase();
-    const company = p.experience?.[0]?.company_name?.toLowerCase() || "";
-    const query = searchQuery.toLowerCase();
-    return name.includes(query) || company.includes(query);
-  });
-
-  const renderPersonCard = useCallback(({ item }: { item: Person }) => (
-    <PersonCard
-      person={item}
-      onPress={() => handlePersonPress(item)}
-      onLike={() => handleLike(item)}
-      onDislike={() => handleDislike(item)}
-      onAddToList={() => handleAddToList(item)}
-    />
-  ), [handlePersonPress, handleLike, handleDislike, handleAddToList]);
-
-  const renderFooter = useCallback(() => {
-    if (!isLoadingMore) return null;
-    return (
-      <View style={styles.footerLoader}>
-        <ActivityIndicator size="small" color={colors.brand.green} />
-      </View>
-    );
-  }, [isLoadingMore]);
-
-  const renderEmpty = useCallback(() => {
+  const renderEmpty = () => {
     if (isLoading) return null;
     return (
       <View style={styles.emptyContainer}>
-        <Ionicons name="people-outline" size={48} color={colors.text.tertiary} />
         <Text style={styles.emptyText}>No people found</Text>
       </View>
     );
-  }, [isLoading]);
+  };
+
+  const renderSkeleton = () => (
+    <View style={{ padding: 16 }}>
+      {[1, 2, 3].map(i => <SkeletonPersonCard key={i} />)}
+    </View>
+  );
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>People</Text>
-        {total !== undefined && (
-          <Text style={styles.count}>{total.toLocaleString()}</Text>
+    <View style={[styles.container, Platform.OS === 'web' && { height: '100vh' }]}>
+      <View style={styles.searchSection}>
+        {countData?.count !== undefined && (
+          <Text style={styles.countText}>{countData.count.toLocaleString()} people found</Text>
         )}
-      </View>
-
-      {/* Search Bar */}
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={18} color={colors.text.tertiary} />
-        <TextInput
-          ref={searchInputRef}
-          style={styles.searchInput}
-          placeholder="Search people..."
-          placeholderTextColor={colors.text.tertiary}
+        <GlassInput
+          placeholder="Search database..."
           value={searchQuery}
           onChangeText={setSearchQuery}
-          returnKeyType="search"
-          autoCapitalize="none"
-          autoCorrect={false}
+          icon="search"
         />
-        {searchQuery.length > 0 && (
-          <Pressable onPress={() => setSearchQuery("")} hitSlop={8}>
-            <Ionicons name="close-circle" size={18} color={colors.text.tertiary} />
-          </Pressable>
+        {peopleSearches.length > 0 && (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.savedRow}
+          >
+            {peopleSearches.map((search: any) => (
+              <Pressable
+                key={search.id}
+                style={styles.savedChip}
+                onPress={() =>
+                  navigation.navigate("SavedSearchResults", {
+                    searchId: search.id,
+                    name: search.name,
+                    product: resolveSavedSearchProduct(search),
+                    queryId: resolveSavedSearchQueryId(search),
+                  })
+                }
+              >
+                <Ionicons name="bookmark" size={14} color={colors.primary} />
+                <Text style={styles.savedChipText}>{search.name}</Text>
+              </Pressable>
+            ))}
+          </ScrollView>
         )}
       </View>
 
-      {/* Status Filter Chips */}
-      <View style={styles.filterContainer}>
-        {STATUS_FILTERS.map((filter) => (
-          <Pressable
-            key={filter.id}
-            style={[
-              styles.filterChip,
-              activeFilter === filter.id && styles.filterChipActive,
-            ]}
-            onPress={() => setActiveFilter(filter.id)}
-          >
-            <Text
-              style={[
-                styles.filterChipText,
-                activeFilter === filter.id && styles.filterChipTextActive,
-              ]}
-            >
-              {filter.label}
-            </Text>
-          </Pressable>
-        ))}
-      </View>
+          <View style={{ flex: 1, minHeight: 300 }}>
+            {isLoading ? renderSkeleton() : (
+              <FlashList
+                data={people}
+                estimatedItemSize={250}
+                keyExtractor={(item, index) => {
+                  const id = item.id || (item as any).person_id;
+                  return id ? `p-${id}-${index}` : `idx-${index}`;
+                }}
+                renderItem={({ item }) => (
+                  <PersonCardV2
+                    person={item}
+                    onPress={() => handlePersonPress(item)}
+                    onLike={() => handleLike(item.id)}
+                    onDislike={() => handleDislike(item.id)}
+                    onAddToList={() => setListSheetPerson(item)}
+                  />
+                )}
+                ListEmptyComponent={renderEmpty}
+                onEndReached={() => hasNextPage && fetchNextPage()}
+                onEndReachedThreshold={0.5}
+                removeClippedSubviews={true}
+                initialNumToRender={10}
+                refreshControl={
+                  <RefreshControl 
+                    refreshing={isRefreshing} 
+                    onRefresh={refetch}
+                    tintColor={colors.primary}
+                  />
+                }
+                contentContainerStyle={styles.listContent}
+                showsVerticalScrollIndicator={false}
+                ListFooterComponent={isFetchingNextPage ? <SkeletonPersonCard /> : null}
+              />
+            )}
+          </View>
 
-      {/* Error Message */}
-      {error && (
-        <View style={styles.errorContainer}>
-          <Ionicons name="alert-circle" size={20} color={colors.error} />
-          <Text style={styles.errorText}>{error}</Text>
-          <Pressable onPress={() => loadPeople(true)} style={styles.retryButton}>
-            <Text style={styles.retryButtonText}>Retry</Text>
-          </Pressable>
-        </View>
-      )}
-
-      {/* People List */}
-      {isLoading && people.length === 0 && !error ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.brand.green} />
-        </View>
-      ) : (
-        <FlatList
-          data={filteredPeople}
-          keyExtractor={(item, index) => item.id || `person-${index}`}
-          renderItem={renderPersonCard}
-          showsVerticalScrollIndicator={false}
-          keyboardDismissMode="on-drag"
-          onScrollBeginDrag={Keyboard.dismiss}
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={handleRefresh}
-              tintColor={colors.brand.green}
-            />
-          }
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.3}
-          ListFooterComponent={renderFooter}
-          ListEmptyComponent={renderEmpty}
-          initialNumToRender={15}
-          maxToRenderPerBatch={10}
-          windowSize={5}
-        />
-      )}
-
-      {/* Add to List Sheet */}
       <AddToListSheet
         visible={listSheetPerson !== null}
         onClose={() => setListSheetPerson(null)}
         entityId={listSheetPerson?.id || ""}
         entityType="person"
-        entityName={listSheetPerson ? getFullName(listSheetPerson) : ""}
+        entityName={listSheetPerson ? (listSheetPerson.full_name || `${listSheetPerson.first_name} ${listSheetPerson.last_name}`) : ""}
       />
     </View>
   );
@@ -346,112 +196,50 @@ export default function PeopleFeedScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.card.bg,
+    backgroundColor: colors.background,
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+  searchSection: {
+    padding: 20,
+    backgroundColor: colors.content.bg,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.content.border,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: colors.text.primary,
+  countText: {
+    fontSize: 12,
+    color: colors.text.tertiary,
+    marginBottom: 8,
+    fontWeight: '600',
   },
-  count: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    backgroundColor: colors.content.bgSecondary,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 10,
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginHorizontal: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    backgroundColor: colors.content.bgSecondary,
-    borderRadius: 8,
+  savedRow: {
+    paddingTop: 12,
+    paddingBottom: 4,
     gap: 8,
   },
-  searchInput: {
-    flex: 1,
-    fontSize: 14,
-    color: colors.text.primary,
-    padding: 0,
-  },
-  filterContainer: {
+  savedChip: {
     flexDirection: "row",
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    gap: 8,
-  },
-  filterChip: {
+    alignItems: "center",
+    gap: 6,
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 16,
-    backgroundColor: colors.content.bgSecondary,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: colors.primary + "40",
+    backgroundColor: colors.primary + "12",
   },
-  filterChipActive: {
-    backgroundColor: colors.brand.green,
+  savedChipText: {
+    fontSize: 12,
+    color: colors.primary,
+    fontWeight: "600",
   },
-  filterChipText: {
-    fontSize: 13,
-    fontWeight: "500",
-    color: colors.text.secondary,
-  },
-  filterChipTextActive: {
-    color: colors.text.inverse,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  footerLoader: {
-    paddingVertical: 16,
+  listContent: {
+    padding: 16,
   },
   emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingTop: 60,
-    gap: 12,
+    padding: 40,
+    alignItems: 'center',
   },
   emptyText: {
-    fontSize: 15,
-    color: colors.text.secondary,
-  },
-  errorContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fef2f2",
-    borderWidth: 1,
-    borderColor: "#fecaca",
-    borderRadius: 8,
-    padding: 12,
-    marginHorizontal: 16,
-    marginVertical: 8,
-    gap: 8,
-  },
-  errorText: {
-    flex: 1,
-    fontSize: 13,
-    color: colors.error,
-  },
-  retryButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    backgroundColor: colors.error,
-    borderRadius: 6,
-  },
-  retryButtonText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: colors.text.inverse,
-  },
+    color: colors.text.tertiary,
+    fontSize: 16,
+  }
 });

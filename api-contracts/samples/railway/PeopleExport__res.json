@@ -1,0 +1,2031 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": [
+    {
+      "Specter - Person ID": "per_7359cfcdca7b9bfdea6c4e6d",
+      "Specter - Talent Signal IDs": null,
+      "Specter - Strategic Signal IDs": null,
+      "Profile Picture": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_7359cfcdca7b9bfdea6c4e6d.jpg",
+      "First Name": "Dave",
+      "Last Name": "H.",
+      "Full Name": "Dave H.",
+      "LinkedIn - URL": "https://www.linkedin.com/in/dave-h-25981a1",
+      "LinkedIn - Num ID": 5015013,
+      "LinkedIn - URN": "ACoAAABMheUB616Z_kCKoGCFmb7uHsTB85VbhBU",
+      "Twitter - URL": null,
+      "GitHub - URL": null,
+      "About": ">25 years in the Pharma, CRO and tech(bio) sectors as a medicinal chemist and executive manager.  Significant experience across Discovery and early Development of small molecules.  Therapeutic area expertise within Neuroscience & pain.  Leveraging the power of generative design with cutting edge automation.  Application of multimodal data types to contemporary drug discovery.  iPSCs in drug discovery and protein degradation therapeutic modalities.\n\nEducated at Cambridge University and the University of Manchester (PhD) followed by post-doctoral research at The University of Texas (Austin).",
+      "Tagline": "Chief Scientific Officer of Recursion",
+      "Location": "London, England, United Kingdom, Europe",
+      "Region": "Europe",
+      "People Highlights": [
+        "fortune_500_experience",
+        "major_tech_experience",
+        "prior_exit",
+        "prior_ipo",
+        "prior_vc_backed_experience",
+        "prior_vc_backed_founder",
+        "strong_academic_background",
+        "top_university",
+        "vc_backed_founder"
+      ],
+      "Level of Seniority": "Executive Level",
+      "Years of Experience": 25,
+      "Education Level": "Doctoral Degree",
+      "Experience": [
+        {
+          "Company Name": "Recursion",
+          "Specter - Company ID": "63eb90bd1e6a68488a041a96",
+          "Domain": "recursion.com",
+          "LinkedIn - URL": "linkedin.com/company/recursion-pharmaceuticals",
+          "Description": null,
+          "Company Size": "501-1000",
+          "Industries": [
+            "Biotechnology",
+            "DeepTech"
+          ],
+          "Title": "Chief Scientific Officer",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2024-11-01",
+          "End Date": null,
+          "Location": "Salt Lake City, Utah, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2013,
+          "Job Order": 6
+        },
+        {
+          "Company Name": "Exscientia",
+          "Specter - Company ID": "606f15b86a1d5452784f2ca9",
+          "Domain": "exscientia.com",
+          "LinkedIn - URL": "linkedin.com/company/ex-scientia",
+          "Description": null,
+          "Company Size": "51-200",
+          "Industries": [
+            "Biotechnology",
+            "DeepTech"
+          ],
+          "Title": "Interim Chief Executive Officer",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2024-02-01",
+          "End Date": "2024-11-01",
+          "Location": "Oxford, England, United Kingdom, Europe",
+          "Is Current": false,
+          "Founded Date": 2012,
+          "Job Order": 5
+        },
+        {
+          "Company Name": "Exscientia",
+          "Specter - Company ID": "606f15b86a1d5452784f2ca9",
+          "Domain": "exscientia.com",
+          "LinkedIn - URL": "linkedin.com/company/ex-scientia",
+          "Description": "Head of Discovery Operations",
+          "Company Size": "51-200",
+          "Industries": [
+            "Biotechnology",
+            "DeepTech"
+          ],
+          "Title": "Chief Scientific Officer",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2020-01-01",
+          "End Date": "2024-11-01",
+          "Location": "Oxford, England, United Kingdom, Europe",
+          "Is Current": false,
+          "Founded Date": 2012,
+          "Job Order": 4
+        },
+        {
+          "Company Name": "Evotec",
+          "Specter - Company ID": "5e3b65e8ab6348f63cd9e6a9",
+          "Domain": "evotec.com",
+          "LinkedIn - URL": "linkedin.com/company/evotec",
+          "Description": "Creation and leadership of a dedicated network of Alliance and Project Managers supporting all Evotec's major collaborations.\nOperational and strategic leadership of Evotec's human iPSC-based drug discovery efforts and protein homeostasis platform",
+          "Company Size": "1001-5000",
+          "Industries": [
+            "Biotechnology",
+            "DeepTech"
+          ],
+          "Title": "Executive Vice President Alliance Management",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2016-04-01",
+          "End Date": "2019-12-01",
+          "Location": "Hamburg, Hamburg, Germany, Europe",
+          "Is Current": false,
+          "Founded Date": 1993,
+          "Job Order": 3
+        },
+        {
+          "Company Name": "Evotec",
+          "Specter - Company ID": "5e3b65e8ab6348f63cd9e6a9",
+          "Domain": "evotec.com",
+          "LinkedIn - URL": "linkedin.com/company/evotec",
+          "Description": "Operational and strategic leadership of medicinal chemistry, computational chemistry, ADME and cheminformatics (EU and Indian sites)",
+          "Company Size": "1001-5000",
+          "Industries": [
+            "Biotechnology",
+            "DeepTech"
+          ],
+          "Title": "Executive Vice President Chemistry",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2005-09-01",
+          "End Date": "2016-04-01",
+          "Location": "Hamburg, Hamburg, Germany, Europe",
+          "Is Current": false,
+          "Founded Date": 1993,
+          "Job Order": 2
+        },
+        {
+          "Company Name": "Merck",
+          "Specter - Company ID": "5e3ba31200c8f4c9668ddf8a",
+          "Domain": "merck.com",
+          "LinkedIn - URL": "linkedin.com/company/merck",
+          "Description": null,
+          "Company Size": "10001+",
+          "Industries": [
+            "Biotechnology",
+            "DeepTech",
+            "Health",
+            "Manufacturing"
+          ],
+          "Title": "Research Fellow",
+          "Departments": [
+            "Product & Research"
+          ],
+          "Start Date": "2000-01-01",
+          "End Date": "2005-07-01",
+          "Location": "Rahway, New Jersey, United States, North America",
+          "Is Current": false,
+          "Founded Date": 1891,
+          "Job Order": 1
+        }
+      ],
+      "Current Position Title": "Chief Scientific Officer",
+      "Current Position Company Name": "Recursion",
+      "Current Position Company Website": "recursion.com",
+      "Past Position Title": "Interim Chief Executive Officer",
+      "Past Position Company Name": "Exscientia",
+      "Past Position Company Website": "exscientia.com",
+      "Current Tenure": 13,
+      "Average Tenure": 61,
+      "Education": [
+        {
+          "Name": "University of Cambridge",
+          "LinkedIn - URL": "linkedin.com/school/university-of-cambridge",
+          "Field of Study": "Natural Sciences",
+          "Degree Title": "BA",
+          "Description": "BA (Natural Sciences)",
+          "Start Date": null,
+          "End Date": null,
+          "Location": "Cambridge, England, United Kingdom, Europe"
+        },
+        {
+          "Name": "The University of Texas at Austin",
+          "LinkedIn - URL": "linkedin.com/school/theuniversityoftexasataustin-",
+          "Field of Study": "Synthetic Organic Chemistry",
+          "Degree Title": "Post Doc",
+          "Description": "Post-doctoral fellow working with Professor Philip Magnus",
+          "Start Date": null,
+          "End Date": null,
+          "Location": "Austin, Texas, United States, North America"
+        },
+        {
+          "Name": "The University of Manchester",
+          "LinkedIn - URL": "linkedin.com/school/university-of-manchester",
+          "Field of Study": "Synthetic Organic Chemistry",
+          "Degree Title": "PhD",
+          "Description": "MSc and PhD (organic chemistry)",
+          "Start Date": null,
+          "End Date": null,
+          "Location": "Manchester, England, United Kingdom, Europe"
+        }
+      ],
+      "Languages": null,
+      "Skills": [
+        "ADME",
+        "Biotechnology",
+        "C Level Management",
+        "Chemistry",
+        "Clinical Development",
+        "DMPK",
+        "Drug Design",
+        "Drug Development",
+        "Drug Discovery",
+        "GPCRs",
+        "Heterocyclic Chemistry",
+        "In Vitro",
+        "Life Sciences",
+        "Medicinal Chemistry",
+        "Organic Chemistry",
+        "Organic Synthesis",
+        "Pharmaceutical Industry",
+        "R&D",
+        "Research and Development (R&D)"
+      ],
+      "LinkedIn - Followers": 3454,
+      "LinkedIn - Connections": 3127,
+      "Last Updated": "2025-12-27 01:24:30"
+    },
+    {
+      "Specter - Person ID": "per_66bf44201487cc58af85bdda",
+      "Specter - Talent Signal IDs": null,
+      "Specter - Strategic Signal IDs": null,
+      "Profile Picture": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_66bf44201487cc58af85bdda.jpg",
+      "First Name": "Eduardo",
+      "Last Name": "Fonseca",
+      "Full Name": "Eduardo Fonseca",
+      "LinkedIn - URL": "https://www.linkedin.com/in/eduardobf",
+      "LinkedIn - Num ID": 14272381,
+      "LinkedIn - URN": "ACoAAADZx30BDxG4xXdOSbN_G1axMutRgK-rRHg",
+      "Twitter - URL": null,
+      "GitHub - URL": null,
+      "About": "A private pilot with instrument rating, Eduardo combines his love for aviation with over 25 years of entrepreneurial success in the tech industry. As former CTO at GoodRx, advisor to numerous startups, and a successful consultant, he's adept at leveraging technology for growth. His deep Machine Learning expertise since 2015 positions him to lead Aboard AI at the exciting intersection of aviation and artificial intelligence.",
+      "Tagline": "Entrepreneur, Advisor, Board Member. Pilot.",
+      "Location": "Washington, District of Columbia, United States, North America",
+      "Region": "North America",
+      "People Highlights": [
+        "major_tech_experience",
+        "prior_exit",
+        "prior_ipo",
+        "prior_vc_backed_experience",
+        "prior_vc_backed_founder",
+        "serial_founder",
+        "strong_technical_background",
+        "vc_backed_experience",
+        "vc_backed_founder"
+      ],
+      "Level of Seniority": "Executive Level",
+      "Years of Experience": 31,
+      "Education Level": "Bachelor's Degree",
+      "Experience": [
+        {
+          "Company Name": "Aboard AI, Inc.",
+          "Specter - Company ID": "6926f4b5129a9d423f1d6a45",
+          "Domain": "aboardai.com",
+          "LinkedIn - URL": "linkedin.com/company/aboard-ai",
+          "Description": "We're transforming the way pilots fly by harnessing the power of real-time intelligence on every aircraft. Our innovative technology processes sensor and avionics data locally, delivering cloud-grade insights without relying on internet connectivity.\n\n• Real-time flight insights: Voice-based alerts for sharper decision-making and reduced workload\n• Predictive maintenance: Early detection of mechanical issues, computed onboard\n• Scalable ML models: Trained on your own flight telemetry, adaptable to any mission, executed locally\n\nOur Mission: To revolutionize aviation safety through universal access to real-time intelligence.\n\nJoin us in revolutionizing aviation safety. Want a live demo or explore a partnership? Let's connect and take the first step towards safer skies.",
+          "Company Size": null,
+          "Industries": [
+            "DeepTech",
+            "Transportation"
+          ],
+          "Title": "Co-Founder and CEO",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2022-01-01",
+          "End Date": null,
+          "Location": "Gaithersburg, Maryland, United States, North America",
+          "Is Current": true,
+          "Founded Date": null,
+          "Job Order": 32
+        },
+        {
+          "Company Name": "Basis Set Ventures",
+          "Specter - Company ID": "624b2675e4e2dbb8bd125480",
+          "Domain": "basisset.com",
+          "LinkedIn - URL": "linkedin.com/company/basis-set",
+          "Description": "Responsible for Due Diligence, Internal Code Reviews and mentorship for the portfolio companies.",
+          "Company Size": "11-50",
+          "Industries": [
+            "Finance",
+            "Lending and Investments",
+            "Professional Services"
+          ],
+          "Title": "Technical Advisor",
+          "Departments": [
+            "Engineering"
+          ],
+          "Start Date": "2020-01-01",
+          "End Date": null,
+          "Location": "Menlo Park, California, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2017,
+          "Job Order": 31
+        },
+        {
+          "Company Name": "Long Island Young Aviators Club",
+          "Specter - Company ID": null,
+          "Domain": null,
+          "LinkedIn - URL": null,
+          "Description": "Providing a future in Aviation for Long Island Bahamas Students",
+          "Company Size": null,
+          "Industries": null,
+          "Title": "Board Member",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2024-01-01",
+          "End Date": null,
+          "Location": null,
+          "Is Current": true,
+          "Founded Date": null,
+          "Job Order": 30
+        },
+        {
+          "Company Name": "Vaginal Biome Science",
+          "Specter - Company ID": "682e08c2195cd46a9cc47cb3",
+          "Domain": "vaginalbiomescience.com",
+          "LinkedIn - URL": "linkedin.com/company/vaginal-biome-science",
+          "Description": "Vaginal Biome Science was founded to further the research and development of novel \ninnovative approaches to women's health care.",
+          "Company Size": "1-10",
+          "Industries": [
+            "Biotechnology",
+            "DeepTech"
+          ],
+          "Title": "Board Member",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2024-01-01",
+          "End Date": null,
+          "Location": "Portland, Oregon, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2021,
+          "Job Order": 29
+        },
+        {
+          "Company Name": "Mucker Capital",
+          "Specter - Company ID": "5edf30dd82c67200733e4c33",
+          "Domain": "mucker.com",
+          "LinkedIn - URL": "linkedin.com/company/mucker",
+          "Description": null,
+          "Company Size": "51-200",
+          "Industries": [
+            "Finance",
+            "Lending and Investments"
+          ],
+          "Title": "Mentor",
+          "Departments": [
+            "Other"
+          ],
+          "Start Date": "2019-01-01",
+          "End Date": null,
+          "Location": "Los Angeles, California, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2011,
+          "Job Order": 28
+        },
+        {
+          "Company Name": "Aiva Health",
+          "Specter - Company ID": "5e3a8f19040ca7b0c6f041dc",
+          "Domain": "aivahealth.com",
+          "LinkedIn - URL": "linkedin.com/company/aiva-health",
+          "Description": "Founding Team member, Advisor to the CEO.",
+          "Company Size": "11-50",
+          "Industries": [
+            "Health",
+            "Mobile, Platforms, and Apps"
+          ],
+          "Title": "Strategic Advisor",
+          "Departments": [
+            "Strategy & Corporate Development"
+          ],
+          "Start Date": "2016-01-01",
+          "End Date": null,
+          "Location": "Los Angeles, California, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2016,
+          "Job Order": 27
+        },
+        {
+          "Company Name": "IEEE",
+          "Specter - Company ID": "5e3ba43e00c8f4c9668fa6b0",
+          "Domain": "ieee.org",
+          "LinkedIn - URL": "linkedin.com/company/ieee",
+          "Description": null,
+          "Company Size": "10001+",
+          "Industries": [
+            "Community and Lifestyle",
+            "Government and Military"
+          ],
+          "Title": "Senior Member",
+          "Departments": [
+            "Other"
+          ],
+          "Start Date": "2020-01-01",
+          "End Date": null,
+          "Location": "New York City, New York, United States, North America",
+          "Is Current": true,
+          "Founded Date": 1884,
+          "Job Order": 26
+        },
+        {
+          "Company Name": "Wide Panorama",
+          "Specter - Company ID": null,
+          "Domain": "widepanorama.com",
+          "LinkedIn - URL": "linkedin.com/company/widepanorama",
+          "Description": null,
+          "Company Size": null,
+          "Industries": null,
+          "Title": "Co-Chief Executive Officer",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2023-01-01",
+          "End Date": null,
+          "Location": null,
+          "Is Current": true,
+          "Founded Date": null,
+          "Job Order": 25
+        },
+        {
+          "Company Name": "Benefix",
+          "Specter - Company ID": "5e3a8f4a040ca7b0c6f1485e",
+          "Domain": "benefix.us",
+          "LinkedIn - URL": "linkedin.com/company/getbenefix",
+          "Description": "Advising the CEO on Product Development.",
+          "Company Size": "11-50",
+          "Industries": [
+            "Finance"
+          ],
+          "Title": "Strategic Advisor",
+          "Departments": [
+            "Strategy & Corporate Development"
+          ],
+          "Start Date": "2021-01-01",
+          "End Date": "2025-01-01",
+          "Location": "Lancaster, Pennsylvania, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2017,
+          "Job Order": 24
+        },
+        {
+          "Company Name": "MicroGenDX",
+          "Specter - Company ID": "615ab65bfb22921ca30c34d7",
+          "Domain": "microgendx.com",
+          "LinkedIn - URL": "linkedin.com/company/microgendx",
+          "Description": "Advising the C-suite on Product Development, Data and Analytics.",
+          "Company Size": "51-200",
+          "Industries": [
+            "Biotechnology",
+            "DeepTech"
+          ],
+          "Title": "Strategic Advisor - Technology, Product Development and Market Fit",
+          "Departments": [
+            "Product & Research"
+          ],
+          "Start Date": "2022-01-01",
+          "End Date": "2024-01-01",
+          "Location": "Lubbock, Texas, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2008,
+          "Job Order": 23
+        },
+        {
+          "Company Name": "Denim",
+          "Specter - Company ID": "6411d185abe7c1e313b62bfc",
+          "Domain": "denim.us",
+          "LinkedIn - URL": "linkedin.com/company/denim-us",
+          "Description": "Advising the CEO on Product Development and hiring.",
+          "Company Size": "1-10",
+          "Industries": [
+            "HR and Recruiting",
+            "Information Technology",
+            "Software"
+          ],
+          "Title": "Strategic Advisor - Product & Technology",
+          "Departments": [
+            "Product & Research"
+          ],
+          "Start Date": "2022-01-01",
+          "End Date": "2023-01-01",
+          "Location": "Washington, District of Columbia, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2022,
+          "Job Order": 22
+        },
+        {
+          "Company Name": "Momentum Mining USA",
+          "Specter - Company ID": null,
+          "Domain": null,
+          "LinkedIn - URL": "linkedin.com/company/momentum-mining-usa",
+          "Description": null,
+          "Company Size": null,
+          "Industries": null,
+          "Title": "Strategic Advisor - Product & Technology",
+          "Departments": [
+            "Product & Research"
+          ],
+          "Start Date": "2022-01-01",
+          "End Date": "2023-01-01",
+          "Location": null,
+          "Is Current": false,
+          "Founded Date": null,
+          "Job Order": 21
+        },
+        {
+          "Company Name": "25madison",
+          "Specter - Company ID": "5e3a8f19040ca7b0c6f034b0",
+          "Domain": "25madison.com",
+          "LinkedIn - URL": "linkedin.com/company/25madison",
+          "Description": "Kickstarted several startups internally that were handed off to EIRs. Built the first internal technical reference platform for new startups. Provided mentorship to the portfolio companies.",
+          "Company Size": "51-200",
+          "Industries": [
+            "Finance",
+            "Lending and Investments",
+            "Mobile, Platforms, and Apps",
+            "Software"
+          ],
+          "Title": "Chief Technology Officer",
+          "Departments": [
+            "Senior Leadership",
+            "Engineering"
+          ],
+          "Start Date": "2022-01-01",
+          "End Date": "2023-01-01",
+          "Location": "New York City, New York, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2018,
+          "Job Order": 20
+        },
+        {
+          "Company Name": "25madison",
+          "Specter - Company ID": "5e3a8f19040ca7b0c6f034b0",
+          "Domain": "25madison.com",
+          "LinkedIn - URL": "linkedin.com/company/25madison",
+          "Description": "Transitioned to an advisory role following cost cutting measures inside the company. Continued to advise and mentor portfolio companies. ",
+          "Company Size": "51-200",
+          "Industries": [
+            "Finance",
+            "Lending and Investments",
+            "Mobile, Platforms, and Apps",
+            "Software"
+          ],
+          "Title": "Senior Advisor - Product & Technology",
+          "Departments": [
+            "Product & Research"
+          ],
+          "Start Date": "2022-01-01",
+          "End Date": "2023-01-01",
+          "Location": "New York City, New York, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2018,
+          "Job Order": 19
+        },
+        {
+          "Company Name": "LingoHealth",
+          "Specter - Company ID": "615aca92fb22921ca31d9152",
+          "Domain": "lingohealth.io",
+          "LinkedIn - URL": "linkedin.com/company/lingohealth",
+          "Description": "Our mission is to build better care for our families. Language & cultural barriers make life more difficult for millions of Americans. We want to redefine how immigrant patients engage in care.",
+          "Company Size": "1-10",
+          "Industries": [
+            "Health",
+            "Sports"
+          ],
+          "Title": "Investor",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2021-01-01",
+          "End Date": "2022-01-01",
+          "Location": "San Francisco, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2021,
+          "Job Order": 18
+        },
+        {
+          "Company Name": "Banting",
+          "Specter - Company ID": null,
+          "Domain": null,
+          "LinkedIn - URL": "linkedin.com/company/banting-co",
+          "Description": "Advisor to the CEO on Product Development, Hiring and Market positioning.",
+          "Company Size": null,
+          "Industries": null,
+          "Title": "Strategic Advisor - Product, Technology and Market Fit",
+          "Departments": [
+            "Product & Research"
+          ],
+          "Start Date": "2020-01-01",
+          "End Date": "2022-01-01",
+          "Location": null,
+          "Is Current": false,
+          "Founded Date": null,
+          "Job Order": 17
+        },
+        {
+          "Company Name": "harbor",
+          "Specter - Company ID": "5f5f3642a2734681cecc4d3e",
+          "Domain": "helloharbor.com",
+          "LinkedIn - URL": "linkedin.com/company/helloharbor",
+          "Description": "** Acquired by Citizen **\n\n- Hired a lean team of senior Engineers to build harbor.\n- Helped build harbor for iOS - App was featured by Apple as \"App of the Day\".\n- Used outsourced workforce to keep costs under control while expanding the product offering.\n- Led the technical side of the acquisition talks and handed off control to the new team managing harbor.",
+          "Company Size": "11-50",
+          "Industries": [
+            "Government and Military",
+            "Media"
+          ],
+          "Title": "Chief Technology Officer",
+          "Departments": [
+            "Senior Leadership",
+            "Engineering"
+          ],
+          "Start Date": "2020-01-01",
+          "End Date": "2022-01-01",
+          "Location": "Los Angeles, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2019,
+          "Job Order": 16
+        },
+        {
+          "Company Name": "Griddy Energy",
+          "Specter - Company ID": "6041c6ea4ddab8d8bf081474",
+          "Domain": "griddy.com",
+          "LinkedIn - URL": "linkedin.com/company/griddy",
+          "Description": "** Acquired by Dwell Energy **\n\n- Completely reorganized the Product and Engineering teams - the focus was on a customer-friendly experience, helping manage energy consumption in Texas.\n- Led the technical diligence M&A talks with several parties.",
+          "Company Size": "1-10",
+          "Industries": [
+            "Energy",
+            "Sustainability"
+          ],
+          "Title": "Chief Technology Officer",
+          "Departments": [
+            "Senior Leadership",
+            "Engineering"
+          ],
+          "Start Date": "2020-01-01",
+          "End Date": "2020-01-01",
+          "Location": "Houston, Texas, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2016,
+          "Job Order": 15
+        },
+        {
+          "Company Name": "Stick",
+          "Specter - Company ID": "5e3a8f73040ca7b0c6f1d1e4",
+          "Domain": "stick.ai",
+          "LinkedIn - URL": "linkedin.com/company/stick-blot-inc-",
+          "Description": "** Acquired by Google **\n\nAdvisor to the CEO on Product Development, Hiring and Market positioning.",
+          "Company Size": "1-10",
+          "Industries": [
+            "Information Technology",
+            "Software"
+          ],
+          "Title": "Advisor",
+          "Departments": [
+            "Other"
+          ],
+          "Start Date": "2019-01-01",
+          "End Date": "2020-01-01",
+          "Location": "Los Angeles, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2016,
+          "Job Order": 14
+        },
+        {
+          "Company Name": "GoodRx",
+          "Specter - Company ID": "5e3ba4cc00c8f4c96690c025",
+          "Domain": "goodrx.com",
+          "LinkedIn - URL": "linkedin.com/company/goodrx",
+          "Description": null,
+          "Company Size": "1001-5000",
+          "Industries": [
+            "Health"
+          ],
+          "Title": "Chief Technology Officer",
+          "Departments": [
+            "Senior Leadership",
+            "Engineering"
+          ],
+          "Start Date": "2018-01-01",
+          "End Date": "2020-01-01",
+          "Location": "Santa Monica, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2011,
+          "Job Order": 13
+        },
+        {
+          "Company Name": "GoodRx",
+          "Specter - Company ID": "5e3ba4cc00c8f4c96690c025",
+          "Domain": "goodrx.com",
+          "LinkedIn - URL": "linkedin.com/company/goodrx",
+          "Description": null,
+          "Company Size": "1001-5000",
+          "Industries": [
+            "Health"
+          ],
+          "Title": "Vice President, Engineering",
+          "Departments": [
+            "Engineering"
+          ],
+          "Start Date": "2016-01-01",
+          "End Date": "2018-01-01",
+          "Location": "Santa Monica, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2011,
+          "Job Order": 12
+        },
+        {
+          "Company Name": "LA CTO Forum",
+          "Specter - Company ID": "5e3bbc4900c8f4c96698bdd7",
+          "Domain": "lactoforum.org",
+          "LinkedIn - URL": "linkedin.com/company/la-cto-forum",
+          "Description": null,
+          "Company Size": "51-200",
+          "Industries": [
+            "Community and Lifestyle",
+            "Information Technology"
+          ],
+          "Title": "Member",
+          "Departments": [
+            "Other"
+          ],
+          "Start Date": "2016-01-01",
+          "End Date": "2020-01-01",
+          "Location": "El Segundo, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 1999,
+          "Job Order": 11
+        },
+        {
+          "Company Name": "Bitpoem Inc.",
+          "Specter - Company ID": "5e3a8fa1040ca7b0c6f2cc83",
+          "Domain": "bitpoem.co",
+          "LinkedIn - URL": "linkedin.com/company/bitpoem-inc-",
+          "Description": null,
+          "Company Size": "1-10",
+          "Industries": [
+            "Information Technology",
+            "Mobile, Platforms, and Apps",
+            "Software"
+          ],
+          "Title": "Co-Founder",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2014-01-01",
+          "End Date": "2020-01-01",
+          "Location": "Santa Monica, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2014,
+          "Job Order": 10
+        },
+        {
+          "Company Name": "Cargomatic, Inc.",
+          "Specter - Company ID": "5e3a8f1c040ca7b0c6f07ad8",
+          "Domain": "cargomatic.com",
+          "LinkedIn - URL": "linkedin.com/company/cargomatic",
+          "Description": null,
+          "Company Size": "201-500",
+          "Industries": [
+            "Transportation"
+          ],
+          "Title": "Vice President, Engineering & Product",
+          "Departments": [
+            "Engineering"
+          ],
+          "Start Date": "2015-01-01",
+          "End Date": "2016-01-01",
+          "Location": "Long Beach, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2013,
+          "Job Order": 9
+        },
+        {
+          "Company Name": "Self Employed",
+          "Specter - Company ID": null,
+          "Domain": null,
+          "LinkedIn - URL": null,
+          "Description": null,
+          "Company Size": null,
+          "Industries": null,
+          "Title": "Consultant",
+          "Departments": [
+            "Other"
+          ],
+          "Start Date": "2005-01-01",
+          "End Date": "2016-01-01",
+          "Location": null,
+          "Is Current": false,
+          "Founded Date": null,
+          "Job Order": 8
+        },
+        {
+          "Company Name": "Playlist",
+          "Specter - Company ID": "5e3a8f47040ca7b0c6f1043a",
+          "Domain": "playlist.com",
+          "LinkedIn - URL": "linkedin.com/company/playlistmedia",
+          "Description": null,
+          "Company Size": "11-50",
+          "Industries": [
+            "Data and Analytics",
+            "Sports"
+          ],
+          "Title": "Chief Technology Officer",
+          "Departments": [
+            "Senior Leadership",
+            "Engineering"
+          ],
+          "Start Date": "2015-01-01",
+          "End Date": "2015-01-01",
+          "Location": "San Francisco, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2013,
+          "Job Order": 7
+        },
+        {
+          "Company Name": "TigerConnect",
+          "Specter - Company ID": "5e3bc1db00c8f4c966aa1ab0",
+          "Domain": "tigerconnect.com",
+          "LinkedIn - URL": "linkedin.com/company/tigerconnect",
+          "Description": null,
+          "Company Size": "201-500",
+          "Industries": [
+            "Health"
+          ],
+          "Title": "Principal Architect, Mobile Clients",
+          "Departments": [
+            "Engineering"
+          ],
+          "Start Date": "2014-01-01",
+          "End Date": "2015-01-01",
+          "Location": "Santa Monica, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2010,
+          "Job Order": 6
+        },
+        {
+          "Company Name": "Kifi (acquired by Google)",
+          "Specter - Company ID": null,
+          "Domain": null,
+          "LinkedIn - URL": "linkedin.com/company/kifi",
+          "Description": "Developed Kifi for iOS.",
+          "Company Size": null,
+          "Industries": null,
+          "Title": "iOS/Android Software Engineer",
+          "Departments": [
+            "Engineering"
+          ],
+          "Start Date": "2013-01-01",
+          "End Date": "2014-01-01",
+          "Location": null,
+          "Is Current": false,
+          "Founded Date": null,
+          "Job Order": 5
+        },
+        {
+          "Company Name": "Stealth Startup",
+          "Specter - Company ID": null,
+          "Domain": null,
+          "LinkedIn - URL": null,
+          "Description": null,
+          "Company Size": null,
+          "Industries": null,
+          "Title": "Lead Mobile Engineer",
+          "Departments": [
+            "Engineering"
+          ],
+          "Start Date": "2012-01-01",
+          "End Date": "2013-01-01",
+          "Location": null,
+          "Is Current": false,
+          "Founded Date": null,
+          "Job Order": 4
+        },
+        {
+          "Company Name": "A&D Tecnologia",
+          "Specter - Company ID": null,
+          "Domain": null,
+          "LinkedIn - URL": "linkedin.com/company/a&d-tecnologia",
+          "Description": null,
+          "Company Size": null,
+          "Industries": null,
+          "Title": "Chief Technology Officer and Co-Founder",
+          "Departments": [
+            "Senior Leadership",
+            "Engineering"
+          ],
+          "Start Date": "2004-01-01",
+          "End Date": "2013-01-01",
+          "Location": null,
+          "Is Current": false,
+          "Founded Date": null,
+          "Job Order": 3
+        },
+        {
+          "Company Name": "TED Conferences",
+          "Specter - Company ID": "5e3bc06800c8f4c966a4c541",
+          "Domain": "ted.com",
+          "LinkedIn - URL": "linkedin.com/company/ted-conferences",
+          "Description": null,
+          "Company Size": "10001+",
+          "Industries": [
+            "Community and Lifestyle",
+            "Events",
+            "Government and Military",
+            "Media"
+          ],
+          "Title": "TEDx Licensee",
+          "Departments": [
+            "Other"
+          ],
+          "Start Date": "2010-01-01",
+          "End Date": "2012-01-01",
+          "Location": "New York City, New York, United States, North America",
+          "Is Current": false,
+          "Founded Date": 1984,
+          "Job Order": 2
+        },
+        {
+          "Company Name": "FutureNet Network",
+          "Specter - Company ID": null,
+          "Domain": null,
+          "LinkedIn - URL": null,
+          "Description": null,
+          "Company Size": null,
+          "Industries": null,
+          "Title": "Co-Founder",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "1994-01-01",
+          "End Date": "2002-01-01",
+          "Location": null,
+          "Is Current": false,
+          "Founded Date": null,
+          "Job Order": 1
+        }
+      ],
+      "Current Position Title": "Co-Founder and CEO",
+      "Current Position Company Name": "Aboard AI, Inc.",
+      "Current Position Company Website": "aboardai.com",
+      "Past Position Title": "Strategic Advisor",
+      "Past Position Company Name": "Benefix",
+      "Past Position Company Website": "benefix.us",
+      "Current Tenure": 119,
+      "Average Tenure": 32,
+      "Education": [
+        {
+          "Name": "Pontifícia Universidade Católica do Paraná",
+          "LinkedIn - URL": "linkedin.com/school/pucproficial",
+          "Field of Study": "Computer Science",
+          "Degree Title": "Bachelor's degree",
+          "Description": null,
+          "Start Date": "1999-01-01",
+          "End Date": "2004-01-01",
+          "Location": "Curitiba, Paraná, Brazil, South America"
+        },
+        {
+          "Name": "FAE Centro Universitário",
+          "LinkedIn - URL": "linkedin.com/school/fae-centro-universitario",
+          "Field of Study": "Business Administration and Management, General",
+          "Degree Title": "Bachelor of Business Administration - BBA",
+          "Description": null,
+          "Start Date": "2000-01-01",
+          "End Date": "2004-01-01",
+          "Location": "Curitiba, Paraná, Brazil, South America"
+        }
+      ],
+      "Languages": [
+        {
+          "Name": "English",
+          "Proficiency Level": "Native Or Bilingual Proficiency"
+        },
+        {
+          "Name": "Portuguese",
+          "Proficiency Level": "Native Or Bilingual Proficiency"
+        },
+        {
+          "Name": "Italian",
+          "Proficiency Level": "Limited Working Proficiency"
+        }
+      ],
+      "Skills": [
+        "Agile Methodologies",
+        "Android",
+        "Android Development",
+        "C++",
+        "Cloud Computing",
+        "Cocoa",
+        "Cross-functional Team Leadership",
+        "Databases",
+        "Deep Learning",
+        "Entrepreneurship",
+        "Food",
+        "Git",
+        "Go",
+        "Graph Databases",
+        "Image Analysis",
+        "Image Processing",
+        "Image Segmentation",
+        "JSON",
+        "Java",
+        "JavaScript",
+        "Leadership",
+        "Linux",
+        "Management",
+        "Mobile Applications",
+        "MySQL",
+        "OS X",
+        "Object Oriented Design",
+        "Objective-C",
+        "PostgreSQL",
+        "Product Management",
+        "Programming",
+        "Project Management",
+        "Python",
+        "Scalability",
+        "Scrum",
+        "Software Design",
+        "Software Development",
+        "Software Development Life Cycle (SDLC)",
+        "Software Project Management",
+        "Start-ups",
+        "Strategic Thinking",
+        "Strategy",
+        "Swift",
+        "User Experience",
+        "User Interface",
+        "User Interface Design",
+        "Web Development",
+        "Xcode",
+        "iOS",
+        "iOS development"
+      ],
+      "LinkedIn - Followers": 3141,
+      "LinkedIn - Connections": 3099,
+      "Last Updated": "2025-12-27 01:24:03"
+    },
+    {
+      "Specter - Person ID": "per_bb158fb4bd40aba6fc8b28f2",
+      "Specter - Talent Signal IDs": null,
+      "Specter - Strategic Signal IDs": null,
+      "Profile Picture": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_bb158fb4bd40aba6fc8b28f2.jpg",
+      "First Name": "Valerie",
+      "Last Name": "R. Coffman",
+      "Full Name": "Valerie R. Coffman",
+      "LinkedIn - URL": "https://www.linkedin.com/in/valeriecoffman",
+      "LinkedIn - Num ID": 14351286,
+      "LinkedIn - URN": "ACoAAADa-7YBob95vvEc4jCXvTNRkbStdQ41OI8",
+      "Twitter - URL": null,
+      "GitHub - URL": null,
+      "About": "I jumpstart technology in new companies.  Areas of expertise include technology strategy, data science, software architecture, and managing software teams.",
+      "Tagline": "Building the future of social media with AI and crypto. Former CTO of $XMTR and YC Alum (W18).",
+      "Location": "Reno, Nevada, United States, North America",
+      "Region": "North America",
+      "People Highlights": [
+        "prior_exit",
+        "prior_ipo",
+        "prior_vc_backed_experience",
+        "prior_vc_backed_founder",
+        "serial_founder",
+        "strong_academic_background",
+        "strong_technical_background",
+        "top_university",
+        "vc_backed_experience"
+      ],
+      "Level of Seniority": "Executive Level",
+      "Years of Experience": 19,
+      "Education Level": "Master's Degree",
+      "Experience": [
+        {
+          "Company Name": "Neynar",
+          "Specter - Company ID": "652dfa4d48a2fc3af439b4ef",
+          "Domain": "neynar.com",
+          "LinkedIn - URL": "linkedin.com/company/neynar",
+          "Description": "Building infrastructure for the Farcaster protocol. I specialize in algorithms, spam filtering (Neynar score), AI, and search.",
+          "Company Size": "1-10",
+          "Industries": [
+            "Blockchain and Crypto",
+            "Information Technology",
+            "Software"
+          ],
+          "Title": "Staff Software Engineer",
+          "Departments": [
+            "Engineering"
+          ],
+          "Start Date": "2024-10-01",
+          "End Date": null,
+          "Location": "Wilmington, Delaware, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2023,
+          "Job Order": 5
+        },
+        {
+          "Company Name": "Swayable",
+          "Specter - Company ID": "5e3a8f1f040ca7b0c6f0c9b8",
+          "Domain": "swayable.com",
+          "LinkedIn - URL": "linkedin.com/company/swayable",
+          "Description": "Swayable (YC W18) is a causal AI data science platform that measures people's opinions and predicts which messages will change them most effectively.",
+          "Company Size": "11-50",
+          "Industries": [
+            "Advertising",
+            "Data and Analytics",
+            "Information Technology",
+            "Sales and Marketing"
+          ],
+          "Title": "CTO and Co-Founder",
+          "Departments": [
+            "Senior Leadership",
+            "Engineering"
+          ],
+          "Start Date": "2018-01-01",
+          "End Date": "2024-07-01",
+          "Location": "San Francisco, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2017,
+          "Job Order": 4
+        },
+        {
+          "Company Name": "Xometry",
+          "Specter - Company ID": "5e3bc3ca00c8f4c966b0f3b8",
+          "Domain": "xometry.com",
+          "LinkedIn - URL": "linkedin.com/company/xometry",
+          "Description": "Xometry is an on-demand marketplace for custom manufacturing. It began trading on the NASDAQ as $XMTR in June of 2021.\n\nAs CTO (Aug 2014 - Feb 2017), I built the software team from scratch. As a team, we created a system that instantly quotes the price of manufacturing a custom part based on an uploaded CAD file and automatically places the job with a nationwide network of manufacturing partners. \n\nAs CSO (Feb 2017 - Jan 2018) I invented a patented method for pricing work in a two-sided marketplace that optimizes business outcomes based on machine learning predictions of customer win rates and supply-side acceptance rates.",
+          "Company Size": "1001-5000",
+          "Industries": [
+            "Information Technology",
+            "Manufacturing",
+            "Software"
+          ],
+          "Title": "Chief Technology Officer and Chief Science Officer",
+          "Departments": [
+            "Senior Leadership",
+            "Engineering"
+          ],
+          "Start Date": "2014-08-01",
+          "End Date": "2018-01-01",
+          "Location": "Gaithersburg, Maryland, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2013,
+          "Job Order": 3
+        },
+        {
+          "Company Name": "Feastie Inc.",
+          "Specter - Company ID": null,
+          "Domain": null,
+          "LinkedIn - URL": null,
+          "Description": "I developed natural language processing and inference algorithms to extract ingredient, dish, diet, and holiday information from any recipe webpage. The result: Feastie has recipe data from the widest variety of food blogs and recipe sites available anywhere on the web.",
+          "Company Size": null,
+          "Industries": null,
+          "Title": "Founder",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2011-01-01",
+          "End Date": "2014-08-01",
+          "Location": null,
+          "Is Current": false,
+          "Founded Date": null,
+          "Job Order": 2
+        },
+        {
+          "Company Name": "NIST",
+          "Specter - Company ID": "5e3bbd5500c8f4c9669bd6a7",
+          "Domain": "nist.gov",
+          "LinkedIn - URL": "linkedin.com/company/nist",
+          "Description": "Wrote software for materials science research using image-based mesh generation methods to enable finite-element simulations of complex microstructure geometries.",
+          "Company Size": "1001-5000",
+          "Industries": [
+            "Biotechnology",
+            "Education",
+            "Government and Military"
+          ],
+          "Title": "Postdoc and Physicist",
+          "Departments": [
+            "Other"
+          ],
+          "Start Date": "2006-10-01",
+          "End Date": "2011-07-01",
+          "Location": "Gaithersburg, Maryland, United States, North America",
+          "Is Current": false,
+          "Founded Date": 1901,
+          "Job Order": 1
+        }
+      ],
+      "Current Position Title": "Staff Software Engineer",
+      "Current Position Company Name": "Neynar",
+      "Current Position Company Website": "neynar.com",
+      "Past Position Title": "CTO and Co-Founder",
+      "Past Position Company Name": "Swayable",
+      "Past Position Company Website": "swayable.com",
+      "Current Tenure": 14,
+      "Average Tenure": 55,
+      "Education": [
+        {
+          "Name": "Cornell University",
+          "LinkedIn - URL": "linkedin.com/school/cornell-university",
+          "Field of Study": "Theoretical Condensed Matter Physics",
+          "Degree Title": "M.S.,PhD",
+          "Description": "Dissertation titled \"Macroscopic effects of atomic scale defects in crystals: Grain boundary fracture and brittle-ductile transitions\". Published in Physical Review B and Modelling and Simulation in Materials Engineering.",
+          "Start Date": null,
+          "End Date": null,
+          "Location": "Ithaca, New York, United States, North America"
+        },
+        {
+          "Name": "The Johns Hopkins University - Carey Business School",
+          "LinkedIn - URL": "linkedin.com/school/jhucarey",
+          "Field of Study": "Technology Entrepreneurship",
+          "Degree Title": "Certificate",
+          "Description": null,
+          "Start Date": null,
+          "End Date": null,
+          "Location": "Baltimore, Maryland, United States, North America"
+        },
+        {
+          "Name": "Johns Hopkins University",
+          "LinkedIn - URL": null,
+          "Field of Study": "Physics",
+          "Degree Title": "B.S.",
+          "Description": null,
+          "Start Date": null,
+          "End Date": null,
+          "Location": null
+        }
+      ],
+      "Languages": null,
+      "Skills": [
+        "2048",
+        "API",
+        "APIs",
+        "Advanced Common Sense",
+        "Amazon Web Services (AWS)",
+        "Analytics",
+        "Artificial Intelligence",
+        "Big Data",
+        "CSS",
+        "Cartoons",
+        "Cloud Computing",
+        "Data Mining",
+        "Data Science",
+        "Data Visualization",
+        "Flask",
+        "HTML",
+        "Hashtags",
+        "JavaScript",
+        "Linux",
+        "Lisp",
+        "Machine Learning",
+        "Materials Science",
+        "Mathematical Modeling",
+        "Matlab",
+        "Memes",
+        "Mobile Applications",
+        "Modeling",
+        "NLTK",
+        "Natural Language Processing",
+        "Optimization",
+        "PHP",
+        "Physics",
+        "Python",
+        "Quoting Movies",
+        "SQL",
+        "Science",
+        "Scientific Computing",
+        "Search Engine Technology",
+        "Simulations",
+        "Social Media Measurement",
+        "Software Development",
+        "Start-ups",
+        "Statistics",
+        "VTK",
+        "XML"
+      ],
+      "LinkedIn - Followers": 1567,
+      "LinkedIn - Connections": 1434,
+      "Last Updated": "2025-12-27 01:23:44"
+    },
+    {
+      "Specter - Person ID": "per_f9c09f68012f553e93a0a013",
+      "Specter - Talent Signal IDs": [
+        "5187c702-644d-4ccc-a1a1-056fa19fc0a1",
+        "16f087a5-05de-420b-823d-866df2844057"
+      ],
+      "Specter - Strategic Signal IDs": null,
+      "Profile Picture": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_f9c09f68012f553e93a0a013.jpg",
+      "First Name": "Stanislas",
+      "Last Name": "Polu",
+      "Full Name": "Stanislas Polu",
+      "LinkedIn - URL": "https://www.linkedin.com/in/spolu",
+      "LinkedIn - Num ID": 23528406,
+      "LinkedIn - URN": "ACoAAAFnA9YBvlAtnMXBSjXNYuT0Kmd5F39GV0g",
+      "Twitter - URL": null,
+      "GitHub - URL": null,
+      "About": "github: https://github.com/spolu \nhomepage: https://spolu.now.sh",
+      "Tagline": "Software Engineer & Co-Founder, Dust",
+      "Location": "Paris, Île-de-France, France, Europe",
+      "Region": "Europe",
+      "People Highlights": [
+        "fortune_500_experience",
+        "major_tech_experience",
+        "prior_exit",
+        "prior_vc_backed_experience",
+        "prior_vc_backed_founder",
+        "serial_founder",
+        "strong_technical_background",
+        "top_university",
+        "vc_backed_founder"
+      ],
+      "Level of Seniority": "Executive Level",
+      "Years of Experience": 21,
+      "Education Level": "Master's Degree",
+      "Experience": [
+        {
+          "Company Name": "Dust",
+          "Specter - Company ID": "637cda29aab093538e2de3e1",
+          "Domain": "dust.tt",
+          "LinkedIn - URL": "linkedin.com/company/dust-tt",
+          "Description": null,
+          "Company Size": "51-200",
+          "Industries": [
+            "Information Technology",
+            "Software"
+          ],
+          "Title": "Software Engineer & Co-Founder",
+          "Departments": [
+            "Senior Leadership",
+            "Engineering"
+          ],
+          "Start Date": "2022-09-01",
+          "End Date": null,
+          "Location": "Paris, Île-de-France, France, Europe",
+          "Is Current": true,
+          "Founded Date": 2022,
+          "Job Order": 8
+        },
+        {
+          "Company Name": "OpenAI",
+          "Specter - Company ID": "5e3bc07300c8f4c966a4f552",
+          "Domain": "openai.com",
+          "LinkedIn - URL": "linkedin.com/company/openai",
+          "Description": null,
+          "Company Size": "5001-10000",
+          "Industries": [
+            "Data and Analytics",
+            "DeepTech",
+            "Education"
+          ],
+          "Title": "Research Engineer",
+          "Departments": [
+            "Engineering"
+          ],
+          "Start Date": "2019-09-01",
+          "End Date": "2022-09-01",
+          "Location": "San Francisco, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2015,
+          "Job Order": 7
+        },
+        {
+          "Company Name": "Stripe",
+          "Specter - Company ID": "5e3bc2b700c8f4c966ad2bbd",
+          "Domain": "stripe.com",
+          "LinkedIn - URL": "linkedin.com/company/stripe",
+          "Description": null,
+          "Company Size": "10001+",
+          "Industries": [
+            "Finance"
+          ],
+          "Title": "Software Engineer",
+          "Departments": [
+            "Engineering"
+          ],
+          "Start Date": "2015-02-01",
+          "End Date": "2019-07-01",
+          "Location": "South San Francisco, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2010,
+          "Job Order": 6
+        },
+        {
+          "Company Name": "TOTEMS | Data Analytics",
+          "Specter - Company ID": "5e3bc1c900c8f4c966a9e62b",
+          "Domain": "totems.co",
+          "LinkedIn - URL": "linkedin.com/company/totems-instagram-marketing-suite",
+          "Description": null,
+          "Company Size": "1-10",
+          "Industries": [
+            "Advertising",
+            "Content and Publishing",
+            "Data and Analytics",
+            "Sales and Marketing"
+          ],
+          "Title": "Software Engineer & Co-Founder",
+          "Departments": [
+            "Senior Leadership",
+            "Engineering"
+          ],
+          "Start Date": "2010-08-01",
+          "End Date": "2015-02-01",
+          "Location": "Ketchikan, Alaska, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2012,
+          "Job Order": 5
+        },
+        {
+          "Company Name": "Oracle",
+          "Specter - Company ID": "5e3b8f7b137e998b5ae55426",
+          "Domain": "oracle.com",
+          "LinkedIn - URL": "linkedin.com/company/oracle",
+          "Description": null,
+          "Company Size": "10001+",
+          "Industries": [
+            "Data and Analytics",
+            "Information Technology"
+          ],
+          "Title": "Software Engineer",
+          "Departments": [
+            "Engineering"
+          ],
+          "Start Date": "2009-07-01",
+          "End Date": "2010-06-01",
+          "Location": "Austin, Texas, United States, North America",
+          "Is Current": false,
+          "Founded Date": 1999,
+          "Job Order": 4
+        },
+        {
+          "Company Name": "Apple",
+          "Specter - Company ID": "5e6afb206e2d0842bf48218a",
+          "Domain": "apple.com",
+          "LinkedIn - URL": "linkedin.com/company/apple",
+          "Description": null,
+          "Company Size": "10001+",
+          "Industries": [
+            "Hardware",
+            "Manufacturing",
+            "Mobile, Platforms, and Apps",
+            "Software"
+          ],
+          "Title": "Software Engineer Intern",
+          "Departments": [
+            "Engineering"
+          ],
+          "Start Date": "2008-06-01",
+          "End Date": "2008-09-01",
+          "Location": "Cupertino, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 1976,
+          "Job Order": 3
+        },
+        {
+          "Company Name": "Exalead",
+          "Specter - Company ID": "5e3b9ef6137e998b5aee5941",
+          "Domain": "3ds.com",
+          "LinkedIn - URL": "linkedin.com/company/dassaultsystemes",
+          "Description": null,
+          "Company Size": "10001+",
+          "Industries": [
+            "DeepTech",
+            "Information Technology",
+            "Mobile, Platforms, and Apps",
+            "Software"
+          ],
+          "Title": "Software Engineer Intern",
+          "Departments": [
+            "Engineering"
+          ],
+          "Start Date": "2007-04-01",
+          "End Date": "2007-08-01",
+          "Location": "Vélizy-Villacoublay, Île-de-France, France, Europe",
+          "Is Current": false,
+          "Founded Date": 1981,
+          "Job Order": 2
+        },
+        {
+          "Company Name": "Kleonet",
+          "Specter - Company ID": null,
+          "Domain": null,
+          "LinkedIn - URL": null,
+          "Description": null,
+          "Company Size": null,
+          "Industries": null,
+          "Title": "Software Engineer & Co-Founder",
+          "Departments": [
+            "Senior Leadership",
+            "Engineering"
+          ],
+          "Start Date": "2004-01-01",
+          "End Date": "2005-01-01",
+          "Location": null,
+          "Is Current": false,
+          "Founded Date": null,
+          "Job Order": 1
+        }
+      ],
+      "Current Position Title": "Software Engineer & Co-Founder",
+      "Current Position Company Name": "Dust",
+      "Current Position Company Website": "dust.tt",
+      "Past Position Title": "Research Engineer",
+      "Past Position Company Name": "OpenAI",
+      "Past Position Company Website": "openai.com",
+      "Current Tenure": 39,
+      "Average Tenure": 25,
+      "Education": [
+        {
+          "Name": "Stanford University",
+          "LinkedIn - URL": "linkedin.com/school/stanford-university",
+          "Field of Study": "Computer Science",
+          "Degree Title": "Master's",
+          "Description": "Specialization in Systems",
+          "Start Date": "2007-01-01",
+          "End Date": "2009-01-01",
+          "Location": "Stanford, California, United States, North America"
+        },
+        {
+          "Name": "École Polytechnique",
+          "LinkedIn - URL": "linkedin.com/school/ecole-polytechnique",
+          "Field of Study": "Computer Science",
+          "Degree Title": "BS",
+          "Description": "3rd year specialized in Computer Science",
+          "Start Date": "2004-01-01",
+          "End Date": "2007-01-01",
+          "Location": "Palaiseau, Île-de-France, France, Europe"
+        },
+        {
+          "Name": "Purdue University",
+          "LinkedIn - URL": "linkedin.com/school/purdue-university",
+          "Field of Study": "Computer Science",
+          "Degree Title": "SURF",
+          "Description": "Summer Undergraduate Research Fellowship with Pr. Mikhail Atallah",
+          "Start Date": "2006-01-01",
+          "End Date": "2006-01-01",
+          "Location": "West Lafayette, Indiana, United States, North America"
+        }
+      ],
+      "Languages": [
+        {
+          "Name": "French",
+          "Proficiency Level": "Native Or Bilingual Proficiency"
+        },
+        {
+          "Name": "English",
+          "Proficiency Level": "Full Professional Proficiency"
+        }
+      ],
+      "Skills": [
+        "Algorithms",
+        "C",
+        "C++",
+        "Cloud Computing",
+        "Computer Science",
+        "Distributed Systems",
+        "Git",
+        "HTML",
+        "JSON",
+        "Java",
+        "JavaScript",
+        "Linux",
+        "Mobile Applications",
+        "Mobile Technology",
+        "MongoDB",
+        "Nginx",
+        "Node.js",
+        "NodeJS",
+        "OAuth",
+        "Objective-C",
+        "Open Source",
+        "Operating Systems",
+        "REST",
+        "Scalability",
+        "Software Development",
+        "Software Engineering",
+        "Unix",
+        "Web Development",
+        "jQuery"
+      ],
+      "LinkedIn - Followers": 6332,
+      "LinkedIn - Connections": 4020,
+      "Last Updated": "2025-12-27 01:00:30"
+    },
+    {
+      "Specter - Person ID": "per_1b59f79206c8f6d905e81201",
+      "Specter - Talent Signal IDs": null,
+      "Specter - Strategic Signal IDs": null,
+      "Profile Picture": "https://peopledb-public.s3.eu-west-2.amazonaws.com/assets/profile-pictures/per_1b59f79206c8f6d905e81201.jpg",
+      "First Name": "Marianne",
+      "Last Name": "Wu",
+      "Full Name": "Marianne Wu",
+      "LinkedIn - URL": "https://www.linkedin.com/in/mariannewu",
+      "LinkedIn - Num ID": 723032,
+      "LinkedIn - URN": "ACoAAAALCFgBu2FT4T5QN63fzn1dhAPIdYZ7Qm8",
+      "Twitter - URL": null,
+      "GitHub - URL": null,
+      "About": "I am a technologist, operator, and investor.  I am good at connecting dots and like delivering great products informed by macro trends and customer needs.\n\nI am passionate about new technologies and business models and their potential to transform industry and help the climate.  I am particularly interested in the intersection of digital and physical and how to make things that happen in the real world more customer-centric, data-driven, and sustainable.  \n\nI am an experienced venture investor, start-up executive, and management consultant and have spent my career bringing new technologies to market.  I have focused on start-ups but have also built a deep understanding of large companies and incumbents and how start-ups can work with or work around them.   I am looking to work with great entrepreneurs to help build great companies and a better future.",
+      "Tagline": "Board Member | Investor | former President, GE Ventures",
+      "Location": "Palo Alto, California, United States, North America",
+      "Region": "North America",
+      "People Highlights": [
+        "major_tech_experience",
+        "prior_exit",
+        "prior_ipo",
+        "prior_vc_backed_experience",
+        "prior_vc_backed_founder",
+        "strong_academic_background",
+        "top_university",
+        "vc_backed_experience",
+        "vc_backed_founder"
+      ],
+      "Level of Seniority": "Executive Level",
+      "Years of Experience": 28,
+      "Education Level": "Doctoral Degree",
+      "Experience": [
+        {
+          "Company Name": "Congruent Ventures",
+          "Specter - Company ID": "5e3b9242137e998b5ae9f6c8",
+          "Domain": "congruentvc.com",
+          "LinkedIn - URL": "linkedin.com/company/congruent-ventures",
+          "Description": null,
+          "Company Size": "11-50",
+          "Industries": [
+            "Finance",
+            "Lending and Investments"
+          ],
+          "Title": "Venture Partner",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2022-01-01",
+          "End Date": null,
+          "Location": "San Francisco, California, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2017,
+          "Job Order": 15
+        },
+        {
+          "Company Name": "Latent AI, Inc.",
+          "Specter - Company ID": "5e3bbd0900c8f4c9669b1f84",
+          "Domain": "latentai.com",
+          "LinkedIn - URL": "linkedin.com/company/latent-ai-inc",
+          "Description": null,
+          "Company Size": "51-200",
+          "Industries": [
+            "Data and Analytics",
+            "DeepTech",
+            "Information Technology",
+            "Software"
+          ],
+          "Title": "Board Observer",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2020-01-01",
+          "End Date": null,
+          "Location": "Princeton, New Jersey, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2018,
+          "Job Order": 14
+        },
+        {
+          "Company Name": "Fictiv",
+          "Specter - Company ID": "5e3a8f1c040ca7b0c6f07a04",
+          "Domain": "fictiv.com",
+          "LinkedIn - URL": "linkedin.com/company/fictiv",
+          "Description": null,
+          "Company Size": "201-500",
+          "Industries": [
+            "Hardware",
+            "Manufacturing"
+          ],
+          "Title": "Board Member",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2020-01-01",
+          "End Date": null,
+          "Location": "San Francisco, California, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2013,
+          "Job Order": 13
+        },
+        {
+          "Company Name": "Everactive",
+          "Specter - Company ID": "5e3a8f1b040ca7b0c6f07239",
+          "Domain": "everactive.com",
+          "LinkedIn - URL": "linkedin.com/company/everactive",
+          "Description": null,
+          "Company Size": "11-50",
+          "Industries": [
+            "Hardware",
+            "Information Technology",
+            "Internet Services",
+            "Telecommunication"
+          ],
+          "Title": "Board Member",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2020-01-01",
+          "End Date": null,
+          "Location": "Santa Clara, California, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2012,
+          "Job Order": 12
+        },
+        {
+          "Company Name": "Nexar Inc.",
+          "Specter - Company ID": "5e3a8f1c040ca7b0c6f08212",
+          "Domain": "getnexar.com",
+          "LinkedIn - URL": "linkedin.com/company/nexar-inc-",
+          "Description": null,
+          "Company Size": "51-200",
+          "Industries": [
+            "Information Technology"
+          ],
+          "Title": "Advisor",
+          "Departments": [
+            "Other"
+          ],
+          "Start Date": "2020-01-01",
+          "End Date": null,
+          "Location": "New York City, New York, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2015,
+          "Job Order": 11
+        },
+        {
+          "Company Name": "Tamr",
+          "Specter - Company ID": "5e3a8f9d040ca7b0c6f25680",
+          "Domain": "tamr.com",
+          "LinkedIn - URL": "linkedin.com/company/tamrinc",
+          "Description": null,
+          "Company Size": "51-200",
+          "Industries": [
+            "Data and Analytics",
+            "Information Technology",
+            "Software"
+          ],
+          "Title": "Board Observer",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2020-01-01",
+          "End Date": null,
+          "Location": "Cambridge, Massachusetts, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2013,
+          "Job Order": 10
+        },
+        {
+          "Company Name": "Menlo Micro",
+          "Specter - Company ID": "5e3a8f1b040ca7b0c6f06aab",
+          "Domain": "menlomicro.com",
+          "LinkedIn - URL": "linkedin.com/company/menlo-micro",
+          "Description": null,
+          "Company Size": "51-200",
+          "Industries": [
+            "Consumer Products",
+            "DeepTech",
+            "Hardware",
+            "Manufacturing"
+          ],
+          "Title": "Board Member",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2019-01-01",
+          "End Date": null,
+          "Location": "Irvine, California, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2016,
+          "Job Order": 9
+        },
+        {
+          "Company Name": "Standard Investments",
+          "Specter - Company ID": "5fc742cfbf7e53924dedca63",
+          "Domain": "40northventures.com",
+          "LinkedIn - URL": "linkedin.com/company/standardinvestments",
+          "Description": null,
+          "Company Size": "11-50",
+          "Industries": [
+            "Finance",
+            "Lending and Investments"
+          ],
+          "Title": "Venture Partner, Standard Investments",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2021-01-01",
+          "End Date": null,
+          "Location": "Campbell, California, United States, North America",
+          "Is Current": true,
+          "Founded Date": 2009,
+          "Job Order": 8
+        },
+        {
+          "Company Name": "40 North Ventures",
+          "Specter - Company ID": "5fc742cfbf7e53924dedca63",
+          "Domain": "40northventures.com",
+          "LinkedIn - URL": "linkedin.com/company/standardinvestments",
+          "Description": "Launched 40 North Ventures and built initial investment thesis and portfolio.  Representative portfolio - Desktop Metal (NYSE: DM), Stem (NYSE: STEM), Proterra (NASDAQ: PTRA), Volta (NYSE: VLTA), Enbala (NYSE: GNRC), Aras, Carbon, Catalant",
+          "Company Size": "11-50",
+          "Industries": [
+            "Finance",
+            "Lending and Investments"
+          ],
+          "Title": "Managing Director, 40 North Ventures",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2019-01-01",
+          "End Date": "2021-01-01",
+          "Location": "Campbell, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2009,
+          "Job Order": 7
+        },
+        {
+          "Company Name": "Stem, Inc.",
+          "Specter - Company ID": "5e3bc29700c8f4c966acc739",
+          "Domain": "stem.com",
+          "LinkedIn - URL": "linkedin.com/company/stem-inc",
+          "Description": null,
+          "Company Size": "201-500",
+          "Industries": [
+            "Energy",
+            "Information Technology",
+            "Software",
+            "Sustainability"
+          ],
+          "Title": "Board Observer",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2018-01-01",
+          "End Date": "2020-01-01",
+          "Location": "Millbrae, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2009,
+          "Job Order": 6
+        },
+        {
+          "Company Name": "GE Ventures",
+          "Specter - Company ID": "5e3bbc0400c8f4c96697dda4",
+          "Domain": "geventures.com",
+          "LinkedIn - URL": "linkedin.com/company/ge_ventures",
+          "Description": "Led investing team and managed $1B portfolio across Industrial, Healthcare, Enterprise, and Digital.   Investing thesis focused on digital disruption of traditional industries - vertical solutions and key technology enablers.  Representative portfolio - Xometry (NASDQ: XMTR), Stem (NYSE: STEM), SolarEdge (NASDAQ: SEDG), Sonnen (NYSE: RDS), Sensity (NYSE: VZ), Bit Stew (NYSE: GE), Labcyte (NYSE: BEC),  RigUp, ServiceMax, Trilliant, TTTech, Evidation Health.  Strategic advisor to GE Businesses.  Extensive network of GE Executives and alumni",
+          "Company Size": "10001+",
+          "Industries": [
+            "Finance",
+            "Lending and Investments"
+          ],
+          "Title": "President",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2014-01-01",
+          "End Date": "2019-01-01",
+          "Location": "Menlo Park, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2013,
+          "Job Order": 5
+        },
+        {
+          "Company Name": "Mohr Davidow Ventures",
+          "Specter - Company ID": "5e3bbc9100c8f4c96699bda3",
+          "Domain": "mdv.com",
+          "LinkedIn - URL": "linkedin.com/company/mdv",
+          "Description": "Investing partner focused on IT and Industrial.  Portfolio included Sensity (acquired by Verizon), Catilin (acquired by Albemarle), Xicato, Splice, Pluribus Networks, Honest Buildings, Genomatica.",
+          "Company Size": "11-50",
+          "Industries": [
+            "Finance",
+            "Lending and Investments"
+          ],
+          "Title": "Partner",
+          "Departments": [
+            "Senior Leadership"
+          ],
+          "Start Date": "2005-01-01",
+          "End Date": "2013-01-01",
+          "Location": "San Mateo, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 1983,
+          "Job Order": 4
+        },
+        {
+          "Company Name": "various start-ups",
+          "Specter - Company ID": null,
+          "Domain": null,
+          "LinkedIn - URL": "linkedin.com/company/various-start-ups",
+          "Description": null,
+          "Company Size": null,
+          "Industries": null,
+          "Title": "Advisor",
+          "Departments": [
+            "Other"
+          ],
+          "Start Date": "2003-01-01",
+          "End Date": "2004-01-01",
+          "Location": null,
+          "Is Current": false,
+          "Founded Date": null,
+          "Job Order": 3
+        },
+        {
+          "Company Name": "ONI Systems",
+          "Specter - Company ID": null,
+          "Domain": null,
+          "LinkedIn - URL": null,
+          "Description": null,
+          "Company Size": null,
+          "Industries": null,
+          "Title": "Vice President, Product Marketing",
+          "Departments": [
+            "BD & Marketing"
+          ],
+          "Start Date": "1999-01-01",
+          "End Date": "2002-01-01",
+          "Location": null,
+          "Is Current": false,
+          "Founded Date": null,
+          "Job Order": 2
+        },
+        {
+          "Company Name": "McKinsey & Company",
+          "Specter - Company ID": "5e3bbfb900c8f4c966a2d4ff",
+          "Domain": "numetrics.com",
+          "LinkedIn - URL": "linkedin.com/company/mckinsey",
+          "Description": null,
+          "Company Size": "10001+",
+          "Industries": [
+            "Professional Services",
+            "Software"
+          ],
+          "Title": "Consultant",
+          "Departments": [
+            "Other"
+          ],
+          "Start Date": "1997-01-01",
+          "End Date": "1999-01-01",
+          "Location": "Cupertino, California, United States, North America",
+          "Is Current": false,
+          "Founded Date": 2000,
+          "Job Order": 1
+        }
+      ],
+      "Current Position Title": "Venture Partner",
+      "Current Position Company Name": "Congruent Ventures",
+      "Current Position Company Website": "congruentvc.com",
+      "Past Position Title": "Managing Director, 40 North Ventures",
+      "Past Position Company Name": "40 North Ventures",
+      "Past Position Company Website": "40northventures.com",
+      "Current Tenure": 83,
+      "Average Tenure": 39,
+      "Education": [
+        {
+          "Name": "Stanford University",
+          "LinkedIn - URL": "linkedin.com/school/stanford-university",
+          "Field of Study": "Electrical Engineering",
+          "Degree Title": "Doctor of Philosophy (Ph.D.)",
+          "Description": null,
+          "Start Date": null,
+          "End Date": null,
+          "Location": "Stanford, California, United States, North America"
+        },
+        {
+          "Name": "Stanford University",
+          "LinkedIn - URL": "linkedin.com/school/stanford-university",
+          "Field of Study": "Electrical Engineering",
+          "Degree Title": "Master of Science (M.S.)",
+          "Description": null,
+          "Start Date": null,
+          "End Date": null,
+          "Location": "Stanford, California, United States, North America"
+        },
+        {
+          "Name": "The University of British Columbia / UBC",
+          "LinkedIn - URL": "linkedin.com/school/universityofbc",
+          "Field of Study": "Engineering Physics/Applied Physics",
+          "Degree Title": "Bachelor of Applied Science (B.A.Sc.)",
+          "Description": null,
+          "Start Date": null,
+          "End Date": null,
+          "Location": "Vancouver, British Columbia, Canada, North America"
+        }
+      ],
+      "Languages": null,
+      "Skills": [
+        "Business Development",
+        "Business Strategy",
+        "Cleantech",
+        "Cloud Computing",
+        "Consulting",
+        "Entrepreneurship",
+        "Marketing Strategy",
+        "Mergers & Acquisitions",
+        "Networking",
+        "New Business Development",
+        "Product Development",
+        "Product Management",
+        "SaaS",
+        "Start-ups",
+        "Strategic Partnerships",
+        "Strategic Planning",
+        "Team Building",
+        "Venture Capital"
+      ],
+      "LinkedIn - Followers": 2595,
+      "LinkedIn - Connections": 2038,
+      "Last Updated": "2025-12-27 00:58:49"
+    }
+  ]
+}

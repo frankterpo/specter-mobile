@@ -302,20 +302,20 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   aiStrong: {
-    backgroundColor: '#22c55e33',
-    color: '#22c55e',
+    backgroundColor: colors.primary + '33',
+    color: colors.primary,
   },
   aiSoft: {
-    backgroundColor: '#eab30833',
-    color: '#eab308',
+    backgroundColor: colors.warning + '33',
+    color: colors.warning,
   },
   aiBorderline: {
     backgroundColor: '#f9731633',
     color: '#f97316',
   },
   aiPass: {
-    backgroundColor: '#ef444433',
-    color: '#ef4444',
+    backgroundColor: colors.destructive + '33',
+    color: colors.destructive,
   },
   actionButtons: {
     flexDirection: 'row',
@@ -333,20 +333,20 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   likeButton: {
-    backgroundColor: '#22c55e11',
-    borderColor: '#22c55e44',
+    backgroundColor: colors.primary + '11',
+    borderColor: colors.primary + '44',
   },
   likeButtonActive: {
-    backgroundColor: '#22c55e33',
-    borderColor: '#22c55e',
+    backgroundColor: colors.primary + '33',
+    borderColor: colors.primary,
   },
   dislikeButton: {
-    backgroundColor: '#ef444411',
-    borderColor: '#ef444444',
+    backgroundColor: colors.destructive + '11',
+    borderColor: colors.destructive + '44',
   },
   dislikeButtonActive: {
-    backgroundColor: '#ef444433',
-    borderColor: '#ef4444',
+    backgroundColor: colors.destructive + '33',
+    borderColor: colors.destructive,
   },
   actionEmoji: {
     fontSize: 24,
@@ -381,7 +381,7 @@ const styles = StyleSheet.create({
     borderColor: '#3a3a5a',
   },
   datapointPositive: {
-    borderColor: '#22c55e44',
+    borderColor: colors.primary + '44',
   },
   datapointNegative: {
     borderColor: '#eab30844',

@@ -1,9 +1,13 @@
-import React from "react";
+import React, { memo } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../theme/colors";
 import { Person, getCurrentJob, getFullName } from "../../api/specter";
+import { Card } from "./shadcn/Card";
+import { Avatar } from "./shadcn/Avatar";
+import { Badge } from "./shadcn/Badge";
+import { Button } from "./shadcn/Button";
 
 interface PersonCardProps {
   person: Person;
@@ -11,14 +15,16 @@ interface PersonCardProps {
   onLike?: () => void;
   onDislike?: () => void;
   onAddToList?: () => void;
+  onRemoveFromList?: () => void;
 }
 
-export default function PersonCard({
+function PersonCard({
   person,
   onPress,
   onLike,
   onDislike,
   onAddToList,
+  onRemoveFromList,
 }: PersonCardProps) {
   const name = getFullName(person);
   const currentJob = getCurrentJob(person.experience || []);
@@ -41,164 +47,138 @@ export default function PersonCard({
     : person.seniority || "";
 
   return (
-    <Pressable
-      style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
-      onPress={onPress}
-    >
-      {/* Avatar */}
-      <View style={styles.avatarContainer}>
-        {person.profile_image_url ? (
-          <Image
-            source={{ uri: person.profile_image_url }}
-            style={styles.avatar}
-            contentFit="cover"
+    <Card onPress={onPress} style={styles.card}>
+      <View style={styles.topRow}>
+        <View style={styles.avatarContainer}>
+          <Avatar
+            src={person.profile_image_url}
+            fallback={name}
+            size={48}
           />
-        ) : (
-          <View style={styles.avatarPlaceholder}>
-            <Text style={styles.avatarText}>
-              {(person.first_name?.[0] || "") + (person.last_name?.[0] || "")}
-            </Text>
-          </View>
-        )}
-        {statusColor && <View style={[styles.statusDot, { backgroundColor: statusColor }]} />}
-      </View>
-
-      {/* Info */}
-      <View style={styles.info}>
-        <View style={styles.nameRow}>
-          <Text style={styles.name} numberOfLines={1}>{name}</Text>
-          {person.seniority && (
-            <>
-              <Text style={styles.separator}>•</Text>
-              <Text style={styles.seniority} numberOfLines={1}>{person.seniority}</Text>
-            </>
-          )}
+          {statusColor && <View style={[styles.statusDot, { backgroundColor: statusColor }]} />}
         </View>
-        {subtitle && (
-          <Text style={styles.subtitle} numberOfLines={1}>{subtitle}</Text>
-        )}
+
+        <View style={styles.info}>
+          <Text style={styles.name} numberOfLines={1}>
+            {name}
+          </Text>
+          {person.seniority ? (
+            <Badge variant="secondary" size="sm" style={styles.levelPill}>
+              {person.seniority}
+            </Badge>
+          ) : null}
+          {subtitle ? (
+            <Text style={styles.subtitle} numberOfLines={1}>
+              {subtitle}
+            </Text>
+          ) : null}
+          {person.location ? (
+            <Text style={styles.location} numberOfLines={1}>
+              {person.location}
+            </Text>
+          ) : null}
+        </View>
       </View>
 
-      {/* Actions */}
-      <View style={styles.actions}>
-        <Pressable
-          style={[styles.actionBtn, status === "disliked" && styles.actionActive]}
+      <View style={styles.actionsRow}>
+        <Button
+          variant={status === "disliked" ? "destructive" : "outline"}
+          size="icon"
+          icon="close"
           onPress={onDislike}
-          hitSlop={6}
-        >
-          <Ionicons
-            name="close"
-            size={18}
-            color={status === "disliked" ? colors.error : colors.text.tertiary}
-          />
-        </Pressable>
-        <Pressable
-          style={[styles.actionBtn, status === "liked" && styles.actionActive]}
+          style={[
+            styles.actionBtn,
+            status === "disliked" && styles.actionActive,
+          ]}
+        />
+        <Button
+          variant={status === "liked" ? "default" : "outline"}
+          size="icon"
+          icon="heart"
           onPress={onLike}
-          hitSlop={6}
-        >
-          <Ionicons
-            name="heart"
-            size={16}
-            color={status === "liked" ? colors.brand.green : colors.text.tertiary}
+          style={[
+            styles.actionBtn,
+            status === "liked" && styles.actionActive,
+          ]}
+        />
+        <Button
+          variant="outline"
+          size="icon"
+          icon="add"
+          onPress={onAddToList}
+          style={styles.actionBtn}
+        />
+        {onRemoveFromList && (
+          <Button
+            variant="destructive"
+            size="icon"
+            icon="remove-circle"
+            onPress={onRemoveFromList}
+            style={styles.actionBtn}
           />
-        </Pressable>
-        <Pressable style={styles.actionBtn} onPress={onAddToList} hitSlop={6}>
-          <Ionicons name="add" size={18} color={colors.text.tertiary} />
-        </Pressable>
+        )}
       </View>
-    </Pressable>
+    </Card>
   );
 }
 
+export default memo(PersonCard);
+
 const styles = StyleSheet.create({
   card: {
+    borderRadius: 8,
+    padding: 24,
+    gap: 14,
+  },
+  topRow: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: colors.card.bg,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.content.borderLight,
-  },
-  cardPressed: {
-    backgroundColor: colors.content.bgSecondary,
   },
   avatarContainer: {
     position: "relative",
-    marginRight: 10,
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.content.bgSecondary,
-  },
-  avatarPlaceholder: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.brand.blue,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  avatarText: {
-    color: colors.text.inverse,
-    fontSize: 14,
-    fontWeight: "600",
+    marginRight: 12,
   },
   statusDot: {
     position: "absolute",
     bottom: -2,
     right: -2,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
     borderWidth: 2,
-    borderColor: colors.card.bg,
+    borderColor: "#fff",
   },
   info: {
     flex: 1,
-    marginRight: 8,
-  },
-  nameRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 2,
+    gap: 4,
   },
   name: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: "600",
     color: colors.text.primary,
-    flexShrink: 1,
   },
-  separator: {
-    fontSize: 12,
-    color: colors.text.tertiary,
-    marginHorizontal: 6,
-  },
-  seniority: {
-    fontSize: 12,
-    color: colors.brand.blue,
-    fontWeight: "500",
+  levelPill: {
+    alignSelf: "flex-start",
+    marginTop: 2,
   },
   subtitle: {
     fontSize: 12,
     color: colors.text.secondary,
   },
-  actions: {
+  location: {
+    fontSize: 11,
+    color: colors.text.tertiary,
+  },
+  actionsRow: {
     flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
+    gap: 8,
   },
   actionBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
+    width: 36,
+    height: 36,
   },
   actionActive: {
-    backgroundColor: colors.content.bgTertiary,
+    backgroundColor: colors.primary + '15',
+    borderColor: colors.primary,
   },
 });

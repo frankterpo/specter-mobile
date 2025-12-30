@@ -1,0 +1,53 @@
+{
+  "status": 200,
+  "ok": true,
+  "data": {
+    "notifications": [
+      {
+        "id": 58,
+        "userId": "user_2BTdH3yJshxoCcFIUW8PnMp4AJJ",
+        "status": "read",
+        "type": "entity_note_mention",
+        "message": {
+          "note": {
+            "id": 139,
+            "content": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "mention",
+                      "attrs": {
+                        "id": "user_2BTdH3yJshxoCcFIUW8PnMp4AJJ",
+                        "label": "Francisco Terpolilli",
+                        "mentionSuggestionChar": "@"
+                      }
+                    },
+                    {
+                      "text": " Blocked",
+                      "type": "text"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "creatorFirstName": "Barney",
+          "creatorLastName": "Kelly-Wyatt",
+          "creatorAvatar": "https://images.clerk.dev/uploaded/img_2yfl2inaQ6nJVQIOmKIBUwVT4uH",
+          "entityType": "company",
+          "entityId": "662687a7b9a963176f09201a"
+        },
+        "createdAt": "2025-10-31T08:56:06.375Z",
+        "entity": {
+          "name": "RedotPay",
+          "avatar": "/logo?domain=redotpay.com"
+        }
+      }
+    ],
+    "total": 1,
+    "totalUnread": 0
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "status": 404,
+  "ok": false,
+  "data": {
+    "errorCode": "PAGE_NOT_FOUND",
+    "message": "The page you've requested does not exist"
+  }
+}
