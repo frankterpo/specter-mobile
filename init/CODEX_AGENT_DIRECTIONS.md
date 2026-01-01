@@ -2,6 +2,9 @@
 
 **Priority: CRITICAL - Mobile V1 Must Work**
 
+> 📚 **Related Documentation:**
+> - [`API_ROUTES_CODEX.md`](./API_ROUTES_CODEX.md) - Complete API routes reference for Railway (private) and App APIs
+
 ## Executive Summary
 
 This document provides all technical context and blockers for achieving a working Specter Mobile V1. The four critical requirements are:
