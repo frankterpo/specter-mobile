@@ -1,247 +1,457 @@
-# Specter Mobile V1 - Complete API Routes Reference for Codex
+# Specter Backend API Routes for Codex Agent
 
-> **PURPOSE**: Exhaustive technical context for Codex to understand, implement, and extend API routes.
+> **Source**: `specter-dev/pipeliner` repository  
+> **Path**: `backend/api/src/api/routers/`  
+> **Last Updated**: January 2026
+
+This document provides comprehensive API route definitions for the Codex agent to extend the Specter Mobile app functionality. Routes are organized by service type: **Private (Railway)** for internal/premium features and **API v1 (Public)** for standard API access.
 
 ---
 
 ## Architecture Overview
 
-Specter Mobile uses **two backend APIs**:
-
-| API | Base URL | Purpose | Auth Headers |
-|-----|----------|---------|--------------|
-| **Railway (Private)** | `https://specter-api-prod.up.railway.app` | Data enrichment, People/Company browse, Quick Search | `Authorization: Bearer <JWT>` + `x-api-key: <API_KEY>` |
-| **App API** | `https://app.tryspecter.com/api` | Signals feeds, Lists, Entity status, User context | `Authorization: Bearer <JWT>` |
-
-### Proxy Routing (Web Dev)
-- `/proxy/railway/*` → Railway API
-- `/proxy/app/*` → App API
-
----
-
-## Authentication Requirements
-
-```typescript
-// Railway API - REQUIRES BOTH:
-headers.set("Authorization", `Bearer ${jwtToken}`);
-headers.set("x-api-key", apiKey);
-
-// App API - REQUIRES ONLY JWT:
-headers.set("Authorization", `Bearer ${jwtToken}`);
-
-// Optional for both:
-headers.set("x-user-id", userId);
+```
+backend/api/src/api/routers/
+├── api/                          # Public API routes (api.tryspecter.com)
+│   ├── v1/
+│   │   ├── companies/            # Company-related endpoints
+│   │   ├── entities/             # Entity search & management
+│   │   ├── investor_interest/    # Investor interest signals
+│   │   └── people/               # People search & data
+│   └── __init__.py
+├── private/                      # Private/Railway routes (internal service)
+│   ├── companies/                # Company data & enrichment
+│   │   └── enrichment/           # Company enrichment endpoints
+│   ├── people/                   # People data & emails
+│   ├── settings/                 # User settings
+│   ├── strat_intel/              # Strategic intelligence signals
+│   ├── users/                    # User management
+│   ├── auth.py                   # Authentication endpoints
+│   ├── queries.py                # Query endpoints (commented out)
+│   └── quick_search.py           # Quick search functionality
+└── __init__.py
 ```
 
 ---
 
-## Railway Private API Routes
+## PRIVATE ROUTES (Railway Service)
 
-All require **JWT + API Key**. Prefix: `/private/`
+**Base URL**: Internal Railway service (proxied via `server.js` or direct Railway URL)  
+**Authentication**: Bearer JWT token + `x-api-key` header
 
-### People Routes
+### 1. Authentication Router (`/auth`)
 
-| Method | Path | Purpose | Request | Response |
-|--------|------|---------|---------|----------|
-| POST | `/private/people` | Browse people | `{limit, offset, search?, filters?}` | `{page, items: Person[]}` |
-| GET | `/private/people/{id}` | Get person by ID | - | `Person` |
-| POST | `/private/people/count` | Get count | `{search?}` | `{count: number}` |
-| POST | `/private/people/export` | Export people | `{limit}` | `Array<FlatObject>` |
+| Method | Endpoint | Function | Description |
+|--------|----------|----------|-------------|
+| GET | `/auth` | `authenticate_user` | Authenticate user and return their information |
 
-### Company Routes
-
-| Method | Path | Purpose | Response |
-|--------|------|---------|----------|
-| GET | `/private/companies/{id}/people` | Company team | `[{specter_person_id, full_name, title, is_founder, departments, seniority}]` |
-| GET | `/private/companies/{id}/department-sizes` | Dept sizes | `{Engineering: 3, Sales: 5, ...}` |
-
-### Quick Search Routes
-
-| Method | Path | Purpose | Response |
-|--------|------|---------|----------|
-| GET | `/private/quick-search/history` | Search history | `[{id, name, domain, logo_url, entityStatus}]` |
-| GET | `/private/quick-search/company?term=X` | Search companies | `Company[]` |
-| GET | `/private/quick-search/people?term=X` | Search people | `Person[]` |
-| GET | `/private/quick-search/counts?term=X` | Search counts | `{companies, people, investors}` |
-
-### Connection Routes
-
-| Method | Path | Purpose | Request | Response |
-|--------|------|---------|---------|----------|
-| POST | `/private/users/people-connections` | People connections | `{people_ids[], user_id}` | `[{person_id, connections[]}]` |
-| POST | `/private/users/company-connections` | Company connections | `{company_ids[], user_id}` | `[{company_id, connections[]}]` |
+**Response Model**: User information object
 
 ---
 
-## App API Routes
+### 2. Companies Router (`/companies`)
 
-Only JWT required (no API key).
+| Method | Endpoint | Function | Description |
+|--------|----------|----------|-------------|
+| GET | `/{company_id}/department-sizes` | `get_company_dept_sizes` | Get company size breakdown by departments |
+| GET | `/{company_id}/people` | `get_company_people` | Get people associated with a company |
+| POST | `/` | `get_company_info` | Get company info with body filters |
 
-### Signals Routes
+#### GET `/{company_id}/department-sizes`
 
-| Method | Path | Purpose | Request |
-|--------|------|---------|---------|
-| POST | `/signals/company` | Company signals | `{page, limit, search?, industry?, location?}` |
-| POST | `/signals/people` | People signals | `{page, limit, search?, seniority?, location?}` |
-| POST | `/signals/talent` | Talent signals | Same as people |
-| POST | `/signals/investors` | Investor signals | `{page, limit, search?}` |
-| POST | `/signals/revenue` | Revenue signals | `{page, limit, search?}` |
-| POST | `/signals/strategic` | Strategic signals | Same as people |
-| POST | `/signals/funding-rounds` | Funding signals | `{page, limit}` |
-| POST | `/signals/acquisition` | Acquisition signals | `{page, limit}` |
-| POST | `/signals/ipo` | IPO signals | `{page, limit}` |
+**Parameters**:
+- `company_id` (path, required): Company ID to get department sizes for
 
-All have corresponding `/count` and `/filters` endpoints.
+**Response**: `Dict[str, int]` - Dictionary with department names as keys and employee counts as values
 
-### Entity Status
+**Example Response**:
+```json
+{
+  "Engineering": 45,
+  "Sales": 23,
+  "Marketing": 12,
+  "Operations": 8
+}
+```
 
-| Method | Path | Purpose |
-|--------|------|---------|
-| POST | `/entity-status/{type}/{id}` | Update status |
+#### GET `/{company_id}/people`
 
-Types: `people`, `company`, `investors`
-Body: `{status: "liked" | "disliked" | "viewed"}`
+**Parameters**:
+- `company_id` (path, required): Company ID
+- `department` (query, optional): Filter by department name
+- `founders` (query, optional): `true` = only founders, `false` = only non-founders
+- `ceo` (query, optional): Filter to include/exclude CEOs
+- `page` (query, default=0): Page number
+- `limit` (query, default=25): Results per page
 
-### Lists & User
+**Response**: `List[BasicPerson]`
 
-| Method | Path | Purpose |
-|--------|------|---------|
-| GET | `/lists` | Get all lists |
-| GET | `/lists/people/{listId}/results` | List results |
-| GET | `/user/recent/company` | Recent companies |
-| GET | `/user/recent/people` | Recent people |
-| GET | `/notifications` | Notifications |
-| GET | `/network/status` | Network status |
-| GET | `/integrations` | Integrations |
-| GET | `/integrations/token` | Integration token |
+#### POST `/`
 
----
+**Body**: `CompanyBodyFilters`
+```json
+{
+  "company_ids": ["id1", "id2"],
+  "filters": {
+    "industry": "Technology",
+    "size_min": 50,
+    "size_max": 500
+  }
+}
+```
 
-## Implementation Status
-
-### ✅ Implemented Routes
-
-**Railway:**
-- Browse People, Person by ID, People Count
-- Company Team
-- Quick Search (History, Companies, People, Counts)
-- Health Check
-
-**App:**
-- All Signals (Company, People, Talent, Investors, Revenue, Strategic, Funding, Acquisition, IPO)
-- Entity Status
-- Lists
-- Recent Companies/People
-- Notifications, Network Status, Integrations
-
-### ❌ NOT YET IMPLEMENTED (Opportunities)
-
-1. **People Connections** (`POST /private/users/people-connections`)
-2. **Company Connections** (`POST /private/users/company-connections`)  
-3. **Department Sizes** (`GET /private/companies/{id}/department-sizes`)
-4. **People Export** (full implementation)
+**Response**: `List[Company]`
 
 ---
 
-## Route Implementation Guide
+### 3. People Router (`/people`)
 
-### Adding New Route
+| Method | Endpoint | Function | Description |
+|--------|----------|----------|-------------|
+| GET | `/{person_id}` | `get_person_by_id` | Get detailed person information |
+| GET | `/{person_id}/export` | `export_person_by_id` | Export person data (CSV/JSON) |
+| GET | `/{person_id}/emails` | `get_person_emails` | Get person's email addresses |
 
-```typescript
-// In src/api/public-client/client.ts
+#### GET `/{person_id}`
 
-companies = {
-  async getDepartmentSizes(companyId: string, authToken: string): Promise<Record<string, number>> {
-    return apiRequest<Record<string, number>>(
-      `/private/companies/${companyId}/department-sizes`,
-      { method: "GET" },
-      authToken,
-      'railway'  // API type: 'railway' or 'app'
-    );
+**Parameters**:
+- `person_id` (path, required): Person ID
+
+**Response**: Full person object with employment history, education, social links
+
+#### GET `/{person_id}/emails`
+
+**Parameters**:
+- `person_id` (path, required): Person ID
+
+**Response**: List of verified email addresses
+
+---
+
+### 4. Quick Search Router (`/quick-search`)
+
+| Method | Endpoint | Function | Description |
+|--------|----------|----------|-------------|
+| GET | `/info-with-none` | `info_with_none` | Quick search with null handling |
+| GET | `/` | `quick_search` | Universal quick search across entities |
+
+**Search Types Supported**:
+- Companies (by name, domain, ID)
+- People (by name, email, LinkedIn)
+- Investors (by name, fund)
+
+**Query Parameters**:
+- `q` (required): Search query string
+- `type` (optional): Entity type filter (`company`, `person`, `investor`)
+- `limit` (optional, default=10): Max results
+- `product` (optional): Specter product context
+
+**Response**: `QuickSearchCounts` with categorized results
+
+---
+
+### 5. Strategic Intelligence Router (`/strat-intel`)
+
+| Method | Endpoint | Function | Description |
+|--------|----------|----------|-------------|
+| POST | `/` | `api_get_strat_intel` | Get strategic intelligence signals |
+
+**Body**: Strategic signal filter object
+```json
+{
+  "signal_types": ["funding", "acquisition", "ipo"],
+  "date_range": {
+    "start": "2024-01-01",
+    "end": "2024-12-31"
   },
-};
+  "industries": ["Technology", "Healthcare"],
+  "regions": ["US", "EU"],
+  "limit": 50,
+  "offset": 0
+}
 ```
 
-### Fallback Pattern (Railway → App)
+**Response Fields** (per signal):
+- `signal_id`: Unique signal identifier
+- `signal_type`: Type of signal (funding, acquisition, etc.)
+- `signal_type_2`: Secondary classification
+- `hq_region`: Company headquarters region
+- `logos`: Company logos
+- `week_batch`: Weekly batch identifier
+- `linkedin_url`: LinkedIn URL if available
+- `twitter_url`: Twitter URL if available
+- `industry_og`: Original industry classification
+- `growth_stage`: Company growth stage
+- `customer_ids`: Related customer IDs
+- `number_of_sources`: Source count for signal
+- `company_domain`: Company website domain
+- `sources`: List of source details
+- `entity_id`: Related entity ID
+
+---
+
+### 6. Users Router (`/users`)
+
+| Method | Endpoint | Function | Description |
+|--------|----------|----------|-------------|
+| GET | `/me` | `get_current_user` | Get current authenticated user |
+| PUT | `/me` | `update_current_user` | Update user profile |
+
+---
+
+### 7. Settings Router (`/settings`)
+
+| Method | Endpoint | Function | Description |
+|--------|----------|----------|-------------|
+| GET | `/` | `get_settings` | Get user settings |
+| PUT | `/` | `update_settings` | Update user settings |
+
+---
+
+## API V1 ROUTES (Public API)
+
+**Base URL**: `https://api.tryspecter.com/api/v1/` or `https://app.tryspecter.com/api/v1/`  
+**Authentication**: Bearer JWT token + `x-api-key` header
+
+### 1. Companies Router (`/api/v1/companies`)
+
+| Method | Endpoint | Function | Description |
+|--------|----------|----------|-------------|
+| POST | `/` | `get_languages` | Get company languages with filters |
+
+**Body**: `IdTermFilter`
+```json
+{
+  "company_ids": ["id1", "id2"],
+  "language_filter": "en"
+}
+```
+
+---
+
+### 2. Entities Router (`/api/v1/entities`)
+
+| Method | Endpoint | Function | Description |
+|--------|----------|----------|-------------|
+| POST | `/text-search` | `entities_text_search` | Search entities by text |
+
+**Body**:
+```json
+{
+  "text": "search query",
+  "entity_types": ["company", "person"],
+  "limit": 20
+}
+```
+
+---
+
+### 3. Investor Interest Router (`/api/v1/investor-interest`)
+
+| Method | Endpoint | Function | Description |
+|--------|----------|----------|-------------|
+| GET | `/{signal_id}` | `get_signal_by_id` | Get specific investor interest signal |
+| GET | `/` | `get_signals` | List investor interest signals |
+
+#### GET `/{signal_id}`
+
+**Parameters**:
+- `signal_id` (path, required): Signal ID
+
+**Response**: Single signal object with full details
+
+#### GET `/`
+
+**Query Parameters**:
+- `list_id` (optional): Filter by list ID
+- `search_id` (optional): Filter by search ID
+- `limit` (optional): Max results
+- `offset` (optional): Pagination offset
+
+---
+
+### 4. People Router (`/api/v1/people`)
+
+| Method | Endpoint | Function | Description |
+|--------|----------|----------|-------------|
+| POST | `/by-email` | `search_by_email` | Search people by email address |
+
+**Body**:
+```json
+{
+  "email": "person@example.com",
+  "score": 0.8
+}
+```
+
+**Response**: Matching person records with confidence scores
+
+---
+
+## Mobile Implementation Strategy
+
+### Priority 1: Use Existing Working Routes
+
+The mobile app already has working implementations for:
+- `/api/v1/railway/signals/*` - All signal types (funding, acquisition, IPO, etc.)
+- `/api/v1/railway/company/*` - Company search and details
+- `/api/v1/railway/conn/*` - Connections and relationships
+- `/api/v1/app/*` - App-specific endpoints (lists, recent entities)
+
+**Recommendation**: Continue using these routes as primary data source.
+
+### Priority 2: Enrich with Private Routes
+
+Add these private routes to enhance the mobile experience:
+
+1. **Quick Search** (`/quick-search`)
+   - Unified search across all entity types
+   - Fast typeahead results
+   - Perfect for global search bar
+
+2. **Company People** (`/companies/{id}/people`)
+   - Show team members on company detail pages
+   - Filter by role (CEO, founders, department)
+
+3. **Person Emails** (`/people/{id}/emails`)
+   - Contact information for leads
+   - Premium feature for paid users
+
+4. **Strategic Intelligence** (`/strat-intel`)
+   - Curated signals feed
+   - Weekly batched updates
+   - Multi-source validation
+
+### Priority 3: Fallback Strategy
+
+If private routes fail (Railway service unavailable):
 
 ```typescript
-async getSomeData(authToken: string): Promise<SomeData> {
+async function fetchWithFallback<T>(
+  privateEndpoint: string,
+  publicEndpoint: string,
+  options: RequestInit
+): Promise<T> {
   try {
-    return await apiRequest<SomeData>('/private/endpoint', { method: "GET" }, authToken, 'railway');
+    // Try private route first (faster, more data)
+    return await fetchPrivate<T>(privateEndpoint, options);
   } catch (error) {
-    if (error instanceof SpecterAPIError && error.statusCode === 404) {
-      return await apiRequest<SomeData>('/app-endpoint', { method: "GET" }, authToken, 'app');
-    }
-    throw error;
+    console.warn(`Private route failed, falling back to public: ${error}`);
+    // Fallback to public API
+    return await fetchPublic<T>(publicEndpoint, options);
   }
 }
 ```
 
 ---
 
-## TypeScript Types
+## Authentication Headers
+
+All routes require these headers:
 
 ```typescript
-export type EntityStatus = "viewed" | "liked" | "disliked" | null;
+const headers = {
+  'Authorization': `Bearer ${jwtToken}`,
+  'x-api-key': apiKey,
+  'Content-Type': 'application/json',
+  'x-user-id': userId  // Optional, for tracking
+};
+```
 
-export interface Person {
-  id: string;
-  first_name: string;
-  last_name: string;
-  full_name: string;
-  linkedin_url: string;
-  profile_image_url: string | null;
-  tagline: string | null;
-  location: string | null;
-  region: string | null;
-  seniority: string | null;
-  years_of_experience: number | null;
-  experience: Experience[];
-  entityStatus?: { status: EntityStatus; updated_at: string };
-}
+---
 
-export interface Company {
-  id: string;
-  name: string;
-  domain: string;
-  logoUrl: string | null;
-  industry: string[];
-  hqRegion: string | null;
-  descriptionShort: string | null;
-  foundedYear: number | null;
-  growthStage: string | null;
-  totalFundingAmount: number | null;
-  highlights: string[];
-  entityStatus?: { status: EntityStatus; updated_at: string };
-}
+## Error Handling
 
-export interface Investor {
+| Status Code | Meaning | Action |
+|-------------|---------|--------|
+| 401 | Unauthorized | Refresh JWT token |
+| 403 | Forbidden | Check API key validity |
+| 404 | Not Found | Entity doesn't exist |
+| 422 | Validation Error | Check request body/params |
+| 429 | Rate Limited | Implement exponential backoff |
+| 500 | Server Error | Retry with backoff, then fallback |
+
+---
+
+## Data Models Reference
+
+### BasicPerson
+```typescript
+interface BasicPerson {
   id: string;
   name: string;
-  domain: string;
-  logoUrl: string | null;
-  HQRegion: string | null;
-  rank: number;
-  types: string[];
-  nInvestments: number;
-  nLeadInvestments: number;
-  nExits: number;
-  InvestorHighlights: Array<{ highlight: string; isNew: boolean }>;
+  title?: string;
+  company?: string;
+  linkedin_url?: string;
+  profile_image?: string;
 }
+```
 
-export interface PaginatedResponse<T> {
-  page: number;
-  items: T[];
-  total?: number;
+### Company
+```typescript
+interface Company {
+  id: string;
+  specter_id: string;
+  name: string;
+  domain?: string;
+  industry?: string;
+  employee_count?: number;
+  funding_total?: number;
+  hot_companies?: HotCompanyInfo;
+}
+```
+
+### Signal (Strategic Intelligence)
+```typescript
+interface StratIntelSignal {
+  signal_id: string;
+  signal_type: string;
+  signal_type_2?: string;
+  hq_region?: string;
+  logos?: string[];
+  week_batch?: string;
+  linkedin_url?: string;
+  twitter_url?: string;
+  industry_og?: string;
+  growth_stage?: string;
+  customer_ids?: string[];
+  number_of_sources: number;
+  company_domain?: string;
+  sources: SourceInfo[];
+  entity_id?: string;
 }
 ```
 
 ---
 
-## Priority Rules for Codex
+## Next Steps for Codex
 
-1. **Use Railway API** for: People browsing, Quick search, Company team, Data enrichment
-2. **Use App API** for: Signals feeds, Entity status, Lists, User context
-3. **Always include proper auth headers** based on API type
-4. **Test on native** (iOS/Android) to avoid CORS issues
-5. **Use `apiRequest` helper** for consistent error handling
+1. **Implement Quick Search**: Add `/quick-search` integration for global search
+2. **Add Company Team View**: Use `/companies/{id}/people` for team pages
+3. **Integrate Strat Intel**: Create a dedicated signals feed using `/strat-intel`
+4. **Add Email Lookup**: Implement `/people/{id}/emails` for contact info
+5. **Build Fallback System**: Implement robust error handling with public API fallbacks
+
+---
+
+## Testing Endpoints
+
+Use the local proxy server for testing:
+
+```bash
+# Start proxy
+cd /Users/franciscoterpolilli/Projects/specter-mobile
+node server.js
+
+# Test quick search (via proxy)
+curl -X GET "http://localhost:3333/proxy/private/quick-search?q=Tesla&limit=5" \
+  -H "Authorization: Bearer YOUR_JWT" \
+  -H "x-api-key: YOUR_API_KEY"
+
+# Test strat intel (via proxy)
+curl -X POST "http://localhost:3333/proxy/private/strat-intel" \
+  -H "Authorization: Bearer YOUR_JWT" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"signal_types": ["funding"], "limit": 10}'
+```
